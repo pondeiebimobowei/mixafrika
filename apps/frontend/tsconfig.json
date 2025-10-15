@@ -1,0 +1,15 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
+
+   "compilerOptions": {
+    "composite": true,                                  /* Enable project compilation. */
+    "baseUrl": ".",
+    "paths": {
+      "@mixafrica/shared": ["../../packages/shared/src"]
+    }
+  }
+}

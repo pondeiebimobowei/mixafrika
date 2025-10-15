@@ -1,0 +1,31 @@
+{
+  "name": "mixafrica",
+  "version": "1.0.0",
+  "description": "",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:frontend \" \"npm run dev:backend\"",
+    "dev:frontend": "npm run dev --workspace @mixafrica/frontend",
+    "dev:backend": "npm run start:dev --workspace @mixafrica/backend",
+
+    "build:backend": "npm run build --workspace @mixafrica/backend",
+    "build:frontend": "npm run build --workspace @mixafrica/frontend",
+    "build": "npm run build:backend && npm run build:frontend",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
