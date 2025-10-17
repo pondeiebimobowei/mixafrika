@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
-import { AdminController } from './admin.controller';
-import { AdminService } from './admin.service';
+import { UserModule } from 'src/user/user.module';
+import { AdminUserModule } from './user/user.module';
+import { LoanModule } from './loan/loan.module';
+import { InvestmentsModule } from './investments/investments.module';
+import { AutditLogsModule } from './autdit_logs/autdit_logs.module';
+import { FundingModule } from './funding/funding.module';
 
 @Module({
-  controllers: [AdminController],
-  providers: [AdminService]
+  imports: [ UserModule, AdminUserModule, LoanModule, InvestmentsModule, AutditLogsModule, FundingModule],
 })
 export class AdminModule {}

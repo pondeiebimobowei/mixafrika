@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class NotificationService {
+export class SettingsService {
 
-    async handleGetNotifications(){
+    async handleGetSettings(){
         return {
             success: true,
             message: '',
@@ -11,7 +11,7 @@ export class NotificationService {
         }
     }
 
-    async handleMarkNotificationsAsOpened(notification_id){
+    async handleUpdateSettings(){
         return {
             success: true,
             message: '',

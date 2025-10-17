@@ -1,4 +1,18 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get, Param, Patch } from '@nestjs/common';
+import { NotificationService } from './notification.service';
 
-@Controller('notification')
-export class NotificationController {}
+@Controller('v1/notification')
+export class NotificationController {
+
+    constructor( private readonly notificationService: NotificationService){}
+
+    @Get()
+    getNotification(){
+        this.notificationService.handleGetNotifications()
+    }
+
+    @Patch(":notification_id")
+    markNotificationAsOpened(@Param("notification_id") notification_id: string){
+        return this.notificationService.handleMarkNotificationsAsOpened(notification_id)
+    }
+}

@@ -16,9 +16,10 @@ import { UpdateModule } from './update/update.module';
 import { SystemModule } from './system/system.module';
 import { AdminModule } from './admin/admin.module';
 import { LoanModule } from './loan/loan.module';
+import { SettingsModule } from './settings/settings.module';
 
 @Module({
-  imports: [AuthModule, UserModule, WalletModule, TransactionModule, SavingsModule, GoalsModule, FundingModule, InvestmentModule, ClusterModule, NotificationModule, FeedModule, UpdateModule, SystemModule, AdminModule, LoanModule],
+  imports: [AuthModule, UserModule, WalletModule, TransactionModule, SavingsModule, GoalsModule, FundingModule, InvestmentModule, ClusterModule, NotificationModule, FeedModule, UpdateModule, SystemModule, AdminModule, LoanModule, SettingsModule],
   controllers: [AppController],
   providers: [AppService],
 })

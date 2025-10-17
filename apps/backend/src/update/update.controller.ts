@@ -1,4 +1,13 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { UpdateService } from './update.service';
 
-@Controller('update')
-export class UpdateController {}
+@Controller('v1/update')
+export class UpdateController {
+
+    constructor(private readonly updateService: UpdateService ){}
+
+    @Get()
+    getUpdates(){
+        return this.updateService.handleGetUpdates()
+    }
+}
