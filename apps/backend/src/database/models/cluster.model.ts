@@ -1,0 +1,38 @@
+import { Table, Column, Model, DataType, DeletedAt, UpdatedAt, CreatedAt, Default, PrimaryKey } from 'sequelize-typescript';
+import { ICluster } from '@shared/shared/src/types/cluster';
+import { CreationOptional, DataTypes } from 'sequelize';
+
+@Table({ tableName: 'cluster' })
+export class Cluster extends Model<ICluster> implements ICluster {
+  @PrimaryKey
+  @Default(DataTypes.UUIDV4)
+  @Column(DataTypes.UUID)
+  declare id: CreationOptional<string>;
+
+  @Column(DataType.STRING)
+  name: string;
+
+  @Column(DataType.STRING)
+  category: string;
+
+  @Column(DataType.FLOAT)
+  roi: number;
+
+  @Column(DataType.STRING)
+  repayment: string;
+
+  @Column(DataType.BOOLEAN)
+  is_active: boolean;
+
+  @Column(DataType.STRING)
+  description: string;
+
+  @CreatedAt
+  declare createdAt: CreationOptional<Date>;
+
+  @UpdatedAt
+  declare updatedAt: CreationOptional<Date>;
+
+  @DeletedAt
+  declare deletedAt?: Date;
+}
