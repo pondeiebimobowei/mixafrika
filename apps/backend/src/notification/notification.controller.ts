@@ -3,16 +3,17 @@ import { NotificationService } from './notification.service';
 
 @Controller('v1/notification')
 export class NotificationController {
+  constructor(private readonly notificationService: NotificationService) {}
 
-    constructor( private readonly notificationService: NotificationService){}
+  @Get()
+  getNotification() {
+    this.notificationService.handleGetNotifications();
+  }
 
-    @Get()
-    getNotification(){
-        this.notificationService.handleGetNotifications()
-    }
-
-    @Patch(":notification_id")
-    markNotificationAsOpened(@Param("notification_id") notification_id: string){
-        return this.notificationService.handleMarkNotificationsAsOpened(notification_id)
-    }
+  @Patch(':notification_id')
+  markNotificationAsOpened(@Param('notification_id') notification_id: string) {
+    return this.notificationService.handleMarkNotificationsAsOpened(
+      notification_id,
+    );
+  }
 }

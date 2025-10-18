@@ -7,6 +7,13 @@ import { AutditLogsModule } from './autdit_logs/autdit_logs.module';
 import { FundingModule } from './funding/funding.module';
 
 @Module({
-  imports: [ UserModule, AdminUserModule, LoanModule, InvestmentsModule, AutditLogsModule, FundingModule],
+  imports: [
+    UserModule,
+    AdminUserModule,
+    LoanModule,
+    InvestmentsModule,
+    AutditLogsModule,
+    FundingModule,
+  ],
 })
 export class AdminModule {}

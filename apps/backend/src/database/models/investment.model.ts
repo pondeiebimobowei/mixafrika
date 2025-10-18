@@ -1,4 +1,16 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo, DeletedAt, UpdatedAt, CreatedAt, PrimaryKey, Default } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  ForeignKey,
+  BelongsTo,
+  DeletedAt,
+  UpdatedAt,
+  CreatedAt,
+  PrimaryKey,
+  Default,
+} from 'sequelize-typescript';
 import { IInvestment } from '@shared/shared/src/types/investment';
 import { User } from './user.model';
 import { Cluster } from './cluster.model';

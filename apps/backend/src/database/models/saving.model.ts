@@ -1,9 +1,21 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo, HasMany, DeletedAt, UpdatedAt, CreatedAt, Default, PrimaryKey } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  ForeignKey,
+  BelongsTo,
+  HasMany,
+  DeletedAt,
+  UpdatedAt,
+  CreatedAt,
+  Default,
+  PrimaryKey,
+} from 'sequelize-typescript';
 import { SavingsHistory } from './saving-history.model';
 import { User } from './user.model';
 import { ISaving } from '@shared/shared/src/types/saving';
 import { CreationOptional, DataTypes } from 'sequelize';
-
 
 @Table({ tableName: 'saving' })
 export class Savings extends Model<ISaving> implements ISaving {
@@ -11,7 +23,7 @@ export class Savings extends Model<ISaving> implements ISaving {
   @Default(DataTypes.UUIDV4)
   @Column(DataTypes.UUID)
   declare id: CreationOptional<string>;
-  
+
   @ForeignKey(() => User)
   @Column
   user_id: string;

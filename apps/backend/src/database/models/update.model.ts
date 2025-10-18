@@ -1,4 +1,16 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo, Default, PrimaryKey, DeletedAt, UpdatedAt, CreatedAt } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  ForeignKey,
+  BelongsTo,
+  Default,
+  PrimaryKey,
+  DeletedAt,
+  UpdatedAt,
+  CreatedAt,
+} from 'sequelize-typescript';
 import { User } from './user.model';
 import { IUpdate } from '@shared/shared/src/types/update';
 import { CreationOptional, DataTypes } from 'sequelize';
@@ -27,5 +39,4 @@ export class Update extends Model<IUpdate> implements IUpdate {
 
   @DeletedAt
   declare deletedAt?: Date;
-
 }

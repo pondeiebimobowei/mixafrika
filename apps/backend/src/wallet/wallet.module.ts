@@ -6,6 +6,6 @@ import { TransactionModule } from 'src/transaction/transaction.module';
 @Module({
   providers: [WalletService],
   controllers: [WalletController],
-  imports: [TransactionModule]
+  imports: [TransactionModule],
 })
 export class WalletModule {}

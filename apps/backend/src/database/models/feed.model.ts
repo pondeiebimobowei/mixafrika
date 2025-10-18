@@ -1,4 +1,16 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo, PrimaryKey, Default, DeletedAt, UpdatedAt, CreatedAt } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  ForeignKey,
+  BelongsTo,
+  PrimaryKey,
+  Default,
+  DeletedAt,
+  UpdatedAt,
+  CreatedAt,
+} from 'sequelize-typescript';
 import { User } from './user.model';
 import { IFeed } from '@shared/shared/src/types/feed';
 import { CreationOptional, DataTypes } from 'sequelize';

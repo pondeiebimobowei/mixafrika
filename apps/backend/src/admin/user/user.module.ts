@@ -6,9 +6,6 @@ import { UserModule } from 'src/user/user.module';
 @Module({
   providers: [AdminUserService],
   controllers: [UserController],
-  imports: [UserModule], 
-  
-
-  
+  imports: [UserModule],
 })
 export class AdminUserModule {}

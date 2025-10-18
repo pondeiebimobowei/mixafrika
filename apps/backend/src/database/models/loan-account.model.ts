@@ -1,4 +1,17 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo, HasMany, PrimaryKey, Default, DeletedAt, UpdatedAt, CreatedAt } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  ForeignKey,
+  BelongsTo,
+  HasMany,
+  PrimaryKey,
+  Default,
+  DeletedAt,
+  UpdatedAt,
+  CreatedAt,
+} from 'sequelize-typescript';
 import { User } from './user.model';
 import { RepaymentHistory } from './repayment-history.model';
 import { ILoanAccount } from '@shared/shared/src/types/loan-account';

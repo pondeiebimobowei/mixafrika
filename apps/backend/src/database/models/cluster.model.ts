@@ -1,4 +1,14 @@
-import { Table, Column, Model, DataType, DeletedAt, UpdatedAt, CreatedAt, Default, PrimaryKey } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  DeletedAt,
+  UpdatedAt,
+  CreatedAt,
+  Default,
+  PrimaryKey,
+} from 'sequelize-typescript';
 import { ICluster } from '@shared/shared/src/types/cluster';
 import { CreationOptional, DataTypes } from 'sequelize';
 

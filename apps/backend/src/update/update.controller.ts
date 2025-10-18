@@ -3,11 +3,10 @@ import { UpdateService } from './update.service';
 
 @Controller('v1/update')
 export class UpdateController {
+  constructor(private readonly updateService: UpdateService) {}
 
-    constructor(private readonly updateService: UpdateService ){}
-
-    @Get()
-    getUpdates(){
-        return this.updateService.handleGetUpdates()
-    }
+  @Get()
+  getUpdates() {
+    return this.updateService.handleGetUpdates();
+  }
 }

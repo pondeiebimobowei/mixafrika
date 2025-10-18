@@ -1,4 +1,13 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo, PrimaryKey, Default } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  ForeignKey,
+  BelongsTo,
+  PrimaryKey,
+  Default,
+} from 'sequelize-typescript';
 import { User } from './user.model';
 import { CreationOptional, DataTypes } from 'sequelize';
 

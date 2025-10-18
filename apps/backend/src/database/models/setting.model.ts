@@ -1,4 +1,16 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo, DeletedAt, UpdatedAt, CreatedAt, PrimaryKey, Default } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  ForeignKey,
+  BelongsTo,
+  DeletedAt,
+  UpdatedAt,
+  CreatedAt,
+  PrimaryKey,
+  Default,
+} from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { User } from './user.model';
 import { ISetting } from '@shared/shared/src/types/setting';
@@ -9,7 +21,7 @@ export class Transaction extends Model<ISetting> implements ISetting {
   @Default(DataTypes.UUIDV4)
   @Column(DataTypes.UUID)
   declare id: CreationOptional<string>;
-  
+
   @ForeignKey(() => User)
   @Column
   user_id: string;
@@ -19,7 +31,7 @@ export class Transaction extends Model<ISetting> implements ISetting {
 
   @Column(DataType.BOOLEAN)
   enable_email_notification: boolean;
-  
+
   @Column(DataType.BOOLEAN)
   enable_push_notification: boolean;
 

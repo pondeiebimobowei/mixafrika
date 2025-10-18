@@ -3,16 +3,15 @@ import { SettingsService } from './settings.service';
 
 @Controller('v1/settings')
 export class SettingsController {
+  constructor(private readonly settingsService: SettingsService) {}
 
-    constructor(private readonly settingsService: SettingsService){}
+  @Get()
+  getSeetings() {
+    return this.settingsService.handleGetSettings();
+  }
 
-    @Get()
-    getSeetings(){
-        return this.settingsService.handleGetSettings()
-    }
-
-    @Patch()
-    updateSettings(){
-        return this.settingsService.handleUpdateSettings()
-    }
+  @Patch()
+  updateSettings() {
+    return this.settingsService.handleUpdateSettings();
+  }
 }

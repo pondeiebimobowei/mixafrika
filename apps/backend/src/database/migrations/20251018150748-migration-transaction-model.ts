@@ -3,28 +3,54 @@ import sequelize from 'sequelize';
 import { QueryInterface, DataTypes } from 'sequelize';
 
 const Types = {
-    DEPOSIT: "deposit",
-    WITHDRAWAL: "withdrawal",
-    INVESTMENT: "investment",
-    LOAN: "loan",
-    REPAYMENT: "repayment",
+  DEPOSIT: 'deposit',
+  WITHDRAWAL: 'withdrawal',
+  INVESTMENT: 'investment',
+  LOAN: 'loan',
+  REPAYMENT: 'repayment',
 } as const;
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
-    await queryInterface.sequelize.transaction( async(t) =>{
+    await queryInterface.sequelize.transaction(async (t) => {
       await queryInterface.createTable('transaction', {
-        id: { type: Sequelize.UUID, defaultValue: sequelize.UUIDV4, primaryKey: true },
-        user_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user', key: 'id'}, onDelete: "Cascade", onUpdate: "Cascade" },
-        type: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(Types)]} },
+        id: {
+          type: Sequelize.UUID,
+          defaultValue: sequelize.UUIDV4,
+          primaryKey: true,
+        },
+        user_id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          references: { model: 'user', key: 'id' },
+          onDelete: 'Cascade',
+          onUpdate: 'Cascade',
+        },
+        type: {
+          type: Sequelize.STRING,
+          allowNull: false,
+          validate: { isIn: [Object.values(Types)] },
+        },
         title: { type: Sequelize.STRING, allowNull: false },
-        amount: { type: Sequelize.DECIMAL(15, 2), allowNull: false, defaultValue: 0.00 },
+        amount: {
+          type: Sequelize.DECIMAL(15, 2),
+          allowNull: false,
+          defaultValue: 0.0,
+        },
         category: { type: Sequelize.STRING, allowNull: false },
-        createdAt: { allowNull: false, type: Sequelize.DATE, defaultValue: Sequelize.NOW },
-        updatedAt: { allowNull: false, type: Sequelize.DATE, defaultValue: Sequelize.NOW },
+        createdAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.NOW,
+        },
+        updatedAt: {
+          allowNull: false,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.NOW,
+        },
       });
-    })
+    });
   },
   async down(queryInterface: QueryInterface) {
     await queryInterface.dropTable('transaction');

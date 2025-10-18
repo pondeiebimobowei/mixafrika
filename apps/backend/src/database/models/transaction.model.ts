@@ -1,4 +1,16 @@
-import { Table, Column, Model, DataType, ForeignKey, BelongsTo, DeletedAt, UpdatedAt, CreatedAt, PrimaryKey, Default } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  ForeignKey,
+  BelongsTo,
+  DeletedAt,
+  UpdatedAt,
+  CreatedAt,
+  PrimaryKey,
+  Default,
+} from 'sequelize-typescript';
 import { ITransaction } from '@shared/shared/src/types/transaction';
 import { Types } from '@shared/shared/src/enums';
 import { CreationOptional, DataTypes } from 'sequelize';
@@ -10,7 +22,7 @@ export class Transaction extends Model<ITransaction> implements ITransaction {
   @Default(DataTypes.UUIDV4)
   @Column(DataTypes.UUID)
   declare id: CreationOptional<string>;
-  
+
   @ForeignKey(() => User)
   @Column
   user_id: string;
