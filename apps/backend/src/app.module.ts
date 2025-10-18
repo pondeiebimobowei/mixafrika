@@ -17,9 +17,33 @@ import { SystemModule } from './system/system.module';
 import { AdminModule } from './admin/admin.module';
 import { LoanModule } from './loan/loan.module';
 import { SettingsModule } from './settings/settings.module';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { getSequelizeConfig } from './database/setup';
 
 @Module({
-  imports: [AuthModule, UserModule, WalletModule, TransactionModule, SavingsModule, GoalsModule, FundingModule, InvestmentModule, ClusterModule, NotificationModule, FeedModule, UpdateModule, SystemModule, AdminModule, LoanModule, SettingsModule],
+  imports: [
+    AuthModule, 
+    UserModule, 
+    WalletModule, 
+    TransactionModule, 
+    SavingsModule, 
+    GoalsModule, 
+    FundingModule, 
+    InvestmentModule, 
+    ClusterModule, 
+    NotificationModule, 
+    FeedModule, 
+    UpdateModule, 
+    SystemModule, 
+    AdminModule, 
+    LoanModule, 
+    SettingsModule,
+    ConfigModule.forRoot({ isGlobal: true }),
+    SequelizeModule.forRootAsync( 
+      { useFactory: getSequelizeConfig, inject: [ConfigService] }
+    ),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
