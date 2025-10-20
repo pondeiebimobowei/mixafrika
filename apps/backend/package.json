@@ -51,6 +51,7 @@
     "sequelize": "^6.37.7",
     "@nestjs/cli": "^11.0.0",
     "zod": "^4.1.12",
+    "cross-env": "^10.1.0",
     "sequelize-typescript": "^2.1.6"
   },
   "devDependencies": {
@@ -65,7 +66,6 @@
     "@types/node": "^22.10.7",
     "@types/sequelize": "^4.28.20",
     "@types/supertest": "^6.0.2",
-    "cross-env": "^10.1.0",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
