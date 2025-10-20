@@ -16,7 +16,7 @@ import { User } from './user.model';
 import { ISetting } from '@shared/shared/src/types/setting';
 
 @Table({ tableName: 'setting' })
-export class Transaction extends Model<ISetting> implements ISetting {
+export class Setting extends Model<ISetting> implements ISetting {
   @PrimaryKey
   @Default(DataTypes.UUIDV4)
   @Column(DataTypes.UUID)

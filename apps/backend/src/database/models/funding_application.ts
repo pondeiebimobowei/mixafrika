@@ -16,7 +16,7 @@ import { User } from './user.model';
 import { IFundingApplication } from '@shared/shared/src/types/funding-application';
 
 @Table({ tableName: 'funding_application' })
-export class Transaction
+export class FundingApplication
   extends Model<IFundingApplication>
   implements IFundingApplication
 {

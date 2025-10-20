@@ -1,4 +1,4 @@
-export const Roles = {
+export const roles = {
     USER: "user",
     TRADER: "trader",
     AGENT: "agent",
@@ -6,7 +6,7 @@ export const Roles = {
     SUBADMIN: "subadmin"
 } as const;
 
-export type Roles = (typeof Roles)[keyof typeof Roles];
+export type Roles = (typeof roles)[keyof typeof roles];
 
 export const LoanStatus = {
     PENDING: "pending",

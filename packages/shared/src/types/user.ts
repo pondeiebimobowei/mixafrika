@@ -4,7 +4,7 @@ import { BaseModel } from "./base-model-type";
 
 export interface IUser extends BaseModel {
   image: string | null;
-  user_name: string;
+  user_name?: string;
   first_name: string;
   last_name: string;
   email: string;

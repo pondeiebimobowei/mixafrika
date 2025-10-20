@@ -5,7 +5,6 @@ import {
   DataType,
   ForeignKey,
   BelongsTo,
-  HasMany,
   PrimaryKey,
   Default,
   CreatedAt,
@@ -14,7 +13,6 @@ import {
 } from 'sequelize-typescript';
 import { IWallet } from '@shared/shared/src/types/wallet';
 import { User } from './user.model';
-import { Transaction } from './transaction.model';
 import { CreationOptional, DataTypes } from 'sequelize';
 
 @Table({ tableName: 'wallet' })
@@ -36,9 +34,6 @@ export class Wallet extends Model<IWallet> implements IWallet {
 
   @BelongsTo(() => User)
   user: User;
-
-  @HasMany(() => Transaction)
-  transactions: Transaction[];
 
   @CreatedAt
   declare createdAt: CreationOptional<Date>;

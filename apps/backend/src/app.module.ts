@@ -20,6 +20,22 @@ import { SettingsModule } from './settings/settings.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { getSequelizeConfig } from './database/setup';
+import { User } from './database/models/user.model';
+import { Wallet } from './database/models/wallet.model';
+import { LoanAccount } from './database/models/loan-account.model';
+import { Savings } from './database/models/saving.model';
+import { Goal } from './database/models/goal.model';
+import { Investment } from './database/models/investment.model';
+import { Notification } from './database/models/notification.model';
+import { Feed } from './database/models/feed.model';
+import { Cluster } from './database/models/cluster.model';
+import { LoanHistory } from './database/models/loan-history.model';
+import { RepaymentHistory } from './database/models/repayment-history.model';
+import { SavingsHistory } from './database/models/saving-history.model';
+import { Setting } from './database/models/setting.model';
+import { Update } from './database/models/update.model';
+import { UserBusiness } from './database/models/user-business.model';
+import { Transaction } from './database/models/transaction.model';
 
 @Module({
   imports: [
@@ -39,6 +55,7 @@ import { getSequelizeConfig } from './database/setup';
     AdminModule,
     LoanModule,
     SettingsModule,
+    SequelizeModule.forFeature([User, Savings, Goal, Investment, Notification, Feed, Cluster, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, UserBusiness, Transaction, Wallet, LoanAccount]),
     ConfigModule.forRoot({ isGlobal: true }),
     SequelizeModule.forRootAsync({
       useFactory: getSequelizeConfig,

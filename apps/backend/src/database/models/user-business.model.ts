@@ -10,6 +10,7 @@ import {
   CreatedAt,
   PrimaryKey,
   Default,
+  AllowNull,
 } from 'sequelize-typescript';
 import { User } from './user.model';
 import { IUserBusiness } from '@shared/shared/src/types/user-business';
@@ -26,8 +27,9 @@ export class UserBusiness
   declare id: CreationOptional<string>;
 
   @ForeignKey(() => User)
-  @Column
-  user_id: string;
+  @AllowNull(false)
+  @Column(DataTypes.UUID)
+  declare user_id: string;
 
   @Column(DataType.STRING)
   name: string;
@@ -41,8 +43,8 @@ export class UserBusiness
   @Column(DataType.INTEGER)
   address: string;
 
-  @BelongsTo(() => User)
-  user: User;
+  @BelongsTo(() => User, { foreignKey: 'user_id', as: 'user' })
+  declare user?: User;
 
   @CreatedAt
   declare createdAt: CreationOptional<Date>;

@@ -8,7 +8,6 @@
     "dev": "concurrently \"npm run dev:frontend \" \"npm run dev:backend\"",
     "dev:frontend": "npm run dev --workspace @mixafrica/frontend",
     "dev:backend": "npm run start:dev --workspace @mixafrica/backend",
-
     "build:backend": "npm run build --workspace @mixafrica/backend",
     "build:frontend": "npm run build --workspace @mixafrica/frontend",
     "build": "npm run build:backend && npm run build:frontend",
@@ -26,6 +25,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "concurrently": "^9.2.1"
+    "concurrently": "^9.2.1",
+    "zod": "^4.1.12"
   }
 }

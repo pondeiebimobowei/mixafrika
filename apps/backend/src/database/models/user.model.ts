@@ -6,11 +6,12 @@ import {
   DataType,
   HasOne,
   HasMany,
-  Validate,
   CreatedAt,
   UpdatedAt,
   DeletedAt,
   BeforeCreate,
+  PrimaryKey,
+  Default,
 } from 'sequelize-typescript';
 import { Wallet } from './wallet.model';
 import { Savings } from './saving.model';
@@ -18,16 +19,22 @@ import { Goal } from './goal.model';
 import { Investment } from './investment.model';
 import { Notification } from './notification.model';
 import { Feed } from './feed.model';
-import { Roles } from '@shared/shared/src/enums';
+import { roles, Roles } from '@shared/shared/src/enums';
 import { CreationOptional } from 'sequelize';
 import { LoanAccount } from './loan-account.model';
+import { UserBusiness } from './user-business.model';
 
 @Table({
   tableName: 'user',
   paranoid: true,
 })
 export class User extends Model<IUser> implements IUser {
-  @Column({ type: DataType.STRING, allowNull: false })
+  @PrimaryKey
+  @Default(DataType.UUIDV4)
+  @Column(DataType.UUID)
+  declare id: CreationOptional<string>;
+
+  @Column({ type: DataType.STRING, allowNull: true, unique: true  })
   user_name: string;
   @BeforeCreate({ name: 'user_name' })
   static async generateUsername(user: User) {
@@ -62,7 +69,7 @@ export class User extends Model<IUser> implements IUser {
   @Column({
     type: DataType.STRING,
     allowNull: false,
-    validate: { isIn: [Object.values(Roles)] },
+    validate: { isIn: [Object.values(roles)] },
   })
   role: Roles;
 
@@ -95,6 +102,9 @@ export class User extends Model<IUser> implements IUser {
 
   @HasMany(() => Investment)
   investments: Investment[];
+
+  @HasOne(() => UserBusiness, { foreignKey: 'user_id', as: 'user_business' })
+  declare user_business?: UserBusiness;
 
   @HasMany(() => Notification)
   notifications: Notification[];
