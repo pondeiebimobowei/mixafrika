@@ -13,6 +13,16 @@ module.exports = {
           defaultValue: sequelize.UUIDV4,
           primaryKey: true,
         },
+        user_id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          references: {
+            model: 'user',
+            key: 'id',
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE',
+        },
         amount: {
           type: Sequelize.DECIMAL(15, 2),
           allowNull: false,
@@ -29,6 +39,12 @@ module.exports = {
           type: Sequelize.DATE,
           defaultValue: Sequelize.NOW,
         },
+
+        deletedAt: {
+          allowNull: true,
+          type: Sequelize.DATE
+        },
+        
         updatedAt: {
           allowNull: false,
           type: Sequelize.DATE,

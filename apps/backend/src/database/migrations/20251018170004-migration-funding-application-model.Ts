@@ -22,6 +22,10 @@ module.exports = {
         statement_of_account_doc: { type: Sequelize.STRING, allowNull: false },
         
         createdAt: { allowNull: false, type: Sequelize.DATE, defaultValue: Sequelize.NOW },
+        deletedAt: {
+          allowNull: true,
+          type: Sequelize.DATE
+        },
         updatedAt: { allowNull: false, type: Sequelize.DATE, defaultValue: Sequelize.NOW },
       });
     })

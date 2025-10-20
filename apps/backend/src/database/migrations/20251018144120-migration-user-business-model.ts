@@ -13,8 +13,9 @@ module.exports = {
           primaryKey: true,
         },
 
-        user_id: { type: Sequelize.UUID, allowNull: false },
+        user_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         name: { type: Sequelize.STRING, allowNull: false },
+        type: { type: Sequelize.STRING, allowNull: false },
         phone: { type: Sequelize.STRING, allowNull: false },
         address: { type: Sequelize.STRING, allowNull: false },
 
@@ -22,6 +23,10 @@ module.exports = {
           allowNull: false,
           type: Sequelize.DATE,
           defaultValue: Sequelize.NOW,
+        },
+        deletedAt: {
+          allowNull: true,
+          type: Sequelize.DATE
         },
         updatedAt: {
           allowNull: false,

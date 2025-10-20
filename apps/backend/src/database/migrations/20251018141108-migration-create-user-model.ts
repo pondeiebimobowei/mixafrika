@@ -19,10 +19,11 @@ module.exports = {
           defaultValue: sequelize.UUIDV4,
           primaryKey: true,
         },
-        user_name: { type: Sequelize.STRING, allowNull: false },
+        user_name: { type: Sequelize.STRING, allowNull: true, unique: true },
         first_name: { type: Sequelize.STRING, allowNull: false },
         last_name: { type: Sequelize.STRING, allowNull: false },
         email: { type: Sequelize.STRING, allowNull: false, unique: true },
+        image: { type: Sequelize.STRING, allowNull: true },
         password: { type: Sequelize.STRING, allowNull: false },
         credit_score: {
           type: Sequelize.DECIMAL(5, 2),
@@ -30,9 +31,9 @@ module.exports = {
           defaultValue: 0,
         },
         credit_score_status: {
-          type: Sequelize.DECIMAL(5, 2),
+          type: Sequelize.STRING,
           allowNull: false,
-          defaultValue: 0,
+          defaultValue: 'not set',
         },
         is_verified: {
           type: Sequelize.BOOLEAN,
@@ -53,6 +54,10 @@ module.exports = {
           allowNull: false,
           type: Sequelize.DATE,
           defaultValue: Sequelize.NOW,
+        },
+        deletedAt: {
+          allowNull: true,
+          type: Sequelize.DATE
         },
         updatedAt: {
           allowNull: false,
