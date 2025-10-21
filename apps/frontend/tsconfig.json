@@ -9,8 +9,8 @@
     "composite": true,                                  /* Enable project compilation. */
     "baseUrl": ".",
     "paths": {
-      "@mixafrica/shared": ["../../packages/shared/src"],
+      "@mixafrica/shared": ["../../packages/*"],
       "@/*": ["./src/*"]
     }
-  }
+  },
 }
