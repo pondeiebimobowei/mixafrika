@@ -36,6 +36,8 @@ import { Setting } from './database/models/setting.model';
 import { Update } from './database/models/update.model';
 import { UserBusiness } from './database/models/user-business.model';
 import { Transaction } from './database/models/transaction.model';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -63,6 +65,8 @@ import { Transaction } from './database/models/transaction.model';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
+    AppService],
 })
 export class AppModule {}

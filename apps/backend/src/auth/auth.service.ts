@@ -69,6 +69,31 @@ export class AuthService {
     return { success: true, data: { token, refresh_token, user }, message: "Login Successful" };
   }
 
+
+  async refreshToken(token: string) {
+    const jwtSecret = this.configService.get('access_token_secret');
+    const jwtSecretRefresh = this.configService.get('refresh_token_secret');
+    
+    if (!token) {
+      throw new UnauthorizedException('Refresh token is required');
+    }
+
+    try { 
+
+      const decoded = verify(token, jwtSecretRefresh) as JwtPayload;
+      delete decoded?.iat; 
+      delete decoded?.exp;
+      const newToken = sign(decoded, jwtSecret, { expiresIn: '1h' });
+      const newRefreshToken = sign(decoded, jwtSecretRefresh, { expiresIn: '1d' });
+      return { success: true, data: { token: newToken, refreshToken: newRefreshToken }, message: 'Tokens refreshed successfully'  };
+    } catch (error:any) {
+      throw new UnauthorizedException({
+        message: error.message || 'Invalid refresh token',
+        reason: 'TOKEN_EXPIRED',
+      });
+    }
+  }
+
   async handleForgotPassword() {
     return {
       success: true,
