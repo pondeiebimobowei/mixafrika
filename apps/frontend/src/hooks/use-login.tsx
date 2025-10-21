@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/store';
+import { login_user_dto, type Login_user_dto } from '../../../../packages/shared/src/validation/login-user-dto';
 
-import { login_user_dto, type Login_user_dto } from '@mixafrica/shared/src/validation/login-user-dto';
+// import { login_user_dto, type Login_user_dto } from '@mixafrica/shared/src/validation/login-user-dto';
 import { useNavigate } from 'react-router';
 
 import { useForm } from 'react-hook-form';
