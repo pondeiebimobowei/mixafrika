@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Briefcase, TrendingUp } from "lucide-react";
+import { Briefcase, Shield, TrendingUp } from "lucide-react";
 import { Link } from "react-router";
 
 export default function LoginPage() {
@@ -22,6 +22,12 @@ export default function LoginPage() {
                  <div className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground cursor-pointer">
                     <Briefcase className="mb-3 h-6 w-6" />
                     I am a Trader
+                </div>
+            </Link>
+            <Link to="/agent/login" className="block">
+                 <div className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground cursor-pointer">
+                    <Shield className="mb-3 h-6 w-6" />
+                    I am an Agent
                 </div>
             </Link>
           </CardContent>

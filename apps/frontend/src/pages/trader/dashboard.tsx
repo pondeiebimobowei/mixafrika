@@ -61,7 +61,7 @@ export default function TraderDashboard() {
 
             <main className="flex-1 p-4 space-y-6">
                 <Collapsible open={isLoanOverviewExpanded} onOpenChange={setIsLoanOverviewExpanded}>
-                    <Card className="bg-gradient-to-br from-primary to-primary/80 text-primary-foreground shadow-lg border-0">
+                    <Card className="bg-linear-to-br from-primary to-primary/80 text-primary-foreground shadow-lg border-0">
                         <CardHeader className="flex flex-row items-center justify-between">
                             <CardTitle className="text-base font-semibold text-primary-foreground/90">Loan Overview</CardTitle>
                             <CollapsibleTrigger asChild>
@@ -269,7 +269,7 @@ export default function TraderDashboard() {
                     <CardContent className="space-y-3">
                         {newsItems.map(item => (
                              <div key={item.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-muted cursor-pointer">
-                                <div className="flex-shrink-0 h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                <div className="shrink-0 h-9 w-9 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                                     <Megaphone className="h-5 w-5" />
                                 </div>
                                 <div className="flex-1">

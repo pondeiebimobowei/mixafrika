@@ -1,6 +1,7 @@
 export const roles = {
     USER: "user",
     TRADER: "trader",
+    INVESTOR: "investor",
     AGENT: "agent",
     ADMIN: "admin",
     SUBADMIN: "subadmin"

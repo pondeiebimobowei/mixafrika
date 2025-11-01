@@ -1,17 +1,13 @@
 
 import { type StateCreator } from 'zustand';
+import { type Roles } from '../../../../packages/shared/src/enums';
 
-export interface User {
-  id: string;
-  email: string;
-  role: 'investor' | 'trader';
-  businessName?: string;
-}
+import { type IuserWithBusiness } from '../../../../packages/shared/src/types/user'
 
 export interface AuthSlice {
-  user: User | null;
+  user: IuserWithBusiness | null;
   loading: boolean;
-  login: (email: string, role: 'investor' | 'trader') => void;
+  login: (email: string, role: Roles) => void;
   logout: () => void;
   initAuth: () => void;
 }
@@ -37,11 +33,25 @@ export const createAuthSlice: StateCreator<
     set({ loading: false });
   },
   login: (email, role) => {
-    const mockUser: User = {
+    const mockUser: IuserWithBusiness = {
       id: 'user-' + Math.random().toString(36).substr(2, 9),
       email,
       role,
-      businessName: role === 'trader' ? 'Aunty Funke' : undefined,
+      business: {
+        name: role === 'trader' ? 'Aunty Funke' : '',
+        address: '',
+        phone: '',
+        type: '',
+        user_id: ''
+      },
+      credit_score: 0,
+      credit_score_status: '',
+      first_name: '',
+      image: '',
+      is_email_verified: false,
+      is_verified: false, 
+      last_name: '',
+      password: '',
     };
     set({ user: mockUser });
     localStorage.setItem('clustr-user', JSON.stringify(mockUser));

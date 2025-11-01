@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useAuthStore } from '@/store';
 import { login_user_dto, type Login_user_dto } from '../../../../packages/shared/src/validation/login-user-dto';
+import { type Roles } from '../../../../packages/shared/src/enums';
 
-// import { login_user_dto, type Login_user_dto } from '@mixafrica/shared/src/validation/login-user-dto';
 import { useNavigate } from 'react-router';
 
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast'
 import { zodResolver } from "@hookform/resolvers/zod";
 
-export function useLogin(role: 'investor' | 'trader') {
+export function useLogin(role: Roles) {
   const [isLoading, setIsLoading] = useState(false);
   const { user, login } = useAuthStore();
   const navigate = useNavigate();

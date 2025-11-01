@@ -1,6 +1,7 @@
 
 import { Roles } from "../enums/index";
 import { BaseModel } from "./base-model-type";
+import { IUserBusiness } from "./user-business";
 
 export interface IUser extends BaseModel {
   image: string | null;
@@ -14,4 +15,8 @@ export interface IUser extends BaseModel {
   is_email_verified: boolean;
   credit_score: number;
   credit_score_status: string;
+}
+
+export interface IuserWithBusiness extends IUser {
+  business: IUserBusiness
 }

@@ -14,6 +14,7 @@ function AppRouter() {
         <Route path='/login' element={<LoginPage />} />
         <Route path='/investor/login' element={<InvestorLoginPage />} />
         <Route path='/trader/login' element={<TraderLoginPage />} />
+        <Route path='/agent/login' element={<TraderLoginPage />} />
         <Route path='/dashboard' element={<TraderDashboard />} />
       </Routes>
     </BrowserRouter>
