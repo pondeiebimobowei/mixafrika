@@ -30,7 +30,7 @@ export interface IuserWithBusinessWithTransactions extends IUser {
   transactions: ITransaction[]
 }
 
-export interface IuserWithTransactions extends IUser {
+export interface IuserWithTransactions extends Partial<IUser> {
   transactions: ITransaction[]
 }
 

@@ -17,6 +17,14 @@ export const LoanStatus = {
 
 export type LoanStatus = (typeof LoanStatus)[keyof typeof LoanStatus];
 
+export const RepaymentStatus = {
+    PAID: "paid",
+    "PAID (LATE)": "paid (late)",
+    MISSED: "missed",
+} as const;
+
+export type RepaymentStatus = (typeof RepaymentStatus)[keyof typeof RepaymentStatus];
+
 export const Status = {
     ACTIVE: "active",
     DEFAULTED: "defaulted",

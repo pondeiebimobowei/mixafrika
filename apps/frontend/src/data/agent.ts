@@ -1,5 +1,6 @@
 
-import type { IuserWithBusiness, IuserWithBusinessWithTransactions } from '../../../../packages/shared/src/types/user';
+import type { IuserWithBusiness, IuserWithBusinessWithTransactions, } from '../../../../packages/shared/src/types/user';
+import type { ITransactionWithUser } from '../../../../packages/shared/src/types/transaction';
 import { Users, Repeat, FileText, Wallet } from 'lucide-react';
 
 export const agentQuickActions = [
@@ -290,15 +291,24 @@ traders.forEach(trader => {
     }
 });
 
+interface initialAgentRepayments{
+    id: string;
+    traderId: string;
+    traderName: string;
+    traderAvatar: string;
+    amount: number;
+    date: string;
+    status: string;
+}
 
-export const initialAgentRepayments = [
-    { id: 'ar-today', traderId: 'trader-1', traderName: 'Aunty Funke', traderAvatar: 'https://picsum.photos/seed/401/150/150', amount: 5500, date: new Date().toISOString(), status: 'Paid' },
-    { id: 'ar1', traderId: 'trader-1', traderName: 'Aunty Funke', traderAvatar: 'https://picsum.photos/seed/401/150/150', amount: 5500, date: '2024-04-15', status: 'Paid' },
-    { id: 'ar2', traderId: 'trader-2', traderName: 'Idris Bello', traderAvatar: 'https://picsum.photos/seed/402/150/150', amount: 4000, date: '2024-04-15', status: 'Paid' },
-    { id: 'ar3', traderId: 'trader-3', traderName: 'Mr. Ebuka', traderAvatar: 'https://picsum.photos/seed/403/150/150', amount: 12000, date: '2024-04-14', status: 'Missed' },
-    { id: 'ar4', traderId: 'trader-4', traderName: 'Chinaza Okoro', traderAvatar: 'https://picsum.photos/seed/404/150/150', amount: 8000, date: '2024-04-14', status: 'Paid' },
-    { id: 'ar5', traderId: 'trader-1', traderName: 'Aunty Funke', traderAvatar: 'https://picsum.photos/seed/401/150/150', amount: 5500, date: '2024-04-13', status: 'Paid (Late)' },
-    { id: 'ar6', traderId: 'trader-2', traderName: 'Idris Bello', traderAvatar: 'https://picsum.photos/seed/402/150/150', amount: 4000, date: '2024-04-13', status: 'Paid' },
+export const initialAgentRepayments: ITransactionWithUser[] = [
+    { id: 'ar-today', type: "repayment", category: "loan", title: 'Nirsal Loan', user_id: 'trader-1', user: {first_name: 'Aunty Funke', image: 'https://picsum.photos/seed/401/150/150'}, amount: 5500, createdAt: new Date().toISOString(), status: 'paid' },
+    { id: 'ar1', type: "repayment", category: "loan", title: 'Nirsal Loan', user_id: 'trader-1', user: {first_name: 'Aunty Funke', image: 'https://picsum.photos/seed/401/150/150'}, amount: 5500, createdAt: '2024-04-15', status: 'paid' },
+    { id: 'ar2', type: "repayment", category: "loan", title: 'Nirsal Loan', user_id: 'trader-2', user: {first_name: 'Idris Bello', image: 'https://picsum.photos/seed/402/150/150'}, amount: 4000, createdAt: '2024-04-15', status: 'paid' },
+    { id: 'ar3', type: "repayment", category: "loan", title: 'Nirsal Loan', user_id: 'trader-3', user: {first_name: 'Mr. Ebuka', image: 'https://picsum.photos/seed/403/150/150'}, amount: 12000, createdAt: '2024-04-14', status: 'missed' },
+    { id: 'ar4', type: "repayment", category: "loan", title: 'Nirsal Loan', user_id: 'trader-4', user: {first_name: 'Chinaza Okoro', image: 'https://picsum.photos/seed/404/150/150'}, amount: 8000, createdAt: '2024-04-14', status: 'paid' },
+    { id: 'ar5', type: "repayment", category: "loan", title: 'Nirsal Loan', user_id: 'trader-1', user: {first_name: 'Aunty Funke', image: 'https://picsum.photos/seed/401/150/150'}, amount: 5500, createdAt: '2024-04-13', status: 'paid (late)' },
+    { id: 'ar6', type: "repayment", category: "loan", title: 'Nirsal Loan', user_id: 'trader-2', user: {first_name: 'Idris Bello', image: 'https://picsum.photos/seed/402/150/150'}, amount: 4000, createdAt: '2024-04-13', status: 'paid' },
 ];
 
 export const agentPortfolioBreakdown = {
