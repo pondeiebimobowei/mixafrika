@@ -10,7 +10,7 @@ import { AreaChart, Area, XAxis, Tooltip, Bar, BarChart as RechartsBarChart, YAx
 import { useState } from "react";
 import { NotificationsSheet } from "@/components/modals/notification-sheet";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { newsItems, quickActions, mockTraderData, pastLoans, creditScoreChartData } from "@/data/trader";
+import { newsItems, traderQuickActions, mockTraderData, pastLoans, creditScoreChartData } from "@/data/trader";
 import type { ChartType, Timeframe } from '@/types';
 import { Link } from "react-router";
 import { MakeRepaymentSheet } from "@/components/sheets/make-repayment-sheet";
@@ -179,7 +179,7 @@ export default function TraderDashboard() {
                 
                 {/* Quick Actions */}
                 <div className="grid grid-cols-4 gap-2 text-center">
-                    {quickActions.map(action => (
+                    {traderQuickActions.map(action => (
                         <Link to={action.href} key={action.label} className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-muted">
                             <div className="flex items-center justify-center h-12 w-12 rounded-full bg-primary/10 text-primary">
                                 <action.icon className="h-6 w-6" />

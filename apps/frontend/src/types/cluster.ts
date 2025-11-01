@@ -47,7 +47,7 @@ export interface Cluster {
     poolTarget?: number;
     roi: string;
     trend: 'up' | 'down';
-    logo: LucideIcon;
+    logo: LucideIcon | null;
     color: string;
     bgColor: string;
 }

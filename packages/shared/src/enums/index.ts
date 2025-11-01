@@ -18,9 +18,11 @@ export const LoanStatus = {
 export type LoanStatus = (typeof LoanStatus)[keyof typeof LoanStatus];
 
 export const Status = {
-    ONGOING: "ongoing",
+    ACTIVE: "active",
+    DEFAULTED: "defaulted",
+    FAILED: "failed",
+    PENDING: "pending",
     COMPLETED: "completed",
-    CANCELLED: "cancelled",
 } as const;
 
 export type Status = (typeof Status)[keyof typeof Status];
@@ -28,6 +30,7 @@ export type Status = (typeof Status)[keyof typeof Status];
 export const Types = {
     DEPOSIT: "deposit",
     WITHDRAWAL: "withdrawal",
+    DISBURSEMENT: "disbursement",
     INVESTMENT: "investment",
     LOAN: "loan",
     REPAYMENT: "repayment",

@@ -45,7 +45,7 @@ export const upcomingRepayment = {
     dueDate: 'Tomorrow'
 };
 
-export const walletBalance = 75000;
+export const walletBalance = 241124.00;
 
 
 export const newsItems = [
@@ -54,7 +54,7 @@ export const newsItems = [
     { id: 3, title: "Meet our top performing trader of the month!", category: "Community" },
 ];
 
-export const quickActions = [
+export const traderQuickActions = [
     { label: 'Apply', icon: FileText, href: '/trader/apply' },
     { label: 'Repayments', icon: Repeat, href: '/trader/repayments' },
     { label: 'Esusu', icon: PiggyBank, href: '/trader/esusu' },
