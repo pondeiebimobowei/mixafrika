@@ -10,7 +10,7 @@ import { traderDetailsData } from '@/data/agent';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarImage } from '@radix-ui/react-avatar';
-import { Link } from 'react-router';
+import { Link, useParams } from 'react-router';
 import toast from 'react-hot-toast';
 import type { INotesWithUser } from '../../../../../packages/shared/src/types/notes';
 import type { ITransaction } from '../../../../../packages/shared/src/types/transaction';
@@ -64,8 +64,9 @@ const NoteCard = ({ note }: { note: INotesWithUser }) => (
     </Card>
 );
 
-export default function TraderProfilePage({ params }: { params: { id: string } }) {
-    const trader = traderDetailsData[params.id];
+export default function AgentTraderProfilePage() {
+    const { id } = useParams<{id: string}>();
+    const trader = traderDetailsData[id || ''];
     const [notes, setNotes] = useState<INotesWithUser[]>(trader?.trader?.notes || []);
     const [newNote, setNewNote] = useState('');
     

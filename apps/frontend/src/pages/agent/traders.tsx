@@ -29,7 +29,7 @@ import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router';
 
 
-export default function ManagedTradersPage() {
+export default function AgentManagedTradersPage() {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [filter, setFilter] = useState('all');
