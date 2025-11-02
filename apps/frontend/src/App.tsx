@@ -13,6 +13,7 @@ import AgentReportsPage from './pages/agent/reports'
 import AgentTraderProfilePage from './pages/agent/trader-details'
 import AgentManagedTradersPage from './pages/agent/traders'
 import AgentWalletPage from './pages/agent/wallet'
+import ClusterDetailPage from './pages/cluster/cluster-detail'
 
 function AppRouter() {
 
@@ -27,7 +28,9 @@ function AppRouter() {
         
         <Route path='/market' element={<AgentLoginPage />} />
 
-        <Route path='/cluster/:id' element={<AgentTraderProfilePage />} />
+        <Route path='/cluster/:id' element={<ClusterDetailPage />} />
+
+        <Route path='/profile' element={<ClusterDetailPage />} />
 
         <Route path='/trader' element={<TraderDashboard />} />
         <Route path='/trader/dashboard' element={<TraderDashboard />} />
