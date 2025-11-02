@@ -85,7 +85,7 @@ export default function FundApplicationPage() {
 
     const handleSuccessDialogClose = () => {
         setShowSuccessDialog(false);
-        navigate('/trader-dashboard');
+        navigate('/trader/dashboard');
     }
 
     const { interestAmount, totalRepayment, interestRate, dailyRepayment } = useMemo(() => {

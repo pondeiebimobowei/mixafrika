@@ -72,7 +72,7 @@ export default function TraderProfilePage() {
     <div className="flex flex-col min-h-screen bg-primary text-primary-foreground">
       <header className="flex items-center justify-between p-4 pt-8">
         <Button variant="ghost" size="icon" className="bg-white/10 rounded-xl" asChild>
-          <Link to="/trader-dashboard">
+          <Link to="/trader/dashboard">
             <ArrowLeft />
           </Link>
         </Button>

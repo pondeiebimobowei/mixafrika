@@ -21,9 +21,9 @@ export default function SignupPage() {
   
   useEffect(() => {
     if (user) {
-        if(user.role === 'investor') navigate('/investor-dashboard');
-        else if (user.role === 'trader') navigate('/trader-dashboard');
-        else if (user.role === 'agent') navigate('/agent-dashboard');
+        if(user.role === 'investor') navigate('/investor/dashboard');
+        else if (user.role === 'trader') navigate('/trader/dashboard');
+        else if (user.role === 'agent') navigate('/agent/dashboard');
     }
   }, [user, navigate]);
 

@@ -71,9 +71,9 @@ export function SettingsSheet() {
     login(user.email, newRole);
     
     if (newRole === 'investor') {
-        navigate('/investor-dashboard');
+        navigate('/investor/dashboard');
     } else {
-        navigate('/trader-dashboard');
+        navigate('/trader/dashboard');
     }
     
     setIsSwitchingRole(false);

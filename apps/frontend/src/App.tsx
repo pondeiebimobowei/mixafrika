@@ -41,11 +41,11 @@ function AppRouter() {
         
         <Route path='/trader'>
           <Route  element={<TraderDashboard />} />
-          <Route path='/dashboard' element={<TraderDashboard />} />
-          <Route path='/profile' element={<TraderProfilePage />} />
-          <Route path='/apply' element={<FundApplicationPage />} />
-          <Route path='/apply' element={<EsusuPage />} />
-          <Route path='/repayment' element={<RepaymentsPage />} />
+          <Route path='dashboard' element={<TraderDashboard />} />
+          <Route path='profile' element={<TraderProfilePage />} />
+          <Route path='apply' element={<FundApplicationPage />} />
+          <Route path='apply' element={<EsusuPage />} />
+          <Route path='repayment' element={<RepaymentsPage />} />
 
         </Route>
 

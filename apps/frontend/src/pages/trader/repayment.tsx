@@ -28,7 +28,7 @@ export default function RepaymentsPage() {
         <div className="flex flex-col min-h-screen bg-background text-foreground">
             <header className="flex items-center p-2 sticky top-0 bg-background/80 backdrop-blur-sm z-10 border-b">
                 <Button variant="ghost" size="icon" asChild>
-                    <Link to="/trader-dashboard">
+                    <Link to="/trader/dashboard">
                         <ArrowLeft />
                     </Link>
                 </Button>
