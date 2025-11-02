@@ -1,0 +1,178 @@
+{
+  "placeholderImages": [
+    {
+      "id": "user-avatar-tunde",
+      "description": "Avatar for Tunde O.",
+      "imageUrl": "https://picsum.photos/seed/101/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "user-avatar-aisha",
+      "description": "Avatar for Aisha B.",
+      "imageUrl": "https://picsum.photos/seed/102/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "user-avatar-emeka",
+      "description": "Avatar for Emeka K.",
+      "imageUrl": "https://picsum.photos/seed/103/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "user-avatar-kelvin",
+      "description": "Avatar for Kelvin",
+      "imageUrl": "https://picsum.photos/seed/104/200/200",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "feed-chart",
+      "description": "A financial chart for a social feed post",
+      "imageUrl": "https://picsum.photos/seed/201/600/400",
+      "imageHint": "financial chart"
+    },
+    {
+      "id": "ad-banner-electronics",
+      "description": "Ad banner for electronics market",
+      "imageUrl": "https://picsum.photos/seed/301/600/400",
+      "imageHint": "electronics market"
+    },
+    {
+      "id": "ad-banner-grains",
+      "description": "Ad banner for grains market",
+      "imageUrl": "https://picsum.photos/seed/302/600/400",
+      "imageHint": "agriculture grains"
+    },
+    {
+      "id": "ad-banner-textiles",
+      "description": "Ad banner for textiles market",
+      "imageUrl": "https://picsum.photos/seed/303/600/400",
+      "imageHint": "textile market"
+    },
+    {
+      "id": "trader-avatar-af",
+      "description": "Avatar for trader Aunty Funke",
+      "imageUrl": "https://picsum.photos/seed/401/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "trader-avatar-ib",
+      "description": "Avatar for trader Idris Bello",
+      "imageUrl": "https://picsum.photos/seed/402/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "trader-avatar-me",
+      "description": "Avatar for trader Mr. Ebuka",
+      "imageUrl": "https://picsum.photos/seed/403/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "trader-avatar-co",
+      "description": "Avatar for trader Chinaza Okoro",
+      "imageUrl": "https://picsum.photos/seed/404/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "trader-avatar-is",
+      "description": "Avatar for trader Ikenna Soludo",
+      "imageUrl": "https://picsum.photos/seed/405/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "trader-avatar-pu",
+      "description": "Avatar for trader Papa Ugo",
+      "imageUrl": "https://picsum.photos/seed/406/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "trader-avatar-am",
+      "description": "Avatar for trader Alhaji Musa",
+      "imageUrl": "https://picsum.photos/seed/407/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "trader-avatar-hf",
+      "description": "Avatar for trader Hajiya Fatima",
+      "imageUrl": "https://picsum.photos/seed/408/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "user-avatar-generic-t",
+      "description": "Generic user avatar T",
+      "imageUrl": "https://picsum.photos/seed/501/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "user-avatar-generic-a",
+      "description": "Generic user avatar A",
+      "imageUrl": "https://picsum.photos/seed/502/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "user-avatar-generic-e",
+      "description": "Generic user avatar E",
+      "imageUrl": "https://picsum.photos/seed/503/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "user-avatar-generic-n",
+      "description": "Generic user avatar N",
+      "imageUrl": "https://picsum.photos/seed/504/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "user-avatar-generic-b",
+      "description": "Generic user avatar B",
+      "imageUrl": "https://picsum.photos/seed/505/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "user-avatar-generic-f",
+      "description": "Generic user avatar F",
+      "imageUrl": "https://picsum.photos/seed/506/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "user-avatar-generic-s",
+      "description": "Generic user avatar S",
+      "imageUrl": "https://picsum.photos/seed/507/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "user-avatar-generic-c",
+      "description": "Generic user avatar C",
+      "imageUrl": "https://picsum.photos/seed/508/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "ad-banner-invest",
+      "description": "Sponsored ad banner for investing",
+      "imageUrl": "https://picsum.photos/seed/304/600/400",
+      "imageHint": "agriculture investment"
+    },
+    {
+      "id": "user-avatar-chioma",
+      "description": "Avatar for Chioma G.",
+      "imageUrl": "https://picsum.photos/seed/105/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "user-avatar-cameron",
+      "description": "Avatar for Cameron Williamson",
+      "imageUrl": "https://picsum.photos/seed/106/150/150",
+      "imageHint": "profile picture"
+    },
+    {
+      "id": "user-avatar-clustrtrade",
+      "description": "Avatar for ClustrTrade",
+      "imageUrl": "https://picsum.photos/seed/107/150/150",
+      "imageHint": "logo"
+    },
+    {
+      "id": "user-avatar-funke-a",
+      "description": "Avatar for Funke A.",
+      "imageUrl": "https://picsum.photos/seed/108/150/150",
+      "imageHint": "profile picture"
+    }
+  ]
+}

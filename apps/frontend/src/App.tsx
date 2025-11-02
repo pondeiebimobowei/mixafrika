@@ -24,6 +24,10 @@ function AppRouter() {
         <Route path='/investor/login' element={<InvestorLoginPage />} />
         <Route path='/trader/login' element={<TraderLoginPage />} />
         <Route path='/agent/login' element={<AgentLoginPage />} />
+        
+        <Route path='/market' element={<AgentLoginPage />} />
+
+        <Route path='/cluster/:id' element={<AgentTraderProfilePage />} />
 
         <Route path='/trader' element={<TraderDashboard />} />
         <Route path='/trader/dashboard' element={<TraderDashboard />} />
