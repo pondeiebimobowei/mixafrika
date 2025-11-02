@@ -14,6 +14,11 @@ import AgentTraderProfilePage from './pages/agent/trader-details'
 import AgentManagedTradersPage from './pages/agent/traders'
 import AgentWalletPage from './pages/agent/wallet'
 import ClusterDetailPage from './pages/cluster/cluster-detail'
+import TraderProfilePage from './pages/trader/profile'
+import FundApplicationPage from './pages/trader/apply'
+import EsusuPage from './pages/trader/esusu'
+import SocialFeedPage from './pages/social/social'
+import RepaymentsPage from './pages/trader/repayment'
 
 function AppRouter() {
 
@@ -32,9 +37,21 @@ function AppRouter() {
 
         <Route path='/profile' element={<ClusterDetailPage />} />
 
-        <Route path='/trader' element={<TraderDashboard />} />
-        <Route path='/trader/dashboard' element={<TraderDashboard />} />
         <Route path='/dashboard' element={<TraderDashboard />} />
+        
+        <Route path='/trader'>
+          <Route  element={<TraderDashboard />} />
+          <Route path='/dashboard' element={<TraderDashboard />} />
+          <Route path='/profile' element={<TraderProfilePage />} />
+          <Route path='/apply' element={<FundApplicationPage />} />
+          <Route path='/apply' element={<EsusuPage />} />
+          <Route path='/repayment' element={<RepaymentsPage />} />
+
+        </Route>
+
+
+        <Route path='/social' element={<SocialFeedPage />} />
+
         
         <Route path='/agent/dashboard' element={<AgentDashboard />} />
         <Route path='/agent/profile' element={<AgentProfilePage />} />
