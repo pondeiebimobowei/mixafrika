@@ -10,13 +10,14 @@ import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/store';
 import { Link, useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
+import type { Roles } from '../../../../../../packages/shared/src/enums';
 
 export default function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState<'investor' | 'trader' | 'agent' | null>(null);
+  const [role, setRole] = useState<Roles | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { login, user } = useAuthStore(state => ({ login: state.login, user: state.user }));
+  const { login, user } = useAuthStore();
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -54,7 +55,7 @@ export default function SignupPage() {
           <CardContent className="space-y-4">
              <div className="space-y-3">
               <Label>I am a...</Label>
-              <RadioGroup value={role || ''} onValueChange={(value) => setRole(value as 'investor' | 'trader' | 'agent')} className="grid grid-cols-3 gap-2">
+              <RadioGroup value={role || null} onValueChange={(value: Roles) => setRole(value)} className="grid grid-cols-3 gap-2">
                 <div>
                   <RadioGroupItem value="investor" id="investor" className="sr-only" />
                   <Label htmlFor="investor" className={cn("flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 hover:bg-accent hover:text-accent-foreground cursor-pointer h-full", role === 'investor' && "border-primary")}>

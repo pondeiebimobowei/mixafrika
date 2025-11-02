@@ -19,6 +19,8 @@ import FundApplicationPage from './pages/trader/apply'
 import EsusuPage from './pages/trader/esusu'
 import SocialFeedPage from './pages/social/social'
 import RepaymentsPage from './pages/trader/repayment'
+import SignupPage from './pages/auth/signup/signup'
+import InvestorDashboardPage from './pages/investor/dashboard'
 
 function AppRouter() {
 
@@ -27,13 +29,15 @@ function AppRouter() {
       <Routes>
         <Route path='/' element={<LoginPage />} />
         <Route path='/login' element={<LoginPage />} />
+        <Route path='/signup' element={<SignupPage />} />
         <Route path='/investor/login' element={<InvestorLoginPage />} />
         <Route path='/trader/login' element={<TraderLoginPage />} />
         <Route path='/agent/login' element={<AgentLoginPage />} />
+
         
         <Route path='/market' element={<AgentLoginPage />} />
 
-        <Route path='/cluster/:id' element={<ClusterDetailPage />} />
+        <Route path='/clusters/:id' element={<ClusterDetailPage />} />
 
         <Route path='/profile' element={<ClusterDetailPage />} />
 
@@ -52,14 +56,21 @@ function AppRouter() {
 
         <Route path='/social' element={<SocialFeedPage />} />
 
-        
-        <Route path='/agent/dashboard' element={<AgentDashboard />} />
-        <Route path='/agent/profile' element={<AgentProfilePage />} />
-        <Route path='/agent/repayments' element={<AgentRepaymentsPage />} />
-        <Route path='/agent/reports' element={<AgentReportsPage />} />
-        <Route path='/agent/trader/:id' element={<AgentTraderProfilePage />} />
-        <Route path='/agent/traders' element={<AgentManagedTradersPage />} />
-        <Route path='/agent/wallet' element={<AgentWalletPage />} />
+        <Route path='/agent'>
+          <Route element={<AgentDashboard />} />
+          <Route path='dashboard' element={<AgentDashboard />} />
+          <Route path='profile' element={<AgentProfilePage />} />
+          <Route path='repayments' element={<AgentRepaymentsPage />} />
+          <Route path='reports' element={<AgentReportsPage />} />
+          <Route path='trader/:id' element={<AgentTraderProfilePage />} />
+          <Route path='traders' element={<AgentManagedTradersPage />} />
+          <Route path='wallet' element={<AgentWalletPage />} />
+        </Route>
+
+        <Route path='investor'>
+          <Route element={<InvestorDashboardPage />} />
+          <Route path='dashboard' element={<InvestorDashboardPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   )

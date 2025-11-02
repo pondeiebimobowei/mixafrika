@@ -117,7 +117,7 @@ export const initialSocialFeeds: SocialFeed[] = [
         sponsored: true,
         cta: {
             text: "Learn More",
-            link: "/markets?category=agriculture",
+            link: "/market?category=agriculture",
         }
     },
     {

@@ -96,7 +96,7 @@ export function InvestmentsSheet({ activeInvestments, pastInvestments }: Investm
             </div>
             <div className="p-4 bg-background border-t">
                 <Button size="lg" className="w-full" asChild>
-                    <Link to="/markets">Explore New Clusters</Link>
+                    <Link to="/market">Explore New Clusters</Link>
                 </Button>
             </div>
         </div>
