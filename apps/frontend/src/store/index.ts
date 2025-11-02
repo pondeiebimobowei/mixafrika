@@ -12,6 +12,11 @@ import { createLoanAccount, type LoanAccount } from './slice/loan-account.slice'
 import { createUserWallet, type UserWallet } from './slice/wallet';
 import { createLoanHistory, type LoanHistory } from './slice/loan-history.slice';
 
+export interface BaseSlice {
+  loading: boolean,
+  error: string | null
+}
+
 export const useAuthStore = create<AuthSlice>()(
   // immer(
     (...a) => ({

@@ -1,12 +1,18 @@
 import { Injectable } from '@nestjs/common';
+import { Wallet } from 'src/database/models/wallet.model';
 
 @Injectable()
 export class WalletService {
-  async handleGethWalletBalances() {
+  async handleGethWalletBalances(user_id:string) {
+    await Wallet.increment('amount', { by: 100, where: { user_id } })
+    await Wallet.increment('total_portfolio', { by: 3, where: { user_id } })
+
+    const wallet = await Wallet.findOrCreate({ where: { user_id } });
+
     return {
-      success: true,
-      message: '',
-      data: [],
+        success: true,
+        data: wallet[0],
+        message: "Wallet balance retrieved successfully"
     };
   }
 

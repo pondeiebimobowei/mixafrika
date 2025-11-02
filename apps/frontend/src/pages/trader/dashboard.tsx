@@ -15,6 +15,7 @@ import type { ChartType, Timeframe } from '@/types';
 import { Link } from "react-router";
 import { MakeRepaymentSheet } from "@/components/sheets/make-repayment-sheet";
 import { useAuthStore, useLoanAccount, useLoanHistory, useTraderRecord, useUserBusiness, useWallet } from "@/store";
+import { useFetchWallet } from "@/store/hooks/wallet.hook";
 
 const WelcomeCard = () => (
     <Card className="bg-linear-to-br from-primary to-primary/80 text-primary-foreground shadow-lg border-0">
@@ -37,7 +38,7 @@ const ActiveLoanDashboard = () => {
     const { trader_record } = useTraderRecord( )
     const { loan_account } = useLoanAccount()
     const { history } = useLoanHistory( )
-    const { wallet } = useWallet( )
+    const { amount } = useWallet( )
     const { user } = useAuthStore( )
     const [isAmountVisible, setIsAmountVisible] = useState(true);
     const [isLoanOverviewExpanded, setIsLoanOverviewExpanded] = useState(false);
@@ -53,6 +54,9 @@ const ActiveLoanDashboard = () => {
         { label: 'Esusu', icon: PiggyBank, href: '/trader/esusu' },
         { label: 'Profile', icon: User, href: '/trader/profile' },
     ];
+
+    useFetchWallet()
+    
     return (
         <div className="space-y-6">
             {hasActiveLoan ? (
@@ -158,7 +162,7 @@ const ActiveLoanDashboard = () => {
                 <Card>
                     <CardContent className="p-4">
                         <p className="text-sm text-muted-foreground">Wallet Balance</p>
-                        <p className="text-xl font-bold">₦{wallet?.amount?.toLocaleString() || 0}</p>
+                        <p className="text-xl font-bold">₦{amount?.toLocaleString() || 0}</p>
                     </CardContent>
                 </Card>
                     <Sheet>
@@ -169,7 +173,7 @@ const ActiveLoanDashboard = () => {
                         </Button>
                     </SheetTrigger>
                     <SheetContent side="bottom" className="rounded-t-3xl">
-                        <MakeRepaymentSheet upcomingRepayment={{amount: 5500, dueDate: "Tomorrow"}} walletBalance={wallet.amount || 0} />
+                        <MakeRepaymentSheet upcomingRepayment={{amount: 5500, dueDate: "Tomorrow"}} walletBalance={amount || 0} />
                     </SheetContent>
                 </Sheet>
             </div>

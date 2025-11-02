@@ -77,7 +77,7 @@ export function NotificationsSheet() {
                         className="flex items-start gap-4 px-4 py-3 border-b cursor-pointer"
                         onClick={() => handleNotificationClick(notification.id)}
                     >
-                      <div className={cn("h-12 w-12 rounded-lg flex items-center justify-center flex-shrink-0", config.bgColor)}>
+                      <div className={cn("h-12 w-12 rounded-lg flex items-center justify-center shrink-0", config.bgColor)}>
                           <Icon className={cn("h-6 w-6", config.color)} strokeWidth={2.5} />
                       </div>
                       <div className="flex-1">

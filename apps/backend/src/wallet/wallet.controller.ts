@@ -1,6 +1,8 @@
 import { Controller, Get, Post } from '@nestjs/common';
 import { WalletService } from './wallet.service';
 import { TransactionService } from 'src/transaction/transaction.service';
+import { ParsedToken } from 'src/decorators/parsed-token.decorator';
+import { User } from 'src/database/models/user.model';
 
 @Controller('v1/wallet')
 export class WalletController {
@@ -10,8 +12,8 @@ export class WalletController {
   ) {}
 
   @Get()
-  getWalletBalance() {
-    return this.walletService.handleGethWalletBalances();
+  getWalletBalance(@ParsedToken() user: User) {
+    return this.walletService.handleGethWalletBalances(user.id);
   }
 
   @Get('transactions')

@@ -1,7 +1,7 @@
 
 import { type Roles } from "../enums/index";
 import { type BaseModel } from "./base-model-type";
-import { type Trader } from "./trader";
+import { type ITrader } from "./trader";
 import { type ITransaction } from "./transaction";
 import { type IUserBusiness } from "./user-business";
 
@@ -18,7 +18,7 @@ export interface IUser extends BaseModel {
   credit_score: number;
   credit_score_status: string;
   
-  trader?: Trader,
+  trader?: ITrader,
 }
 
 export interface IuserWithBusiness extends IUser {
