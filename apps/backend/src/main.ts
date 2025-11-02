@@ -10,6 +10,7 @@ async function bootstrap() {
       'http://localhost:3000',
       'https://9000-firebase-studio-1759422244875.cluster-cbeiita7rbe7iuwhvjs5zww2i4.cloudworkstations.dev',
       'http://localhost:9002',
+      'https://mixafrica-app-frontend-ecgh.vercel.app',
       'https://mixafrica.vercel.app',
       'mixafrica.com',
     ],
