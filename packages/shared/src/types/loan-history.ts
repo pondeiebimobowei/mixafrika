@@ -1,5 +1,5 @@
 import { LoanStatus } from "../enums";
-import { BaseModel } from "./base-model-type";
+import type { BaseModel } from "./base-model-type";
 
 export interface ILoanHistory extends BaseModel {
   user_id: string;
