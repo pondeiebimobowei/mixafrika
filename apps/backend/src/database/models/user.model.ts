@@ -80,13 +80,13 @@ export class User extends Model<IUser> implements IUser {
   image: string;
 
   @CreatedAt
-  declare createdAt: CreationOptional<Date>;
+  declare createdAt: string;
 
   @UpdatedAt
-  declare updatedAt: CreationOptional<Date>;
+  declare updatedAt: string;
 
   @DeletedAt
-  declare deletedAt?: Date;
+  declare deletedAt?: string;
 
   @HasOne(() => Wallet)
   wallet: Wallet;

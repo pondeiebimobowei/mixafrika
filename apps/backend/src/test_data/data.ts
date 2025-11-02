@@ -12,8 +12,8 @@ export const test_user:IUser = {
     is_email_verified: false,
     credit_score: 0,
     credit_score_status: 'not set',
-    createdAt: new Date(),
-    updatedAt: new Date(),
+    createdAt: String(new Date()),
+    updatedAt: String(new Date()),
     image: null,
 
 }

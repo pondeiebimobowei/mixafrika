@@ -47,11 +47,11 @@ export class LoanAccount extends Model<ILoanAccount> implements ILoanAccount {
   user: User;
 
   @CreatedAt
-  declare createdAt: CreationOptional<Date>;
+  declare createdAt: string;
 
   @UpdatedAt
-  declare updatedAt: CreationOptional<Date>;
+  declare updatedAt: string;
 
   @DeletedAt
-  declare deletedAt?: Date;
+  declare deletedAt?: string;
 }
