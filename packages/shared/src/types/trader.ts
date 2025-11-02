@@ -1,7 +1,7 @@
 import { type Status } from "../enums";
 import { type INotesWithUser } from "./notes";
 
-export interface Trader {
+export interface ITrader {
   experience: string;
   rating: number;
   status: Status;

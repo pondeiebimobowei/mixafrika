@@ -6,6 +6,11 @@ import { createAuthSlice, type AuthSlice } from './authSlice';
 import { createTransactionsSlice, type TransactionsSlice } from './transactionsSlice';
 import { createNotificationsSlice, type NotificationsSlice } from './notificationsSlice';
 import { createGoalsSlice, type GoalsSlice } from './goalsSlice';
+import { createUserBusiness, type UserBusiness } from './slice/business.slice';
+import { createTraderRecord, type TraderRecord } from './slice/trader.slice';
+import { createLoanAccount, type LoanAccount } from './slice/loan-account.slice';
+import { createUserWallet, type UserWallet } from './slice/wallet';
+import { createLoanHistory, type LoanHistory } from './slice/loan-history.slice';
 
 export const useAuthStore = create<AuthSlice>()(
   // immer(
@@ -14,6 +19,26 @@ export const useAuthStore = create<AuthSlice>()(
   })
 // )
 );
+
+export const useUserBusiness = create<UserBusiness>()((...a) => ({
+  ...createUserBusiness(...a),
+}))
+
+export const useTraderRecord = create<TraderRecord>()((...a) => ({
+    ...createTraderRecord(...a),
+}))
+
+export const useLoanAccount = create<LoanAccount>()((...a) => ({
+  ...createLoanAccount(...a),
+}))
+
+export const useWallet = create<UserWallet>()((...a) => ({
+  ...createUserWallet(...a),
+}))
+
+export const useLoanHistory = create<LoanHistory>()((...a) => ({
+  ...createLoanHistory(...a),
+}))
 
 export const useTransactionsStore = create<TransactionsSlice>()(
   immer((...a) => ({
