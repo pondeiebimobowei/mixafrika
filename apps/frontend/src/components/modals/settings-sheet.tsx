@@ -53,7 +53,7 @@ const DarkModeToggle = () => {
 }
 
 export function SettingsSheet() {
-  const { user, logout, login } = useAuthStore();
+  const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const [isSwitchingRole, setIsSwitchingRole] = useState(false);
 
@@ -66,9 +66,6 @@ export function SettingsSheet() {
     if (!user) return;
     setIsSwitchingRole(true);
     const newRole = user.role === 'investor' ? 'trader' : 'investor';
-    
-    // Simulate logging in with the new role
-    login(user.email, newRole);
     
     if (newRole === 'investor') {
         navigate('/investor/dashboard');

@@ -1,15 +1,19 @@
 
+import type { loginProps } from '@/types/api/responses';
+import type { IUser } from '../../../../packages/shared/src/types/user';
 import { type StateCreator } from 'zustand';
-import { type Roles } from '../../../../packages/shared/src/enums';
+import type { Roles } from '../../../../packages/shared/src/enums';
 
-import { type IuserWithBusiness } from '../../../../packages/shared/src/types/user'
 
 export interface AuthSlice {
-  user: IuserWithBusiness | null;
+  user: IUser | null;
+  token: string | null;
+  refreshToken: string | null;
   loading: boolean;
-  login: (email: string, role: Roles) => void;
+  isLoggedIn: boolean;
+  role: Roles | null;
+  login: ( { }: loginProps) => void;
   logout: () => void;
-  initAuth: () => void;
 }
 
 export const createAuthSlice: StateCreator<
@@ -19,45 +23,27 @@ export const createAuthSlice: StateCreator<
   AuthSlice
 > = (set) => ({
   user: null,
-  loading: true,
-  initAuth: () => {
-    try {
-      const storedUser = localStorage.getItem('clustr-user');
-      if (storedUser) {
-        set({ user: JSON.parse(storedUser) });
-      }
-    } catch (error) {
-      console.error("Could not parse user from localStorage", error);
-      localStorage.removeItem('clustr-user');
-    }
-    set({ loading: false });
-  },
-  login: (email, role) => {
-    const mockUser: IuserWithBusiness = {
-      id: 'user-' + Math.random().toString(36).substr(2, 9),
-      email,
-      role,
-      business: {
-        name: role === 'trader' ? 'Aunty Funke' : '',
-        address: '',
-        phone: '',
-        type: '',
-        user_id: ''
-      },
-      credit_score: 0,
-      credit_score_status: '',
-      first_name: '',
-      image: '',
-      is_email_verified: false,
-      is_verified: false, 
-      last_name: '',
-      password: '',
-    };
-    set({ user: mockUser });
-    localStorage.setItem('clustr-user', JSON.stringify(mockUser));
+  token: null,
+  refreshToken: null,
+  loading: false, // Loading is now handled by persist middleware hydration
+  isLoggedIn: false,
+  role: null,
+  login: ({user, token, refreshToken}) => {
+    set({
+        user,
+        token,
+        refreshToken,
+        isLoggedIn: true,
+        role: user?.role
+    });
   },
   logout: () => {
-    set({ user: null });
-    localStorage.removeItem('clustr-user');
+    set({
+        user: null,
+        token: null,
+        refreshToken: null,
+        isLoggedIn: false,
+        role: null
+    });
   },
 });

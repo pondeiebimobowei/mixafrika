@@ -4,11 +4,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useNavigate } from 'react-router';
 import toast from 'react-hot-toast';
 import { create_user_dto, type Create_user_dto } from '../../../../../packages/shared/src/validation/create-user-dto'
+import AuthController from '@/axios/auth';
 
 
 export function useSignup() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate()
+  const { apiSignup } = AuthController()
+  
 
   const form = useForm<Create_user_dto>({
     resolver: zodResolver(create_user_dto),
@@ -21,16 +24,21 @@ export function useSignup() {
     },
   });
 
-  const handleSignup = () => {
+  const handleSignup = async( data: Create_user_dto) => {
     setIsLoading(true);
 
-    // Simulate API call for signup
-    setTimeout(() => {
-      setIsLoading(false);
-      toast.success('Account Created! Please check your email to verify your account.');
-      navigate('verify-email')
-    }, 1500);
+    const response = await apiSignup(data);
+    
+    setIsLoading(false);
+
+    if (response.success) {
+      toast.success(response.message);
+      navigate('/verify-email');
+    } else {
+       toast.error(response.message);
+    
   };
+};
 
   return {
     form,

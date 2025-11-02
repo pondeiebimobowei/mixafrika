@@ -1,15 +1,18 @@
 
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
+import { persist } from "zustand/middleware";
 import { createAuthSlice, type AuthSlice } from './authSlice';
 import { createTransactionsSlice, type TransactionsSlice } from './transactionsSlice';
 import { createNotificationsSlice, type NotificationsSlice } from './notificationsSlice';
 import { createGoalsSlice, type GoalsSlice } from './goalsSlice';
 
 export const useAuthStore = create<AuthSlice>()(
-  immer((...a) => ({
-    ...createAuthSlice(...a),
-  }))
+  // immer(
+    (...a) => ({
+    ...persist(createAuthSlice, { name: "auth-storage"})(...a),
+  })
+// )
 );
 
 export const useTransactionsStore = create<TransactionsSlice>()(
