@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Submit_business } from '@shared/shared/src/validation/submit-business-dto';
 import { UserBusiness } from 'src/database/models/user-business.model';
 
 @Injectable()
@@ -6,16 +7,7 @@ export class BusinessService {
 
     async handleGetUserBusiness(user_id:string){
 
-        await UserBusiness.create( {
-            address: 'online',
-            name: 'Kelmonde',
-            phone: '080333',
-            type: 'media',
-            user_id,
-        })
 
-        await UserBusiness.destroy({ where: { user_id}})
-        
         const business = await UserBusiness.findOne( {
             where: {
                 user_id
@@ -28,6 +20,17 @@ export class BusinessService {
             message: 'Business details retrieved successfully'
         }
     }
+    
+    async handleSubmitUserBusiness(user_id:string, { address, name, phone, type }: Submit_business){
 
+        const business = await UserBusiness.create( {
+            address, name, phone, type, user_id,
+        })
 
+        return {
+            success: true,
+            data: business,
+            message: 'Business details submitted successfully!'
+        }
+    }
 }
