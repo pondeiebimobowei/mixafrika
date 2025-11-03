@@ -38,6 +38,7 @@ import { UserBusiness } from './database/models/user-business.model';
 import { Transaction } from './database/models/transaction.model';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { BusinessModule } from './business/business.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
       useFactory: getSequelizeConfig,
       inject: [ConfigService],
     }),
+    BusinessModule,
   ],
   controllers: [AppController],
   providers: [

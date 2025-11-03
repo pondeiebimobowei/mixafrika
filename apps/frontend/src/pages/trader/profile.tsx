@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -21,8 +21,7 @@ import {
 } from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { useAuthStore } from '@/store';
-import { traderProfileData } from '@/data';
+import { useAuthStore, useUserBusiness } from '@/store';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router';
 import { SettingsSheet } from '@/components/modals/settings-sheet';
@@ -30,10 +29,17 @@ import { FundSheet } from '@/components/modals/fund-sheet';
 import { MakeRepaymentSheet } from '@/components/sheets/make-repayment-sheet';
 import { WithdrawSheet } from '@/components/modals/withdraw-sheet';
 import { TraderTransactions } from '@/components/transactions';
+import { useFetchBusiness } from '@/store/hooks/business';
+import { useFetchWallet, useWalletState } from '@/store/hooks/wallet.hook';
 
 
 export default function TraderProfilePage() {
     const { user } = useAuthStore();
+    const { business } = useUserBusiness()
+    const { data } = useWalletState()
+
+    useFetchBusiness()
+    useFetchWallet()
 
     const [isEditing, setIsEditing] = useState(false);
     const [formData, setFormData] = useState({
@@ -43,19 +49,6 @@ export default function TraderProfilePage() {
         businessType: '',
     });
     const [isBalanceVisible, setIsBalanceVisible] = useState(true);
-
-    const displayData = traderProfileData;
-
-    useEffect(() => {
-        if (displayData) {
-            setFormData({
-                businessName: displayData.businessName || '',
-                phoneNumber: displayData.phoneNumber || '',
-                address: displayData.address || '',
-                businessType: displayData.businessType || '',
-            });
-        }
-    }, [displayData]);
     
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
@@ -83,7 +76,7 @@ export default function TraderProfilePage() {
               alt="Trader"
               data-ai-hint="profile picture"
             />
-            <AvatarFallback>{displayData?.businessName?.charAt(0) || 'T'}</AvatarFallback>
+            <AvatarFallback>{business?.name?.charAt(0) || 'T'}</AvatarFallback>
           </Avatar>
         </div>
          <Sheet>
@@ -100,7 +93,7 @@ export default function TraderProfilePage() {
       </header>
 
       <div className="text-center mt-4">
-        <p className="text-lg font-semibold">{displayData?.businessName || 'Trader'}</p>
+        <p className="text-lg font-semibold">{ business?.name || 'Trader'}</p>
         <p className="text-sm text-primary-foreground/80">{user?.email}</p>
       </div>
 
@@ -124,7 +117,7 @@ export default function TraderProfilePage() {
             </Button>
           </div>
           <p className="text-4xl font-bold mt-1">
-            {isBalanceVisible ? `₦${(displayData?.walletBalance || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '∗∗∗∗∗∗∗∗∗∗'}
+            {isBalanceVisible ? `₦${( data.amount || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '∗∗∗∗∗∗∗∗∗∗'}
           </p>
         </div>
 
@@ -155,7 +148,7 @@ export default function TraderProfilePage() {
                 </div>
               </SheetTrigger>
               <SheetContent side="bottom" className="rounded-t-3xl">
-                <MakeRepaymentSheet upcomingRepayment={{ amount: 5500, dueDate: "Tomorrow" }} walletBalance={displayData?.walletBalance || 0} />
+                <MakeRepaymentSheet upcomingRepayment={{ amount: 5500, dueDate: "Tomorrow" }} walletBalance={data.amount || 0} />
               </SheetContent>
             </Sheet>
 
@@ -190,10 +183,10 @@ export default function TraderProfilePage() {
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between pb-2">
                     <CardTitle className="text-base flex items-center gap-2"><Briefcase className="h-4 w-4" />Business Profile</CardTitle>
-                    <Button variant="ghost" size="sm" onClick={() => setIsEditing(!isEditing)}>{isEditing ? 'Cancel' : 'Edit'}</Button>
+                    <Button variant="ghost" size="sm" onClick={() => setIsEditing(!isEditing)}>{ !!business ||  !isEditing? 'Cancel' : 'Edit'}</Button>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                   {isEditing ? (
+                   {!isEditing && !!business  && (
                         <div className="space-y-4 pt-4">
                             <div>
                                 <Label htmlFor="businessName">Business Name</Label>
@@ -215,18 +208,20 @@ export default function TraderProfilePage() {
                                 <Button onClick={handleSave} className="w-full">Save Changes</Button>
                             </div>
                         </div>
-                    ) : (
-                         <div className="space-y-4 text-sm pt-2 grid grid-cols-[120px_1fr] items-center">
-                            <p className="font-semibold text-muted-foreground">Business Name</p>
-                            <p className="font-medium text-right">{displayData?.businessName || 'Not set'}</p>
-                            <p className="font-semibold text-muted-foreground">Business Type</p>
-                            <p className="font-medium text-right">{displayData?.businessType || 'Not set'}</p>
-                            <p className="font-semibold text-muted-foreground">Phone</p>
-                            <p className="font-medium text-right">{displayData?.phoneNumber || 'Not set'}</p>
-                            <p className="font-semibold text-muted-foreground">Address</p>
-                            <p className="font-medium text-right">{displayData?.address || 'Not set'}</p>
-                        </div>
-                    )}
+                    ) 
+                    // : (
+                    //      <div className="space-y-4 text-sm pt-2 grid grid-cols-[120px_1fr] items-center">
+                    //         <p className="font-semibold text-muted-foreground">Business Name</p>
+                    //         <p className="font-medium text-right">{business?.name || 'Not set'}</p>
+                    //         <p className="font-semibold text-muted-foreground">Business Type</p>
+                    //         <p className="font-medium text-right">{business?.type || 'Not set'}</p>
+                    //         <p className="font-semibold text-muted-foreground">Phone</p>
+                    //         <p className="font-medium text-right">{business?.phone || 'Not set'}</p>
+                    //         <p className="font-semibold text-muted-foreground">Address</p>
+                    //         <p className="font-medium text-right">{business?.address || 'Not set'}</p>
+                    //     </div>
+                    // )
+                    }
                 </CardContent>
             </Card>
           </div>
