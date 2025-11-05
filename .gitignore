@@ -1,4 +1,7 @@
 # Logs
+/.idx
+/pgdata
+logfile
 logs
 *.log
 npm-debug.log*
