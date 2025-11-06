@@ -8,10 +8,7 @@ export const createFundingApplicationDto = z.object({
   duration: z.string().min(1, 'Please select a duration.'),
   repayment_plan: z.string().min(1, 'Please select a repayment plan.'),
   purpose: z.string().min(3, 'Purpose must be at least 3 characters.'),
-  business_reg_doc: z.string().optional(),
-  id_doc: z.string().optional(),
-  address_doc: z.string().optional(),
-  statement_of_account_doc: z.string().optional(),
+  statement: z.string().optional(),
 });
 
 export type CreateFundingApplicationDto = z.infer<typeof createFundingApplicationDto>;

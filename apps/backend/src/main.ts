@@ -12,7 +12,6 @@ async function bootstrap() {
       'http://localhost:9002',
       'http://localhost:5173',
       'http://10.88.0.3:9002',
-      'https://9000-firebase-mixafrica-app-1762205912355.cluster-lu4mup47g5gm4rtyvhzpwbfadi.cloudworkstations.dev/',
       'https://9000-firebase-mixafrica-app-1762205912355.cluster-lu4mup47g5gm4rtyvhzpwbfadi.cloudworkstations.dev',
       'https://6000-firebase-studio-1759422244875.cluster-cbeiita7rbe7iuwhvjs5zww2i4.cloudworkstations.dev',
       'https://mixafrica-app-frontend-ecgh.vercel.app',
@@ -23,7 +22,12 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type,Authorization',
     credentials: true,
   });
+
+
+  const PORT = process.env.PORT
   app.useGlobalFilters(new SequelizeExceptionFilter(new LoggerService()));
-  await app.listen(process.env.PORT ?? 3003);
+  await app.listen(3003, "0.0.0.0", ()=> {
+    console.log(`server running ${process.env.PORT}`)
+  });
 }
 bootstrap();
