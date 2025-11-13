@@ -26,6 +26,16 @@ module.exports = {
           onDelete: 'Cascade',
           onUpdate: 'Cascade',
         },
+        user_id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          references: {
+            model: 'user',
+            key: 'id',
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE',
+        },
         amount_invested: {
           type: Sequelize.DECIMAL(15, 2),
           allowNull: false,

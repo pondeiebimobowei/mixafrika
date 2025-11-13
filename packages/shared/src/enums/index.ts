@@ -46,6 +46,17 @@ export const Types = {
 
 export type Types = (typeof Types)[keyof typeof Types];
 
+export const NotificationType = {
+    ...Types,
+    
+    GOAL: "goal",
+    SYSTEM: "system",
+    INVESTMENT: "investment",
+    FOLLOWING: "following",
+} as const;
+
+export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType];
+
 export const PaymentStatus = {
     PENDING: "pending",
     SUCCESSFUL: "successful",

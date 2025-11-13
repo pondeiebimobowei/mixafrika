@@ -13,6 +13,17 @@ module.exports = {
           primaryKey: true,
         },
 
+        user_id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          references: {
+            model: 'user',
+            key: 'id',
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE',
+        },
+
         total_amount: {
           type: Sequelize.DECIMAL(15, 2),
           allowNull: false,

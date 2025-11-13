@@ -10,10 +10,12 @@ import {
   CreatedAt,
   PrimaryKey,
   Default,
+  Validate,
 } from 'sequelize-typescript';
 import { User } from './user.model';
 import { INotification } from '@shared/shared/src/types/notification';
 import { CreationOptional, DataTypes } from 'sequelize';
+import { NotificationType } from '@shared/shared/src/enums';
 
 @Table({ tableName: 'notification' })
 export class Notification
@@ -37,6 +39,10 @@ export class Notification
 
   @Column(DataType.BOOLEAN)
   read: boolean;
+
+  @Validate({ isIn: [Object.values(NotificationType)]})
+  @Column(DataType.STRING)
+  type: NotificationType;
 
   @BelongsTo(() => User)
   user: User;

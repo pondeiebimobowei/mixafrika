@@ -1,7 +1,28 @@
 'use strict';
-import { Roles } from '@shared/shared/src/enums';
 import sequelize from 'sequelize';
 import { QueryInterface, DataTypes } from 'sequelize';
+
+const Types = {
+    DEPOSIT: "deposit",
+    WITHDRAWAL: "withdrawal",
+    DISBURSEMENT: "disbursement",
+    INVESTMENT: "investment",
+    LOAN: "loan",
+    REPAYMENT: "repayment",
+} as const;
+
+
+const NotificationType = {
+    ...Types,
+    
+    GOAL: "goal",
+    SYSTEM: "system",
+    INVESTMENT: "investment",
+    NEW_FOLLOWING: "new_following",
+    NEW_LIKE: "new_like",
+    NEW_COMMENT: "new_comment"
+} as const;
+
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -13,12 +34,30 @@ module.exports = {
           defaultValue: sequelize.UUIDV4,
           primaryKey: true,
         },
+        user_id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          references: {
+            model: 'user',
+            key: 'id',
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE',
+        },
+
         title: { type: Sequelize.STRING, allowNull: false },
         message: { type: Sequelize.TEXT, allowNull: false },
         read: {
           type: Sequelize.BOOLEAN,
           allowNull: false,
           defaultValue: false,
+        },
+        type: {
+          type: Sequelize.STRING,
+          allowNull: false,
+          validate: {
+            isIn: [Object.keys(NotificationType)]
+          }
         },
 
         createdAt: {
