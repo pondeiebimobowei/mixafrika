@@ -31,8 +31,8 @@
     "migrate:undo": "dotenv -- sequelize-cli db:migrate:undo",
     "migrate:undo:all": "dotenv -- sequelize-cli db:migrate:undo:all",
     "migrate:seed:all": "dotenv -- sequelize-cli db:seed:all",
-    "migrate:prod:seed:all": "dotenv -e .env -- sequelize-cli db:seed:all",
-    "migrate:prod:undo:all": "dotenv -e .env -- sequelize-cli db:migrate:undo:all",
+    "migrate:prod:seed:all": "dotenv -e .env -- npx sequelize-cli db:seed:all",
+    "migrate:prod:seed:undo": "dotenv -e .env -- npx sequelize-cli db:seed:undo",
     "migrate:seed:undo": "dotenv -- sequelize-cli db:seed:undo",
     "reset": "dotenv -e .env -- cross-env NODE_ENV=development sequelize-cli db:migrate:undo:all && dotenv -e .env -- sequelize-cli db:migrate && dotenv -e .env -- sequelize-cli db:seed:all",
     "migrate:skeleton": "sequelize-cli migration:generate --name migration-skeleton"
