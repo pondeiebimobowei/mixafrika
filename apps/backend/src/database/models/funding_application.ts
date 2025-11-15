@@ -48,15 +48,6 @@ export class FundingApplication
   purpose: string;
 
   @Column(DataType.STRING)
-  business_reg_doc: string | null;
-
-  @Column(DataType.STRING)
-  id_doc: string | null;
-
-  @Column(DataType.STRING)
-  address_doc: string | null;
-
-  @Column(DataType.STRING)
   statement_of_account_doc: string | null;
 
   @CreatedAt

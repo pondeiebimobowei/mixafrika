@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -39,6 +39,10 @@ import { Transaction } from './database/models/transaction.model';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { BusinessModule } from './business/business.module';
+import { LoggerMiddleware } from './logger/logger.service';
+import { GlobalModule } from './global/global.module';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { FundingApplication } from './database/models/funding_application';
 
 @Module({
   imports: [
@@ -58,17 +62,25 @@ import { BusinessModule } from './business/business.module';
     AdminModule,
     LoanModule,
     SettingsModule,
-    SequelizeModule.forFeature([User, Savings, Goal, Investment, Notification, Feed, Cluster, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, UserBusiness, Transaction, Wallet, LoanAccount]),
+    SequelizeModule.forFeature([User, Savings, FundingApplication, Goal, Investment, Notification, Feed, Cluster, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, UserBusiness, Transaction, Wallet, LoanAccount]),
     ConfigModule.forRoot({ isGlobal: true }),
     SequelizeModule.forRootAsync({
       useFactory: getSequelizeConfig,
       inject: [ConfigService],
     }),
     BusinessModule,
+    GlobalModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
     AppService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(LoggerMiddleware)
+      .forRoutes('*'); 
+  }
+}

@@ -1,23 +1,30 @@
 
-import { Body, Controller, Post, UseGuards, UsePipes } from '@nestjs/common';
+import { Body, Controller, Post, UploadedFiles, UseGuards, UseInterceptors, UsePipes } from '@nestjs/common';
 import { FundingService } from './funding.service';
-import { CreateFundingApplicationDto, createFundingApplicationDto } from '@shared/shared/src/validation/funding-application.dto';
+import {  CreateFundingApplicationDto, createFundingApplicationDto } from '@shared/shared/src/validation/funding-application.dto';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { ParsedToken } from '../decorators/parsed-token.decorator';
 import { IJwtToken } from '@shared/shared/src/types/jwt';
 import { ZodPipe } from 'src/pipes/zod-pipes';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 @Controller('v1/funding')
 export class FundingController {
   constructor(private readonly fundingService: FundingService) {}
 
   @Post('apply')
+  @UseInterceptors(FileFieldsInterceptor([
+        { name: 'statement', maxCount: 1 },
+        { name: 'stat', maxCount: 1 },
+  ]))
   @UseGuards(JwtAuthGuard)
-  @UsePipes(new ZodPipe(createFundingApplicationDto))
-  async apply(
-    @Body() createFundingApplicationDto: CreateFundingApplicationDto,
+  apply(
+    @UploadedFiles() files: { statement?: Express.Multer.File[], state?: Express.Multer.File[] },
     @ParsedToken() token: IJwtToken,
+    @Body( new ZodPipe(createFundingApplicationDto)) createFundingApplicationDto: CreateFundingApplicationDto,
     ) {
-    return this.fundingService.create(createFundingApplicationDto, token.id );
+      console.log('Files received:', files);
+      console.log('DTO received:', createFundingApplicationDto);
+    return this.fundingService.create(createFundingApplicationDto, token.id, files );
   }
 }
