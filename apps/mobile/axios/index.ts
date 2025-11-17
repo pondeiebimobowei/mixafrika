@@ -2,7 +2,7 @@ import { useAuthStore } from '@/store';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 
-const backendHost = 'http://10.1.1.3:3003/v1';
+const backendHost = process.env.EXPO_PUBLIC_API_URL;
 
 export const api = axios.create({ baseURL: backendHost });
 export const apiPrivate = axios.create({
