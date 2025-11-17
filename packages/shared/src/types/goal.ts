@@ -6,5 +6,5 @@ export interface IGoal extends BaseModel {
   current_amount: number;
   target: number;
   image: string | null;
-  target_date: Date;
+  target_date: string;
 }
