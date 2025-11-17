@@ -6,17 +6,17 @@ export default function WelcomeCard() {
   const router = useRouter();
 
   return (
-    <View className=" px-6 py-10 my-4 bg-primary  rounded-xl flex-1 items-center justify-center ">
-      <View className="w-full  px-10  items-center">
-        <View className="bg- p-3 rounded-full bg-primary/50">
+    <View className=" py-10 my-4 bg-primary  rounded-xl flex-1 items-center justify-center ">
+      <View className="w-full flex-1  px-10  items-center">
+        <View className=" w-full p-3 rounded-full bg-primary/50 flex items-center">
           <FilePenLine size={40} color={'white'} className="h-40 w-40" />
         </View>
 
-        <View className="my-6 gap-2">
-          <Text className="text-white text-2xl font-bold text-center ">
+        <View className="my-6 gap-2 w-full">
+          <Text className="text-white text-3xl font-bold text-center ">
             Welcome to MixAfrica
           </Text>
-          <Text className="text-white text-lg text-center">
+          <Text className="text-white text-xl font-light  mt-4 text-center">
             You don't have any active fundidng yet. Apply for a loan to get
             started and grow your business.
           </Text>

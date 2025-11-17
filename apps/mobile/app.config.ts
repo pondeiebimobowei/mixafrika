@@ -1,5 +1,9 @@
-{
-  "expo": {
+import "tsx/cjs"
+import { ExpoConfig } from 'expo/config';
+
+module.exports = ({ config } : { config: ExpoConfig }) => {
+  return {
+    ...config,
     "name": "mixafrica-mobile",
     "slug": "mix-africa-mobile",
     "version": "1.0.0",
@@ -41,7 +45,8 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "./plugins/picker-fix"
     ],
     "experiments": {
       "typedRoutes": true,
@@ -54,5 +59,5 @@
       }
     },
     "owner": "ebimo21"
-  }
-}
+  };
+};

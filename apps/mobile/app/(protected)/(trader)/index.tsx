@@ -7,7 +7,7 @@ import {
   Image,
   Pressable,
 } from 'react-native';
-import { User, Bell, FileText, Repeat, PiggyBank } from 'lucide-react-native';
+import { User, Bell, FileText, Repeat, PiggyBank, Speaker, ChevronRight, Megaphone } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   useAuthStore,
@@ -41,7 +41,7 @@ export default function TraderDashboard() {
   ];
 
   return (
-    <SafeAreaView className="flex-1 bg-black p-3">
+    <SafeAreaView className="flex-1 bg-[rgb(23,26,33)] p-3">
       <View className="flex flex-row items-center justify-between py-3 border">
         <View className="flex flex-row gap-3 items-center">
           {user?.image ? (
@@ -85,7 +85,7 @@ export default function TraderDashboard() {
         )}
 
         <View className="flex flex-row">
-          <View className="p-10 rounded-xl border border-slate grow">
+          <View className="p-10 rounded-xl bg-card border border-slate grow">
             <Text className="text-slate-300">Wallet Balance</Text>
             <Text className="text-white text-2xl">
               ₦{amount.toLocaleString() || 1}
@@ -110,7 +110,7 @@ export default function TraderDashboard() {
           <View className="flex flex-row justify-around items-center">
             {quickActions.map((action) => (
               <TouchableOpacity key={action.label}>
-                <View className="flex items-center gap-2 p-3 bg-slate-200 rounded-xl">
+                <View className="flex items-center gap-2 p-4 bg-green-900/80 rounded-full">
                   <action.icon size={24} color={'green'} />
                 </View>
                 <Text className=" text-center text-white mt-1">
@@ -118,6 +118,29 @@ export default function TraderDashboard() {
                 </Text>
               </TouchableOpacity>
             ))}
+          </View>
+
+          <View className='py-10 px-6 rounded-xl bg-card my-10'>
+            <View className='flex flex-row items-center justify-between'>
+              <Text className='text-white text-xl font-bold'>News & Updates</Text>
+              <Text className='text-primary text-xl font-bold '>View all</Text>
+            </View>
+            <View>
+              {[1,2,3].map((item)=> (
+                <View className='flex flex-row items-center justify-between'>
+                  <View className='bg-primary/20 p-3 rounded-full'>
+                    <Megaphone size={20} color={'green'} />
+                  </View>
+                  <View>
+                    <Text className='text-white font-bold text-xl'>Tips for managing your daily cash</Text>
+                    <Text className='text-white'>Financial Tips</Text>
+                  </View>
+                  <ChevronRight size={20} color={"grey"} />
+
+
+                </View>
+              ))}
+            </View>
           </View>
         </View>
       </ScrollView>
