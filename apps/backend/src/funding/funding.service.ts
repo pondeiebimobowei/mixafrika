@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { FundingApplication } from '../database/models/funding_application';
-import { CreateFundingApplicationDto } from '@shared/shared/src/validation/funding-application.dto';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import fs  from 'fs'
+import { Create_funding_application_dto } from '@shared/shared/src/validation/funding-application.dto';
 
 
 @Injectable()
@@ -10,7 +9,7 @@ export class FundingService {
 
     constructor ( private readonly cloudinary: CloudinaryService ) {}
 
-  async create( { statement, amount, ...createFundingApplicationDto}: CreateFundingApplicationDto, userId: string, files: { statement?: Express.Multer.File[] } ) {
+  async create( { statement, amount, ...createFundingApplicationDto}: Create_funding_application_dto, userId: string, files: { statement?: Express.Multer.File[] } ) {
     
     const { cloudinary, cloudinaryUploadFolder } = this.cloudinary.getCloudinary()
 

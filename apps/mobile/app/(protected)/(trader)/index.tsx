@@ -58,8 +58,8 @@ export default function TraderDashboard() {
           )}
 
           <View>
-            <Text className="darKtext-white text-white ">Hello,</Text>
-            <Text className="text-white text-xl font-bold capitalize">
+            <Text className="text-lg text-white ">Hello,</Text>
+            <Text className="text-white text-2xl font-bold capitalize">
               {user?.first_name}
             </Text>
           </View>
@@ -85,7 +85,7 @@ export default function TraderDashboard() {
         )}
 
         <View className="flex flex-row">
-          <View className="p-10 rounded-xl bg-card-foreground grow">
+          <View className="p-10 rounded-xl border border-slate grow">
             <Text className="text-slate-300">Wallet Balance</Text>
             <Text className="text-white text-2xl">
               ₦{amount.toLocaleString() || 1}
