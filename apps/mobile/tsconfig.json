@@ -1,19 +1,17 @@
 {
-  "extends": "expo/tsconfig.base", 
-  
+  "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
     "composite": true,
     "noEmit": false,
-    
     "paths": {
       "@/*": [
         "./*"
       ],
       "@mixafrica/shared/*": [
-        "../../packages/shared/src/*" 
+        "../../packages/shared/src/*"
       ]
-    },
+    }
     // The Expo base config usually sets up the module/jsx settings well.
     // If you need to include settings from "expo/tsconfig.base", you can chain the extends:
     // "extends": [
@@ -21,12 +19,12 @@
     //   "expo/tsconfig.base"
     // ]
   },
-  
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "../../packages/shared/**/*"
+    "../../packages/shared/**/*",
+    "nativewind-env.d.ts"
   ]
 }
