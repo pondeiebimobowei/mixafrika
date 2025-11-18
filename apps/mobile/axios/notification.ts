@@ -1,5 +1,5 @@
 import { GroupedNotifications } from '@mixafrica/shared/types/notification';
-import { apiPrivate } from '.';
+import { apiPrivate } from './axios-config';
 
 export const getNotification = async (): Promise<{
   success: boolean;

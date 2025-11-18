@@ -1,5 +1,5 @@
 import { Create_funding_application_dto } from '@mixafrica/shared/validation/funding-application.dto';
-import { apiPrivate } from '.';
+import { apiPrivate } from './axios-config';
 
 export const submitFundingApplication = async (
   data: Create_funding_application_dto,

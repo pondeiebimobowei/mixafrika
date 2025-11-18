@@ -1,4 +1,4 @@
-import { apiPrivate } from '@/axios';
+import { apiPrivate } from '@/axios/axios-config';
 import { getNotification } from '@/axios/notification';
 import { GroupedNotifications } from '@mixafrica/shared/types/notification';
 import { type StateCreator } from 'zustand';

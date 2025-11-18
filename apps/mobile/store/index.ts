@@ -43,7 +43,7 @@ export const useTraderRecord = create<TraderRecord>()((...a) => ({
   ...createTraderRecord(...a),
 }));
 
-export const useLoanAccount = create<LoanAccount>()((...a) => ({
+export const useLoanAccountStore = create<LoanAccount>()((...a) => ({
   ...createLoanAccount(...a),
 }));
 

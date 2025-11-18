@@ -1,5 +1,5 @@
 import type { StateCreator } from 'zustand';
-import { apiPrivate } from '@/axios';
+import { apiPrivate } from '@/axios/axios-config';
 import { BaseSlice } from '..';
 import { updateBusiness } from '@/axios/business';
 import { IUserBusiness } from '@mixafrica/shared/types/user-business';

@@ -17,7 +17,7 @@ import { RepaymentHistory } from './repayment-history.model';
 import { ILoanAccount } from '@shared/shared/src/types/loan-account';
 import { CreationOptional, DataTypes } from 'sequelize';
 
-@Table({ tableName: 'loan-account' })
+@Table({ tableName: 'loan_account' })
 export class LoanAccount extends Model<ILoanAccount> implements ILoanAccount {
   @PrimaryKey
   @Default(DataTypes.UUIDV4)
@@ -29,7 +29,7 @@ export class LoanAccount extends Model<ILoanAccount> implements ILoanAccount {
   user_id: string;
 
   @Column(DataType.DECIMAL(15, 2))
-  recieved_amount: number;
+  received_amount: number;
 
   @Column(DataType.DECIMAL(15, 2))
   repaid_amount: number;

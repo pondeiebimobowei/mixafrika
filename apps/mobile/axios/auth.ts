@@ -1,6 +1,6 @@
 import { Create_user_dto } from "@mixafrica/shared/validation/create-user-dto";
 import { Login_user_dto } from "@mixafrica/shared/validation/login-user-dto";
-import { api } from ".";
+import { api } from "./axios-config";
 import { AuthResponse } from "@mixafrica/shared/types/api/responses";
 
 export default function AuthController() {
