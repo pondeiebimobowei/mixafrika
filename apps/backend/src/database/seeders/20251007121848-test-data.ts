@@ -38,6 +38,19 @@ module.exports = {
       const notification = await mockNotificationSeed(responseUser)
       await queryInterface.bulkInsert('notification', notification, { transaction: t });
       
+      await queryInterface.bulkInsert('loan_account', [{
+        id: uuidv4(),
+        duration: 12,
+        interest_rate: 5,
+        received_amount: 12000,
+        repaid_amount: 600,
+        repayment_amount: 200,
+        user_id: users[0].id,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }],
+      { transaction: t }
+    )
 
 
       

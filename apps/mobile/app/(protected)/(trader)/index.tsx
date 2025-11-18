@@ -11,7 +11,7 @@ import { User, Bell, FileText, Repeat, PiggyBank } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   useAuthStore,
-  useLoanAccount,
+  useLoanAccountStore,
   useUserBusiness,
   useWallet,
 } from '@/store';
@@ -22,6 +22,7 @@ import { useFetchWallet } from '@/store/hooks/wallet.hook';
 import { useRouter } from 'expo-router';
 import NewsAndUpdates from '@/components/cards/news-and-update.card';
 import CreditScoreOverView from '@/components/cards/credit-score-overview.card';
+import { useFetchLoanAccount } from '@/store/hooks/loan-account';
 
 export default function TraderDashboard() {
   const { business } = useUserBusiness();
@@ -30,8 +31,9 @@ export default function TraderDashboard() {
   const router = useRouter();
 
   useFetchWallet();
-  const { loan_account } = useLoanAccount();
-  const hasActiveLoan = (loan_account?.recieved_amount || 10) > 10000;
+  const { loan_account } = useLoanAccountStore();
+  useFetchLoanAccount()
+  const hasActiveLoan = Boolean(loan_account)
 
   const [showMakeRepaymentModal, setShowMakeRepaymentModal] =
     useState<boolean>(false);

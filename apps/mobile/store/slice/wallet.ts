@@ -1,6 +1,6 @@
 import type { StateCreator } from 'zustand';
 import type { BaseSlice } from '..';
-import { apiPrivate } from '@/axios';
+import { apiPrivate } from '@/axios/axios-config';
 import { IWallet } from '@mixafrica/shared/types/wallet';
 export interface UserWallet extends BaseSlice, Omit<IWallet, 'user_id'> {
   setWallet: ({ amount, total_portfolio }: IWallet) => void;

@@ -1,9 +1,13 @@
-import { Submit_business } from '@mixafrica/shared/validation/submit-business-dto';
+import { ILoanAccount } from '@mixafrica/shared/types/loan-account';
 import { apiPrivate } from './axios-config';
 
-export const updateBusiness = async (data: Submit_business) => {
+export const getLoanAccount = async (): Promise<{
+  success: boolean;
+  message: string;
+  data: ILoanAccount | null;
+}> => {
   try {
-    const res = await apiPrivate.post(`/business`, { ...data });
+    const res = await apiPrivate.get(`/loan-account`);
     return res.data;
   } catch (err: any) {
     if (err.response) {

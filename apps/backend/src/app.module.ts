@@ -43,6 +43,7 @@ import { LoggerMiddleware } from './logger/logger.service';
 import { GlobalModule } from './global/global.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { FundingApplication } from './database/models/funding_application';
+import { LoanAccountModule } from './loan_account/loan_account.module';
 
 @Module({
   imports: [
@@ -71,6 +72,7 @@ import { FundingApplication } from './database/models/funding_application';
     BusinessModule,
     GlobalModule,
     CloudinaryModule,
+    LoanAccountModule,
   ],
   controllers: [AppController],
   providers: [
