@@ -6,13 +6,14 @@ import {
   Platform,
   Pressable,
   ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Picker } from '@react-native-picker/picker';
 import ErrorMessageDisplay from '@/components/form/error-message-display';
+import { Dropdown } from "react-native-element-dropdown"
 import {
   Briefcase,
   Calendar,
@@ -112,30 +113,29 @@ export default function LoanApplication() {
             <Controller
               control={control}
               name="business_type"
-              render={({
-                field: { onChange, value },
-                fieldState: { error },
+              render={({ field, fieldState: { error },
               }) => (
                 <View className="">
                   <View className="flex flex-row items-center border border-solid border-slate-600 rounded-xl px-4">
                     <Briefcase color={'white'} />
-                    <Picker
-                      selectedValue={value}
-                      onValueChange={onChange}
-                      style={{
-                        flex: 1,
-                        borderRadius: 20,
-                        color: 'white',
-                      }}
-                    >
-                      {BUSINESS_TYPE_OPTIONS.map((item) => (
-                        <Picker.Item
-                          key={item.value}
-                          label={item.label}
-                          value={item.value}
-                        />
-                      ))}
-                    </Picker>
+                    <View style={styles.container}>
+                      <Dropdown
+                        style={styles.dropdown}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={BUSINESS_TYPE_OPTIONS}
+                        maxHeight={300}
+                        labelField="label"
+                        valueField="value"
+                        searchPlaceholder="Search..."
+                        value={field.value}
+                        onChange={(item) => field.onChange(item.value)}
+                      />
+                    </View>
+
+
                   </View>
                   {error && (
                     <Text className="text-white mt-1">{error.message}</Text>
@@ -153,23 +153,22 @@ export default function LoanApplication() {
                 <View>
                   <View className="flex flex-row items-center border border-solid border-slate-600 rounded-xl px-4">
                     <LocateFixedIcon color={'white'} />
-                    <Picker
-                      selectedValue={field.value}
-                      onValueChange={field.onChange}
-                      style={{
-                        flex: 1,
-                        borderRadius: 20,
-                        color: 'white',
-                      }}
-                    >
-                      {BUSINESS_LOCATION_OPTIONS.map((item) => (
-                        <Picker.Item
-                          key={item.value}
-                          label={item.label}
-                          value={item.value}
-                        />
-                      ))}
-                    </Picker>
+                    <View style={styles.container}>
+                      <Dropdown
+                        style={styles.dropdown}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={BUSINESS_LOCATION_OPTIONS}
+                        maxHeight={300}
+                        labelField="label"
+                        valueField="value"
+                        searchPlaceholder="Search..."
+                        value={field.value}
+                        onChange={(item) => field.onChange(item.value)}
+                      />
+                    </View>
                   </View>
 
                   {error && <ErrorMessageDisplay message={error.message} />}
@@ -209,23 +208,22 @@ export default function LoanApplication() {
                   <View>
                     <View className="flex flex-row items-center border border-solid border-slate-600 rounded-xl px-4">
                       <Calendar color={'white'} />
-                      <Picker
-                        selectedValue={field.value}
-                        onValueChange={field.onChange}
-                        style={{
-                          flex: 1,
-                          borderRadius: 20,
-                          color: 'white',
-                        }}
-                      >
-                        {REPAYMENT_DURATION_OPTIONS.map((item) => (
-                          <Picker.Item
-                            key={item.value}
-                            label={item.label}
-                            value={item.value}
-                          />
-                        ))}
-                      </Picker>
+                      <View style={styles.container}>
+                        <Dropdown
+                          style={styles.dropdown}
+                          placeholderStyle={styles.placeholderStyle}
+                          selectedTextStyle={styles.selectedTextStyle}
+                          inputSearchStyle={styles.inputSearchStyle}
+                          iconStyle={styles.iconStyle}
+                          data={REPAYMENT_DURATION_OPTIONS}
+                          maxHeight={300}
+                          labelField="label"
+                          valueField="value"
+                          searchPlaceholder="Search..."
+                          value={field.value}
+                          onChange={(item) => field.onChange(item.value)}
+                        />
+                      </View>
                     </View>
 
                     {error && <ErrorMessageDisplay message={error.message} />}
@@ -242,23 +240,22 @@ export default function LoanApplication() {
                   <View>
                     <View className="flex flex-row items-center border border-solid border-slate-600 rounded-xl px-4">
                       <Calendar color="white" />
-                      <Picker
-                        selectedValue={field.value}
-                        onValueChange={field.onChange}
-                        style={{
-                          flex: 1,
-                          borderRadius: 20,
-                          color: 'white',
-                        }}
-                      >
-                        {PAYMENT_PLAN_OPTIONS.map((item) => (
-                          <Picker.Item
-                            key={item.value}
-                            label={item.label}
-                            value={item.value}
-                          />
-                        ))}
-                      </Picker>
+                      <View style={styles.container}>
+                        <Dropdown
+                          style={styles.dropdown}
+                          placeholderStyle={styles.placeholderStyle}
+                          selectedTextStyle={styles.selectedTextStyle}
+                          inputSearchStyle={styles.inputSearchStyle}
+                          iconStyle={styles.iconStyle}
+                          data={PAYMENT_PLAN_OPTIONS}
+                          maxHeight={300}
+                          labelField="label"
+                          valueField="value"
+                          searchPlaceholder="Search..."
+                          value={field.value}
+                          onChange={(item) => field.onChange(item.value)}
+                        />
+                    </View>
                     </View>
                     {error && <ErrorMessageDisplay message={error.message} />}
                   </View>
@@ -352,3 +349,43 @@ export default function LoanApplication() {
     </SafeAreaView>
   );
 }
+const styles = StyleSheet.create({
+    container: {
+      backgroundColor: 'white',
+      padding: 16,
+    },
+    dropdown: {
+      height: 50,
+      width: 300,
+      borderColor: 'gray',
+      borderWidth: 0.5,
+      borderRadius: 8,
+      paddingHorizontal: 8,
+    },
+    icon: {
+      marginRight: 5,
+    },
+    label: {
+      position: 'absolute',
+      backgroundColor: 'white',
+      left: 22,
+      top: 8,
+      zIndex: 999,
+      paddingHorizontal: 8,
+      fontSize: 14,
+    },
+    placeholderStyle: {
+      fontSize: 16,
+    },
+    selectedTextStyle: {
+      fontSize: 16,
+    },
+    iconStyle: {
+      width: 20,
+      height: 20,
+    },
+    inputSearchStyle: {
+      height: 40,
+      fontSize: 16,
+    },
+  });

@@ -31,7 +31,6 @@ apiPrivate.interceptors.response.use(
     if (error?.response?.status === 401) {
       const logout = useAuthStore.getState().logout;
       logout();
-      setTimeout(() => (window.location.href = '/login'), 1000);
       Toast.show({
         type: 'success',
         text1: 'Unathorized access! Login.',
