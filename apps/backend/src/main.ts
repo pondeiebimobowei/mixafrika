@@ -18,6 +18,7 @@ async function bootstrap() {
       'https://9000-firebase-studio-1759422244875.cluster-cbeiita7rbe7iuwhvjs5zww2i4.cloudworkstations.dev',
       'http://localhost:9002',
       'http://localhost:8081',
+      'http://127.0.0.1:8081',
       'http://localhost:5173',
       'http://10.88.0.3:9002',
       'http://10.1.0.231:8081',

@@ -351,13 +351,12 @@ export default function LoanApplication() {
 }
 const styles = StyleSheet.create({
     container: {
-      backgroundColor: 'white',
-      padding: 16,
+      color: "white",
+      padding: 1,
     },
     dropdown: {
       height: 50,
       width: 300,
-      borderColor: 'gray',
       borderWidth: 0.5,
       borderRadius: 8,
       paddingHorizontal: 8,
@@ -376,9 +375,11 @@ const styles = StyleSheet.create({
     },
     placeholderStyle: {
       fontSize: 16,
+      color: "white"
     },
     selectedTextStyle: {
       fontSize: 16,
+      color: "white"
     },
     iconStyle: {
       width: 20,
