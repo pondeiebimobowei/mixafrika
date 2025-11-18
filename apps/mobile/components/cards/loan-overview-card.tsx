@@ -1,7 +1,7 @@
 import { useLoanAccountStore } from '@/store';
 import { Calendar, Expand, Eye, TrendingUp } from 'lucide-react-native';
 import { Text, View } from 'react-native';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
+import { Accordion, AccordionContent, AccordionItem, AccordionTriggerNoIcon } from '../ui/accordion';
 
 export default function LoanOverviewCard() {
   const { loan_account } = useLoanAccountStore();
@@ -17,13 +17,13 @@ export default function LoanOverviewCard() {
           <View>
             <View className="flex flex-row justify-between w-full">
               <Text className="text-lg text-white font-bold">Loan Overview</Text>
-              <AccordionTrigger>
+              <AccordionTriggerNoIcon>
                 <Expand
                   className="h-4 w-4"
                   color={'white'}
                   strokeWidth={1}
                 />
-              </AccordionTrigger>
+              </AccordionTriggerNoIcon>
             </View>
 
             <View className="mt-10 mb-6">

@@ -1,5 +1,6 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import Toast from 'react-native-toast-message';
 
 export default function TraderTabsLayout() {
   return (
@@ -50,6 +51,7 @@ export default function TraderTabsLayout() {
           href: null,
         }}
       />
+      <Toast />
     </Tabs>
   );
 }

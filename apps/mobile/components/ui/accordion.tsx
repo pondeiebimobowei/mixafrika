@@ -86,7 +86,7 @@ function AccordionTrigger({
         <AccordionPrimitive.Trigger {...props} asChild>
           <Trigger
             className={cn(
-              'flex-row items-start justify-between gap-4 rounded-md py-4 disabled:opacity-50',
+              'flex-row items-start justify-between gap-4 rounded-md py-4 disabled:opacity-50 ',
               Platform.select({
                 web: 'focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 outline-none transition-all hover:underline focus-visible:ring-[3px] disabled:pointer-events-none [&[data-state=open]>svg]:rotate-180',
               }),
@@ -105,6 +105,37 @@ function AccordionTrigger({
                 )}
               />
             </Animated.View>
+          </Trigger>
+        </AccordionPrimitive.Trigger>
+      </AccordionPrimitive.Header>
+    </TextClassContext.Provider>
+  );
+}
+function AccordionTriggerNoIcon({
+  className,
+  children,
+  ...props
+}: AccordionPrimitive.TriggerProps & {
+  children?: React.ReactNode;
+} & React.RefAttributes<AccordionPrimitive.TriggerRef>) {
+
+  return (
+    <TextClassContext.Provider
+      value={cn(
+        'text-left text-sm font-medium',
+        Platform.select({ web: 'group-hover:underline' })
+      )}>
+      <AccordionPrimitive.Header>
+        <AccordionPrimitive.Trigger {...props} asChild>
+          <Trigger
+            className={cn(
+              'flex-row items-start justify-between gap-4 rounded-md py-4 disabled:opacity-50 ',
+              Platform.select({
+                web: 'focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 outline-none transition-all hover:underline focus-visible:ring-[3px] disabled:pointer-events-none [&[data-state=open]>svg]:rotate-180',
+              }),
+              className
+            )}>
+            <>{children}</>
           </Trigger>
         </AccordionPrimitive.Trigger>
       </AccordionPrimitive.Header>
@@ -138,4 +169,4 @@ function AccordionContent({
   );
 }
 
-export { Accordion, AccordionContent, AccordionItem, AccordionTrigger };
+export { Accordion, AccordionContent, AccordionItem, AccordionTrigger, AccordionTriggerNoIcon };
