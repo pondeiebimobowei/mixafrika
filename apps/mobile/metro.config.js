@@ -24,5 +24,5 @@ config.resolver.nodeModulesPaths = [
 // This is essential for preventing resolution errors with hoisted packages.
 config.resolver.disableHierarchicalLookup = true;
 
-module.exports = withNativeWind(config, { input: './global.css' })
+module.exports = withNativeWind(config, { input: './global.css', inlineRem: 16 })
 // module.exports = config;
