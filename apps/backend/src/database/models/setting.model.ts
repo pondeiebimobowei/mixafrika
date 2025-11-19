@@ -35,6 +35,9 @@ export class Setting extends Model<ISetting> implements ISetting {
   @Column(DataType.BOOLEAN)
   enable_push_notification: boolean;
 
+  @BelongsTo(() => User)
+  user: User;
+
   @CreatedAt
   declare createdAt: string;
 

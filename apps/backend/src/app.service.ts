@@ -2,14 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { User } from './database/models/user.model';
 import { LoanAccount } from './database/models/loan-account.model';
 import { Notification } from './database/models/notification.model';
+import { Setting } from './database/models/setting.model';
 
 @Injectable()
 export class AppService {
   async getHello() {
-    const user = await User.findAll( { include: [Notification, LoanAccount]});
+    const user = await User.findAll( { include: [ Notification, LoanAccount, Setting]});
 
     return user
-
-    // return 'Hello World!';
   }
 }

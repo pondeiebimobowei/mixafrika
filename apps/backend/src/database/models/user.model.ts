@@ -23,6 +23,7 @@ import { roles, Roles } from '@shared/shared/src/enums';
 import { CreationOptional } from 'sequelize';
 import { LoanAccount } from './loan-account.model';
 import { UserBusiness } from './user-business.model';
+import { Setting } from './setting.model';
 
 @Table({
   tableName: 'user',
@@ -108,6 +109,9 @@ export class User extends Model<IUser> implements IUser {
 
   @HasMany(() => Notification)
   notifications: Notification[];
+
+  @HasMany(() => Setting)
+  setting: Setting;
 
   @HasMany(() => Feed)
   feeds: Feed[];
