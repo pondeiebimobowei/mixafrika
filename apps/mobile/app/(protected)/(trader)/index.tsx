@@ -46,7 +46,7 @@ export default function TraderDashboard() {
 
   return (
     <SafeAreaView className="flex-1 bg-[rgb(23,26,33)] p-3">
-      <View className="flex flex-row items-center justify-between py-3 border">
+      <View className="flex flex-row items-center justify-between py-3">
         <View className="flex flex-row gap-3 items-center">
           {user?.image ? (
             <Image
@@ -112,7 +112,7 @@ export default function TraderDashboard() {
 
           <View className="flex flex-row justify-around items-center my-10">
             {quickActions.map((action) => (
-              <TouchableOpacity key={action.label}>
+              <TouchableOpacity onPress={()=> router.push('/(protected)/(trader)/(dashboard)/loan/apply')} key={action.label}>
                 <View className="flex items-center gap-2 p-4 bg-green-900/20 rounded-full">
                   <action.icon size={28} color={'hsl(151 51% 33%)'} />
                 </View>

@@ -17,6 +17,7 @@ import { createUserWallet, UserWallet } from './slice/wallet';
 import { createLoanAccount, LoanAccount } from './slice/loan-account.slice';
 import { createTraderRecord, TraderRecord } from './slice/trader.slice';
 import { createUserBusiness, UserBusiness } from './slice/business.slice';
+import { createUserSettings, UserSettingsSlice } from './slice/settings.slice';
 
 export interface BaseSlice {
   loading: boolean;
@@ -72,3 +73,11 @@ export const useGoalsStore = create<GoalsSlice>()(
     ...createGoalsSlice(...a),
   })),
 );
+
+export const useUserSettings = create<UserSettingsSlice>()(
+  immer((...a) => ({
+    ...createUserSettings(...a),
+  })),
+);
+
+

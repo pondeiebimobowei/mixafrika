@@ -71,10 +71,6 @@ module.exports = {
         // If you are using `shacn-ui` or similar, they typically map `DEFAULT` to `var(--radius)`.
       },
     },
-
-    borderWidth: {
-        hairline: hairlineWidth(),
-      },
       keyframes: {
         'accordion-down': {
           from: { height: '0' },
