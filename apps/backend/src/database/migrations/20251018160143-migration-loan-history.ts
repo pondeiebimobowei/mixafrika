@@ -7,6 +7,7 @@ const LoanStatus = {
   PENDING: 'pending',
   APPROVED: 'approved',
   REPAID: 'repaid',
+  COMPLETED: 'completed'
 } as const;
 
 /** @type {import('sequelize-cli').Migration} */

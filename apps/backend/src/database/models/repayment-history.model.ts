@@ -8,7 +8,7 @@ import {
 } from 'sequelize-typescript';
 import { LoanAccount } from './loan-account.model';
 import { IRepaymentHistory } from '@shared/shared/src/types/repayment-history';
-import { PaymentStatus } from '@shared/shared/src/enums';
+import { RepaymentStatus } from '@shared/shared/src/enums';
 
 @Table({ tableName: 'repayment_history' })
 export class RepaymentHistory
@@ -23,7 +23,7 @@ export class RepaymentHistory
   amount: number;
 
   @Column(DataType.STRING)
-  status: PaymentStatus;
+  status: RepaymentStatus;
 
   @BelongsTo(() => LoanAccount)
   loan_account: LoanAccount;

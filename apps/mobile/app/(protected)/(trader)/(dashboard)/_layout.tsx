@@ -7,12 +7,37 @@ export default function RootLayout() {
   const router = useRouter();
 
   return (
-    <Stack screenOptions={{ headerShown: true }}>
+    <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen
         name="loan/apply"
         options={{
           headerShown: true,
           title: 'Apply for Funds',
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: '#ffffff',
+          headerTitleStyle: {
+            fontWeight: '900',
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                router.back();
+              }}
+            >
+              <Ionicons name="arrow-back" size={24} color="#fff" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+      
+      <Stack.Screen
+        name="repayment-history"
+        options={{
+          headerShown: true,
+          title: 'Repayment History',
           headerStyle: {
             backgroundColor: 'black',
           },

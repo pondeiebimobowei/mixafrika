@@ -13,6 +13,7 @@ export const LoanStatus = {
     PENDING: "pending",
     APPROVED: "approved",
     REPAID: "repaid",
+    COMPLETED: 'completed'
 } as const;
 
 export type LoanStatus = (typeof LoanStatus)[keyof typeof LoanStatus];

@@ -9,8 +9,8 @@ export default function NewsAndUpdates(){
               <Text className='text-primary text-xl font-bold '>View all</Text>
             </View>
             <View className='flex pt-6 gap-8'>
-              {[1,2,3].map((item)=> (
-                <View className='flex flex-row items-center justify-between'>
+              {[1,2,3].map((item, idx)=> (
+                <View key={idx} className='flex flex-row items-center justify-between'>
                   <View className='bg-primary/40 p-3 rounded-full'>
                     <Megaphone size={24} color={'green'} />
                   </View>

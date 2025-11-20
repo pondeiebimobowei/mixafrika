@@ -2,56 +2,74 @@
 import { v4 as uuidv4 } from 'uuid';
 import { mockUserSeed } from "../data/user.mock";
 import { mockNotificationSeed } from '../data/notification.mock';
+import { mockInvestorSeed } from '../data/investor.mock';
+import { mockLoanRepaySeed } from '../data/loan-repayment.mock';
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface) {
     await queryInterface.sequelize.transaction(async (t) => {
 
+
+      const randomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+      const randomBool = () => Math.random() < 0.5;
+
       const users = await mockUserSeed()
+      const investors = await mockInvestorSeed()
+
       const responseUser = await queryInterface.bulkInsert('user', users, { returning: true, transaction: t });
-      
-      const userWallets = responseUser.map((u) => ({
-        id: uuidv4(), 
+      const responseInvestor = await queryInterface.bulkInsert('user', investors, { returning: true, transaction: t });
+    
+      const userWallets = [...responseUser, ...responseInvestor].map((u) => ({
+        id: uuidv4(),
         user_id: u.id,
-        amount: 0,
-        total_portfolio: 0,
+        amount: randomNumber(1000, 150000),            
+        total_portfolio: randomNumber(5000, 500000),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }));
+      
+      const userSettings = [...responseUser, ...responseInvestor].map((u) => ({
+        id: uuidv4(),
+        user_id: u.id,
+        enable_dark_mode: randomBool(),
+        enable_email_notification: randomBool(),
+        enable_push_notification: randomBool(),
         createdAt: new Date(),
         updatedAt: new Date()
       }));
-      
-      const userSettings = responseUser.map((u) => ({
-        id: uuidv4(), 
-        user_id: u.id,
-        enable_dark_mode: true,
-        enable_email_notification: true,
-        enable_push_notification: true,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      }));
 
-
-
+      // await queryInterface.bulkInsert('loan_history', loan_history, { transaction: t });
       await queryInterface.bulkInsert('setting', userSettings, { transaction: t });
       await queryInterface.bulkInsert('wallet', userWallets, { transaction: t });
       
-      const notification = await mockNotificationSeed(responseUser)
-      await queryInterface.bulkInsert('notification', notification, { transaction: t });
+      // const notificationUser = await mockNotificationSeed(responseUser)
+      const notificationUser = await mockNotificationSeed([...responseUser, responseUser[0], responseInvestor[1]])
+      await queryInterface.bulkInsert('notification', notificationUser, { transaction: t });
       
-      await queryInterface.bulkInsert('loan_account', [{
-        id: uuidv4(),
-        duration: 12,
-        interest_rate: 5,
-        received_amount: 12000,
-        repaid_amount: 600,
-        repayment_amount: 200,
+      const loan_account = await queryInterface.bulkInsert('loan_account', [{
         user_id: users[0].id,
+        id: uuidv4(),
+        received_amount: 800_000,
+        status: 'approved',
+        repaid_amount: 191_670,
+        repayment_amount: 575_000,
+        interest_rate: 15,
+        duration: 30,
+        approvedAt: new Date(),
         createdAt: new Date(),
         updatedAt: new Date()
       }],
-      { transaction: t }
-    )
 
+      
+      { 
+        returning: true,
+        transaction: t }
+      )
+
+      const repayment_history = await mockLoanRepaySeed(loan_account)
+      const rh = await queryInterface.bulkInsert('repayment_history', repayment_history, { returning: true, transaction: t });
+      console.log(rh)
 
       
     });

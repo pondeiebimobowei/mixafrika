@@ -1,7 +1,14 @@
 'use strict';
-import { Roles } from '@shared/shared/src/enums';
 import sequelize from 'sequelize';
 import { QueryInterface, DataTypes } from 'sequelize';
+
+export const LoanStatus = {
+    PENDING: "pending",
+    APPROVED: "approved",
+    REPAID: "repaid",
+    COMPLETED: 'completed'
+} as const;
+
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -41,10 +48,22 @@ module.exports = {
           allowNull: false,
           defaultValue: 0.0,
         },
+
         duration: {
           type: Sequelize.DECIMAL(15, 2),
           allowNull: false,
           defaultValue: 0.0,
+        },
+
+        status: {
+          type: Sequelize.STRING,
+          validate: { isIn: [Object.values(LoanStatus)] },
+          defaultValue: 'pending',
+        },
+
+        approvedAt: {
+          allowNull: false,
+          type: Sequelize.DATE
         },
 
         createdAt: {

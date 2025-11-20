@@ -1,6 +1,7 @@
 import type { StateCreator } from 'zustand';
 import { BaseSlice } from '..';
 import { getUserSettings, updateDarkModeSettings, updateEmailNotificationSettings, updatePushNotificationSettings } from '@/axios/settings';
+import Toast from 'react-native-toast-message';
 
 export interface UserSettingsSlice extends BaseSlice {
   loading: boolean,
@@ -51,8 +52,16 @@ export const createUserSettings: StateCreator<
     const response = await updateDarkModeSettings(enable_dark_mode);
     if(response.success){
         set({ enable_dark_mode })
-    }else{
+        Toast.show({
+          text1: response.message,
+          type: "success"
+        })
+      }else{
         set({ error: response.message, })
+        Toast.show({
+          text1: response.message,
+          type: "error"
+        })
     }
 
     set({ loading: false })
@@ -64,8 +73,16 @@ export const createUserSettings: StateCreator<
     const response = await updateEmailNotificationSettings(enable_email_notification);
     if(response.success){
         set({ enable_email_notification })
+        Toast.show({
+          text1: response.message,
+          type: "success"
+        })
     }else{
         set({ error: response.message, })
+        Toast.show({
+          text1: response.message,
+          type: "error"
+        })
     }
 
     set({ loading: false })
@@ -77,8 +94,16 @@ export const createUserSettings: StateCreator<
     const response = await updatePushNotificationSettings(enable_push_notification);
     if(response.success){
         set({ enable_push_notification })
+        Toast.show({
+          text1: response.message,
+          type: "success"
+        })
     }else{
         set({ error: response.message, })
+        Toast.show({
+          text1: response.message,
+          type: "error"
+        })
     }
 
     set({ loading: false })

@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { View, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useNavigation } from '@react-navigation/native';
 import { Link, useRouter } from 'expo-router';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -16,17 +15,15 @@ import Sheet from '@/components/ui/sheet';
 import { SettingsSheet } from '@/components/sheets/settings.sheet';
 import { Ionicons } from '@expo/vector-icons';
 import { useFetchUserSettings } from '@/store/hooks/settings';
-import { Button } from '@/components/ui/button';
+import { formatCurrency } from '@/lib/utils';
 
 interface SheetsState {
   isFundingOpen: boolean,
   isRepayOpen: boolean,
   isWithdrawOpen: boolean,
-  isSettingsOpen: boolean
 }
 
 export default function Profile() {
-  const navigation = useNavigation();
   const { user } = useAuthStore();
   const { business } = useUserBusiness();
   const { data } = useWalletState();
@@ -37,12 +34,8 @@ export default function Profile() {
 
   const [isBalanceVisible, setIsBalanceVisible] = useState(true);
 
-  const [ sheetIsOpen, setSheetIsOpen ] = useState<SheetsState>({ isFundingOpen: false, isRepayOpen: false, isWithdrawOpen: false, isSettingsOpen: false })
+  const [ sheetIsOpen, setSheetIsOpen ] = useState<SheetsState>({ isFundingOpen: false, isRepayOpen: false, isWithdrawOpen: false })
   const router = useRouter();
-
-  const formatCurrency = (amount: number) => {
-    return `₦${amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-  };
 
   useFetchUserSettings()
 
@@ -82,7 +75,7 @@ export default function Profile() {
 
 
             <TouchableOpacity
-              onPress={() => setSheetIsOpen( prev => ({ ...prev, isSettingsOpen: !prev.isSettingsOpen }))}
+              onPress={() => router.push('/(protected)/(trader)/(dashboard)/settings')}
               >
                 <Settings size={24} color="#fff" />
             </TouchableOpacity>
@@ -112,7 +105,7 @@ export default function Profile() {
             </TouchableOpacity>
           </View>
           <Text className="text-4xl font-bold text-white mt-1">
-            {isBalanceVisible ? formatCurrency(data?.amount || 0) : '∗∗∗∗∗∗∗∗∗∗'}
+            {isBalanceVisible ? formatCurrency(data?.amount) : '∗∗∗∗∗∗∗∗∗∗'}
           </Text>
         </View>
       </View>
@@ -160,9 +153,9 @@ export default function Profile() {
           </View>
         </View>
       </ScrollView>
-      <Sheet open={sheetIsOpen.isSettingsOpen} onOpenChange={()=> setSheetIsOpen(prev => ({...prev, isSettingsOpen: !prev.isSettingsOpen }))}>
+      {/* <Sheet open={sheetIsOpen.isSettingsOpen} onOpenChange={()=> setSheetIsOpen(prev => ({...prev, isSettingsOpen: !prev.isSettingsOpen }))}>
         <SettingsSheet />
-      </Sheet>
+      </Sheet> */}
     </SafeAreaView>
   );
 }

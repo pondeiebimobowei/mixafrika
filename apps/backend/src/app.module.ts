@@ -44,6 +44,7 @@ import { GlobalModule } from './global/global.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { FundingApplication } from './database/models/funding_application';
 import { LoanAccountModule } from './loan_account/loan_account.module';
+import { LoanRepaymentHistoryModule } from './loan_repayment_history/loan_repayment_history.module';
 
 @Module({
   imports: [
@@ -73,6 +74,7 @@ import { LoanAccountModule } from './loan_account/loan_account.module';
     GlobalModule,
     CloudinaryModule,
     LoanAccountModule,
+    LoanRepaymentHistoryModule,
   ],
   controllers: [AppController],
   providers: [

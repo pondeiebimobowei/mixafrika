@@ -16,6 +16,7 @@ import { User } from './user.model';
 import { RepaymentHistory } from './repayment-history.model';
 import { ILoanAccount } from '@shared/shared/src/types/loan-account';
 import { CreationOptional, DataTypes } from 'sequelize';
+import { LoanStatus } from '@shared/shared/src/enums';
 
 @Table({ tableName: 'loan_account' })
 export class LoanAccount extends Model<ILoanAccount> implements ILoanAccount {
@@ -45,6 +46,15 @@ export class LoanAccount extends Model<ILoanAccount> implements ILoanAccount {
 
   @BelongsTo(() => User)
   user: User;
+
+  @HasMany(() => RepaymentHistory)
+  repayment_history: RepaymentHistory[];
+
+  @Column(DataType.STRING)
+  declare status: LoanStatus;
+
+  @Column(DataType.STRING)
+  declare approvedAt: string;
 
   @CreatedAt
   declare createdAt: string;

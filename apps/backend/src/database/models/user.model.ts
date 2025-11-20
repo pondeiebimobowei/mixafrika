@@ -99,7 +99,7 @@ export class User extends Model<IUser> implements IUser {
   goals: Goal[];
 
   @HasMany(() => LoanAccount)
-  loans: LoanAccount[];
+  loan_acount: LoanAccount[];
 
   @HasMany(() => Investment)
   investments: Investment[];

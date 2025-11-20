@@ -23,6 +23,7 @@ import { useRouter } from 'expo-router';
 import NewsAndUpdates from '@/components/cards/news-and-update.card';
 import CreditScoreOverView from '@/components/cards/credit-score-overview.card';
 import { useFetchLoanAccount } from '@/store/hooks/loan-account';
+import { formatCurrency } from '@/lib/utils';
 
 export default function TraderDashboard() {
   const { business } = useUserBusiness();
@@ -38,10 +39,10 @@ export default function TraderDashboard() {
   const [showMakeRepaymentModal, setShowMakeRepaymentModal] =
     useState<boolean>(false);
   const quickActions = [
-    { label: 'Apply', icon: FileText, route: 'TraderApply' },
-    { label: 'Repay', icon: Repeat, route: 'TraderRepayments' },
-    { label: 'Esusu', icon: PiggyBank, route: 'TraderEsusu' },
-    { label: 'Profile', icon: User, route: 'TraderProfile' },
+    { label: 'Apply', icon: FileText, route: '/(protected)/(trader)/(dashboard)/loan/apply' },
+    { label: 'Repay', icon: Repeat, route: '(protected)/(trader)/(dashboard)/repayment-history' },
+    { label: 'Esusu', icon: PiggyBank, route: '(protected)/(trader)/esusu' },
+    { label: 'Profile', icon: User, route: '(protected)/(trader)/profile' },
   ];
 
   return (
@@ -91,7 +92,7 @@ export default function TraderDashboard() {
           <View className="p-10 rounded-xl bg-card grow">
             <Text className="text-slate-300">Wallet Balance</Text>
             <Text className="text-white text-2xl">
-              ₦{amount.toLocaleString() || 1}
+              {formatCurrency(amount)}
             </Text>
           </View>
 
@@ -112,7 +113,7 @@ export default function TraderDashboard() {
 
           <View className="flex flex-row justify-around items-center my-10">
             {quickActions.map((action) => (
-              <TouchableOpacity onPress={()=> router.push('/(protected)/(trader)/(dashboard)/loan/apply')} key={action.label}>
+              <TouchableOpacity onPress={()=> router.push(action.route as any)} key={action.label}>
                 <View className="flex items-center gap-2 p-4 bg-green-900/20 rounded-full">
                   <action.icon size={20} color={'hsl(151 51% 33%)'} />
                 </View>
