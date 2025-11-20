@@ -16,9 +16,6 @@ module.exports = {
         duration: { type: Sequelize.STRING, allowNull: false },
         repayment_plan: { type: Sequelize.STRING, allowNull: false },
         purpose: { type: Sequelize.STRING, allowNull: false },
-        business_reg_doc: { type: Sequelize.STRING, allowNull: false },
-        id_doc: { type: Sequelize.STRING, allowNull: false },
-        address_doc: { type: Sequelize.STRING, allowNull: false },
         statement_of_account_doc: { type: Sequelize.STRING, allowNull: false },
         
         createdAt: { allowNull: false, type: Sequelize.DATE, defaultValue: Sequelize.NOW },

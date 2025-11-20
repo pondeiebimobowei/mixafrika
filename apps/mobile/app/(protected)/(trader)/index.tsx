@@ -114,7 +114,7 @@ export default function TraderDashboard() {
             {quickActions.map((action) => (
               <TouchableOpacity onPress={()=> router.push('/(protected)/(trader)/(dashboard)/loan/apply')} key={action.label}>
                 <View className="flex items-center gap-2 p-4 bg-green-900/20 rounded-full">
-                  <action.icon size={28} color={'hsl(151 51% 33%)'} />
+                  <action.icon size={20} color={'hsl(151 51% 33%)'} />
                 </View>
                 <Text className=" text-center text-white mt-1">
                   {action.label}

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { LoanService } from './loan.service';
-import { LoanController } from './loan.controller';
+import { LoanService } from './loan_history.service';
+import { LoanController } from './loan_history.controller';
 
 @Module({
   providers: [LoanService],

@@ -67,8 +67,33 @@ export default function LoanOverviewCard() {
             </View>
 
           </View>
-          <AccordionContent>
-            <Text>This is me</Text>
+          <AccordionContent className='my-6'>
+            <View className='flex flex-row flex-wrap gap-4 items-center justify-between'>
+              <View className='w-5/12 '>
+                <Text className='text-white/50'>Interest Rate</Text>
+                <Text className='text-white font-semibold'>{loan_account?.interest_rate}%</Text>
+              </View>
+
+              <View className='w-5/12 '>
+                <Text className='text-white/50'>Total Repayment</Text>
+                <Text className='text-white font-semibold'>{loan_account?.repayment_amount}</Text>
+              </View>
+              
+              <View className='w-5/12 '>
+                <Text className='text-white/50'>Next Payment</Text>
+                <Text className='text-white font-semibold'>{loan_account?.interest_rate}%</Text>
+              </View>
+
+              <View className='w-full '>
+                <Text className='text-white/50'>Loan duration</Text>
+                <Text className='text-white font-semibold'>{loan_account?.duration} days</Text>
+              </View>
+
+              <View>
+                <Text className='text-white'>Funded by 12 investors</Text>
+              </View>
+
+            </View>
           </AccordionContent>
         </AccordionItem>
       </Accordion>

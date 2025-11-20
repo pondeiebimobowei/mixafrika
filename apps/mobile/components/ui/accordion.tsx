@@ -38,7 +38,6 @@ function AccordionItem({
   return (
     <AccordionPrimitive.Item
       className={cn(
-        'border-border border-b',
         Platform.select({ web: 'last:border-b-0' }),
         className
       )}

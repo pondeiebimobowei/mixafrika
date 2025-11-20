@@ -15,7 +15,7 @@ import { FeedModule } from './feed/feed.module';
 import { UpdateModule } from './update/update.module';
 import { SystemModule } from './system/system.module';
 import { AdminModule } from './admin/admin.module';
-import { LoanModule } from './loan/loan.module';
+import { LoanModule } from './loan_history/loan_history.module';
 import { SettingsModule } from './settings/settings.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule, ConfigService } from '@nestjs/config';
