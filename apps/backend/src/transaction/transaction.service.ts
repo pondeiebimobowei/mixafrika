@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { Transaction } from 'src/database/models/transaction.model';
 
 @Injectable()
 export class TransactionService {
-  async handleGetTransactions() {
+  async handleGetTransactions(user_id: string) {
+    const transactions = await Transaction.findAll({ where: { user_id }})
+    
     return {
       success: true,
-      message: '',
-      data: [],
+      message: 'User Transactions found',
+      data: transactions,
     };
   }
 

@@ -10,6 +10,20 @@ const Types = {
   REPAYMENT: 'repayment',
 } as const;
 
+export const Status = {
+    ACTIVE: "active",
+    DEFAULTED: "defaulted",
+    FAILED: "failed",
+    PENDING: "pending",
+    COMPLETED: "completed",
+} as const;
+
+export const RepaymentStatus = {
+    PAID: "paid",
+    "PAID (LATE)": "paid (late)",
+    MISSED: "missed",
+} as const;
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
@@ -37,6 +51,13 @@ module.exports = {
           type: Sequelize.DECIMAL(15, 2),
           allowNull: false,
           defaultValue: 0.0,
+        },
+        status: {
+          type: Sequelize.STRING,
+          allowNull: false,
+          validate: {
+            isIn: [Object.keys({...Status, ...RepaymentStatus})]
+          }
         },
         category: { type: Sequelize.STRING, allowNull: false },
         createdAt: {

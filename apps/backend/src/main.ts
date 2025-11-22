@@ -21,7 +21,7 @@ async function bootstrap() {
       'http://127.0.0.1:8081',
       'http://localhost:5173',
       'http://10.88.0.3:9002',
-      'http://192.168.1.155:8081',
+      'http://10.121.249.138:8081',
       'http://10.1.1.3:8081',
       'https://9000-firebase-mixafrica-app-1762205912355.cluster-lu4mup47g5gm4rtyvhzpwbfadi.cloudworkstations.dev',
       'https://6000-firebase-studio-1759422244875.cluster-cbeiita7rbe7iuwhvjs5zww2i4.cloudworkstations.dev',

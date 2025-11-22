@@ -10,12 +10,14 @@ import { useAuthStore, useUserBusiness } from '@/store';
 import { useFetchBusiness } from '@/store/hooks/business';
 import { useFetchWallet, useWalletState } from '@/store/hooks/wallet.hook';
 
-import { Eye, EyeOff, History, Landmark, Repeat, Settings, Wallet } from 'lucide-react-native';
+import { ArrowDown, ArrowUp, Eye, EyeOff, History, Landmark, Repeat, Send, Settings, Wallet, X } from 'lucide-react-native';
 import Sheet from '@/components/ui/sheet';
 import { SettingsSheet } from '@/components/sheets/settings.sheet';
 import { Ionicons } from '@expo/vector-icons';
 import { useFetchUserSettings } from '@/store/hooks/settings';
-import { formatCurrency } from '@/lib/utils';
+import { cn, formatCurrency, formatDate } from '@/lib/utils';
+import { useFetchTransaction, useTransactionState } from '@/store/hooks/transaction.hook';
+import { RepaymentStatus, Status, Types } from '@mixafrica/shared/enums';
 
 interface SheetsState {
   isFundingOpen: boolean,
@@ -27,6 +29,7 @@ export default function Profile() {
   const { user } = useAuthStore();
   const { business } = useUserBusiness();
   const { data } = useWalletState();
+  const { data: { transactions } } = useTransactionState();
 
 
   useFetchBusiness();
@@ -38,6 +41,7 @@ export default function Profile() {
   const router = useRouter();
 
   useFetchUserSettings()
+  useFetchTransaction()
 
   const quickActions = [
     { label: 'Fund', icon: Wallet, sheetKey: 'isSettings' },
@@ -45,9 +49,42 @@ export default function Profile() {
     { label: 'Withdraw', icon: Landmark, sheetKey: 'isWithdrawOpen' },
   ];
 
+  const transactionIcons = {
+  deposit: ArrowDown,
+  withdrawal: ArrowUp,
+  failed: X,
+  repayment: Repeat,
+  loan: ArrowDown
+};
+
+const transactionColors = {
+  credit: 'text-primary',
+  debit: 'text-foreground',
+  failed: 'text-destructive',
+};
+
+const transactionIconBg = {
+  credit: 'bg-primary/15',
+  debit: 'bg-gray-100 dark:bg-gray-800/70',
+  failed: 'bg-red-100 dark:bg-red-900/30',
+};
+
+const transactionIconColor = {
+  credit: 'hsl(151 51% 33%)',
+  debit: 'hsl(346 70% 55%)',
+  failed: 'hsl(346 70% 55%)',
+  investment: 'grey'
+};
+
+const formatAmount = (amount: number, type: Types) => {
+    const prefix = type === Types.DEPOSIT ? '+₦' : '-₦';
+    return `${prefix}${amount.toLocaleString()}`;
+  };
+
 
   return (
     <SafeAreaView  className="flex-1 bg-primary justify-start">
+      <View className='bg-primary text-gray-600 dark:text-gray-400 text-red-600 dark:text-red-400 text-yellow-600 dark:text-yellow-400' />
       <View className="pb-6 px-4 mb-10">
         <View className="flex flex-col items-center justify-between pt-4 pb-4">
 
@@ -151,6 +188,70 @@ export default function Profile() {
               </TouchableOpacity>
             </Link>
           </View>
+          <View className="gap-3 mt-4">
+              {transactions.map((transaction) => {
+                const Icon = transactionIcons[transaction.type as keyof typeof transactionIcons] || Send;
+
+                const iconColor =
+                  transaction.type === Types.WITHDRAWAL
+                    ? transactionIconColor.debit
+                    : transaction.type === Types.INVESTMENT
+                    ? transactionIconColor.investment
+                    : transaction.type === Types.DEPOSIT
+                    ? transactionIconColor.credit
+                    : transaction.type === Types.DISBURSEMENT
+                    ? transactionIconColor.credit
+                    : transaction.type === Types.REPAYMENT
+                    ? transactionIconColor.debit
+                    : transaction.type === Types.LOAN
+                    ? transactionIconColor.credit
+                    : transactionIconColor[
+                        transaction.type as keyof typeof transactionIconColor
+                      ];
+
+        const bgClass =
+    transaction.type === Types.WITHDRAWAL
+      ? "bg-destructive/10"
+      : transaction.type === Types.INVESTMENT
+      ? "bg-yellow-100 dark:bg-yellow-900/30"
+      : transaction.type === Types.DISBURSEMENT
+      ? transactionIconBg.credit
+      : transaction.type === Types.DEPOSIT
+      ? transactionIconBg.credit
+      : transactionIconBg[
+          transaction.type as keyof typeof transactionIconBg
+        ];
+                return (
+                  <View key={transaction.id} className="flex flex-row items-center justify-between p-4 bg-card rounded-xl">
+                    <View className="flex flex-row items-center gap-2">
+                      <View className={cn("flex items-center justify-center h-10 w-10 rounded-full", 
+                        transaction.type === Types.WITHDRAWAL ? 'bg-destructive/10' :
+                        transaction.type === Types.INVESTMENT ? 'bg-yellow-100 dark:bg-yellow-900/30' :
+                        transaction.type === Types.DISBURSEMENT ? transactionIconBg['credit'] :
+                        transaction.type === Types.DEPOSIT ? transactionIconBg['credit'] :
+                        transactionIconBg[transaction.type as keyof typeof transactionIconBg]
+                      )}>
+                        <Icon strokeWidth={3} size={18} color={iconColor} className={iconColor} />
+                        
+                      </View>
+                      <View>
+                        <Text className="font-semibold text-sm">{transaction.title}</Text>
+                        <Text className="text-xs text-muted-foreground">{formatDate(transaction.createdAt)}</Text>
+                      </View>
+                    </View>
+                    <Text className={cn("font-bold text-sm whitespace-nowrap", 
+                      transaction.type === Types.WITHDRAWAL ? 'text-destructive' : 
+                      transaction.type === Types.INVESTMENT ? 'text-yellow-600 dark:text-yellow-400' :
+                      transaction.type === Types.DISBURSEMENT ? transactionColors['credit'] :
+                      transaction.type === Types.DEPOSIT ? transactionColors['credit'] :
+                      transactionColors[transaction.type as keyof typeof transactionColors]
+                    )}>
+                      {formatAmount(transaction.amount, transaction.type)}
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
         </View>
       </ScrollView>
       {/* <Sheet open={sheetIsOpen.isSettingsOpen} onOpenChange={()=> setSheetIsOpen(prev => ({...prev, isSettingsOpen: !prev.isSettingsOpen }))}>

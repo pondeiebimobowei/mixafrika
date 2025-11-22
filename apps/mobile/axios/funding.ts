@@ -1,9 +1,16 @@
 import { Create_funding_application_dto } from '@mixafrica/shared/validation/funding-application.dto';
 import { apiPrivate } from './axios-config';
+import { IFundingApplication } from '@mixafrica/shared/types/funding-application';
+
+interface Response {
+  success: boolean;
+  message: string;
+  data: IFundingApplication[] | [];
+}
 
 export const submitFundingApplication = async (
   data: Create_funding_application_dto,
-) => {
+) : Promise<Response> => {
   try {
     const formData = new FormData();
     
@@ -34,9 +41,9 @@ export const submitFundingApplication = async (
     return res.data;
   } catch (err: any) {
     if (err.response) {
-      return { success: false, message: err.response.data.message, data: null };
+      return { success: false, message: err.response.data.message, data: [] };
     } else {
-      return { success: false, message: err.message, data: null };
+      return { success: false, message: err.message, data: [] };
     }
   }
 };

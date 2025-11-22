@@ -10,6 +10,7 @@ import {
   CreatedAt,
   PrimaryKey,
   Default,
+  Validate,
 } from 'sequelize-typescript';
 import { ITransaction } from '@shared/shared/src/types/transaction';
 import { RepaymentStatus, Status, Types } from '@shared/shared/src/enums';
@@ -39,8 +40,12 @@ export class Transaction extends Model<ITransaction> implements ITransaction {
   @Column(DataType.STRING)
   category: string;
 
+  @Validate({ isIn: [Object.keys({...Status, ...RepaymentStatus})]})
   @Column(DataType.STRING)
   status: Status | RepaymentStatus;
+
+  @BelongsTo(() => User)
+  loan_account: User;
 
   @CreatedAt
   declare createdAt: string;

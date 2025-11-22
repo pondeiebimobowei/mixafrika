@@ -24,6 +24,8 @@ import { CreationOptional } from 'sequelize';
 import { LoanAccount } from './loan-account.model';
 import { UserBusiness } from './user-business.model';
 import { Setting } from './setting.model';
+import { Transaction } from './transaction.model';
+import { FundingApplication } from './funding_application';
 
 @Table({
   tableName: 'user',
@@ -100,6 +102,12 @@ export class User extends Model<IUser> implements IUser {
 
   @HasMany(() => LoanAccount)
   loan_acount: LoanAccount[];
+
+  @HasMany(() => Transaction)
+  transaction: Transaction[];
+
+  @HasMany(() => FundingApplication)
+  application: FundingApplication[];
 
   @HasMany(() => Investment)
   investments: Investment[];
