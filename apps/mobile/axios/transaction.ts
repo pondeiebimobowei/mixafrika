@@ -1,15 +1,18 @@
+import { Filters } from '@/app/(protected)/(trader)/(dashboard)/transactions';
 import { apiPrivate } from './axios-config';
 import { ITransaction } from '@mixafrica/shared/types/transaction';
 
 interface Response {
   success: boolean;
   message: string;
-  data: ITransaction[] | [];
+  data: Record<string, ITransaction[]> | [];
 }
 
-export const getTransactions = async (): Promise<Response> => {
+export const getTransactions = async (type?: Filters): Promise<Response> => {
   try {
-    const res = await apiPrivate.get(`/transactions`);
+    const res = await apiPrivate.get(`/transactions`, {
+      params: { type }
+    });
     return res.data;
   } catch (err: any) {
     if (err.response) {

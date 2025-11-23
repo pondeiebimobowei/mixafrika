@@ -25,8 +25,8 @@ export const mockTransactionsSeed: (response) => Promise<ITransaction[]> =( asyn
             title: 'Withdrawal',
             type: 'withdrawal',
             user_id: user_id[0],
-            createdAt: "2025-11-4T16:13:42.425Z",
-            updatedAt: "2025-11-4T16:13:42.425Z",
+            createdAt: "2025-10-26T16:13:42.425Z",
+            updatedAt: "2025-10-26T16:13:42.425Z",
         },
         {
             id: uuidv4(),
@@ -36,8 +36,8 @@ export const mockTransactionsSeed: (response) => Promise<ITransaction[]> =( asyn
             title: 'Investment',
             type: 'investment',
             user_id: user_id[0],
-            createdAt: "2025-11-4T16:13:42.425Z",
-            updatedAt: "2025-11-4T16:13:42.425Z",
+            createdAt: "2025-10-14T16:13:42.425Z",
+            updatedAt: "2025-10-14T16:13:42.425Z",
         },
         {
             id: uuidv4(),
@@ -47,8 +47,8 @@ export const mockTransactionsSeed: (response) => Promise<ITransaction[]> =( asyn
             title: 'Daily ROI',
             type: 'disbursement',
             user_id: user_id[0],
-            createdAt: "2025-11-4T16:13:42.425Z",
-            updatedAt: "2025-11-4T16:13:42.425Z",
+            createdAt: "2025-10-26T16:13:42.425Z",
+            updatedAt: "2025-10-26T16:13:42.425Z",
         },
         {
             id: uuidv4(),
@@ -58,8 +58,8 @@ export const mockTransactionsSeed: (response) => Promise<ITransaction[]> =( asyn
             title: 'Repay Loan',
             type: 'repayment',
             user_id: user_id[0],
-            createdAt: "2025-11-4T16:13:42.425Z",
-            updatedAt: "2025-11-4T16:13:42.425Z",
+            createdAt: "2025-09-26T16:13:42.425Z",
+            updatedAt: "2025-09-26T16:13:42.425Z",
         },
         {
             id: uuidv4(),
@@ -69,8 +69,8 @@ export const mockTransactionsSeed: (response) => Promise<ITransaction[]> =( asyn
             title: 'Recieved Funding',
             type: 'loan',
             user_id: user_id[0],
-            createdAt: "2025-11-4T16:13:42.425Z",
-            updatedAt: "2025-11-4T16:13:42.425Z",
+            createdAt: "2025-09-20T16:13:42.425Z",
+            updatedAt: "2025-09-20T16:13:42.425Z",
         },
     ]
 })
