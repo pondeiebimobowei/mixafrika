@@ -13,7 +13,7 @@ import {
   TransactionsSlice,
 } from './slice/transactions.slice';
 import { createLoanHistory, LoanHistory } from './slice/loan-history.slice';
-import { createUserWallet, UserWallet } from './slice/wallet';
+import { createUserWallet, UserWallet } from './slice/wallet.slice';
 import { createLoanAccount, LoanAccount } from './slice/loan-account.slice';
 import { createTraderRecord, TraderRecord } from './slice/trader.slice';
 import { createUserBusiness, UserBusiness } from './slice/business.slice';

@@ -2,13 +2,15 @@ import type { StateCreator } from 'zustand';
 import type { BaseSlice } from '..';
 import { apiPrivate } from '@/axios/axios-config';
 import { IWallet } from '@mixafrica/shared/types/wallet';
+import { fundWallet } from '@/axios/wallet';
 export interface UserWallet extends BaseSlice, Omit<IWallet, 'user_id'> {
   setWallet: ({ amount, total_portfolio }: IWallet) => void;
   getWalletBalance: () => void;
+  fundWallet: (amount: number) =>void ;
 }
 
 export const createUserWallet: StateCreator<UserWallet, [], [], UserWallet> = (
-  set,
+  set, get
 ) => ({
   loading: false,
   error: null,
@@ -37,5 +39,20 @@ export const createUserWallet: StateCreator<UserWallet, [], [], UserWallet> = (
         set({ error: err.message, loading: false });
       }
     }
+    set({ loading: false });
   },
+
+  fundWallet: async (amount: number) => {
+    set({ loading: true, error: null });
+    const { success, message, data } = await fundWallet(amount);
+
+    if (success) {
+      get().getWalletBalance();
+
+    } else {
+      set({ error: message });
+    }
+
+    set({ loading: false });
+  }
 });

@@ -56,7 +56,7 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: false,
           validate: {
-            isIn: [Object.keys({...Status, ...RepaymentStatus})]
+            isIn: [[...Object.values(Status), ...Object.values(RepaymentStatus)]]
           }
         },
         category: { type: Sequelize.STRING, allowNull: false },

@@ -2,11 +2,12 @@ import { useEffect } from 'react';
 import { useWallet } from '..';
 
 export function useWalletState() {
-  const { loading, error, amount, total_portfolio } = useWallet();
+  const { loading, error, amount, total_portfolio, fundWallet } = useWallet();
 
   const data = {
     amount,
     total_portfolio,
+    fundWallet
   };
 
   return {

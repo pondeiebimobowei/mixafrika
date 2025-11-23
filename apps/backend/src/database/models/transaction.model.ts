@@ -40,7 +40,7 @@ export class Transaction extends Model<ITransaction> implements ITransaction {
   @Column(DataType.STRING)
   category: string;
 
-  @Validate({ isIn: [Object.keys({...Status, ...RepaymentStatus})]})
+  @Validate({ isIn: [[...Object.values(Status), ...Object.values(RepaymentStatus)]] })
   @Column(DataType.STRING)
   status: Status | RepaymentStatus;
 

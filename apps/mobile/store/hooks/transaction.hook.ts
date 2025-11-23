@@ -5,13 +5,13 @@ export function useTransactionState() {
   const { loading, error, transactions } = useTransactionsStore();
 
   const data = {
-    loading,
-    error,
     transactions
   };
 
   return {
     data,
+    error,
+    loading,
   };
 }
 

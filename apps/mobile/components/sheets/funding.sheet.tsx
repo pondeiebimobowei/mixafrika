@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, TextInput } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { ArrowLeft, Building2, CreditCard, Wallet, Copy, Check } from 'lucide-react-native';
 import * as Clipboard from 'expo-clipboard';
 import { clsx } from 'clsx';
+import { useWalletState } from '@/store/hooks/wallet.hook';
 
 type ViewState = 'selection' | 'bank-transfer' | 'crypto';
 
@@ -109,6 +110,17 @@ export function FundingSheet() {
         </View>
     );
 
+    const [amount, setAmount] = useState('');
+    const { data: { fundWallet }, loading } = useWalletState();
+
+    const handleConfirmTransfer = async () => {
+        if (!amount || isNaN(Number(amount))) return;
+
+        fundWallet(Number(amount));
+        setCurrentView('selection');
+        setAmount('');
+    };
+
     const renderBankTransfer = () => (
         <View>
             {renderHeader('Bank Transfer', () => setCurrentView('selection'))}
@@ -131,10 +143,32 @@ export function FundingSheet() {
 
             <TouchableOpacity
                 onPress={() => handleCopy('1234567890')}
-                className="flex-row items-center justify-center bg-[#27AE60] p-4 rounded-xl"
+                className="flex-row items-center justify-center bg-[#27AE60] p-4 rounded-xl mb-6"
             >
                 {copied ? <Check size={20} color="white" className="mr-2" /> : <Copy size={20} color="white" className="mr-2" />}
                 <Text className="text-white font-bold">{copied ? 'Copied!' : 'Copy Account Number'}</Text>
+            </TouchableOpacity>
+
+            <View className="mb-6">
+                <Text className="text-gray-400 text-sm mb-2">Amount Sent</Text>
+                <TextInput
+                    value={amount}
+                    onChangeText={setAmount}
+                    placeholder="Enter amount"
+                    placeholderTextColor="#6B7280"
+                    keyboardType="numeric"
+                    className="bg-[#2A2D35] text-white p-4 rounded-xl font-medium"
+                />
+            </View>
+
+            <TouchableOpacity
+                onPress={handleConfirmTransfer}
+                disabled={!amount || loading}
+                className={clsx("p-4 rounded-xl items-center", amount ? "bg-[#27AE60]" : "bg-[#2A2D35] opacity-50")}
+            >
+                <Text className={clsx("font-bold text-base", amount ? "text-white" : "text-gray-500")}>
+                    {loading ? 'Processing...' : 'I have made the transfer'}
+                </Text>
             </TouchableOpacity>
 
             <Text className="text-gray-500 text-xs text-center mt-4">

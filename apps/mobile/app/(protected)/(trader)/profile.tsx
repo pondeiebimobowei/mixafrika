@@ -12,12 +12,11 @@ import { useFetchWallet, useWalletState } from '@/store/hooks/wallet.hook';
 
 import { ArrowDown, ArrowUp, Eye, EyeOff, History, Landmark, Repeat, Send, Settings, Wallet, X } from 'lucide-react-native';
 import Sheet from '@/components/ui/sheet';
-import { SettingsSheet } from '@/components/sheets/settings.sheet';
 import { Ionicons } from '@expo/vector-icons';
 import { useFetchUserSettings } from '@/store/hooks/settings';
 import { cn, formatCurrency, formatDate } from '@/lib/utils';
 import { useFetchTransaction, useTransactionState } from '@/store/hooks/transaction.hook';
-import { RepaymentStatus, Status, Types } from '@mixafrica/shared/enums';
+import { Types } from '@mixafrica/shared/enums';
 import { FundingSheet } from '@/components/sheets/funding.sheet';
 
 interface SheetsState {

@@ -8,7 +8,7 @@ export interface TransactionsSlice {
   error: string | null,
 
   transactions: Record<string, ITransaction[]>;
-  getTransactions: (type?: Filters) => void
+  getTransactions: (type?: Filters) => void;
 }
 
 export const createTransactionsSlice: StateCreator<
@@ -22,7 +22,7 @@ export const createTransactionsSlice: StateCreator<
 
   transactions: {},
 
-  getTransactions: async (type?: Filters ) => {
+  getTransactions: async (type?: Filters) => {
     set({ loading: true, error: null });
     const { data, success, message } = await getTransactions(type);
 
