@@ -18,6 +18,7 @@ import { useFetchUserSettings } from '@/store/hooks/settings';
 import { cn, formatCurrency, formatDate } from '@/lib/utils';
 import { useFetchTransaction, useTransactionState } from '@/store/hooks/transaction.hook';
 import { RepaymentStatus, Status, Types } from '@mixafrica/shared/enums';
+import { FundingSheet } from '@/components/sheets/funding.sheet';
 
 interface SheetsState {
   isFundingOpen: boolean,
@@ -44,7 +45,7 @@ export default function Profile() {
   useFetchTransaction()
 
   const quickActions = [
-    { label: 'Fund', icon: Wallet, sheetKey: 'isSettings' },
+    { label: 'Fund', icon: Wallet, sheetKey: 'isFundingOpen' },
     { label: 'Repay', icon: Repeat, sheetKey: 'isRepayOpen' },
     { label: 'Withdraw', icon: Landmark, sheetKey: 'isWithdrawOpen' },
   ];
@@ -254,6 +255,14 @@ export default function Profile() {
           </View>
         </View>
       </ScrollView>
+
+      <Sheet
+        open={sheetIsOpen.isFundingOpen}
+        onOpenChange={() => setSheetIsOpen(prev => ({ ...prev, isFundingOpen: !prev.isFundingOpen }))}
+      >
+        <FundingSheet />
+      </Sheet>
+
       {/* <Sheet open={sheetIsOpen.isSettingsOpen} onOpenChange={()=> setSheetIsOpen(prev => ({...prev, isSettingsOpen: !prev.isSettingsOpen }))}>
         <SettingsSheet />
       </Sheet> */}
