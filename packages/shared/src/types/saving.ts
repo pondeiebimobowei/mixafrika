@@ -10,7 +10,7 @@ export interface ISaving extends BaseModel {
   auto_save: boolean;
   is_locked: boolean;
   source: string;
-  target_amount?: number;
-  interest_rate?: number;
-  frequency?: string;
+  target_amount: number;
+  interest_rate: number;
+  frequency: string;
 }
