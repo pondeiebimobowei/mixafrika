@@ -1,5 +1,7 @@
 import { getLoanAccount } from '@/axios/loan_account';
+import { repayLoan } from '@/axios/transaction';
 import { ILoanAccount } from '@mixafrica/shared/types/loan-account';
+import Toast from 'react-native-toast-message';
 import type { StateCreator } from 'zustand';
 
 export interface LoanAccount {
@@ -8,6 +10,8 @@ export interface LoanAccount {
   loan_account: ILoanAccount | null;
   get_loan_account: ()=> void;
   set_loan_account: ({ loan_account }: { loan_account: ILoanAccount }) => void;
+  repay_loan: (amount: number) => Promise<boolean>;
+
 }
 
 export const createLoanAccount: StateCreator<
@@ -15,7 +19,7 @@ export const createLoanAccount: StateCreator<
   [],
   [],
   LoanAccount
-> = (set) => ({
+> = (set, get) => ({
   loading: false,
   error: null,
   loan_account: null,
@@ -34,5 +38,22 @@ export const createLoanAccount: StateCreator<
         set({ error: response.message, loading: false });
       }
     },
+
+  repay_loan: async (amount: number) => {
+    set({ loading: true, error: null });
+    const { success, message } = await repayLoan(amount);
+
+
+    if (success) {
+      Toast.show({ text1: message, type: 'success'})
+      // await get().getTransactions();
+    } else {
+      Toast.show({ text1: message, type: 'error'})
+      set({ error: message });
+    }
+
+    set({ loading: false });
+    return success;
+  }
 });
 

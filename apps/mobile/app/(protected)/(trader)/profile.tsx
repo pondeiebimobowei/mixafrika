@@ -18,6 +18,7 @@ import { cn, formatCurrency, formatDate } from '@/lib/utils';
 import { useFetchTransaction, useTransactionState } from '@/store/hooks/transaction.hook';
 import { Types } from '@mixafrica/shared/enums';
 import { FundingSheet } from '@/components/sheets/funding.sheet';
+import { RepaymentSheet } from '@/components/sheets/repayment.sheet';
 
 interface SheetsState {
   isFundingOpen: boolean,
@@ -260,6 +261,13 @@ export default function Profile() {
         onOpenChange={() => setSheetIsOpen(prev => ({ ...prev, isFundingOpen: !prev.isFundingOpen }))}
       >
         <FundingSheet />
+      </Sheet>
+
+      <Sheet
+        open={sheetIsOpen.isRepayOpen}
+        onOpenChange={() => setSheetIsOpen(prev => ({ ...prev, isRepayOpen: !prev.isRepayOpen }))}
+      >
+        <RepaymentSheet onClose={() => setSheetIsOpen(prev => ({ ...prev, isRepayOpen: false }))} />
       </Sheet>
 
       {/* <Sheet open={sheetIsOpen.isSettingsOpen} onOpenChange={()=> setSheetIsOpen(prev => ({...prev, isSettingsOpen: !prev.isSettingsOpen }))}>

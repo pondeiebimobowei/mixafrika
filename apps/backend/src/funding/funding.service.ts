@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { FundingApplication } from '../database/models/funding_application';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { Create_funding_application_dto } from '@shared/shared/src/validation/funding-application.dto';
@@ -16,7 +16,7 @@ export class FundingService {
     const statement_doc = files.statement ? files.statement[0].path : null;
     
     if( !statement_doc ) {
-      throw new Error("Missing required document: statement");
+      throw new HttpException({ success: false, message: "Missing required document: statement"}, 500 );
     }
     
     let result = await cloudinary.uploader.upload(statement_doc, { folder: cloudinaryUploadFolder })

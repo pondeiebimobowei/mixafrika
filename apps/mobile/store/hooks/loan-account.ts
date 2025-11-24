@@ -1,17 +1,18 @@
 import { useEffect } from 'react';
 import { useLoanAccountStore } from '..';
 
-export function useLoanAccount() {
-  const { loan_account, loading, error } = useLoanAccountStore();
+export function useLoanAccountState() {
+  const { loan_account, repay_loan, loading, error } = useLoanAccountStore();
 
   const data = {
     loan_account,
-    loading, 
-    error
+    repay_loan
   };
 
   return {
     data,
+    loading,
+    error
   };
 }
 
