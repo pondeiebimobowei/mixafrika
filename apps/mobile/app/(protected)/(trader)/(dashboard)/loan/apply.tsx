@@ -118,13 +118,13 @@ export default function LoanApplication() {
                 <View className="">
                   <View className="flex flex-row items-center border border-solid border-slate-600 rounded-xl px-4">
                     <Briefcase color={'white'} />
-                    <View style={styles.container}>
+                    <View style={dropDownStyles.container}>
                       <Dropdown
-                        style={styles.dropdown}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
+                        style={dropDownStyles.dropdown}
+                        placeholderStyle={dropDownStyles.placeholderStyle}
+                        selectedTextStyle={dropDownStyles.selectedTextStyle}
+                        inputSearchStyle={dropDownStyles.inputSearchStyle}
+                        iconStyle={dropDownStyles.iconStyle}
                         data={BUSINESS_TYPE_OPTIONS}
                         maxHeight={300}
                         labelField="label"
@@ -153,13 +153,13 @@ export default function LoanApplication() {
                 <View>
                   <View className="flex flex-row items-center border border-solid border-slate-600 rounded-xl px-4">
                     <LocateFixedIcon color={'white'} />
-                    <View style={styles.container}>
+                    <View style={dropDownStyles.container}>
                       <Dropdown
-                        style={styles.dropdown}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
+                        style={dropDownStyles.dropdown}
+                        placeholderStyle={dropDownStyles.placeholderStyle}
+                        selectedTextStyle={dropDownStyles.selectedTextStyle}
+                        inputSearchStyle={dropDownStyles.inputSearchStyle}
+                        iconStyle={dropDownStyles.iconStyle}
                         data={BUSINESS_LOCATION_OPTIONS}
                         maxHeight={300}
                         labelField="label"
@@ -208,13 +208,13 @@ export default function LoanApplication() {
                   <View>
                     <View className="flex flex-row items-center border border-solid border-slate-600 rounded-xl px-4">
                       <Calendar color={'white'} />
-                      <View style={styles.container}>
+                      <View style={dropDownStyles.container}>
                         <Dropdown
-                          style={styles.dropdown}
-                          placeholderStyle={styles.placeholderStyle}
-                          selectedTextStyle={styles.selectedTextStyle}
-                          inputSearchStyle={styles.inputSearchStyle}
-                          iconStyle={styles.iconStyle}
+                          style={dropDownStyles.dropdown}
+                          placeholderStyle={dropDownStyles.placeholderStyle}
+                          selectedTextStyle={dropDownStyles.selectedTextStyle}
+                          inputSearchStyle={dropDownStyles.inputSearchStyle}
+                          iconStyle={dropDownStyles.iconStyle}
                           data={REPAYMENT_DURATION_OPTIONS}
                           maxHeight={300}
                           labelField="label"
@@ -240,13 +240,13 @@ export default function LoanApplication() {
                   <View>
                     <View className="flex flex-row items-center border border-solid border-slate-600 rounded-xl px-4">
                       <Calendar color="white" />
-                      <View style={styles.container}>
+                      <View style={dropDownStyles.container}>
                         <Dropdown
-                          style={styles.dropdown}
-                          placeholderStyle={styles.placeholderStyle}
-                          selectedTextStyle={styles.selectedTextStyle}
-                          inputSearchStyle={styles.inputSearchStyle}
-                          iconStyle={styles.iconStyle}
+                          style={dropDownStyles.dropdown}
+                          placeholderStyle={dropDownStyles.placeholderStyle}
+                          selectedTextStyle={dropDownStyles.selectedTextStyle}
+                          inputSearchStyle={dropDownStyles.inputSearchStyle}
+                          iconStyle={dropDownStyles.iconStyle}
                           data={PAYMENT_PLAN_OPTIONS}
                           maxHeight={300}
                           labelField="label"
@@ -349,7 +349,8 @@ export default function LoanApplication() {
     </SafeAreaView>
   );
 }
-const styles = StyleSheet.create({
+
+export const dropDownStyles = StyleSheet.create({
     container: {
       color: "white",
       padding: 1,
@@ -366,7 +367,7 @@ const styles = StyleSheet.create({
     },
     label: {
       position: 'absolute',
-      backgroundColor: 'white',
+      backgroundColor: 'black',
       left: 22,
       top: 8,
       zIndex: 999,

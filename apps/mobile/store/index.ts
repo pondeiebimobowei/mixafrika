@@ -19,6 +19,7 @@ import { createTraderRecord, TraderRecord } from './slice/trader.slice';
 import { createUserBusiness, UserBusiness } from './slice/business.slice';
 import { createUserSettings, UserSettingsSlice } from './slice/settings.slice';
 import { createRepaymentHistory, RepaymentHistory } from './slice/repayment-history.slice';
+import { createSavingsSlice, SavingsSlice } from './slice/savings.slice';
 
 export interface BaseSlice {
   loading: boolean;
@@ -72,6 +73,12 @@ export const useNotificationsStore = create<NotificationsSlice>()(
 export const useGoalsStore = create<GoalsSlice>()(
   immer((...a) => ({
     ...createGoalsSlice(...a),
+  })),
+);
+
+export const useSavingsStore = create<SavingsSlice>()(
+  immer((...a) => ({
+    ...createSavingsSlice(...a),
   })),
 );
 

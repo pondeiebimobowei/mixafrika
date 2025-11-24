@@ -1,5 +1,5 @@
 import { getLoanAccount } from '@/axios/loan_account';
-import { repayLoan } from '@/axios/transaction';
+import { repayLoan } from '@/axios/wallet';
 import { ILoanAccount } from '@mixafrica/shared/types/loan-account';
 import Toast from 'react-native-toast-message';
 import type { StateCreator } from 'zustand';

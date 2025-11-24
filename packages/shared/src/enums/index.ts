@@ -24,7 +24,17 @@ export const RepaymentStatus = {
     MISSED: "missed",
 } as const;
 
+
 export type RepaymentStatus = (typeof RepaymentStatus)[keyof typeof RepaymentStatus];
+
+export const savingsType = {
+    TARGET: 'target',
+    LOCKED: 'locked',
+    GROUP: 'group',
+    MIX: 'mix',
+}
+
+export type SavingsType = (typeof savingsType)[keyof typeof savingsType];
 
 export const Status = {
     ACTIVE: "active",

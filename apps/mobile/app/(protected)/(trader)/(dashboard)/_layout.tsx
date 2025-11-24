@@ -57,6 +57,56 @@ export default function RootLayout() {
           ),
         }}
       />
+      
+      <Stack.Screen
+        name="esusu/target"
+        options={{
+          headerShown: true,
+          title: 'Esusu - Target Savings',
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: '#ffffff',
+          headerTitleStyle: {
+            fontWeight: '900',
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                router.back();
+              }}
+            >
+              <Ionicons name="arrow-back" size={24} color="#fff" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+
+      <Stack.Screen
+        name="esusu/fixed"
+        options={{
+          headerShown: true,
+          title: 'Esusu - Fixed Savings',
+          headerStyle: {
+            backgroundColor: 'black',
+          },
+          headerTitleAlign: 'center',
+          headerTintColor: '#ffffff',
+          headerTitleStyle: {
+            fontWeight: '900',
+          },
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => {
+                router.back();
+              }}
+            >
+              <Ionicons name="arrow-back" size={24} color="#fff" />
+            </TouchableOpacity>
+          ),
+        }}
+      />
 
       <Toast />
     </Stack>

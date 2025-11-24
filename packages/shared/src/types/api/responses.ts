@@ -17,3 +17,10 @@ export type AuthResponse = {
 };
 
 export type LoginResponse = AuthResponse;
+
+
+export interface Response<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}

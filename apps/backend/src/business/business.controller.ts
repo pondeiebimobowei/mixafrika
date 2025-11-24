@@ -13,11 +13,12 @@ export class BusinessController {
     getUserBusiness(@ParsedToken() user: User){
         return this.businessService.handleGetUserBusiness(user.id)
     }
+
     @Post()
     submitUserBusiness(
         @ParsedToken() user: User,
         @Body(new ZodPipe(submit_business)) submit_business: Submit_business
-    ){
+    ) {
         return this.businessService.handleSubmitUserBusiness(user.id, submit_business)
     }
 }

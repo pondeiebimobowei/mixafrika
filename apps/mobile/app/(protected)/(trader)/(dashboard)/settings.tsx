@@ -1,5 +1,4 @@
-// import React from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, ScrollView } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import { Moon, LogOut, ChevronRight, Bell, Mail, Repeat, User, ShieldCheck } from 'lucide-react-native';
@@ -66,87 +65,89 @@ export default function SettingsSheet() {
 
   return (
     <SafeAreaView className="bg-[#1A1A1A] p-4 pt-6 flex-1">
-      <Text className="text-xl font-bold text-white text-center mb-6">Settings</Text>
+      <ScrollView>
+        <Text className="text-xl font-bold text-white text-center mb-6">Settings</Text>
 
-      <Section title="Appearance">
-        <Item
-          isFirst
-          isLast
-          icon={<Moon size={18} color="#8A8A8E" />}
-          label="Dark Mode"
-          description="Toggle light and dark theme"
-          control={
-            <Switch
-              checked={enable_dark_mode}
-              onCheckedChange={()=> updateDarkMode(!enable_dark_mode)}
-            />
-          }
-        />
-      </Section>
+        <Section title="Appearance">
+          <Item
+            isFirst
+            isLast
+            icon={<Moon size={18} color="#8A8A8E" />}
+            label="Dark Mode"
+            description="Toggle light and dark theme"
+            control={
+              <Switch
+                checked={enable_dark_mode}
+                onCheckedChange={()=> updateDarkMode(!enable_dark_mode)}
+              />
+            }
+          />
+        </Section>
 
-      <Section title="Account Actions">
-        <Item
-          isFirst
-          isLast
-          icon={<Repeat size={18} color="#8A8A8E" />}
-          label="Switch to Investor View"
-          control={
-            <Button variant="outline" size="sm" className="border-green-500 bg-transparent px-4">
-              <Text className="text-green-500">Switch</Text>
-            </Button>
-          }
-        />
-      </Section>
+        <Section title="Account Actions">
+          <Item
+            isFirst
+            isLast
+            icon={<Repeat size={18} color="#8A8A8E" />}
+            label="Switch to Investor View"
+            control={
+              <Button variant="outline" size="sm" className="border-green-500 bg-transparent px-4">
+                <Text className="text-green-500">Switch</Text>
+              </Button>
+            }
+          />
+        </Section>
 
-      <Section title="Notifications">
-        <Item
-          isFirst
-          icon={<Mail size={18} color="#8A8A8E" />}
-          label="Email Notifications"
-          control={
-            <Switch
-                checked={enable_email_notification}
-                onCheckedChange={()=> updateEmailNotification(!enable_email_notification)}
-            />
-          }
-        />
-        <Item
-          isLast
-          icon={<Bell size={18} color="#8A8A8E" />}
-          label="Push Notifications"
-          control={
-            <Switch
-              checked={enable_push_notification}
-              onCheckedChange={()=> updatePushNotification(!enable_push_notification)}
-            />
-          }
-        />
-      </Section>
+        <Section title="Notifications">
+          <Item
+            isFirst
+            icon={<Mail size={18} color="#8A8A8E" />}
+            label="Email Notifications"
+            control={
+              <Switch
+                  checked={enable_email_notification}
+                  onCheckedChange={()=> updateEmailNotification(!enable_email_notification)}
+              />
+            }
+          />
+          <Item
+            isLast
+            icon={<Bell size={18} color="#8A8A8E" />}
+            label="Push Notifications"
+            control={
+              <Switch
+                checked={enable_push_notification}
+                onCheckedChange={()=> updatePushNotification(!enable_push_notification)}
+              />
+            }
+          />
+        </Section>
 
-      <Section title="Security & Account">
-        <Item
-          isFirst
-          icon={<User size={18} color="#8A8A8E" />}
-          label="Edit Profile"
-          control={<ChevronRight size={20} color="#8A8A8E" />}
-        />
-        <Item
-          isLast
-          icon={<ShieldCheck size={18} color="#8A8A8E" />}
-          label="Change Password"
-          control={<ChevronRight size={20} color="#8A8A8E" />}
-        />
-      </Section>
+        <Section title="Security & Account">
+          <Item
+            isFirst
+            icon={<User size={18} color="#8A8A8E" />}
+            label="Edit Profile"
+            control={<ChevronRight size={20} color="#8A8A8E" />}
+          />
+          <Item
+            isLast
+            icon={<ShieldCheck size={18} color="#8A8A8E" />}
+            label="Change Password"
+            control={<ChevronRight size={20} color="#8A8A8E" />}
+          />
+        </Section>
 
-      <Button
-        className="bg-pink-600/20 mt-4 h-14"
-        onPress={handleLogout}
-      >
-        <View className="flex-row items-center gap-3">
-          <LogOut size={20} color="#F9A8D4" />
-          <Text className="text-pink-300 font-bold text-base">Log Out</Text>
-        </View>
-      </Button>
+        <Button
+          className="bg-pink-600/20 mt-4 h-14"
+          onPress={handleLogout}
+        >
+          <View className="flex-row items-center gap-3">
+            <LogOut size={20} color="#F9A8D4" />
+            <Text className="text-pink-300 font-bold text-base">Log Out</Text>
+          </View>
+        </Button>
+      </ScrollView>
     </SafeAreaView>
   );
 }

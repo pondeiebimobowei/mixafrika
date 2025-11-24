@@ -1,13 +1,8 @@
+import { Response } from "@mixafrica/shared/types/api/responses";
 import { apiPrivate } from "./axios-config";
 import { ITransaction } from "@mixafrica/shared/types/transaction";
 
-interface Response {
-  success: boolean;
-  message: string;
-  data: ITransaction | null;
-}
-
-export const fundWallet = async (amount: number): Promise<Response> => {
+export const fundWallet = async (amount: number): Promise<Response<ITransaction | null>> => {
   try {
     const res = await apiPrivate.post(`/wallet`, { amount });
     return res.data;
@@ -19,7 +14,7 @@ export const fundWallet = async (amount: number): Promise<Response> => {
   }
 };
 
-export const repayLoan = async (amount: number): Promise<Response> => {
+export const repayLoan = async (amount: number): Promise<Response<ITransaction | null >> => {
   try {
     const res = await apiPrivate.post(`/loan-account/repay`, { amount });
     return res.data;

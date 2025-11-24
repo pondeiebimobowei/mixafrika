@@ -1,9 +1,12 @@
-import { Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { SavingsService } from './savings.service';
+import { ParsedToken } from 'src/decorators/parsed-token.decorator';
+import { IJwtToken } from '@shared/shared/src/types/jwt';
+import { Create_savings_plan } from '@shared/shared/src/validation/create-savings-plan-dto';
 
 @Controller('v1/savings')
 export class SavingsController {
-  constructor(private readonly savingsService: SavingsService) {}
+  constructor(private readonly savingsService: SavingsService) { }
 
   @Get()
   getSavings() {
@@ -11,8 +14,8 @@ export class SavingsController {
   }
 
   @Post()
-  createSavings() {
-    return this.savingsService.handleCreateSavings();
+  createSavings(@Body() body: Create_savings_plan, @ParsedToken() jwt: IJwtToken) {
+    return this.savingsService.handleCreateSavings(jwt.id, body);
   }
 
   @Patch(':savings_id')
