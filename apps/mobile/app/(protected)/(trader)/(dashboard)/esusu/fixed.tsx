@@ -1,27 +1,18 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, TextInput, ScrollView, ActivityIndicator, Platform } from 'react-native';
 import { Text } from '@/components/ui/text';
-import { X, Check, ChevronDown, Calendar } from 'lucide-react-native';
-import { useWalletState } from '@/store/hooks/wallet.hook';
-import { formatCurrency } from '@/lib/utils';
 import { Controller } from 'react-hook-form';
 import useCreateSavingsPlan from '@/hooks/use-create-savings-plan.hook';
-import { Dropdown } from 'react-native-element-dropdown';
-import { dropDownStyles } from '@/app/(protected)/(trader)/(dashboard)/loan/apply';
 import ErrorMessageDisplay from '@/components/form/error-message-display';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TriggerRef } from '@rn-primitives/select';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-
-export default function FixedSavings({ onClose, onSuccess }: { onClose?: () => void, onSuccess?: () => void }) {
-    const { data: walletData } = useWalletState();
-    const [isSourceDropdownOpen, setIsSourceDropdownOpen] = useState(false);
-
+export default function TargetSavings() {
 
     const {
         is_loading,
-        form: { control, handleSubmit },
+        form: { control, setValue, handleSubmit },
         handleCreateSavgingsPlan,
     } = useCreateSavingsPlan();
 
@@ -39,9 +30,12 @@ export default function FixedSavings({ onClose, onSuccess }: { onClose?: () => v
     function onTouchStart() {
         ref.current?.open();
     }
-    
 
-
+    const SAVINGS_MATURITY_DATE_OPTIONS = [
+        { label: '3 Months', value: '3' },
+        { label: '6 Months', value: '6' },
+        { label: '12 Months', value: '12' },
+    ]
 
     return (
         <ScrollView className="flex-1 p-4 pb-10 bg-black">
@@ -70,7 +64,7 @@ export default function FixedSavings({ onClose, onSuccess }: { onClose?: () => v
                 </View>
 
                 <View className='mb-4'>
-                    <Text className="text-white font-semibold mb-2">Target Amount</Text>
+                    <Text className="text-white font-semibold mb-2">Amount to Lock</Text>
                     <Controller
                         control={control}
                         name="target_amount"
@@ -94,57 +88,21 @@ export default function FixedSavings({ onClose, onSuccess }: { onClose?: () => v
                 
                 <View className='flex flex-row justify-between '>
 
-                    <View className='mb-4 w-[47%]'>
-                        <Text className="text-white font-semibold mb-2">Duration (Month)</Text>
+                    <View className='mb-4 w-full'>
+                        <Text className="text-white font-semibold mb-2">Maturity Date</Text>
                         <Controller
                             control={control}
                             name="maturity_date"
-                            render={({ field, fieldState: { error },
-                            }) => (
-                                <Select onValueChange={(option) => field.onChange(option?.value)} className='w-full'>
-                                    <SelectTrigger onTouchStart={onTouchStart} className=''>
-                                        <SelectValue placeholder='Select a duration' />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                        {
-                                            [
-                                                { label: '3 Months', value: '3' },
-                                                { label: '6 Months', value: '6' },
-                                                { label: '12 Months', value: '12' },
-                                            ].map((duration) => (
-                                            <SelectItem key={duration.value} label={duration.label} value={duration.value}>
-                                                {duration.label}
-                                            </SelectItem>
-                                            ))
-                                        }
-                                        </SelectGroup>
-                                    </SelectContent>
-                                    {error && <ErrorMessageDisplay message={error.message} />}
-                                </Select>
-                            )}
-                        />
-                    </View>
-
-                    <View className='mb-4 w-[47%]'>
-                        <Text className="text-white font-semibold mb-2">Frequency</Text>
-                        <Controller
-                            control={control}
-                            name="frequency"
                             render={({ field, fieldState: { error },
                             }) => (
                                 <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>
                                     <SelectTrigger onTouchStart={onTouchStart} className='w-full'>
                                         <SelectValue placeholder='Select a frequency' />
                                     </SelectTrigger>
-                                    <SelectContent>
+                                    <SelectContent className='w-11/12'>
                                         <SelectGroup>
                                         {
-                                            [
-                                                { label: 'Daily', value: 'daily' },
-                                                { label: 'Weekly', value: 'weekly' },
-                                                { label: 'Monthly', value: 'monthly' }
-                                            ].map((duration) => (
+                                            SAVINGS_MATURITY_DATE_OPTIONS.map((duration) => (
                                             <SelectItem key={duration.value} label={duration.label} value={duration.value}>
                                                 {duration.label}
                                             </SelectItem>
@@ -155,37 +113,16 @@ export default function FixedSavings({ onClose, onSuccess }: { onClose?: () => v
                                     {error && <ErrorMessageDisplay message={error.message} />}
 
                                     </Select>
-                                // <View className="">
-                                //     <View className="flex flex-row items-center border border-solid border-slate-600 rounded-xl px-4">
-                                //         <Calendar color={'white'} />
-                                //         <View style={dropDownStyles.container}>
-                                //             <Dropdown
-                                //                 style={dropDownStyles.dropdown}
-                                //                 placeholderStyle={dropDownStyles.placeholderStyle}
-                                //                 selectedTextStyle={dropDownStyles.selectedTextStyle}
-                                //                 inputSearchStyle={dropDownStyles.inputSearchStyle}
-                                //                 iconStyle={dropDownStyles.iconStyle}
-                                //                 data={[
-                                //                     { label: 'Daily', value: 'daily' },
-                                //                     { label: 'Weekly', value: 'weekly' },
-                                //                     { label: 'Monthly', value: 'monthly' }
-                                //                 ]}
-                                //                 maxHeight={300}
-                                //                 labelField="label"
-                                //                 valueField="value"
-                                //                 searchPlaceholder="Search..."
-                                //                 value={field.value}
-                                //                 onChange={(item) => field.onChange(item.value)}
-                                //             />
-                                //         </View>
-
-
-                                //     </View>
-                                //     {error && (
-                                //         <Text className="text-white mt-1">{error.message}</Text>
-                                //     )}
-                                // </View>
                             )}
+                        />
+                    </View>
+                    <View className='hidden'>
+                        <Text className="text-white font-semibold mb-2">Type</Text>
+                        <Controller
+                            control={control}
+                            name="type"
+                            defaultValue='locked'
+                            render={ _ => <></> }
                         />
                     </View>
                     
@@ -196,63 +133,49 @@ export default function FixedSavings({ onClose, onSuccess }: { onClose?: () => v
 
                     <Controller
                         control={control}
-                        name="source"
+                        name="source_id"
                         // defaultValue="wallet"
                         render={({ field: { value, onChange }, fieldState: { error } }) => (
-                            <View>
-                                <TouchableOpacity
-                                    onPress={() => setIsSourceDropdownOpen(!isSourceDropdownOpen)}
-                                    className="border border-slate-600 p-4 rounded-xl flex-row justify-between items-center"
-                                >
-                                    { value ? (
-                                        <View className="flex-row items-center">
-                                        <View className="w-8 h-8 rounded-full bg-[#27AE60]/20 items-center justify-center mr-3">
-                                            <Text className="text-[#27AE60] font-bold">W</Text>
-                                        </View>
-                                        <View>
-                                            <Text className="text-white font-medium capitalize">{value}</Text>
-                                            <Text className="text-gray-400 text-xs">
-                                                Balance: {formatCurrency(walletData?.amount || 0)}
-                                            </Text>
-                                        </View>
-                                    </View>
-                                    ): (
-                                        <View>
-                                            <Text>Select Funding Source</Text>
-                                        </View>
-                                    )}
+                            <Select className='w-full' onValueChange={(raw) => { 
+                                console.log('raw', raw?.value)
+                                // @ts-expect-error
+                                const option = JSON.parse(raw?.value)
+                                console.log('parsed', option)
+                                setValue('source_type', option.type); onChange(option.id)}}>
+                                    <SelectTrigger onTouchStart={onTouchStart} className='w-full'>
+                                        <SelectValue placeholder='Select a frequency' />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            {
+                                                [
+                                                    {
+                                                        id: '1e4f7e8b-5b8d-4c96-9312-dc0f8b7c94e4',
+                                                        type: 'card',
+                                                        masked_number: '5123...4193',
+                                                        account_number: null,
+                                                    },
+                                                ].map((option) => (
+                                                <SelectItem key={option.id} label={`Card (${option.masked_number})`} value={JSON.stringify({ id: option.id, type: option.type })} />
+                                                ))
+                                            }
+                                            {
+                                                [
+                                                    {
+                                                        id: '1e4f7e8b-5b8d-4c96-9312-dc0f8b7c94e7',
+                                                        type: 'bank',
+                                                        masked_number: null,
+                                                        account_number: '12345678901',
+                                                    },
+                                                ].map((option) => (
+                                                <SelectItem key={option.id} label={`Bank (${option.account_number})`} value={JSON.stringify({ id: option.id, type: option.type })} />
+                                                ))
+                                            }
+                                        </SelectGroup>
+                                    </SelectContent>
+                                    {error && <ErrorMessageDisplay message={error.message} />}
 
-                                </TouchableOpacity>
-
-                                {isSourceDropdownOpen && (
-                                    <View className="mt-2 border border-slate-600 rounded-xl overflow-hidden">
-                                        <TouchableOpacity
-                                            onPress={() => {
-                                                onChange("wallet");     // update RHF value
-                                                setIsSourceDropdownOpen(false);
-                                            }}
-                                            className="p-4 flex-row items-center justify-between bg-[#374151]"
-                                        >
-                                            <View className="flex-row items-center">
-                                                <View className="w-8 h-8 rounded-full bg-[#27AE60]/20 items-center justify-center mr-3">
-                                                    <Text className="text-[#27AE60] font-bold">W</Text>
-                                                </View>
-                                                <View>
-                                                    <Text className="text-white font-medium">Wallet</Text>
-                                                    <Text className="text-gray-400 text-xs">
-                                                        Balance: {formatCurrency(walletData?.amount || 0)}
-                                                    </Text>
-                                                </View>
-                                            </View>
-
-                                            {value === "wallet" && <Check size={16} color="#27AE60" />}
-                                        </TouchableOpacity>
-                                    </View>
-                                )}
-                                
-                                {error && <ErrorMessageDisplay message={error.message} />}
-                                
-                            </View>
+                                    </Select>
                         )}
                     />
 

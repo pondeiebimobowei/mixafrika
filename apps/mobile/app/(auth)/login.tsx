@@ -90,10 +90,6 @@ export default function LoginPage() {
     },
   ];
 
-  const handleRoleSelect = (screenName: string) => {
-    console.log(`Navigating to ${screenName} screen.`);
-  };
-
   const navigation = useNavigation<LoginScreenNavigationProp>();
 
   return (

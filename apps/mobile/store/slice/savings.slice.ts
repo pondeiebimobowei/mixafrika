@@ -38,11 +38,10 @@ export const createSavingsSlice: StateCreator<
     set({ loading: true})
 
     const {success, message, data } = await createSavingsPlan(savings)
-
     if(success){
 
         set((state) => {
-            state.savings = [...state.savings, ...data]
+            state.savings = [...state.savings, Object(data)]
         })
 
         Toast.show({

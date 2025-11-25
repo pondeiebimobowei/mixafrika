@@ -3,7 +3,12 @@ import type { BaseSlice } from '..';
 import { apiPrivate } from '@/axios/axios-config';
 import { IWallet } from '@mixafrica/shared/types/wallet';
 import { fundWallet } from '@/axios/wallet';
-export interface UserWallet extends BaseSlice, Omit<IWallet, 'user_id'> {
+
+export interface UserWallet extends BaseSlice {
+  id: string,
+  amount: number,
+  total_portfolio: number,
+
   setWallet: ({ amount, total_portfolio }: IWallet) => void;
   getWalletBalance: () => void;
   fundWallet: (amount: number) =>void ;
@@ -12,6 +17,7 @@ export interface UserWallet extends BaseSlice, Omit<IWallet, 'user_id'> {
 export const createUserWallet: StateCreator<UserWallet, [], [], UserWallet> = (
   set, get
 ) => ({
+  id: '',
   loading: false,
   error: null,
 
@@ -28,10 +34,10 @@ export const createUserWallet: StateCreator<UserWallet, [], [], UserWallet> = (
     try {
       const {
         data: {
-          data: { amount, total_portfolio },
+          data: { id, amount, total_portfolio },
         },
       } = await apiPrivate.get('wallet');
-      set({ amount, total_portfolio });
+      set({ amount, id, total_portfolio });
     } catch (err: any) {
       if (err.response) {
         set({ error: err.response.data.message, loading: false });

@@ -16,7 +16,7 @@ import { SavingsHistory } from './saving-history.model';
 import { User } from './user.model';
 import { ISaving } from '@shared/shared/src/types/saving';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { SavingsType } from '@shared/shared/src/enums';
+import { savingsFrequency, sourceType, SourceType, SavingsFrequency, SavingsType } from '@shared/shared/src/enums';
 
 @Table({ tableName: 'saving' })
 export class Savings extends Model<ISaving> implements ISaving {
@@ -53,11 +53,24 @@ export class Savings extends Model<ISaving> implements ISaving {
   @Column(DataType.FLOAT)
   interest_rate: number;
 
-  @Column(DataType.STRING)
-  frequency: string;
+  @Column({
+    type: DataType.STRING,
+    validate: {
+      isIn: [Object.values(savingsFrequency)]
+    }
+  })
+  frequency: SavingsFrequency;
 
-  @Column(DataType.STRING)
-  source: string;
+  @Column({
+    type: DataType.STRING,
+    validate: {
+      isIn: [Object.values(sourceType)]
+    }
+  })
+  source_type: SourceType;
+
+  @Column(DataType.UUID)
+  source_id: string;
 
   @HasMany(() => SavingsHistory)
   history: SavingsHistory[];

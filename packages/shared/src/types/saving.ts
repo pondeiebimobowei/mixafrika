@@ -1,4 +1,4 @@
-import { SavingsType } from "../enums";
+import { SavingsFrequency, SavingsType, SourceType } from "../enums";
 import { BaseModel } from "./base-model-type";
 
 export interface ISaving extends BaseModel {
@@ -9,8 +9,9 @@ export interface ISaving extends BaseModel {
   maturity_date: Date | null;
   auto_save: boolean;
   is_locked: boolean;
-  source: string;
+  source_id: string;
+  source_type: SourceType
   target_amount: number;
   interest_rate: number;
-  frequency: string;
+  frequency: SavingsFrequency;
 }

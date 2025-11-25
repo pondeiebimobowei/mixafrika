@@ -20,7 +20,6 @@ export const createRepaymentHistory: StateCreator<
   repayment_history: [],
   
   get_repayment_history: async () => {
-    console.log()
       set({ loading: true, error: null });
       const response = await getRepaymentHistory();
       if (response.success) {

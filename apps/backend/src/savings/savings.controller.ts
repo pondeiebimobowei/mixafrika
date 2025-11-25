@@ -9,8 +9,10 @@ export class SavingsController {
   constructor(private readonly savingsService: SavingsService) { }
 
   @Get()
-  getSavings() {
-    return this.savingsService.handleGetSavings();
+  getSavings(
+    @ParsedToken() jwt:IJwtToken
+  ) {
+    return this.savingsService.handleGetSavings(jwt.id);
   }
 
   @Post()

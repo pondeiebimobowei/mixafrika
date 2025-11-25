@@ -18,6 +18,23 @@ export const LoanStatus = {
 
 export type LoanStatus = (typeof LoanStatus)[keyof typeof LoanStatus];
 
+export const sourceType = {
+  BANK: 'bank',
+  WALLET: 'wallet',
+  CARD: 'card'
+} as const;
+
+export type SourceType = (typeof sourceType)[keyof typeof sourceType];
+
+export const savingsFrequency = {
+    MANUAL: 'manual',
+    DAILY: 'daily',
+    WEEKLY: 'weekly',
+    MONTHLY: 'monthly',
+} as const;
+
+export type SavingsFrequency = (typeof savingsFrequency)[keyof typeof savingsFrequency];
+
 export const RepaymentStatus = {
     PAID: "paid",
     "PAID (LATE)": "paid (late)",

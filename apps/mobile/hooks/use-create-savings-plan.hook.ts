@@ -9,12 +9,10 @@ export default function useCreateSavingsPlan() {
   const form = useForm<Create_savings_plan>({
     resolver: zodResolver(create_savings_plan),
     defaultValues: {
-      frequency: null,
       auto_save: false,
       is_locked: false,
-      type: 'target',
-      source: 'Wallet',
       maturity_date: null,
+      frequency: 'manual',
       interest_rate: '0'
 
     }

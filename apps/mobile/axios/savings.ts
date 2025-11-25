@@ -4,7 +4,7 @@ import { Create_savings_plan } from "@mixafrica/shared/validation/create-savings
 import { Response } from "@mixafrica/shared/types/api/responses";
 
 
-export const createSavingsPlan = async (data: Create_savings_plan): Promise<Response<ISaving[]>> => {
+export const createSavingsPlan = async (data: Create_savings_plan): Promise<Response<ISaving | null>> => {
     try {
         const res = await apiPrivate.post(`/savings`, data);
         return res.data;
@@ -12,7 +12,7 @@ export const createSavingsPlan = async (data: Create_savings_plan): Promise<Resp
         if (err.response?.data) {
             return err.response.data;
         }
-        return { success: false, message: err.message, data: [] };
+        return { success: false, message: err.message, data: null };
     }
 };
 

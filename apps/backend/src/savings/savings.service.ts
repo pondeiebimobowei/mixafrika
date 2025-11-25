@@ -22,7 +22,8 @@ export class SavingsService {
       frequency: payload.frequency || '',
       total_amount: Number(payload.target_amount) || 0,
       interest_rate: payload.type === 'locked' ? 12 : 0, // Mock interest rate
-      source: payload.source || 'wallet', // Default source
+      source_id: payload.source_id,
+      source_type: payload.source_type,
       auto_save: false,
       is_locked: false,
       maturity_date: payload.maturity_date ? new Date(Date.now() + Number(payload.maturity_date) * 30 * 24 * 60 * 60 * 1000) : null,
