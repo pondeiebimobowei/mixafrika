@@ -11,7 +11,7 @@ export default function SignupFormProviderWrapper() {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen
           name="select-role"
-          options={{ title: 'Signup', headerShown: false }}
+          options={{ title: 'Signup' }}
         />
       </Stack>
     </FormProvider>

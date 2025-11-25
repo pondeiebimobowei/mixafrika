@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
 const roles = [
   {
@@ -28,7 +29,7 @@ const roles = [
 ];
 
 export default function SelectRoleScreen() {
-  const { control, trigger, watch } = useFormContext<Create_user_dto>();
+  const { control, trigger } = useFormContext<Create_user_dto>();
   const router = useRouter();
 
   const [selectedRole, setSelectedRole] = useState('');
@@ -38,17 +39,24 @@ export default function SelectRoleScreen() {
 
     if (isValid) {
       router.push('/(auth)/(signup)/personal');
+    }else{
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: 'Please select a role',
+      } )
     }
   };
+
   return (
-    <SafeAreaView className="flex-1 py-10 bg-black">
+    <SafeAreaView className="flex-1 py-10 dark:bg-black bg-white">
       <View className="flex-1 items-center justify-between">
         <View>
           <View>
-            <Text className="text-4xl font-bold text-center text-white mb-2">
+            <Text className="text-4xl font-bold text-center text-black dark:text-white mb-2">
               Select Your Role
             </Text>
-            <Text className=" text-center text-white">
+            <Text className=" text-center text-black dark:text-white">
               How will you be using the app?
             </Text>
           </View>
@@ -76,11 +84,11 @@ export default function SelectRoleScreen() {
                               ${
                                 isSelected
                                   ? `border-2 border-primary bg-primary`
-                                  : 'border-white/50 bg-black'
+                                  : 'border-black dark:border-white/50 dark:bg-black'
                               }
                             `}
                         >
-                          <View className="bg-slate-800 rounded-full p-3">
+                          <View className={`${isSelected ?'bg-black/40':' bg-primary/60' }  dark:bg-slate-800 rounded-full p-3`}>
                             <role.icon
                               color={isSelected ? 'white' : 'white'}
                               size={24}
@@ -89,11 +97,11 @@ export default function SelectRoleScreen() {
 
                           <View>
                             <Text
-                              className={`text-lg mt-2 font-bold ${isSelected ? 'text-white' : 'text-white'}`}
+                              className={`text-lg mt-2 font-bold ${isSelected ? 'text-white' : 'dark:text-white'}`}
                             >
                               {role.title}
                             </Text>
-                            <Text className="text-slate-300">
+                            <Text className={`${isSelected ? 'text-white' : 'dark:text-white'} `}>
                               {role.description}
                             </Text>
                           </View>
@@ -101,10 +109,6 @@ export default function SelectRoleScreen() {
                       );
                     })}
                   </View>
-
-                  {error && (
-                    <Text className="text-red-500 mt-2">{error.message}</Text>
-                  )}
                 </>
               )}
             />
