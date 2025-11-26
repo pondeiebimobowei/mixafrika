@@ -16,6 +16,5 @@ export const create_user_dto = z.object({
   message: "Passwords don't match",
   path: ["confirm_password"],
 })
-.required();
 
 export type Create_user_dto = z.infer<typeof create_user_dto>;

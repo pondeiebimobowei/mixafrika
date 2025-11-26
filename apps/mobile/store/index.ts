@@ -83,9 +83,15 @@ export const useSavingsStore = create<SavingsSlice>()(
 );
 
 export const useUserSettings = create<UserSettingsSlice>()(
-  immer((...a) => ({
+  persist(
+    immer((...a) => ({
     ...createUserSettings(...a),
   })),
+    {
+      name: 'user-settings-storage',
+      storage: createJSONStorage(() => secureStorage),
+    },
+  ),
 );
 
 export const useRepaymentHistoryStore = create<RepaymentHistory>()(

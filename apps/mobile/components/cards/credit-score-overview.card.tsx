@@ -38,14 +38,15 @@ export default function CreditScoreOverView(){
                     <Text className="text-slate-400 text-lg">Bassed on your repayment history</Text>
 
                 </View>
-
-                { chartView === "bar" ?
-                    (
-                        <BarChartKit />
-                    ) :  (
-                        <LineChartKit />
-                    )
-                }
+                <View style={{ height: 200 }}>
+                    { chartView === "bar" ?
+                        (
+                            <BarChartKit />
+                        ) :  (
+                            <LineChartKit />
+                        )
+                    }                  
+                </View>
             </View>
         </View>
     )

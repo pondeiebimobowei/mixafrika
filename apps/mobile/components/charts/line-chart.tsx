@@ -1,53 +1,25 @@
-import { Dimensions, View } from "react-native";
-import { LineChart } from "react-native-chart-kit";
+import { Area, CartesianChart } from "victory-native";
+import { useFont } from "@shopify/react-native-skia";
+// @ts-expect-error
+import inter from "@/roboto.ttf";
 
 export default function LineChartKit(){
+    const font = useFont(inter, 12);
+    const DATA = Array.from({ length: 20 }, (_, i) => ({
+  day: i,
+  highTmp: 40 + 30 * Math.random(),
+}));
     return (
-        <View>
-            <LineChart
-                data={{
-                labels: ["January", "February", "March", "April", "May", "June"],
-                datasets: [
-                    {
-                    data: [
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100,
-                        Math.random() * 100
-                    ]
-                    }
-                ]
-                }}
-                width={Dimensions.get("window").width -30} // from react-native
-                height={220}
-                yAxisLabel="$"
-                yAxisSuffix="yk"
-                yAxisInterval={1} // optional, defaults to 1
-                chartConfig={{
-                //   backgroundColor: "#e26a00",
-                //   backgroundGradientFrom: "#fb8c00",
-                //   backgroundGradientTo: "#ffa726",
-                decimalPlaces: 2, // optional, defaults to 2dp
-                color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                //   labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                style: {
-                    borderRadius: 16,
-                    borderColor: "white"
-                },
-                propsForDots: {
-                    r: "6",
-                    strokeWidth: "2",
-                    stroke: "#ffa726"
-                }
-                }}
-                bezier
-                style={{
-                marginVertical: 8,
-                borderRadius: 16
-                }}
+        <CartesianChart axisOptions={{ font}} data={DATA} xKey="day" yKeys={["highTmp"]}>
+            {({ points, chartBounds }) => (
+            <Area
+                points={points.highTmp}
+                color="green"
+                y0={chartBounds.bottom}
+                curveType="natural"
+                animate={{ type: "timing", duration: 1200 }}
             />
-        </View>
+            )}
+        </CartesianChart>
     )
 }

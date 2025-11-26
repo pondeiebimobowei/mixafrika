@@ -169,7 +169,7 @@ export default function Profile() {
           ))
           }
           <View className="flex flex-row justify-around items-center my-4">
-            <Link href="/" asChild>
+            <Link href="/(protected)/(trader)/(dashboard)/transactions" push asChild>
               <TouchableOpacity>
                 <View className="flex items-center gap-2 p-4 bg-green-900/20 rounded-full">
                   <History size={20} color={'hsl(151 51% 33%)'} />
@@ -183,7 +183,7 @@ export default function Profile() {
         <View className="mt-2">
           <View className="flex-row items-center justify-between mb-4 px-1">
             <Text className="tex font-semibold text-white">Recent Transactions</Text>
-            <Link href="/(protected)/(trader)/(dashboard)/transactions" asChild>
+            <Link href="/(protected)/(trader)/(dashboard)/transactions" push asChild>
               <TouchableOpacity>
                 <Text className="text-[#2ECC71] text-sm">See all</Text>
               </TouchableOpacity>

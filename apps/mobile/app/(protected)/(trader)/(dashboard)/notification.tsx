@@ -2,81 +2,80 @@ import { useNotificationsStore } from '@/store';
 import { useFetchNotification } from '@/store/hooks/notification';
 import { GroupedNotifications, INotification } from '@mixafrica/shared/types/notification';
 import {
-  Archive,
-  Calendar,
-  Clock,
-  LucideIcon,
   User,
+  Bell,
 } from 'lucide-react-native';
-import { Text, View } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { cn } from '@/lib/utils';
 
 export default function Notification() {
   const { notifications: groupNotifications } = useNotificationsStore();
   useFetchNotification();
 
-  const groupIcons: { [key: string]: LucideIcon } = {
-    today: Clock,
-    this_week: Calendar,
-    last_week: Calendar,
-    older: Archive,
-  };
+  const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+    <View className="mb-6">
+      <Text className="text-gray-400 font-semibold mb-2 px-4 capitalize">{title.replace('_', ' ')}</Text>
+      <View className="bg-[#2C2C2E] rounded-lg overflow-hidden">{children}</View>
+    </View>
+  );
 
-  const notificationTypeIcons: { [key: string]: LucideIcon } = {
-    deposit: User,
-  };
+  const hasNotifications = Object.values(groupNotifications).some(g => g.length > 0);
 
   return (
-    <SafeAreaView className="bg-black flex-1 py-10 px-6">
-      <View>
-        <Text className="text-white font-bold text-4xl text-center">
-          Notifications
-        </Text>
+    <SafeAreaView className="bg-[#1A1A1A] flex-1 p-4 pt-6">
+      <Text className="text-xl font-bold text-white text-center mb-6">Notifications</Text>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {Object.keys(groupNotifications).map((groupName) => {
+          const notifications = groupNotifications[groupName as keyof GroupedNotifications];
+          if (notifications.length === 0) return null;
 
-        <View className="mt-6">
-          {Object.keys(groupNotifications).map((groupName) => {
-            const notifications =
-              groupNotifications[groupName as keyof GroupedNotifications];
-            if (notifications.length === 0) {
-              return null;
-            }
+          return (
+            <Section key={groupName} title={groupName}>
+              {notifications.map((n, index) => (
+                <NotificationItem
+                  key={n.id}
+                  notification={n}
+                  isLast={index === notifications.length - 1}
+                />
+              ))}
+            </Section>
+          );
+        })}
 
-            const IconComponent = groupIcons[groupName];
-
-            return (
-              <View key={groupName}>
-                <View>
-                  {/* <IconComponent /> */}
-                  <Text className="text-slate-400 text-2xl font-bold">
-                    {groupName} ({notifications.length})
-                  </Text>
-                </View>
-
-                <View>
-                  {notifications.map((n) => (
-                    <View>
-                      <NotificationItem key={n.id} notification={n} />
-                    </View>
-                  ))}
-                </View>
-              </View>
-            );
-          })}
-        </View>
-      </View>
+        {!hasNotifications && (
+          <View className="items-center justify-center mt-20">
+            <Bell size={48} color="#3A3A3C" />
+            <Text className="text-gray-500 mt-4">No notifications yet</Text>
+          </View>
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 }
 
-function NotificationItem({ notification }: { notification: INotification }) {
+function NotificationItem({ notification, isLast }: { notification: INotification; isLast?: boolean }) {
+  // Default icon logic, can be expanded based on notification type
+  const Icon = User;
+
   return (
-    <View className="mt-4">
-      <View>
-        <View>
-          <Text className="text-white text-2xl font-bold capitalize">
+    <View
+      className={cn(
+        'flex-row items-center justify-between p-4 bg-[#2C2C2E]',
+        !isLast && 'border-b border-gray-700'
+      )}
+    >
+      <View className="flex-row items-center gap-4 flex-1">
+        <View className="w-10 h-10 items-center justify-center bg-[#3A3A3C] rounded-full shrink-0">
+          <Icon size={20} color="#fff" />
+        </View>
+        <View className="flex-1">
+          <Text className="text-white text-base font-medium capitalize mb-1">
             {notification.title}
           </Text>
-          <Text className="text-white  text-lg">{notification.message}</Text>
+          <Text className="text-gray-400 text-sm leading-5">
+            {notification.message}
+          </Text>
         </View>
       </View>
     </View>

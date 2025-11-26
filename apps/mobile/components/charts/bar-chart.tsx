@@ -1,39 +1,27 @@
-import { View } from "react-native";
-import { BarChart } from "react-native-chart-kit";
+import { Bar, CartesianChart } from "victory-native";
+import { useFont } from "@shopify/react-native-skia";
+// @ts-expect-error
+import inter from "@/roboto.ttf";
+
 
 export default function BarChartKit(){
 
-    const data = {
-        labels: ["January", "February", "March", "April", "May", "June"],
-        datasets: [
-            {
-                data: [20, 45, 28, 80, 99, 43]
-            }
-        ],
-    };
-
-    const chartConfig = {
-        backgroundGradientFrom: "#1E2923",
-        backgroundGradientFromOpacity: 0,
-        backgroundGradientTo: "#08130D",
-        backgroundGradientToOpacity: 0.5,
-        color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
-        strokeWidth: 2, // optional, default 3
-        barPercentage: 0.5,
-        useShadowColorFromDataset: false // optional
-    };
+    const font = useFont(inter, 12);
+        const DATA = Array.from({ length: 9 }, (_, i) => ({
+      day: i,
+      highTmp: 40 + 30 * Math.random(),
+    }));
+    
     return(
-        <View>
-            <BarChart
-                yAxisSuffix="y"
-                style={{ }}
-                data={data}
-                width={400}
-                height={220}
-                yAxisLabel="$"
-                chartConfig={chartConfig}
-                verticalLabelRotation={30}
+        <CartesianChart axisOptions={{ font}} data={DATA} xKey="day" yKeys={["highTmp"]}>
+            {({ points, chartBounds }) => (
+            <Bar
+                points={points.highTmp}
+                color="green"
+                chartBounds={chartBounds}
+                animate={{ type: "timing", duration: 1200 }}
             />
-        </View>
+            )}
+        </CartesianChart>
     )
 }

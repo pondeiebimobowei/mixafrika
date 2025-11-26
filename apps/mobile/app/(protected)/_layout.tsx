@@ -18,10 +18,6 @@ export default function RootLayoutNav() {
           options={{ title: 'Trader Dashboard', headerShown: false }}
         />
       </Stack.Protected>
-
-      <Stack.Protected guard={user?.role != 'trader'}>
-        <Stack.Screen name="(auth)/trader-login" />
-      </Stack.Protected>
     </Stack>
   );
 }

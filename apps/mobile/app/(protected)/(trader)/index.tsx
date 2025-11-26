@@ -46,7 +46,7 @@ export default function TraderDashboard() {
   ];
 
   return (
-    <SafeAreaView className="flex-1 bg-[rgb(23,26,33)] p-3">
+    <SafeAreaView className="flex-1 bg-slate-200 dark:bg-[rgb(23,26,33)] p-3">
       <View className="flex flex-row items-center justify-between py-3">
         <View className="flex flex-row gap-3 items-center">
           {user?.image ? (
@@ -63,8 +63,8 @@ export default function TraderDashboard() {
           )}
 
           <View>
-            <Text className="text-lg text-white ">Hello,</Text>
-            <Text className="text-white text-2xl font-bold capitalize">
+            <Text className="dark:text-white ">Hello,</Text>
+            <Text className="dark:text-white font-bold capitalize">
               {user?.first_name}
             </Text>
           </View>
@@ -88,20 +88,21 @@ export default function TraderDashboard() {
           <WelcomeCard />
         )}
 
-        <View className="flex flex-row">
-          <View className="p-10 rounded-xl bg-card grow">
-            <Text className="text-slate-300">Wallet Balance</Text>
-            <Text className="text-white text-2xl">
+        <View className="flex flex-row justify-between">
+          <View className="w-[48%] py-6 px-4 rounded-xl bg-white dark:bg-card">
+            <Text className="dark:text-slate-300 text-xs">Wallet Balance</Text>
+            <Text className="dark:text-white text-xl">
               {formatCurrency(amount)}
             </Text>
           </View>
 
           <TouchableOpacity
+            className='w-[48%] border border-slate-300 dark:border-slate-700 rounded-xl'
             onPress={() => setShowMakeRepaymentModal((prev) => !prev)}
           >
-            <View className="p-10 rounded-xl grow">
-              <Text className="text-white text-xl">Make Repayment</Text>
-              <Text className="text-slate-400">Next payment due</Text>
+            <View className="py-6 px-4  rounded-xl">
+              <Text className="dark:text-white  font-semibold">Make Repayment</Text>
+              <Text className="dark:text-slate-400">Next payment due</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -114,10 +115,10 @@ export default function TraderDashboard() {
           <View className="flex flex-row justify-around items-center my-10">
             {quickActions.map((action) => (
               <TouchableOpacity onPress={()=> router.push(action.route as any)} key={action.label}>
-                <View className="flex items-center gap-2 p-4 bg-green-900/20 rounded-full">
+                <View className="flex items-center gap-2 p-4 bg-green-900/10 rounded-full">
                   <action.icon size={20} color={'hsl(151 51% 33%)'} />
                 </View>
-                <Text className=" text-center text-white mt-1">
+                <Text className=" text-center dark:text-white mt-1">
                   {action.label}
                 </Text>
               </TouchableOpacity>

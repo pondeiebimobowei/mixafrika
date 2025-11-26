@@ -20,7 +20,6 @@ const FILTERS = ['all', ...Object.values(Types)] as const;
 export type Filters = (typeof FILTERS)[keyof typeof FILTERS];
 
 export default function TransactionsScreen() {
-    const router = useRouter();
     const { transactions, getTransactions, loading } = useTransactionsStore();
     const [activeFilter, setActiveFilter] = useState<Filters>('all');
 
@@ -56,16 +55,7 @@ export default function TransactionsScreen() {
     };
 
     return (
-        <SafeAreaView className="flex-1 bg-[rgb(23,26,33)]">
-            {/* Header */}
-            <View className="flex-row items-center p-4 gap-4">
-                <TouchableOpacity onPress={() => router.back()}>
-                    <ArrowLeft color="white" size={24} />
-                </TouchableOpacity>
-                <Text className="text-white text-xl font-semibold flex-1 text-center mr-8">
-                    My Transactions
-                </Text>
-            </View>
+        <SafeAreaView edges={[]} className="flex-1 bg-[rgb(23,26,33)]">
 
             {/* Filters */}
             <View className="px-4 pb-4">
