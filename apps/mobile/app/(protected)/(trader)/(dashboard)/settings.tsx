@@ -64,10 +64,8 @@ export default function SettingsSheet() {
   );
 
   return (
-    <SafeAreaView className="bg-[#1A1A1A] p-4 pt-6 flex-1">
+    <SafeAreaView edges={[]} className="bg-[#1A1A1A] p-4 pt-6 flex-1">
       <ScrollView>
-        <Text className="text-xl font-bold text-white text-center mb-6">Settings</Text>
-
         <Section title="Appearance">
           <Item
             isFirst

@@ -168,7 +168,7 @@ export default function Sheet({
     : { transform: [{ translateX: sheetTranslate }] };
 
   return (
-    <Modal transparent visible={open} animationType="none" statusBarTranslucent>
+    <Modal className="bg-white" transparent visible={open} animationType="none" statusBarTranslucent>
       <View className="flex-1 flex-end">
         <Animated.View
           className="bg-black absolute left-0 right-0 top-0 bottom-0"
@@ -191,7 +191,7 @@ export default function Sheet({
               position === "left" ? 'top-0 bottom-0 left-0' : 
               position === "right" ? 'top-0 bottom-0 right-0' : ''
             } 
-            absolute bg-black rounded-tl-[12px] rounded-tr-[12px] overflow-hidden shadow-black shadow-offset-0--4  shadow-opacity-20  shadow-radius-[10px] elevation-[10]`}
+            absolute bg-gray-200 dark:bg-black rounded-tl-[12px] rounded-tr-[12px] overflow-hidden shadow-black shadow-offset-0--4  shadow-opacity-20  shadow-radius-[10px] elevation-[10]`}
           style={[
             // sheetStyle,
             sheetTransformStyle,

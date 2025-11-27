@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 
 export default function NewsAndUpdates(){
     return (
-        <View className='py-10 px-4 rounded-xl bg-white dark:bg-card my-10'>
+        <View className='py-10 px-6 rounded-xl bg-white dark:bg-card mt-10'>
             <View className='flex flex-row items-center justify-between'>
               <Text className='dark:text-white font-bold'>News & Updates</Text>
               <Text className='text-primary font-bold '>View all</Text>

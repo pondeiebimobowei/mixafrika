@@ -45,7 +45,7 @@ export default function Esusu() {
   const renderPlanCard = (plan: any) => {
     if (plan.type === 'personal') {
       return (
-        <View key={plan.id} className="bg-[#1C1F26] p-4 rounded-xl mb-4">
+        <View key={plan.id} className="dark:bg-[#1C1F26] p-4 rounded-xl mb-4">
           <View className="flex-row justify-between items-start mb-2">
             <View>
               <Text className="text-white font-bold text-lg">{plan.name}</Text>
@@ -65,47 +65,47 @@ export default function Esusu() {
 
     if (plan.type === 'target') {
       return (
-        <View key={plan.id} className="bg-[#1C1F26] p-4 rounded-xl mb-4">
+        <View key={plan.id} className="bg-white dark:bg-[#1C1F26] p-4 rounded-xl mb-4">
           <View className="flex-row justify-between items-start mb-2">
             <View>
-              <Text className="text-white font-bold text-lg">{plan.name}</Text>
+              <Text className="text-black dark:text-white font-bold text-lg">{plan.name}</Text>
               <View className="flex-row items-center mt-1">
                 <Target size={12} color="#3B82F6" />
                 <Text className="text-[#3B82F6] text-xs ml-1 font-medium">Target</Text>
               </View>
             </View>
-            <Text className="text-white font-bold text-xl">{formatCurrency(plan.total_amount)}</Text>
+            <Text className="text-black dark:text-white font-bold text-xl">{formatCurrency(plan.total_amount)}</Text>
           </View>
 
           <View className="w-full h-1.5 bg-gray-700 rounded-full mt-2 mb-1">
             <View className="h-full bg-[#27AE60] rounded-full" style={{ width: `${plan.progress || 0}%` }} />
           </View>
           <View className="flex-row justify-between mb-4">
-            <Text className="text-gray-400 text-xs">{plan.progress || 0}% complete</Text>
-            <Text className="text-gray-400 text-xs">Target: {formatCurrency(plan.target_amount)}</Text>
+            <Text className="text-gray-800 dark:text-gray-400 text-xs">{plan.progress || 0}% complete</Text>
+            <Text className="text-gray-800 dark:text-gray-400 text-xs">Target: {formatCurrency(plan.target_amount)}</Text>
           </View>
-          <Text className="text-gray-400 text-xs">Maturity: <Text className="text-white font-bold">{plan.maturity}</Text></Text>
+          <Text className="text-gray-800 dark:text-gray-400 text-xs">Maturity: <Text className="text-black dark:text-white font-bold">{plan.maturity}</Text></Text>
         </View>
       );
     }
 
     if (plan.type === 'locked') {
       return (
-        <View key={plan.id} className="bg-[#1C1F26] p-4 rounded-xl mb-4">
+        <View key={plan.id} className="bg-white dark:bg-[#1C1F26] p-4 rounded-xl mb-4">
           <View className="flex-row justify-between items-start mb-2">
             <View>
-              <Text className="text-white font-bold text-lg">{plan.name}</Text>
+              <Text className="text-black dark:text-white font-bold text-lg">{plan.name}</Text>
               <View className="flex-row items-center mt-1">
                 <Lock size={12} color="#EF4444" />
                 <Text className="text-[#EF4444] text-xs ml-1 font-medium">Locked</Text>
               </View>
             </View>
             <View className="items-end">
-              <Text className="text-white font-bold text-xl">{formatCurrency(plan.total_amount)}</Text>
+              <Text className="text-black dark:text-white font-bold text-xl">{formatCurrency(plan.total_amount)}</Text>
               <Text className="text-[#27AE60] text-xs font-medium">+{plan.interest_rate}% interest</Text>
             </View>
           </View>
-          <Text className="text-gray-400 text-xs mt-2">Maturity: <Text className="text-white font-bold">{plan.maturity}</Text></Text>
+          <Text className="text-gray-800 dark:text-gray-400 text-xs mt-2">Maturity: <Text className="text-black dark:text-white font-bold">{plan.maturity}</Text></Text>
         </View>
       );
     }
@@ -159,17 +159,18 @@ export default function Esusu() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-[#121212]">
+    <SafeAreaView edges={['top']} className="flex-1 bg-slate-200 dark:bg-[#121212]">
       {/* Header */}
       <View className="flex-row items-center justify-between px-4 py-4">
-        <TouchableOpacity onPress={() => router.back()}>
+        {/* <TouchableOpacity onPress={() => router.back()}>
           <ArrowLeft size={24} color="white" />
-        </TouchableOpacity>
-        <Text className="text-white text-lg font-bold">My Esusu</Text>
+        </TouchableOpacity> */}
+        <View></View>
+        <Text className="text-black dark:text-white text-center text-lg font-bold">My Esusu</Text>
         <ShieldCheck size={24} color="white" />
       </View>
 
-      <ScrollView className="flex-1 px-4">
+      <ScrollView showsVerticalScrollIndicator={false} className="flex-1 px-4">
         {/* Actions */}
         <View className="flex-row justify-between mb-6 mt-2">
           {actions.map((action) => (
@@ -177,35 +178,35 @@ export default function Esusu() {
               <View className="w-12 h-12 rounded-full items-center justify-center mb-2" style={{ backgroundColor: action.bg }}>
                 <action.icon size={20} color={action.color} />
               </View>
-              <Text className="text-gray-300 text-xs">{action.label}</Text>
+              <Text className="text-black dark:text-white text-xs">{action.label}</Text>
             </TouchableOpacity>
           ))}
         </View>
 
         {/* Banner */}
-        <View className="h-32 rounded-xl overflow-hidden mb-6 relative bg-gray-800">
+        <View className="h-32 rounded-xl overflow-hidden mb-6 relative bg-white dark:bg-gray-800">
           <Image
             source={{ uri: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?q=80&w=2071&auto=format&fit=crop' }}
             className="absolute w-full h-full opacity-50"
           />
           <View className="p-4 justify-center h-full">
-            <Text className="text-white font-bold text-lg mb-1">Strength in Numbers 💪</Text>
-            <Text className="text-gray-200 text-xs">Achieve your goals faster with Group Savings.</Text>
+            <Text className="text-black dark:text-white font-bold text-lg mb-1">Strength in Numbers 💪</Text>
+            <Text className="text-black dark:text-gray-200 text-xs">Achieve your goals faster with Group Savings.</Text>
           </View>
         </View>
 
         {/* Tabs */}
-        <View className="flex-row bg-[#1C1F26] p-1 rounded-lg mb-4">
+        <View className="flex-row bg-white dark:bg-[#1C1F26] p-1 rounded-lg mb-4">
           {['Plans', 'Rates'].map((tab) => (
             <TouchableOpacity
               key={tab}
               onPress={() => setActiveTab(tab as any)}
               className={clsx(
                 "flex-1 py-2 items-center rounded-md",
-                activeTab === tab ? "bg-[#2A2D35]" : ""
+                activeTab === tab ? "bg-primary dark:bg-[#2A2D35]" : ""
               )}
             >
-              <Text className={clsx("font-medium text-sm", activeTab === tab ? "text-white" : "text-gray-400")}>
+              <Text className={clsx("font-medium text-sm", activeTab === tab ? "dark:text-white" : "text-gray-400")}>
                 {tab === 'Plans' ? 'My Plans' : tab}
               </Text>
             </TouchableOpacity>
@@ -219,17 +220,17 @@ export default function Esusu() {
 
         {/* Recent Activity */}
         <View className="mb-8">
-          <Text className="text-white font-bold text-lg mb-4">Recent Activity</Text>
+          <Text className="text-black dark:text-white mb-4">Recent Activity</Text>
 
           {/* Mock Activity Items */}
-          <View className="flex-row items-center justify-between mb-4 bg-[#1C1F26] p-3 rounded-xl">
+          <View className="flex-row items-center justify-between mb-4 bg-white dark:bg-[#1C1F26] p-3 rounded-xl">
             <View className="flex-row items-center">
               <View className="w-10 h-10 rounded-full bg-green-900/20 items-center justify-center mr-3">
                 <ArrowDown size={18} color="#27AE60" />
               </View>
               <View>
-                <Text className="text-white font-medium">Contribution</Text>
-                <Text className="text-gray-400 text-xs">Daily Savings</Text>
+                <Text className="text-black dark:text-white font-medium">Contribution</Text>
+                <Text className="text-gray-500 dark:text-slate-400 text-xs">Daily Savings</Text>
               </View>
             </View>
             <View className="items-end">
@@ -238,14 +239,14 @@ export default function Esusu() {
             </View>
           </View>
 
-          <View className="flex-row items-center justify-between mb-4 bg-[#1C1F26] p-3 rounded-xl">
+          <View className="flex-row items-center justify-between mb-4 bg-white dark:bg-[#1C1F26] p-3 rounded-xl">
             <View className="flex-row items-center">
               <View className="w-10 h-10 rounded-full bg-green-900/20 items-center justify-center mr-3">
                 <ArrowDown size={18} color="#27AE60" />
               </View>
               <View>
-                <Text className="text-white font-medium">Contribution</Text>
-                <Text className="text-gray-400 text-xs">Balogun Market Ajo</Text>
+                <Text className="text-black dark:text-white font-medium">Contribution</Text>
+                <Text className="text-gray-500 dark:text-gray-400 text-xs">Balogun Market Ajo</Text>
               </View>
             </View>
             <View className="items-end">
@@ -254,14 +255,14 @@ export default function Esusu() {
             </View>
           </View>
 
-          <View className="flex-row items-center justify-between mb-4 bg-[#1C1F26] p-3 rounded-xl">
+          <View className="flex-row items-center justify-between mb-4 bg-white dark:bg-[#1C1F26] p-3 rounded-xl">
             <View className="flex-row items-center">
               <View className="w-10 h-10 rounded-full bg-blue-900/20 items-center justify-center mr-3">
                 <Send size={18} color="#3B82F6" />
               </View>
               <View>
-                <Text className="text-white font-medium">Payout</Text>
-                <Text className="text-gray-400 text-xs">Old Group Savings</Text>
+                <Text className="text-black dark:text-white">Payout</Text>
+                <Text className="text-gray-500 dark:text-gray-400 text-xs">Old Group Savings</Text>
               </View>
             </View>
             <View className="items-end">

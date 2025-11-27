@@ -1,5 +1,5 @@
 import { savingsFrequency, savingsType, sourceType } from '../enums';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 export const create_savings_plan = z.object({
   name: z.string('Enter plan name').min(3, 'Savings target name must be at least 3 characters.'),

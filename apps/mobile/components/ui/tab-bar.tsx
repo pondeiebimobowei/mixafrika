@@ -4,12 +4,12 @@ import { cn } from '@/lib/utils';
 
 export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
     return (
-        <View className="flex-row bg-[#1A1A1A] border-t border-gray-800 pb-5 pt-3">
+        <View className="flex-row bg-white dark:bg-[#1A1A1A] dark:border-t dark:border-gray-800 py-2 mb-4">
             {state.routes.map((route, index) => {
                 const { options } = descriptors[route.key];
 
                 // @ts-ignore                
-                if (options.title === '(Dashboard)') return null;
+                if (options.title === 'Dashboard') return null;
 
                 const label =
                     options.tabBarLabel !== undefined

@@ -28,6 +28,7 @@ import {
   PAYMENT_PLAN_OPTIONS,
   REPAYMENT_DURATION_OPTIONS,
 } from '@/data/options';
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export default function LoanApplication() {
   const {
@@ -100,84 +101,73 @@ export default function LoanApplication() {
   };
 
   return (
-    <SafeAreaView className="bg-black flex-1">
+    <SafeAreaView edges={['top']} className="dark:bg-black flex-1 px-3">
       <KeyboardAvoidingView
         className="flex-1"
         behavior={Platform.OS === 'android' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'android' ? 50 : 0}
       >
-        <ScrollView className="px-4 py-10 flex-1">
+        <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
+        <View className='flex gap-5'>
           <View>
-            <Text className="text-white mb-2">Business Type</Text>
+            <Text className="dark:text-white mb-2">Business Type</Text>
             <Controller
-              control={control}
-              name="business_type"
-              render={({ field, fieldState: { error },
-              }) => (
-                <View className="">
-                  <View className="flex flex-row items-center border border-solid border-slate-600 rounded-xl px-4">
-                    <Briefcase color={'white'} />
-                    <View style={dropDownStyles.container}>
-                      <Dropdown
-                        style={dropDownStyles.dropdown}
-                        placeholderStyle={dropDownStyles.placeholderStyle}
-                        selectedTextStyle={dropDownStyles.selectedTextStyle}
-                        inputSearchStyle={dropDownStyles.inputSearchStyle}
-                        iconStyle={dropDownStyles.iconStyle}
-                        data={BUSINESS_TYPE_OPTIONS}
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        searchPlaceholder="Search..."
-                        value={field.value}
-                        onChange={(item) => field.onChange(item.value)}
-                      />
-                    </View>
+                control={control}
+                name="business_type"
+                render={({ field, fieldState: { error },
+                }) => (
+                    <Select className='w-full ' onValueChange={(option) => field.onChange(option?.value)}>
+                        <SelectTrigger className='w-full h-14 bg-white border-0 dark:border-input'>
+                            <SelectValue className='text-black dark:text-white' placeholder='Select a frequency' />
+                        </SelectTrigger>
+                        <SelectContent className='w-11/12'>
+                            <SelectGroup>
+                            {
+                                BUSINESS_TYPE_OPTIONS.map((duration) => (
+                                <SelectItem key={duration.value} label={duration.label} value={duration.value}>
+                                    {duration.label}
+                                </SelectItem>
+                                ))
+                            }
+                            </SelectGroup>
+                        </SelectContent>
+                        {error && <ErrorMessageDisplay message={error.message} />}
 
-
-                  </View>
-                  {error && (
-                    <Text className="text-white mt-1">{error.message}</Text>
-                  )}
-                </View>
-              )}
+                        </Select>
+                )}
             />
           </View>
           <View>
-            <Text className="text-white mb-2">Business Location</Text>
+            <Text className="dark:text-white mb-2">Business Location</Text>
             <Controller
-              control={control}
-              name="business_location"
-              render={({ field, fieldState: { error } }) => (
-                <View>
-                  <View className="flex flex-row items-center border border-solid border-slate-600 rounded-xl px-4">
-                    <LocateFixedIcon color={'white'} />
-                    <View style={dropDownStyles.container}>
-                      <Dropdown
-                        style={dropDownStyles.dropdown}
-                        placeholderStyle={dropDownStyles.placeholderStyle}
-                        selectedTextStyle={dropDownStyles.selectedTextStyle}
-                        inputSearchStyle={dropDownStyles.inputSearchStyle}
-                        iconStyle={dropDownStyles.iconStyle}
-                        data={BUSINESS_LOCATION_OPTIONS}
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        searchPlaceholder="Search..."
-                        value={field.value}
-                        onChange={(item) => field.onChange(item.value)}
-                      />
-                    </View>
-                  </View>
+                control={control}
+                name="business_location"
+                render={({ field, fieldState: { error },
+                }) => (
+                    <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>
+                        <SelectTrigger className='w-full h-14 bg-white border-0 dark:border-input'>
+                            <SelectValue className='text-black dark:text-white' placeholder='Select a frequency' />
+                        </SelectTrigger>
+                        <SelectContent className='w-11/12'>
+                            <SelectGroup>
+                            {
+                                BUSINESS_LOCATION_OPTIONS.map((duration) => (
+                                <SelectItem key={duration.value} label={duration.label} value={duration.value}>
+                                    {duration.label}
+                                </SelectItem>
+                                ))
+                            }
+                            </SelectGroup>
+                        </SelectContent>
+                        {error && <ErrorMessageDisplay message={error.message} />}
 
-                  {error && <ErrorMessageDisplay message={error.message} />}
-                </View>
-              )}
+                        </Select>
+                )}
             />
           </View>
 
           <View>
-            <Text className="text-white mb-2">Amount</Text>
+            <Text className="dark:text-white mb-2">Amount</Text>
             <Controller
               control={control}
               name="amount"
@@ -185,9 +175,10 @@ export default function LoanApplication() {
                 <>
                   <TextInput
                     keyboardType="number-pad"
-                    className="border border-slate-600 text-white rounded-xl px-4 py h-14"
+                    className="bg-white dark:bg-black dark:border dark:border-input dark:text-white rounded-xl px-4 py h-14"
                     value={field.value}
                     onChangeText={field.onChange}
+                    placeholder='500000'
                     onBlur={field.onBlur}
                   />
                   {error && <ErrorMessageDisplay message={error.message} />}
@@ -198,73 +189,66 @@ export default function LoanApplication() {
 
           <View className="flex gap-6  flex-row items-center justify-between">
             <View className="w-[47%]">
-              <Text className="text-white mb-2">Repayment Duration</Text>
+              <Text className="dark:text-white mb-2">Repayment Duration</Text>
 
               <Controller
-                control={control}
-                name="duration"
-                render={({ field, fieldState: { error } }) => (
-                  <View>
-                    <View className="flex flex-row items-center border border-solid border-slate-600 rounded-xl px-4">
-                      <Calendar color={'white'} />
-                      <View style={dropDownStyles.container}>
-                        <Dropdown
-                          style={dropDownStyles.dropdown}
-                          placeholderStyle={dropDownStyles.placeholderStyle}
-                          selectedTextStyle={dropDownStyles.selectedTextStyle}
-                          inputSearchStyle={dropDownStyles.inputSearchStyle}
-                          iconStyle={dropDownStyles.iconStyle}
-                          data={REPAYMENT_DURATION_OPTIONS}
-                          maxHeight={300}
-                          labelField="label"
-                          valueField="value"
-                          searchPlaceholder="Search..."
-                          value={field.value}
-                          onChange={(item) => field.onChange(item.value)}
-                        />
-                      </View>
-                    </View>
+                  control={control}
+                  name="duration"
+                  render={({ field, fieldState: { error },
+                  }) => (
+                      <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>
+                          <SelectTrigger className='w-full h-14 bg-white border-0 dark:border-input'>
+                              <SelectValue className='text-black dark:text-white' placeholder='Select a duration' />
+                          </SelectTrigger>
+                          <SelectContent className='w-11/12'>
+                              <SelectGroup>
+                              {
+                                  PAYMENT_PLAN_OPTIONS.map((duration) => (
+                                  <SelectItem key={duration.value} label={duration.label} value={duration.value}>
+                                      {duration.label}
+                                  </SelectItem>
+                                  ))
+                              }
+                              </SelectGroup>
+                          </SelectContent>
+                          {error && <ErrorMessageDisplay message={error.message} />}
 
-                    {error && <ErrorMessageDisplay message={error.message} />}
-                  </View>
-                )}
+                          </Select>
+                  )}
               />
             </View>
             <View className="w-[47%]">
-              <Text className="text-white mb-2">Repayment Plan</Text>
+              <Text className="dark:text-white mb-2">Repayment Plan</Text>
               <Controller
-                control={control}
-                name="repayment_plan"
-                render={({ field, fieldState: { error } }) => (
-                  <View>
-                    <View className="flex flex-row items-center border border-solid border-slate-600 rounded-xl px-4">
-                      <Calendar color="white" />
-                      <View style={dropDownStyles.container}>
-                        <Dropdown
-                          style={dropDownStyles.dropdown}
-                          placeholderStyle={dropDownStyles.placeholderStyle}
-                          selectedTextStyle={dropDownStyles.selectedTextStyle}
-                          inputSearchStyle={dropDownStyles.inputSearchStyle}
-                          iconStyle={dropDownStyles.iconStyle}
-                          data={PAYMENT_PLAN_OPTIONS}
-                          maxHeight={300}
-                          labelField="label"
-                          valueField="value"
-                          searchPlaceholder="Search..."
-                          value={field.value}
-                          onChange={(item) => field.onChange(item.value)}
-                        />
-                    </View>
-                    </View>
-                    {error && <ErrorMessageDisplay message={error.message} />}
-                  </View>
-                )}
+                  control={control}
+                  name="repayment_plan"
+                  render={({ field, fieldState: { error },
+                  }) => (
+                      <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>
+                          <SelectTrigger className='w-full h-14 bg-white border-0 dark:border-input'>
+                              <SelectValue className='text-black dark:text-white' placeholder='Select a plan' />
+                          </SelectTrigger>
+                          <SelectContent className='w-11/12'>
+                              <SelectGroup>
+                              {
+                                  REPAYMENT_DURATION_OPTIONS.map((duration) => (
+                                  <SelectItem key={duration.value} label={duration.label} value={duration.value}>
+                                      {duration.label}
+                                  </SelectItem>
+                                  ))
+                              }
+                              </SelectGroup>
+                          </SelectContent>
+                          {error && <ErrorMessageDisplay message={error.message} />}
+
+                          </Select>
+                  )}
               />
             </View>
           </View>
 
           <View>
-            <Text className="text-white mb-2">Purpose of Funds</Text>
+            <Text className="dark:text-white mb-2">Purpose of Funds</Text>
             <Controller
               control={control}
               name="purpose"
@@ -274,7 +258,7 @@ export default function LoanApplication() {
                     multiline={true}
                     numberOfLines={4}
                     placeholder="Enter your detailed feedback here..."
-                    className="text-white border border-slate-600 rounded-xl px-4 py h-44"
+                    className="text-white bg-white dark:bg-black p-4 dark:border dark:border-input rounded-xl px-4 py h-44"
                     textAlignVertical="top"
                     value={field.value}
                     onChangeText={field.onChange}
@@ -291,12 +275,7 @@ export default function LoanApplication() {
             <Text>Required Document</Text>
 
             <View className="flex flex-row justify-between  items-center w-full">
-              <View className=" flex flex-row border  items-center gap-2">
-                <File color={'white'} />
-                <Text className="text-white font-semibold">
-                  Statement of Account
-                </Text>
-              </View>
+              
 
               <View>
                 <Controller
@@ -316,15 +295,23 @@ export default function LoanApplication() {
 
                     return (
                       <View>
-                        {/* Your Button and Display Logic */}
-                        <Pressable
-                          onPress={() => handlePickerChoice(onChange)}
-                          className="rounded-lg overflow-hidden"
-                        >
-                          <Text className="px-6 py-2 text-white bg-primary">
-                            Upload
-                          </Text>
-                        </Pressable>
+                        <View className='flex flex-row items-center justify-between w-full'>
+                          <View className=" flex flex-row  items-center gap-1">
+                            <File size={20} color={'white'} />
+                            <Text className="dark:text-white">
+                              Statement of Account
+                            </Text>
+                          </View>
+                          {/* Your Button and Display Logic */}
+                          <Pressable
+                            onPress={() => handlePickerChoice(onChange)}
+                            className="rounded-lg overflow-hidden"
+                          >
+                            <Text className="px-6 py-2 text-white bg-primary">
+                              Upload
+                            </Text>
+                          </Pressable>
+                        </View>
                         {error && (
                           <ErrorMessageDisplay message={error.message} />
                         )}
@@ -335,14 +322,15 @@ export default function LoanApplication() {
               </View>
             </View>
             <Pressable
-              className="bg-primary p-3 rounded-xl w-11/12 m-6"
+              className="bg-primary px-3 py-4 rounded-xl w-full my-6"
               onPress={handleSubmit(handleFundingApplication)}
             >
-              <Text className="text-white font-bold text-center text-xl">
+              <Text className="text-white text-center text-lg">
                 Submit
               </Text>
             </Pressable>
           </View>
+        </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

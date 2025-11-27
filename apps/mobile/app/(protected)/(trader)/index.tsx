@@ -39,14 +39,14 @@ export default function TraderDashboard() {
   const [showMakeRepaymentModal, setShowMakeRepaymentModal] =
     useState<boolean>(false);
   const quickActions = [
-    { label: 'Apply', icon: FileText, route: '/(protected)/(trader)/(dashboard)/loan/apply' },
-    { label: 'Repay', icon: Repeat, route: '(protected)/(trader)/(dashboard)/repayment-history' },
-    { label: 'Esusu', icon: PiggyBank, route: '(protected)/(trader)/esusu' },
-    { label: 'Profile', icon: User, route: '(protected)/(trader)/profile' },
+    { label: 'Apply', icon: FileText, route: '/loan/apply' },
+    { label: 'Repay', icon: Repeat, route: '/repayment-history' },
+    { label: 'Esusu', icon: PiggyBank, route: '/esusu' },
+    { label: 'Profile', icon: User, route: '/profile' },
   ];
 
   return (
-    <SafeAreaView className="flex-1 bg-slate-200 dark:bg-[rgb(23,26,33)] p-3">
+    <SafeAreaView edges={['top']} className="flex-1 bg-slate-200 dark:bg-[rgb(23,26,33)] px-4 pt-0 pb-6">
       <View className="flex flex-row items-center justify-between py-3">
         <View className="flex flex-row gap-3 items-center">
           {user?.image ? (
@@ -81,7 +81,7 @@ export default function TraderDashboard() {
           <User color={'white'} className="h-6 w-6" />
         </View>
       </View>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         {hasActiveLoan ? (
           <LoanOverviewCard />
         ) : (
@@ -90,7 +90,7 @@ export default function TraderDashboard() {
 
         <View className="flex flex-row justify-between">
           <View className="w-[48%] py-6 px-4 rounded-xl bg-white dark:bg-card">
-            <Text className="dark:text-slate-300 text-xs">Wallet Balance</Text>
+            <Text className="dark:text-slate-300 text-sm">Wallet Balance</Text>
             <Text className="dark:text-white text-xl">
               {formatCurrency(amount)}
             </Text>
@@ -112,13 +112,13 @@ export default function TraderDashboard() {
             onClose={() => setShowMakeRepaymentModal((prev) => !prev)}
           />
 
-          <View className="flex flex-row justify-around items-center my-10">
+          <View className="flex flex-row justify-around items-center my-6">
             {quickActions.map((action) => (
               <TouchableOpacity onPress={()=> router.push(action.route as any)} key={action.label}>
                 <View className="flex items-center gap-2 p-4 bg-green-900/10 rounded-full">
                   <action.icon size={20} color={'hsl(151 51% 33%)'} />
                 </View>
-                <Text className=" text-center dark:text-white mt-1">
+                <Text className="text-xs text-center dark:text-white mt-1">
                   {action.label}
                 </Text>
               </TouchableOpacity>

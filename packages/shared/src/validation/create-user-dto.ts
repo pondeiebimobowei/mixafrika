@@ -1,10 +1,10 @@
 import { type Roles, roles } from "../enums";
-import { z } from "zod";
+import { z } from "zod/v4";
 
 export const create_user_dto = z.object({
   first_name: z.string().min(3, "Firstname too short!"),
   last_name: z.string().min(3, "Lastname too short!"),
-  email: z.string().email("Enter valid email"),
+  email: z.email("Enter valid email"),
   role: z.enum(Object.values(roles) as [Roles, ...Roles[]]),
   password: z
     .string()

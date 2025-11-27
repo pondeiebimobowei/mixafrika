@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import { Stack, useNavigationContainerRef, useRootNavigationState } from "expo-router";
 import "@/global.css"
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { PortalHost } from '@rn-primitives/portal'
@@ -13,8 +13,6 @@ export default function RootLayout() {
 
   useEffect(()=>{
 
-    console.log('enable_dark_mode', enable_dark_mode)
-
     const darkMode = enable_dark_mode;
     if(darkMode){
       colorScheme.setColorScheme('dark');
@@ -22,7 +20,7 @@ export default function RootLayout() {
       colorScheme.setColorScheme('light');
     }
   },[enable_dark_mode])
-  
+
   return <>
       <SafeAreaProvider>
         <Stack screenOptions={{ headerShown: false }} />

@@ -12,40 +12,35 @@ export default function CreditScoreOverView(){
     const [chartView, setChartView ] = useState<ChartViews>("bar")
 
     return(
-        <View className="py-10 px-2 bg-card rounded-xl">
+        <View className="py-10 px-6 bg-white dark:bg-card rounded-xl">
             <View>
-                <Text className="text-white text-2xl font-bold">Credit Score</Text>
-                <View className="my-6">
+                <Text className="dark:text-white text-lg font-semibold">Credit Score</Text>
+                <View className="my-2">
                     <View className="flex flex-row justify-between">
                         <View>
-                            <Text className="text-white text-5xl font-bold">{user?.credit_score}</Text>
-                            <Text className="text-white text-2xl capitalize">{user?.credit_score_status}</Text>
+                            <Text className="dark:text-white text-3xl font-semibold">{user?.credit_score}</Text>
+                            <Text className="dark:text-white text-lg capitalize">{user?.credit_score_status}</Text>
                         </View>
-                        <View className="flex flex-row gap-3">
+                        <View className="flex flex-row gap-1">
                             <Pressable onPress={()=> setChartView("bar")} className={``}>
-                                <View className={` ${chartView === "bar" ? "bg-slate-700 rounded-xl":""} p-2`}>
-                                    <BarChartIcon className="" size={18} color={"white"} />
+                                <View className={` ${chartView === "bar" ? "bg-slate-700":"bg-slate-400 dark:bg-slate-800"} rounded-xl p-2`}>
+                                    <BarChartIcon className="" strokeWidth={6} size={14} color={`${chartView == 'bar' ? "green":"white"}`} />
 
                                 </View>
                             </Pressable>
                             <Pressable onPress={()=> setChartView("line")}>
-                                <View className={` ${chartView === "line" ? "bg-slate-700 rounded-xl":""} p-2`}>
-                                    <ChartAreaIcon size={18} color={"white"} />
+                                <View className={` ${chartView === "line" ? "bg-slate-700":"bg-slate-400 dark:bg-slate-800"} rounded-xl p-2`}>
+                                    <ChartAreaIcon size={14} strokeWidth={4} color={`${chartView == 'line' ? "green":"white"}`} />
                                 </View>
                             </Pressable>
                         </View>
                     </View>
-                    <Text className="text-slate-400 text-lg">Bassed on your repayment history</Text>
+                    <Text className="text-slate-400 text-sm">Bassed on your repayment history</Text>
 
                 </View>
                 <View style={{ height: 200 }}>
-                    { chartView === "bar" ?
-                        (
-                            <BarChartKit />
-                        ) :  (
-                            <LineChartKit />
-                        )
-                    }                  
+                    { chartView === 'bar' && <BarChartKit />}
+                    { chartView === 'line' && <LineChartKit />}
                 </View>
             </View>
         </View>

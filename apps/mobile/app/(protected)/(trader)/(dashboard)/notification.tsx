@@ -23,8 +23,7 @@ export default function Notification() {
   const hasNotifications = Object.values(groupNotifications).some(g => g.length > 0);
 
   return (
-    <SafeAreaView className="bg-[#1A1A1A] flex-1 p-4 pt-6">
-      <Text className="text-xl font-bold text-white text-center mb-6">Notifications</Text>
+    <SafeAreaView edges={[]} className="bg-[#1A1A1A] flex-1 p-4 pt-6">
       <ScrollView showsVerticalScrollIndicator={false}>
         {Object.keys(groupNotifications).map((groupName) => {
           const notifications = groupNotifications[groupName as keyof GroupedNotifications];
