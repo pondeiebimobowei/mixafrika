@@ -28,13 +28,15 @@
     "reset:test": "dotenv -e .env.test -- sequelize-cli db:migrate:undo:all && dotenv -e .env.test -- sequelize-cli db:migrate && dotenv -e .env.test sequelize-cli db:seed:all",
     "migrate": "dotenv -- sequelize-cli db:migrate",
     "migrate:prod": "dotenv -e .env -- cross-env NODE_ENV=production npx sequelize-cli db:migrate",
+    "migrate:prod:undo": "dotenv -e .env -- cross-env NODE_ENV=production npx sequelize-cli db:migrate:undo:all",
     "migrate:undo": "dotenv -- sequelize-cli db:migrate:undo",
     "migrate:undo:all": "dotenv -- sequelize-cli db:migrate:undo:all",
     "migrate:seed:all": "dotenv -- sequelize-cli db:seed:all",
     "migrate:prod:seed:all": "dotenv -e .env -- npx sequelize-cli db:seed:all",
     "migrate:prod:seed:undo": "dotenv -e .env -- npx sequelize-cli db:seed:undo",
     "migrate:seed:undo": "dotenv -- sequelize-cli db:seed:undo",
-    "reset": "dotenv -e .env -- cross-env NODE_ENV=development sequelize-cli db:migrate:undo:all && dotenv -e .env -- sequelize-cli db:migrate && dotenv -e .env -- sequelize-cli db:seed:all",
+    "reset": "dotenv -e .env -- cross-env NODE_ENV=production npx sequelize-cli db:migrate:undo:all && dotenv -e .env -- cross-env NODE_ENV=production npx sequelize-cli db:migrate && dotenv -e .env --cross-env NODE_ENV=production npx sequelize-cli db:seed:all",
+    "reset:prod": "dotenv -e .env -- cross-env NODE_ENV=production npx sequelize-cli db:migrate:undo:all && dotenv -e .env -- cross-env NODE_ENV=production npx sequelize-cli db:migrate && dotenv -e .env --cross-env NODE_ENV=production npx sequelize-cli db:seed:all",
     "migrate:skeleton": "sequelize-cli migration:generate --name migration-skeleton"
   },
   "dependencies": {
