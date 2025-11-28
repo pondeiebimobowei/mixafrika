@@ -3,6 +3,7 @@ import { repayLoan } from '@/axios/wallet';
 import { ILoanAccount } from '@mixafrica/shared/types/loan-account';
 import Toast from 'react-native-toast-message';
 import type { StateCreator } from 'zustand';
+import { useWallet } from '..';
 
 export interface LoanAccount {
   loading: boolean;
@@ -41,17 +42,21 @@ export const createLoanAccount: StateCreator<
 
   repay_loan: async (amount: number) => {
     set({ loading: true, error: null });
-    const { success, message } = await repayLoan(amount);
+    const { success, data, message } = await repayLoan(amount);
 
 
     if (success) {
       Toast.show({ text1: message, type: 'success'})
-      // await get().getTransactions();
+      set({ loan_account: data })
     } else {
       Toast.show({ text1: message, type: 'error'})
       set({ error: message });
     }
-
+    
+    get().get_loan_account()
+    
+    const fetchWalletBalance = useWallet.getState().getWalletBalance
+    fetchWalletBalance();
     set({ loading: false });
     return success;
   }

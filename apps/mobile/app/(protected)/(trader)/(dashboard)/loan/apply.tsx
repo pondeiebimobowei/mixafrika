@@ -182,11 +182,11 @@ export default function LoanApplication() {
 
             <View className="flex gap-6  flex-row items-center justify-between">
               <View className="w-[47%]">
-                <Text className="dark:text-white mb-2">Repayment Duration</Text>
+                <Text className="dark:text-white mb-2">Repayment Plan</Text>
 
                 <Controller
                   control={control}
-                  name="duration"
+                  name="repayment_plan"
                   render={({ field, fieldState: { error },
                   }) => (
                     <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>
@@ -211,10 +211,10 @@ export default function LoanApplication() {
                 />
               </View>
               <View className="w-[47%]">
-                <Text className="dark:text-white mb-2">Repayment Plan</Text>
+                <Text className="dark:text-white mb-2">Repayment Duration</Text>
                 <Controller
                   control={control}
-                  name="repayment_plan"
+                  name="duration"
                   render={({ field, fieldState: { error },
                   }) => (
                     <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>

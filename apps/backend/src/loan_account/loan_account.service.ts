@@ -5,15 +5,37 @@ import { Transaction } from 'src/database/models/transaction.model';
 import { RepaymentHistory } from 'src/database/models/repayment-history.model';
 import { LoanStatus, RepaymentStatus, Types, Status } from '@shared/shared/src/enums';
 import Decimal from 'decimal.js';
+import { FundingApplication } from 'src/database/models/funding_application';
 
 @Injectable()
 export class LoanAccountService {
 
     async getLoanAccount(user_id: string,) {
-        const loan_account = await LoanAccount.findOne({ where: { user_id } })
+        const loan_account = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED } })
         return {
             success: true,
             message: "Loan account record found!",
+            data: loan_account
+        }
+    }
+
+    async handleCreate( user_id:string, application_id: string) {
+        const application = await FundingApplication.findOne({ where: { id: application_id }})
+
+        const loan_account = await LoanAccount.create({
+            application_id,
+            duration: Number(application?.dataValues.duration),
+            interest_rate: 15,
+            approvedAt: '2025-11-12T16:13:42.425Z',
+            received_amount: Number(application?.dataValues.amount),
+            repayment_amount: Number(application?.dataValues.amount) * 1.15,
+            repaid_amount: 0,
+            status: LoanStatus.APPROVED,
+            user_id,
+        })
+        return {
+            success: true,
+            message: 'Created Succesfully',
             data: loan_account
         }
     }

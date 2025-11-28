@@ -1,8 +1,8 @@
 export const REPAYMENT_DURATION_OPTIONS = [
   { label: 'Select duration', value: '' },
-  { label: '30 days', value: '30_days' },
-  { label: '60 days', value: '60_days' },
-  { label: '90 days', value: '90_days' },
+  { label: '30 days', value: '30' },
+  { label: '60 days', value: '60' },
+  { label: '90 days', value: '90' },
 ];
 
 export const PAYMENT_PLAN_OPTIONS = [
