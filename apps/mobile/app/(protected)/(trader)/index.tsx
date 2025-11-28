@@ -78,7 +78,11 @@ export default function TraderDashboard() {
           >
             <Bell color={'orange'} className="h-6 w-6" />
           </Pressable>
-          <User color={'white'} className="h-6 w-6" />
+          <Pressable
+            onPress={() => router.push('/profile')}
+          >
+            <User color={'white'} className="h-6 w-6" />
+          </Pressable>
         </View>
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>

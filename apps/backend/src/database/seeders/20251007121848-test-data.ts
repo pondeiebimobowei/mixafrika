@@ -56,7 +56,7 @@ module.exports = {
       const loan_account = await queryInterface.bulkInsert('loan_account', [{
         user_id: users[0].id,
         id: uuidv4(),
-        received_amount: 800_000,
+        received_amount: 500_000,
         status: 'approved',
         repaid_amount: 191_670,
         repayment_amount: 575_000,
@@ -74,10 +74,7 @@ module.exports = {
       )
 
       const repayment_history = await mockLoanRepaySeed(loan_account)
-      const rh = await queryInterface.bulkInsert('repayment_history', repayment_history, { returning: true, transaction: t });
-      console.log(rh)
-
-      
+      const rh = await queryInterface.bulkInsert('repayment_history', repayment_history, { returning: true, transaction: t });      
     });
   },
 

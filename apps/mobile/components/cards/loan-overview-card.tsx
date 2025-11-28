@@ -61,7 +61,7 @@ export default function LoanOverviewCard() {
                 <TrendingUp color={"white"} size={18} strokeWidth={1} />
                 <View>
                   <Text className='text-white text-xs'>Repayment:</Text>
-                  <Text className='text-white text-xs'>{formatCurrency(loan_account?.repayment_amount)}</Text>
+                  <Text className='text-white text-xs'>{formatCurrency(loan_account?.repaid_amount)}</Text>
                 </View>
               </View>
 

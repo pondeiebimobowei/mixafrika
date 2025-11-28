@@ -48,7 +48,7 @@ export default function TraderTabsLayout() {
         <Tabs.Screen
           name="(dashboard)"
           options={{
-            title: 'Dashboard',
+            title: '(dashboard)',
             href: null,
           }}
         />

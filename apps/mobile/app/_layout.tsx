@@ -1,9 +1,9 @@
-import { Stack, useNavigationContainerRef, useRootNavigationState } from "expo-router";
+import { Stack } from "expo-router";
 import "@/global.css"
 import { Toast } from "react-native-toast-message/lib/src/Toast";
 import { PortalHost } from '@rn-primitives/portal'
 import { useEffect } from "react";
-import { useAuthStore, useUserSettings } from "@/store";
+import { useUserSettings } from "@/store";
 import { useColorScheme } from "nativewind";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -21,11 +21,13 @@ export default function RootLayout() {
     }
   },[enable_dark_mode])
 
-  return <>
-      <SafeAreaProvider>
-        <Stack screenOptions={{ headerShown: false }} />
-        <Toast />
-        <PortalHost />
-      </SafeAreaProvider>
-    </>;
+  return (
+      <>
+        <SafeAreaProvider>
+          <Stack screenOptions={{ headerShown: false }} />
+          <Toast />
+          <PortalHost />
+        </SafeAreaProvider>
+      </>
+    );
 }

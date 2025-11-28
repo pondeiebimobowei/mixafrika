@@ -9,7 +9,7 @@ export function TabBar({ state, descriptors, navigation }: BottomTabBarProps) {
                 const { options } = descriptors[route.key];
 
                 // @ts-ignore                
-                if (options.title === 'Dashboard') return null;
+                if (options.title === '(dashboard)') return null;
 
                 const label =
                     options.tabBarLabel !== undefined
