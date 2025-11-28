@@ -32,7 +32,7 @@ module.exports = {
       const userWallets = [...responseUser, ...responseInvestor].map((u) => ({
         id: uuidv4(),
         user_id: u.id,
-        amount: randomNumber(1000, 150000),            
+        amount: randomNumber(20000, 15000000),            
         total_portfolio: randomNumber(5000, 500000),
         createdAt: new Date(),
         updatedAt: new Date(),
@@ -60,7 +60,7 @@ module.exports = {
         application_id: application[0].id,
         received_amount: application[0].amount,
         status: 'approved',
-        repaid_amount: 191_670,
+        repaid_amount: 0,
         repayment_amount: application[0].amount * 1.15,
         interest_rate: 15,
         duration: 30,

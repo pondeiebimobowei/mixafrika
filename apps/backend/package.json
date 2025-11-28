@@ -39,7 +39,6 @@
     "reset:prod": "dotenv -e .env -- cross-env NODE_ENV=production npx sequelize-cli db:migrate:undo:all && dotenv -e .env -- cross-env NODE_ENV=production npx sequelize-cli db:migrate && dotenv -e .env --cross-env NODE_ENV=production npx sequelize-cli db:seed:undo && dotenv -e .env --cross-env NODE_ENV=production npx sequelize-cli db:seed:all",
     "migrate:skeleton": "sequelize-cli migration:generate --name migration-skeleton"
   },
-
   "dependencies": {
     "@nestjs/cli": "^11.0.0",
     "@nestjs/common": "^11.0.1",
@@ -52,6 +51,7 @@
     "cloudinary": "^2.8.0",
     "cross-env": "^10.1.0",
     "dayjs": "^1.11.19",
+    "decimal.js": "^10.6.0",
     "dotenv": "^16.4.7",
     "dotenv-cli": "^10.0.0",
     "jsonwebtoken": "^9.0.2",

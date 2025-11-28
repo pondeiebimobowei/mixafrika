@@ -4,6 +4,7 @@ import { Wallet } from 'src/database/models/wallet.model';
 import { Transaction } from 'src/database/models/transaction.model';
 import { RepaymentHistory } from 'src/database/models/repayment-history.model';
 import { LoanStatus, RepaymentStatus, Types, Status } from '@shared/shared/src/enums';
+import Decimal from 'decimal.js';
 
 @Injectable()
 export class LoanAccountService {
@@ -17,11 +18,9 @@ export class LoanAccountService {
         }
     }
 
-    async handleRepayment(user_id: string, amount: number) {
-        let loan_account = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED } });
-        if (!loan_account) {
-            throw new HttpException({ success: false, message: "No Active Loan Found!"}, 500 );
-        }
+    async handleRepayment(user_id: string, days: number) {
+
+        const amount = await this.calculateDynamicRepayment(user_id, days);
 
         const wallet = await Wallet.findOne({ where: { user_id } });
         
@@ -29,18 +28,14 @@ export class LoanAccountService {
             throw new HttpException({ success: false, message: "Insufficient Funds"}, 500 );
         }
 
-        if(Number(amount) > Number(loan_account?.dataValues.repayment_amount - loan_account?.dataValues.repaid_amount)) {
-            throw new HttpException({ success: false, message: `Max repayment amount is ${loan_account?.dataValues.repayment_amount - loan_account?.dataValues.repaid_amount}`}, 500 );
-        }
-
         await Wallet.decrement( 'amount', { by: amount, where: { user_id } });
 
         await LoanAccount.increment( 'repaid_amount', {  by: amount, where: { user_id } });
 
-        loan_account = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED } });
+        let loan_account = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED } });
 
 
-        if(Number(loan_account?.dataValues.repayment_amount) >= Number(loan_account?.dataValues.repayment_amount)) {
+        if(Number(loan_account?.dataValues.repaid_amount) >= Number(loan_account?.dataValues.repayment_amount)) {
             await LoanAccount.update({ status: LoanStatus.COMPLETED }, { where: { user_id } });
         }
 
@@ -65,5 +60,28 @@ export class LoanAccountService {
             message: 'Repayment successful',
             data: loan_account,
         };
+    }
+
+    async calculateDynamicRepayment(user_id: string, daysToPay: number): Promise<number> {
+        const loan = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED } });
+        if (!loan) throw new HttpException({ success: false, message: "No Active Loan Found!"}, 500 );
+            
+        const outstandingBalance = new Decimal(loan.dataValues.repayment_amount).minus(loan.dataValues.repaid_amount);
+        const regularInstallment = new Decimal(loan.dataValues.repayment_amount).div(loan.dataValues.duration);
+        const days = new Decimal(daysToPay);
+
+        const calculatedAmount = regularInstallment.mul(days).toDecimalPlaces(2, Decimal.ROUND_DOWN);
+
+        if (calculatedAmount.greaterThan(outstandingBalance)) {
+            return outstandingBalance.toNumber();
+        }
+        
+        const projectedBalance = outstandingBalance.sub(calculatedAmount);
+
+        if (projectedBalance.lessThan(regularInstallment)) {
+        return outstandingBalance.toNumber();
+        }
+        
+        return calculatedAmount.toNumber(); 
     }
 }

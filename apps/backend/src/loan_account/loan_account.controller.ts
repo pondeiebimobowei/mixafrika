@@ -16,8 +16,8 @@ export class LoanAccountController {
     @Post('repay')
     handleRepayment(
         @ParsedToken() jwt: IJwtToken,
-        @Body() body: { amount: number }
+        @Body() body: { days: number }
     ) {
-        return this.loan_account_service.handleRepayment(jwt.id, body.amount);
+        return this.loan_account_service.handleRepayment(jwt.id, body.days);
     }
 }
