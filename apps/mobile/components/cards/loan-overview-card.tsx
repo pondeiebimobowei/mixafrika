@@ -72,22 +72,22 @@ export default function LoanOverviewCard() {
             <View className='flex flex-row flex-wrap gap-4 items-center justify-between'>
               <View className='w-5/12 '>
                 <Text className='text-white/50'>Interest Rate</Text>
-                <Text className='text-white font-semibold'>{loan_account?.interest_rate}%</Text>
+                <Text className='text-white font-semibold'>{Number(loan_account?.interest_rate).toFixed()}%</Text>
               </View>
 
               <View className='w-5/12 '>
                 <Text className='text-white/50'>Total Repayment</Text>
-                <Text className='text-white font-semibold'>{loan_account?.repayment_amount}</Text>
+                <Text className='text-white font-semibold'>{formatCurrency(loan_account?.repayment_amount)}</Text>
               </View>
               
               <View className='w-5/12 '>
                 <Text className='text-white/50'>Next Payment</Text>
-                <Text className='text-white font-semibold'>{loan_account?.interest_rate}%</Text>
+                <Text className='text-white font-semibold'>{formatCurrency(Number(loan_account?.repayment_amount)/Number(loan_account?.duration))}</Text>
               </View>
 
               <View className='w-full '>
                 <Text className='text-white/50'>Loan duration</Text>
-                <Text className='text-white font-semibold'>{loan_account?.duration} days</Text>
+                <Text className='text-white font-semibold'>{Number(loan_account?.duration).toFixed()} days</Text>
               </View>
 
               <View>

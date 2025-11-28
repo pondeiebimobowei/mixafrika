@@ -2,6 +2,7 @@ import { BaseModel } from "./base-model-type";
 
 export interface IFundingApplication extends BaseModel {
   user_id: string;
+  cluster_id: string | null;
   business_type: string;
   business_location: string;
   amount: number;

@@ -15,7 +15,6 @@ export class FundingController {
   @Post('apply')
   @UseInterceptors(FileFieldsInterceptor([
         { name: 'statement', maxCount: 1 },
-        { name: 'stat', maxCount: 1 },
   ]))
   @UseGuards(JwtAuthGuard)
   apply(
@@ -23,8 +22,6 @@ export class FundingController {
     @ParsedToken() token: IJwtToken,
     @Body( new ZodPipe(create_funding_application_dto)) createFundingApplicationDto: Create_funding_application_dto,
     ) {
-      console.log('Files received:', files);
-      console.log('DTO received:', createFundingApplicationDto);
     return this.fundingService.create(createFundingApplicationDto, token.id, files );
   }
 }

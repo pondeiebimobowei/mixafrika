@@ -28,6 +28,18 @@ module.exports = {
           onDelete: 'Cascade',
           onUpdate: 'Cascade',
         },
+
+        application_id: {
+          type: Sequelize.UUID,
+          allowNull: true,
+          references: {
+            model: 'funding_application',
+            key: 'id',
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE',
+        },
+
         received_amount: {
           type: Sequelize.DECIMAL(15, 2),
           allowNull: false,

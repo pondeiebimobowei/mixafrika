@@ -158,13 +158,14 @@ export default function Esusu() {
     }
   };
 
+  const ActivityIcon = {
+    deposit: ArrowDown,
+    payout: Send,
+  }
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-slate-200 dark:bg-[#121212]">
       {/* Header */}
       <View className="flex-row items-center justify-between px-4 py-4">
-        {/* <TouchableOpacity onPress={() => router.back()}>
-          <ArrowLeft size={24} color="white" />
-        </TouchableOpacity> */}
         <View></View>
         <Text className="text-black dark:text-white text-center text-lg font-bold">My Esusu</Text>
         <ShieldCheck size={24} color="white" />
@@ -222,22 +223,30 @@ export default function Esusu() {
         <View className="mb-8">
           <Text className="text-black dark:text-white mb-4">Recent Activity</Text>
 
+          {[{ title: 'Contribution', type: 'deposit'}].map((activity, idx) => {
+                const Icon = ActivityIcon[activity.type as keyof typeof ActivityIcon] || Send;
+            return (
+              <>
+                <View className="flex-row items-center justify-between mb-4 bg-white dark:bg-[#1C1F26] p-3 rounded-xl">
+                  <View className="flex-row items-center">
+                    <View className="w-10 h-10 rounded-full bg-green-900/20 items-center justify-center mr-3">
+                      <ArrowDown size={18} color="#27AE60" />
+                    </View>
+                    <View>
+                      <Text className="text-black dark:text-white font-medium">{activity.title}</Text>
+                      <Text className="text-gray-500 dark:text-slate-400 text-xs">Daily Savings</Text>
+                    </View>
+                  </View>
+                  <View className="items-end">
+                    <Text className="text-[#27AE60] font-bold">+₦1,000</Text>
+                    <Text className="text-gray-400 text-[10px]">2h ago</Text>
+                  </View>
+                </View>
+              </>
+            )
+          })}
+
           {/* Mock Activity Items */}
-          <View className="flex-row items-center justify-between mb-4 bg-white dark:bg-[#1C1F26] p-3 rounded-xl">
-            <View className="flex-row items-center">
-              <View className="w-10 h-10 rounded-full bg-green-900/20 items-center justify-center mr-3">
-                <ArrowDown size={18} color="#27AE60" />
-              </View>
-              <View>
-                <Text className="text-black dark:text-white font-medium">Contribution</Text>
-                <Text className="text-gray-500 dark:text-slate-400 text-xs">Daily Savings</Text>
-              </View>
-            </View>
-            <View className="items-end">
-              <Text className="text-[#27AE60] font-bold">+₦1,000</Text>
-              <Text className="text-gray-400 text-[10px]">2h ago</Text>
-            </View>
-          </View>
 
           <View className="flex-row items-center justify-between mb-4 bg-white dark:bg-[#1C1F26] p-3 rounded-xl">
             <View className="flex-row items-center">

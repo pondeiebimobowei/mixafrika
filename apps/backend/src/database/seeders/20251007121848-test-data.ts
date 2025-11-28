@@ -6,6 +6,7 @@ import { mockInvestorSeed } from '../data/investor.mock';
 import { mockLoanRepaySeed } from '../data/loan-repayment.mock';
 import { mockTransactionsSeed } from '../data/transactions.mock';
 import { mockApplicationSeed } from '../data/application.mock';
+import { mockClusterSeed } from '../data/cluster.mock';
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -19,7 +20,9 @@ module.exports = {
       const users = await mockUserSeed()
       const investors = await mockInvestorSeed()
       const transactions = await mockTransactionsSeed([...users, ...investors])
-      const application = await mockApplicationSeed(users)
+      const clusters = await mockClusterSeed();
+      await queryInterface.bulkInsert('cluster', clusters, { returning: true, transaction: t });
+      const application = await mockApplicationSeed(users, clusters)
 
       const responseUser = await queryInterface.bulkInsert('user', users, { returning: true, transaction: t });
       const responseInvestor = await queryInterface.bulkInsert('user', investors, { returning: true, transaction: t });
@@ -45,21 +48,20 @@ module.exports = {
         updatedAt: new Date()
       }));
 
-      // await queryInterface.bulkInsert('loan_history', loan_history, { transaction: t });
       await queryInterface.bulkInsert('setting', userSettings, { transaction: t });
       await queryInterface.bulkInsert('wallet', userWallets, { transaction: t });
       
-      // const notificationUser = await mockNotificationSeed(responseUser)
       const notificationUser = await mockNotificationSeed([...responseUser, responseUser[0], responseInvestor[1]])
       await queryInterface.bulkInsert('notification', notificationUser, { transaction: t });
       
       const loan_account = await queryInterface.bulkInsert('loan_account', [{
         user_id: users[0].id,
         id: uuidv4(),
-        received_amount: 500_000,
+        application_id: application[0].id,
+        received_amount: application[0].amount,
         status: 'approved',
         repaid_amount: 191_670,
-        repayment_amount: 575_000,
+        repayment_amount: application[0].amount * 1.15,
         interest_rate: 15,
         duration: 30,
         approvedAt: new Date(),

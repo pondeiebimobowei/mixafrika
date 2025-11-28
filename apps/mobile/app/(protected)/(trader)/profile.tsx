@@ -20,7 +20,7 @@ import { FundingSheet } from '@/components/sheets/funding.sheet';
 import { RepaymentSheet } from '@/components/sheets/repayment.sheet';
 import TransactionItems from '@/components/cards/transaction-item';
 
-interface SheetsState {
+export interface SheetsState {
   isFundingOpen: boolean,
   isRepayOpen: boolean,
   isWithdrawOpen: boolean,

@@ -24,6 +24,10 @@ import NewsAndUpdates from '@/components/cards/news-and-update.card';
 import CreditScoreOverView from '@/components/cards/credit-score-overview.card';
 import { useFetchLoanAccount } from '@/store/hooks/loan-account';
 import { formatCurrency } from '@/lib/utils';
+import Sheet from '@/components/ui/sheet';
+import { RepaymentSheet } from '@/components/sheets/repayment.sheet';
+import { SheetsState } from './profile';
+import { LoanStatus } from '@mixafrica/shared/enums';
 
 export default function TraderDashboard() {
   const { business } = useUserBusiness();
@@ -31,13 +35,13 @@ export default function TraderDashboard() {
   const { amount } = useWallet();
   const router = useRouter();
 
+  const [sheetIsOpen, setSheetIsOpen] = useState<SheetsState>({ isFundingOpen: false, isRepayOpen: false, isWithdrawOpen: false })
+
   useFetchWallet();
   const { loan_account } = useLoanAccountStore();
   useFetchLoanAccount()
-  const hasActiveLoan = Boolean(loan_account)
+  const hasActiveLoan = Boolean(loan_account?.status === LoanStatus.APPROVED)
 
-  const [showMakeRepaymentModal, setShowMakeRepaymentModal] =
-    useState<boolean>(false);
   const quickActions = [
     { label: 'Apply', icon: FileText, route: '/loan/apply' },
     { label: 'Repay', icon: Repeat, route: '/repayment-history' },
@@ -102,7 +106,8 @@ export default function TraderDashboard() {
 
           <TouchableOpacity
             className='w-[48%] border border-slate-300 dark:border-slate-700 rounded-xl'
-            onPress={() => setShowMakeRepaymentModal((prev) => !prev)}
+            disabled={!hasActiveLoan}
+            onPress={() => setSheetIsOpen(prev => ({ ...prev, isRepayOpen: !prev.isRepayOpen }))}
           >
             <View className="py-6 px-4  rounded-xl">
               <Text className="dark:text-white  font-semibold">Make Repayment</Text>
@@ -111,10 +116,6 @@ export default function TraderDashboard() {
           </TouchableOpacity>
         </View>
         <View>
-          <MakePaymentModal
-            show={showMakeRepaymentModal}
-            onClose={() => setShowMakeRepaymentModal((prev) => !prev)}
-          />
 
           <View className="flex flex-row justify-around items-center my-6">
             {quickActions.map((action) => (
@@ -133,6 +134,12 @@ export default function TraderDashboard() {
         <CreditScoreOverView />
         <NewsAndUpdates />
       </ScrollView>
+      <Sheet
+        open={sheetIsOpen.isRepayOpen}
+        onOpenChange={() => setSheetIsOpen(prev => ({ ...prev, isRepayOpen: !prev.isRepayOpen }))}
+      >
+        <RepaymentSheet onClose={() => setSheetIsOpen(prev => ({ ...prev, isRepayOpen: false }))} />
+      </Sheet>
     </SafeAreaView>
   );
 }

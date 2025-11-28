@@ -18,6 +18,17 @@ module.exports = {
         purpose: { type: Sequelize.STRING, allowNull: false },
         statement_of_account_doc: { type: Sequelize.STRING, allowNull: false },
         
+        cluster_id: {
+          type: Sequelize.UUID,
+          allowNull: true,
+          references: {
+            model: 'cluster',
+            key: 'id',
+          },
+          onUpdate: 'CASCADE',
+          onDelete: 'CASCADE',
+        },
+
         createdAt: { allowNull: false, type: Sequelize.DATE, defaultValue: Sequelize.NOW },
         deletedAt: {
           allowNull: true,

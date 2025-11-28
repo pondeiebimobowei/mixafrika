@@ -8,9 +8,11 @@ import {
   CreatedAt,
   Default,
   PrimaryKey,
+  HasOne,
 } from 'sequelize-typescript';
 import { ICluster } from '@shared/shared/src/types/cluster';
 import { CreationOptional, DataTypes } from 'sequelize';
+import { FundingApplication } from './funding_application';
 
 @Table({ tableName: 'cluster' })
 export class Cluster extends Model<ICluster> implements ICluster {
@@ -36,6 +38,9 @@ export class Cluster extends Model<ICluster> implements ICluster {
 
   @Column(DataType.STRING)
   description: string;
+
+  @HasOne(() => FundingApplication)
+  application: FundingApplication;
 
   @CreatedAt
   declare createdAt: string;

@@ -39,11 +39,11 @@ export default function TargetSavings() {
     ]
 
     return (
-        <ScrollView className="flex-1 p-4 pb-10 bg-black">
+        <ScrollView className="flex-1 p-4 pb-10 bg-gray-200 md:bg-black">
             <View className="flex-1">
 
                 <View className='mb-4'>
-                    <Text className="text-white font-semibold mb-2">Plan Name</Text>
+                    <Text className="text-black dark:text-white font-semibold mb-2">Plan Name</Text>
                     <Controller
                         control={control}
                         name="name"

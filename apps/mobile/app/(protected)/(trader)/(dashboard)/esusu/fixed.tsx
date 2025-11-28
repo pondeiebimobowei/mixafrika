@@ -38,11 +38,11 @@ export default function TargetSavings() {
     ]
 
     return (
-        <ScrollView className="flex-1 p-4 pb-10 bg-black">
+        <ScrollView className="flex-1 p-4 pb-10 bg-gray-200 dark:bg-black">
             <View className="flex-1">
 
                 <View className='mb-4'>
-                    <Text className="text-white font-semibold mb-2">Plan Name</Text>
+                    <Text className="text-black dark:text-white mb-2">Plan Name</Text>
                     <Controller
                         control={control}
                         name="name"
@@ -50,7 +50,7 @@ export default function TargetSavings() {
                             <>
                                 <TextInput
                                     placeholder="e.g. New Car"
-                                    className="border border-slate-600 text-white p-4 rounded-xl font-medium"
+                                    className="border border-slate-600 text-black dark:text-white p-5 rounded-xl font-medium"
                                     value={value}
                                     onChangeText={onChange}
                                     placeholderTextColor="#6B7280"
@@ -64,7 +64,7 @@ export default function TargetSavings() {
                 </View>
 
                 <View className='mb-4'>
-                    <Text className="text-white font-semibold mb-2">Amount to Lock</Text>
+                    <Text className="text-black dark:text-white mb-2">Amount to Lock</Text>
                     <Controller
                         control={control}
                         name="target_amount"
@@ -72,7 +72,7 @@ export default function TargetSavings() {
                             <>
                                 <TextInput
                                     placeholder="e.g. 500,000"
-                                    className="border border-slate-600 text-white p-4 rounded-xl font-medium"
+                                    className="border border-slate-600 py-5 text-black dark:text-white p-4 rounded-xl font-medium"
                                     value={value}
                                     onChangeText={onChange}
                                     placeholderTextColor="#6B7280"
@@ -89,15 +89,15 @@ export default function TargetSavings() {
                 <View className='flex flex-row justify-between '>
 
                     <View className='mb-4 w-full'>
-                        <Text className="text-white font-semibold mb-2">Maturity Date</Text>
+                        <Text className="text-black dark:text-white  mb-2">Maturity Date</Text>
                         <Controller
                             control={control}
                             name="maturity_date"
                             render={({ field, fieldState: { error },
                             }) => (
                                 <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>
-                                    <SelectTrigger onTouchStart={onTouchStart} className='w-full'>
-                                        <SelectValue placeholder='Select a frequency' />
+                                    <SelectTrigger onTouchStart={onTouchStart} className='w-full h-14 bg-transparent dark:bg-dark'>
+                                        <SelectValue className='text-black dark:text-white' placeholder='Select a frequency' />
                                     </SelectTrigger>
                                     <SelectContent className='w-11/12'>
                                         <SelectGroup>
@@ -129,7 +129,7 @@ export default function TargetSavings() {
                 </View>
 
                 <View className="mb-6">
-                    <Text className="text-white font-semibold mb-2">Funding Source</Text>
+                    <Text className="text-black dark:text-white font-semibold mb-2">Funding Source</Text>
 
                     <Controller
                         control={control}
@@ -137,13 +137,11 @@ export default function TargetSavings() {
                         // defaultValue="wallet"
                         render={({ field: { value, onChange }, fieldState: { error } }) => (
                             <Select className='w-full' onValueChange={(raw) => { 
-                                console.log('raw', raw?.value)
                                 // @ts-expect-error
                                 const option = JSON.parse(raw?.value)
-                                console.log('parsed', option)
                                 setValue('source_type', option.type); onChange(option.id)}}>
-                                    <SelectTrigger onTouchStart={onTouchStart} className='w-full'>
-                                        <SelectValue placeholder='Select a frequency' />
+                                    <SelectTrigger onTouchStart={onTouchStart} className='w-full bg-transparen h-14 dark:bg-dark'>
+                                        <SelectValue className='text-black dark:text-white' placeholder='Select a frequency' />
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectGroup>

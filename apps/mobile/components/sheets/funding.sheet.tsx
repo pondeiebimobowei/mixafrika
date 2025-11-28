@@ -5,6 +5,7 @@ import { ArrowLeft, Building2, CreditCard, Wallet, Copy, Check } from 'lucide-re
 import * as Clipboard from 'expo-clipboard';
 import { clsx } from 'clsx';
 import { useWalletState } from '@/store/hooks/wallet.hook';
+import KeyboardAvoidingAreaView from '../keyboard-avoiding-area-view';
 
 type ViewState = 'selection' | 'bank-transfer' | 'crypto';
 
@@ -151,14 +152,16 @@ export function FundingSheet() {
 
             <View className="mb-6">
                 <Text className="text-gray-400 text-sm mb-2">Amount Sent</Text>
-                <TextInput
-                    value={amount}
-                    onChangeText={setAmount}
-                    placeholder="Enter amount"
-                    placeholderTextColor="#6B7280"
-                    keyboardType="numeric"
-                    className="bg-[#2A2D35] text-white p-4 rounded-xl font-medium"
-                />
+                <KeyboardAvoidingAreaView>
+                    <TextInput
+                        value={amount}
+                        onChangeText={setAmount}
+                        placeholder="Enter amount"
+                        placeholderTextColor="#6B7280"
+                        keyboardType="numeric"
+                        className="bg-[#2A2D35] text-white p-4 rounded-xl font-medium"
+                    />
+                </KeyboardAvoidingAreaView>
             </View>
 
             <TouchableOpacity

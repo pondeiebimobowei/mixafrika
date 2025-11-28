@@ -204,7 +204,7 @@ export default function Sheet({
 
           {header ? <View className="px-4 pb-2">{header}</View> : null}
 
-          <View className="px-4 pb-6">{children}</View>
+          <View className="px-3 pb-6">{children}</View>
 
           {footer ? <View className="p-4 border-t border-[#eee]">{footer}</View> : null}
         </Animated.View>

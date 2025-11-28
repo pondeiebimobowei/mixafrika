@@ -68,7 +68,7 @@ export default function TransactionsScreen() {
             ) : (
                 <ScrollView className="flex-1 px-4">
                     <View className='gap-3 mt-4'>
-                        {Object.values(groupedTransactions).flat().map((transaction) => <TransactionItems transaction={transaction} />
+                        {Object.values(groupedTransactions).flat().map((transaction) => <TransactionItems key={transaction.id} transaction={transaction} />
                         )}
                     </View>
                     <View className="" />

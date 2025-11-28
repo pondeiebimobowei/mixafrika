@@ -18,7 +18,7 @@ export class LoanAccountService {
     }
 
     async handleRepayment(user_id: string, amount: number) {
-        const loan_account = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED } });
+        let loan_account = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED } });
         if (!loan_account) {
             throw new HttpException({ success: false, message: "No Active Loan Found!"}, 500 );
         }
@@ -29,12 +29,23 @@ export class LoanAccountService {
             throw new HttpException({ success: false, message: "Insufficient Funds"}, 500 );
         }
 
+        if(Number(amount) > Number(loan_account?.dataValues.repayment_amount - loan_account?.dataValues.repaid_amount)) {
+            throw new HttpException({ success: false, message: `Max repayment amount is ${loan_account?.dataValues.repayment_amount - loan_account?.dataValues.repaid_amount}`}, 500 );
+        }
+
         await Wallet.decrement( 'amount', { by: amount, where: { user_id } });
 
         await LoanAccount.increment( 'repaid_amount', {  by: amount, where: { user_id } });
 
+        loan_account = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED } });
+
+
+        if(Number(loan_account?.dataValues.repayment_amount) >= Number(loan_account?.dataValues.repayment_amount)) {
+            await LoanAccount.update({ status: LoanStatus.COMPLETED }, { where: { user_id } });
+        }
+
         await RepaymentHistory.create({
-            loan_account_id: loan_account.id,
+            loan_account_id: loan_account?.id as string,
             amount: amount,
             status: RepaymentStatus.PAID,
         });
@@ -48,7 +59,6 @@ export class LoanAccountService {
             category: 'Loan',
         });
 
-        //TODO: implement update loan account status to completed, if fully repaid
 
         return {
             success: true,

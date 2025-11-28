@@ -14,9 +14,9 @@ export const fundWallet = async (amount: number): Promise<Response<ITransaction 
   }
 };
 
-export const repayLoan = async (amount: number): Promise<Response<ITransaction | null >> => {
+export const repayLoan = async (days: number): Promise<Response<ITransaction | null >> => {
   try {
-    const res = await apiPrivate.post(`/loan-account/repay`, { amount });
+    const res = await apiPrivate.post(`/loan-account/repay`, { days });
     return res.data;
   } catch (err: any) {
     if (err.response?.data) {

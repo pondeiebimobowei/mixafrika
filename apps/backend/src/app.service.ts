@@ -9,12 +9,13 @@ import { Wallet } from './database/models/wallet.model';
 import { Savings } from './database/models/saving.model';
 import { FundingApplication } from './database/models/funding_application';
 import { UserBusiness } from './database/models/user-business.model';
+import { Cluster } from './database/models/cluster.model';
 
 @Injectable()
 export class AppService {
   async getHello() {
     const user = await User.findAll( { include: [ 
-      { model: LoanAccount, include: [ { model: RepaymentHistory }] },
+      { model: LoanAccount, include: [ { model: RepaymentHistory }, { model: FundingApplication, include: [Cluster] }] },
       { model: Notification },
       { model: Transaction },
       { model: Wallet },

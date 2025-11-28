@@ -16,24 +16,24 @@ export default function Notification() {
   const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <View className="mb-6">
       <Text className="text-gray-400 font-semibold mb-2 px-4 capitalize">{title.replace('_', ' ')}</Text>
-      <View className="bg-[#2C2C2E] rounded-lg overflow-hidden">{children}</View>
+      <View className=" rounded-lg overflow-hidden gap-4">{children}</View>
     </View>
   );
 
   const hasNotifications = Object.values(groupNotifications).some(g => g.length > 0);
 
   return (
-    <SafeAreaView edges={[]} className="bg-[#1A1A1A] flex-1 p-4 pt-6">
+    <SafeAreaView edges={[]} className="bg-gray-200 dark:bg-[#1A1A1A] flex-1 p-4 pt-6">
       <ScrollView showsVerticalScrollIndicator={false}>
         {Object.keys(groupNotifications).map((groupName) => {
           const notifications = groupNotifications[groupName as keyof GroupedNotifications];
           if (notifications.length === 0) return null;
 
           return (
-            <Section key={groupName} title={groupName}>
+            <Section key={groupName} title={groupName} >
               {notifications.map((n, index) => (
                 <NotificationItem
-                  key={n.id}
+                  key={index}
                   notification={n}
                   isLast={index === notifications.length - 1}
                 />
@@ -60,8 +60,7 @@ function NotificationItem({ notification, isLast }: { notification: INotificatio
   return (
     <View
       className={cn(
-        'flex-row items-center justify-between p-4 bg-[#2C2C2E]',
-        !isLast && 'border-b border-gray-700'
+        'flex-row items-center justify-between p-4 dark:bg-[#2C2C2E] bg-white'
       )}
     >
       <View className="flex-row items-center gap-4 flex-1">
