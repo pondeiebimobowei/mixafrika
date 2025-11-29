@@ -184,7 +184,7 @@ export default function Profile() {
             </Link>
           </View>
           <View className="gap-3 mt-4">
-            {Object.values(transactions).flat().map((transaction) => <TransactionItems transaction={transaction} className='bg-gray-200' />)
+            {Object.values(transactions).flat().map((transaction) => <TransactionItems key={transaction.id} transaction={transaction} className='bg-gray-200' />)
             }
           </View>
         </View>

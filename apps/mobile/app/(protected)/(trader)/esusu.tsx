@@ -226,8 +226,7 @@ export default function Esusu() {
           {[{ title: 'Contribution', type: 'deposit'}].map((activity, idx) => {
                 const Icon = ActivityIcon[activity.type as keyof typeof ActivityIcon] || Send;
             return (
-              <>
-                <View className="flex-row items-center justify-between mb-4 bg-white dark:bg-[#1C1F26] p-3 rounded-xl">
+                <View key={idx} className="flex-row items-center justify-between mb-4 bg-white dark:bg-[#1C1F26] p-3 rounded-xl">
                   <View className="flex-row items-center">
                     <View className="w-10 h-10 rounded-full bg-green-900/20 items-center justify-center mr-3">
                       <ArrowDown size={18} color="#27AE60" />
@@ -242,7 +241,6 @@ export default function Esusu() {
                     <Text className="text-gray-400 text-[10px]">2h ago</Text>
                   </View>
                 </View>
-              </>
             )
           })}
 
