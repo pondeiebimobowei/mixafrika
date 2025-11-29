@@ -28,35 +28,34 @@ export class LoanAccount extends Model<ILoanAccount> implements ILoanAccount {
 
   @ForeignKey(() => User)
   @Column
-  user_id: string;
+  declare user_id: string;
 
   @Column(DataType.DECIMAL(15, 2))
-  received_amount: number;
+  declare received_amount: number;
 
   @Column(DataType.DECIMAL(15, 2))
-  repaid_amount: number;
+  declare repaid_amount: number;
 
   @Column(DataType.DECIMAL(15, 2))
-  repayment_amount: number;
+  declare repayment_amount: number;
 
   @Column(DataType.FLOAT)
-  interest_rate: number;
+  declare interest_rate: number;
 
   @Column(DataType.INTEGER)
-  duration: number;
+  declare duration: number;
 
   @BelongsTo(() => User)
-  user: User;
+  declare user: User;
 
   @BelongsTo(() => FundingApplication)
-  application: FundingApplication;
+  declare application: FundingApplication;
 
   @HasMany(() => RepaymentHistory)
-  repayment_history: RepaymentHistory[];
+  declare repayment_history: RepaymentHistory[];
 
   @ForeignKey(() => FundingApplication)
-  @Column
-  application_id: string;
+  declare application_id: string;
 
   @Column(DataType.STRING)
   declare status: LoanStatus;

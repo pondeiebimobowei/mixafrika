@@ -38,7 +38,7 @@ export class User extends Model<IUser> implements IUser {
   declare id: CreationOptional<string>;
 
   @Column({ type: DataType.STRING, allowNull: true, unique: true  })
-  user_name: string;
+  declare user_name: string;
   @BeforeCreate({ name: 'user_name' })
   static async generateUsername(user: User) {
     const baseUsername = user.dataValues.first_name
@@ -49,38 +49,38 @@ export class User extends Model<IUser> implements IUser {
   }
 
   @Column({ type: DataType.STRING, allowNull: false })
-  first_name: string;
+  declare first_name: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  last_name: string;
+  declare last_name: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  password: string;
+  declare password: string;
 
   @Column({ type: DataType.BOOLEAN, allowNull: false })
-  is_verified: boolean;
+  declare is_verified: boolean;
 
   @Column({ type: DataType.BOOLEAN, allowNull: false })
-  is_email_verified: boolean;
+  declare is_email_verified: boolean;
 
   @Column({ type: DataType.DECIMAL(5, 2), allowNull: false })
-  credit_score: number;
+  declare credit_score: number;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  credit_score_status: string;
+  declare credit_score_status: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
     validate: { isIn: [Object.values(roles)] },
   })
-  role: Roles;
+  declare role: Roles;
 
   @Column({ type: DataType.STRING, allowNull: false, unique: true })
-  email: string;
+  declare email: string;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  image: string;
+  declare image: string;
 
   @CreatedAt
   declare createdAt: string;
@@ -92,35 +92,35 @@ export class User extends Model<IUser> implements IUser {
   declare deletedAt?: string;
 
   @HasOne(() => Wallet)
-  wallet: Wallet;
+  declare wallet: Wallet;
 
   @HasMany(() => Savings)
-  savings: Savings[];
+  declare savings: Savings[];
 
   @HasMany(() => Goal)
-  goals: Goal[];
+  declare goals: Goal[];
 
   @HasMany(() => LoanAccount)
-  loan_acount: LoanAccount[];
+  declare loan_acount: LoanAccount[];
 
   @HasMany(() => Transaction)
-  transaction: Transaction[];
+  declare transaction: Transaction[];
 
   @HasMany(() => FundingApplication)
-  application: FundingApplication[];
+  declare application: FundingApplication[];
 
   @HasMany(() => Investment)
-  investments: Investment[];
+  declare investments: Investment[];
 
   @HasOne(() => UserBusiness, { foreignKey: 'user_id', as: 'user_business' })
   declare user_business?: UserBusiness;
 
   @HasMany(() => Notification)
-  notifications: Notification[];
+  declare notifications: Notification[];
 
   @HasMany(() => Setting)
-  setting: Setting;
+  declare setting: Setting;
 
   @HasMany(() => Feed)
-  feeds: Feed[];
+  declare feeds: Feed[];
 }

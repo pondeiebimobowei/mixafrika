@@ -22,25 +22,25 @@ export class Cluster extends Model<ICluster> implements ICluster {
   declare id: CreationOptional<string>;
 
   @Column(DataType.STRING)
-  name: string;
+  declare name: string;
 
   @Column(DataType.STRING)
-  category: string;
+  declare category: string;
 
   @Column(DataType.FLOAT)
-  roi: number;
+  declare roi: number;
 
   @Column(DataType.STRING)
-  repayment: string;
+  declare repayment: string;
 
   @Column(DataType.BOOLEAN)
-  is_active: boolean;
+  declare is_active: boolean;
 
   @Column(DataType.STRING)
-  description: string;
+  declare description: string;
 
   @HasOne(() => FundingApplication)
-  application: FundingApplication;
+  declare application: FundingApplication;
 
   @CreatedAt
   declare createdAt: string;

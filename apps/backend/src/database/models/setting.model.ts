@@ -24,19 +24,19 @@ export class Setting extends Model<ISetting> implements ISetting {
 
   @ForeignKey(() => User)
   @Column
-  user_id: string;
+  declare user_id: string;
 
   @Column(DataType.BOOLEAN)
-  enable_dark_mode: boolean;
+  declare enable_dark_mode: boolean;
 
   @Column(DataType.BOOLEAN)
-  enable_email_notification: boolean;
+  declare enable_email_notification: boolean;
 
   @Column(DataType.BOOLEAN)
-  enable_push_notification: boolean;
+  declare enable_push_notification: boolean;
 
   @BelongsTo(() => User)
-  user: User;
+  declare user: User;
 
   @CreatedAt
   declare createdAt: string;

@@ -29,23 +29,23 @@ export class Notification
 
   @ForeignKey(() => User)
   @Column
-  user_id: string;
+  declare user_id: string;
 
   @Column(DataType.STRING)
-  title: string;
+  declare title: string;
 
   @Column(DataType.TEXT)
-  message: string;
+  declare message: string;
 
   @Column(DataType.BOOLEAN)
-  read: boolean;
+  declare read: boolean;
 
   @Validate({ isIn: [Object.values(NotificationType)]})
   @Column(DataType.STRING)
-  type: NotificationType;
+  declare type: NotificationType;
 
   @BelongsTo(() => User)
-  user: User;
+  declare user: User;
 
   @CreatedAt
   declare createdAt: string;

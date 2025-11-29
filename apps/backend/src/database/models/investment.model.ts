@@ -26,32 +26,32 @@ export class Investment extends Model<IInvestment> implements IInvestment {
 
   @ForeignKey(() => User)
   @Column
-  user_id: string;
+  declare user_id: string;
 
   @ForeignKey(() => Cluster)
   @Column
-  cluster_id: string;
+  declare cluster_id: string;
 
   @Column(DataType.DECIMAL(15, 2))
-  amount_invested: number;
+  declare amount_invested: number;
 
   @Column(DataType.DECIMAL(15, 2))
-  current_value: number;
+  declare current_value: number;
 
   @Column(DataType.INTEGER)
-  cycle_progress: number;
+  declare cycle_progress: number;
 
   @Column(DataType.DATE)
-  cycle_ends: Date;
+  declare cycle_ends: Date;
 
   @Column(DataType.STRING)
-  status: Status;
+  declare status: Status;
 
   @BelongsTo(() => User)
-  user: User;
+  declare user: User;
 
   @BelongsTo(() => Cluster)
-  cluster: Cluster;
+  declare cluster: Cluster;
 
   @CreatedAt
   declare createdAt: string;

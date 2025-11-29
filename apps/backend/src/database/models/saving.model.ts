@@ -27,31 +27,31 @@ export class Savings extends Model<ISaving> implements ISaving {
 
   @ForeignKey(() => User)
   @Column
-  user_id: string;
+  declare user_id: string;
 
   @Column(DataType.DECIMAL(15, 2))
-  total_amount: number;
+  declare total_amount: number;
 
   @Column(DataType.DATE)
-  maturity_date: Date | null;
+  declare maturity_date: Date | null;
 
   @Column(DataType.BOOLEAN)
-  auto_save: boolean;
+  declare auto_save: boolean;
 
   @Column(DataType.BOOLEAN)
-  is_locked: boolean;
+  declare is_locked: boolean;
 
   @Column(DataType.STRING)
-  name: string;
+  declare name: string;
 
   @Column(DataType.STRING)
-  type: SavingsType; 
+  declare type: SavingsType; 
 
   @Column(DataType.DECIMAL(15, 2))
-  target_amount: number;
+  declare target_amount: number;
 
   @Column(DataType.FLOAT)
-  interest_rate: number;
+  declare interest_rate: number;
 
   @Column({
     type: DataType.STRING,
@@ -59,7 +59,7 @@ export class Savings extends Model<ISaving> implements ISaving {
       isIn: [Object.values(savingsFrequency)]
     }
   })
-  frequency: SavingsFrequency;
+  declare frequency: SavingsFrequency;
 
   @Column({
     type: DataType.STRING,
@@ -67,16 +67,16 @@ export class Savings extends Model<ISaving> implements ISaving {
       isIn: [Object.values(sourceType)]
     }
   })
-  source_type: SourceType;
+  declare source_type: SourceType;
 
   @Column(DataType.UUID)
-  source_id: string;
+  declare source_id: string;
 
   @HasMany(() => SavingsHistory)
-  history: SavingsHistory[];
+  declare history: SavingsHistory[];
 
   @BelongsTo(() => User)
-  user: User;
+  declare user: User;
 
   @CreatedAt
   declare createdAt: string;

@@ -4,7 +4,6 @@ import {
   Model,
   DataType,
   ForeignKey,
-  BelongsTo,
   DeletedAt,
   UpdatedAt,
   CreatedAt,
@@ -25,19 +24,19 @@ export class LoanHistory extends Model<ILoanHistory> implements ILoanHistory {
 
   @ForeignKey(() => User)
   @Column
-  user_id: string;
+  declare user_id: string;
 
   @Column(DataType.DECIMAL(15, 2))
-  amount: number;
+  declare amount: number;
 
   @Column(DataType.STRING)
-  status: LoanStatus;
+  declare status: LoanStatus;
 
   @Column(DataType.STRING)
-  cluster: string;
+  declare cluster: string;
 
   @Column(DataType.STRING)
-  category: string;
+  declare category: string;
 
   @CreatedAt
   declare createdAt: string;

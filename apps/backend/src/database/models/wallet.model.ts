@@ -24,16 +24,16 @@ export class Wallet extends Model<IWallet> implements IWallet {
 
   @ForeignKey(() => User)
   @Column
-  user_id: string;
+  declare user_id: string;
 
   @Column({ type: DataType.DECIMAL(15, 2), defaultValue: 0 })
-  amount: number;
+  declare amount: number;
 
   @Column({ type: DataType.DECIMAL(15, 2), defaultValue: 0 })
-  total_portfolio: number;
+  declare total_portfolio: number;
 
   @BelongsTo(() => User)
-  user: User;
+  declare user: User;
 
   @CreatedAt
   declare createdAt: string;

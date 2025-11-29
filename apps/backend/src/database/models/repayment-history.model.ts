@@ -7,6 +7,9 @@ import {
   BelongsTo,
   PrimaryKey,
   Default,
+  CreatedAt,
+  UpdatedAt,
+  DeletedAt,
 } from 'sequelize-typescript';
 import { LoanAccount } from './loan-account.model';
 import { IRepaymentHistory } from '@shared/shared/src/types/repayment-history';
@@ -23,16 +26,25 @@ export class RepaymentHistory
     @Column(DataTypes.UUID)
     declare id: CreationOptional<string>;
 
-  @ForeignKey(() => LoanAccount)
-  @Column
-  loan_account_id: string;
+    @ForeignKey(() => LoanAccount)
+    @Column
+    declare loan_account_id: string;
 
-  @Column(DataType.DECIMAL(15, 2))
-  amount: number;
+    @Column(DataType.DECIMAL(15, 2))
+    declare amount: number;
 
-  @Column(DataType.STRING)
-  status: RepaymentStatus;
+    @Column(DataType.STRING)
+    declare status: RepaymentStatus;
 
-  @BelongsTo(() => LoanAccount)
-  loan_account: LoanAccount;
+    @BelongsTo(() => LoanAccount)
+    declare loan_account: LoanAccount;
+
+    @CreatedAt
+    declare createdAt: string;
+  
+    @UpdatedAt
+    declare updatedAt: string;
+  
+    @DeletedAt
+    declare deletedAt?: string;
 }

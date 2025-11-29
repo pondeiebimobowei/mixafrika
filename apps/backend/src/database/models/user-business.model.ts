@@ -32,16 +32,16 @@ export class UserBusiness
   declare user_id: string;
 
   @Column(DataType.STRING)
-  name: string;
+  declare name: string;
 
   @Column(DataType.STRING)
-  type: string;
+  declare type: string;
 
   @Column(DataType.INTEGER)
-  phone: string;
+  declare phone: string;
 
   @Column(DataType.INTEGER)
-  address: string;
+  declare address: string;
 
   @BelongsTo(() => User, { foreignKey: 'user_id', as: 'user' })
   declare user?: User;

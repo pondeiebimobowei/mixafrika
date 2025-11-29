@@ -28,35 +28,35 @@ export class FundingApplication
 
   @ForeignKey(() => User)
   @Column(DataType.STRING)
-  user_id: string;
+  declare user_id: string;
 
   @ForeignKey(() => Cluster)
   @Column(DataType.STRING)
-  cluster_id: string | null;
+  declare cluster_id: string | null;
 
   @Column(DataType.STRING)
-  business_type: string;
+  declare business_type: string;
 
   @Column(DataType.STRING)
-  business_location: string;
+  declare business_location: string;
 
   @Column(DataType.DECIMAL(15, 2))
-  amount: number;
+  declare amount: number;
 
   @Column(DataType.STRING)
-  duration: string;
+  declare duration: string;
 
   @Column(DataType.STRING)
-  repayment_plan: string;
+  declare repayment_plan: string;
 
   @Column(DataType.STRING)
-  purpose: string;
+  declare purpose: string;
 
   @Column(DataType.STRING)
-  statement_of_account_doc: string | null;
+  declare statement_of_account_doc: string | null;
 
   @BelongsTo(() => Cluster)
-  cluster: Cluster;
+  declare cluster: Cluster;
 
   @CreatedAt
   declare createdAt: string;

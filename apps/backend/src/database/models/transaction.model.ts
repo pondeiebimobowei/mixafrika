@@ -26,26 +26,26 @@ export class Transaction extends Model<ITransaction> implements ITransaction {
 
   @ForeignKey(() => User)
   @Column
-  user_id: string;
+  declare user_id: string;
 
   @Column(DataType.STRING)
-  type: Types;
+  declare type: Types;
 
   @Column(DataType.STRING)
-  title: string;
+  declare title: string;
 
   @Column(DataType.DECIMAL(15, 2))
-  amount: number;
+  declare amount: number;
 
   @Column(DataType.STRING)
-  category: string;
+  declare category: string;
 
   @Validate({ isIn: [[...Object.values(Status), ...Object.values(RepaymentStatus)]] })
   @Column(DataType.STRING)
-  status: Status | RepaymentStatus;
+  declare status: Status | RepaymentStatus;
 
   @BelongsTo(() => User)
-  loan_account: User;
+  declare loan_account: User;
 
   @CreatedAt
   declare createdAt: string;
