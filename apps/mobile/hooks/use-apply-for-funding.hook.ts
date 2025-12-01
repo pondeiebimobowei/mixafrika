@@ -25,13 +25,13 @@ export default function useFundApplication() {
         type: 'success',
         text1: response.message,
       });
+      router.back()
     } else {
       Toast.show({
         type: 'error',
         text1: response.message,
       });
     }
-    router.back()
   };
 
   return {

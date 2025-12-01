@@ -26,7 +26,7 @@ export function NewPlanSheet({ onClose }: { onClose?: () => void }) {
                 {renderHeader('Select Plan Type')}
                 <View className="gap-4">
                     <TouchableOpacity
-                        onPress={() => {onClose && onClose(); router.push('/(protected)/(trader)/(dashboard)/esusu/target')}}
+                        onPress={() => {onClose && onClose(); router.push('/esusu/target')}}
                         className=" bg-white dark:bg-[#2A2D35] p-4 rounded-xl flex-row items-center"
                     >
                         <View className="w-10 h-10 rounded-full bg-blue-900/20 items-center justify-center mr-4">
@@ -40,7 +40,7 @@ export function NewPlanSheet({ onClose }: { onClose?: () => void }) {
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        onPress={() => {onClose && onClose(); router.push('/(protected)/(trader)/(dashboard)/esusu/fixed')}}
+                        onPress={() => {onClose && onClose(); router.push('/esusu/fixed')}}
                         className="bg-white dark:bg-[#2A2D35] p-4 rounded-xl flex-row items-center"
                     >
                         <View className="w-10 h-10 rounded-full bg-red-900/20 items-center justify-center mr-4">

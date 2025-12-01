@@ -15,6 +15,12 @@ export const getSequelizeConfig = (
     autoLoadModels: true,
     synchronize: false,
     logging: false,
+    pool:{
+      max:50,
+      min: 5,
+      acquire: 30000,
+      idle: 10000
+    }
   };
 
   const sequelizeConfig: any = { ...baseConfig };

@@ -20,14 +20,13 @@ export class FundingService {
     const { cloudinary, cloudinaryUploadFolder } = this.cloudinary.getCloudinary()
 
     const statement_doc = files.statement ? files.statement[0].path : null;
-    
+
     if( !statement_doc ) {
       throw new HttpException({ success: false, message: "Missing required document: statement"}, 500 );
     }
     
-    let result = await cloudinary.uploader.upload(statement_doc, { folder: cloudinaryUploadFolder })
+    let result = await cloudinary.uploader.upload(statement_doc, { resource_type: 'raw', folder: cloudinaryUploadFolder })
     const image_url = result.secure_url
-    
 
     const data =  await FundingApplication.create({
       ...createFundingApplicationDto,

@@ -64,11 +64,11 @@ function NotificationItem({ notification, isLast }: { notification: INotificatio
       )}
     >
       <View className="flex-row items-center gap-4 flex-1">
-        <View className="w-10 h-10 items-center justify-center bg-[#3A3A3C] rounded-full shrink-0">
+        <View className="w-10 h-10 items-center justify-center bg-gray-500 dark:bg-[#3A3A3C] rounded-full shrink-0">
           <Icon size={20} color="#fff" />
         </View>
         <View className="flex-1">
-          <Text className="text-white text-base font-medium capitalize mb-1">
+          <Text className="text-black dark:text-white text-base font-medium capitalize mb-1">
             {notification.title}
           </Text>
           <Text className="text-gray-400 text-sm leading-5">

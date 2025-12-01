@@ -3,13 +3,13 @@ import { ChartViews } from "@mixafrica/shared/types/utilities/chart";
 import { BarChart as BarChartIcon, ChartAreaIcon } from "lucide-react-native";
 import { useState } from "react";
 import { Pressable, Text, View } from "react-native";
-
-import LineChartKit from "../charts/line-chart";
 import BarChartKit from "../charts/bar-chart";
+import LineAreaChart from "../charts/line-area-chart";
 
 export default function CreditScoreOverView(){
     const { user } = useAuthStore()
-    const [chartView, setChartView ] = useState<ChartViews>("bar")
+    const [chartView, setChartView ] = useState<ChartViews>("line")
+
 
     return(
         <View className="py-10 px-6 bg-white dark:bg-card rounded-xl">
@@ -40,7 +40,7 @@ export default function CreditScoreOverView(){
                 </View>
                 <View style={{ height: 200 }}>
                     { chartView === 'bar' && <BarChartKit />}
-                    { chartView === 'line' && <LineChartKit />}
+                    { chartView === 'line' && <LineAreaChart />}
                 </View>
             </View>
         </View>

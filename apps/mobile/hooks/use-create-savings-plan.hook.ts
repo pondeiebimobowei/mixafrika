@@ -1,3 +1,4 @@
+import { useSavingsStore } from '@/store';
 import { useSavingsState } from '@/store/hooks/savings.hook';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { create_savings_plan, Create_savings_plan } from '@mixafrica/shared/validation/create-savings-plan-dto';
@@ -25,6 +26,9 @@ export default function useCreateSavingsPlan() {
     set_is_loading(true);
     addSaving(data);
     set_is_loading(false);
+
+    const getSavings = useSavingsStore.getState().getSavings
+        getSavings();
 
   };
 

@@ -1,5 +1,5 @@
 import { type Roles, roles } from "../enums";
-import { z } from "zod/v4";
+import { z } from "zod";
 
 export const create_user_dto = z.object({
   first_name: z.string().min(3, "Firstname too short!"),

@@ -20,8 +20,8 @@ export default function SettingsSheet() {
 
   const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
     <View className="mb-6">
-      <Text className="text-gray-400 font-semibold mb-2 px-4">{title}</Text>
-      <View className="bg-[#2C2C2E] rounded-lg">{children}</View>
+      <Text className="text-gray-700 dark:text-gray-400 font-semibold mb-2 px-4">{title}</Text>
+      <View className="bg-white dark:bg-[#2C2C2E] rounded-lg">{children}</View>
     </View>
   );
 
@@ -54,7 +54,7 @@ export default function SettingsSheet() {
             {icon}
           </View>
           <View>
-            <Text className="text-white text-base font-medium">{label}</Text>
+            <Text className="text-black dark:text-white text-base font-medium">{label}</Text>
             {description && <Text className="text-gray-400 text-sm">{description}</Text>}
           </View>
         </View>
@@ -64,7 +64,7 @@ export default function SettingsSheet() {
   );
 
   return (
-    <SafeAreaView edges={[]} className="bg-[#1A1A1A] p-4 pt-6 flex-1">
+    <SafeAreaView edges={[]} className="bg-gray-200 dark:bg-[#1A1A1A] p-4 pt-6 flex-1">
       <ScrollView>
         <Section title="Appearance">
           <Item
