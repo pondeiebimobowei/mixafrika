@@ -1,12 +1,14 @@
 // import * as bcrypt from 'bcryptjs';
 import * as bcrypt from 'bcrypt';
 
+
 import { IUser } from "@shared/shared/src/types/user";
 
+import { v4 as uuidv4 } from 'uuid';
 export const mockUserSeed: () => Promise<IUser[]> = ( async () => {
     return [
   {
-    id: "19b47b8a-fc9a-4374-bc8e-0db7b6e87302",
+    id: uuidv4(),
     first_name: 'Emeka',
     last_name: 'Johnson',
     image: "https://picsum.photos/seed/401/150/150",
@@ -17,9 +19,9 @@ export const mockUserSeed: () => Promise<IUser[]> = ( async () => {
     credit_score_status: 'Good',
     email: 'trader@mixafrica.com',
     password: await bcrypt.hash('password123', 10),
-    role: 'user',
+    role: 'trader',
     
     createdAt: "2025-11-12T16:13:42.425Z",
     updatedAt: "2025-11-12T16:13:42.425Z"
-  },
+  }
 ]});

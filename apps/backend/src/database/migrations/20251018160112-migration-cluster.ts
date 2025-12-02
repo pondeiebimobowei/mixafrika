@@ -28,6 +28,11 @@ module.exports = {
         },
         description: { type: Sequelize.STRING, allowNull: false },
 
+        cover_image: {
+          type: Sequelize.STRING,
+          allowNull: true,
+        },
+
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,

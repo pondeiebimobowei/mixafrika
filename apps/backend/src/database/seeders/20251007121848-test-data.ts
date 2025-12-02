@@ -51,7 +51,7 @@ module.exports = {
       await queryInterface.bulkInsert('setting', userSettings, { transaction: t });
       await queryInterface.bulkInsert('wallet', userWallets, { transaction: t });
       
-      const notificationUser = await mockNotificationSeed([...responseUser, responseUser[0], responseInvestor[1]])
+      const notificationUser = await mockNotificationSeed([responseUser[0], responseInvestor[0], responseInvestor[1]])
       await queryInterface.bulkInsert('notification', notificationUser, { transaction: t });
       
       const loan_account = await queryInterface.bulkInsert('loan_account', [{

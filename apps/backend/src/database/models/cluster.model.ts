@@ -35,12 +35,16 @@ export class Cluster extends Model<ICluster> implements ICluster {
 
   @Column(DataType.BOOLEAN)
   declare is_active: boolean;
+  
+  @Column(DataType.STRING)
+  declare cover_image: string;
 
   @Column(DataType.STRING)
   declare description: string;
 
   @HasOne(() => FundingApplication)
   declare application: FundingApplication;
+
 
   @CreatedAt
   declare createdAt: string;

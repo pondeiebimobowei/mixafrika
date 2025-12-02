@@ -10,6 +10,8 @@ export interface AuthSlice {
   loading: boolean;
   isLoggedIn: boolean;
   role: Roles | null;
+  current_role: Roles | null;
+  set_current_role: (role: Roles) => void;
   login: ({}: loginProps) => void;
   logout: () => void;
 }
@@ -26,10 +28,17 @@ export const createAuthSlice: StateCreator<
   loading: false, // Loading is now handled by persist middleware hydration
   isLoggedIn: false,
   role: null,
-  login: ({ user, token, refreshToken }) => {
+  current_role: null,
+  set_current_role: (role: Roles) => {
+    set({
+      current_role: role,
+    });
+  },
+  login: ({ user, token, refreshToken, current_role }) => {
     set({
       user,
       token,
+      current_role,
       refreshToken,
       isLoggedIn: true,
       role: user?.role,
@@ -39,6 +48,7 @@ export const createAuthSlice: StateCreator<
     set({
       user: null,
       token: null,
+      current_role: null,
       refreshToken: null,
       isLoggedIn: false,
       role: null,

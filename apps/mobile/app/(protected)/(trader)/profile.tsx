@@ -76,12 +76,6 @@ export default function Profile() {
     investment: 'grey'
   };
 
-  const formatAmount = (amount: number, type: Types) => {
-    const prefix = type === Types.DEPOSIT ? '+₦' : '-₦';
-    return `${prefix}${amount.toLocaleString()}`;
-  };
-
-
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-gray-200 dark:bg-primary justify-start">
       <View className='dark:bg-primary text-gray-600 dark:text-gray-400 text-red-600 dark:text-red-400 text-yellow-600 dark:text-yellow-400' />

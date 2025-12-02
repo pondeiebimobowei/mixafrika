@@ -31,12 +31,20 @@ export function useLogin(role: Roles) {
     setIsLoading(false);
 
     if (response.success) {
-      login(response.data);
+      login({...response.data, current_role: role });
       Toast.show({
         type: 'success',
         text1: response.message,
       });
-      router.push('/(protected)/(trader)');
+
+      switch(role){
+        case 'investor':
+          router.push('/(protected)/(investor)');
+          break;
+        case 'trader':
+          router.push('/(protected)/(trader)');
+          break;
+      }
     } else {
       Toast.show({
         type: 'success',

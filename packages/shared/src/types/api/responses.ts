@@ -1,9 +1,11 @@
+import { Roles } from "@shared/enums";
 import { IUser } from "../user";
 
 export type loginProps = {
   token: string;
   refreshToken: string;
   user: IUser | null;
+  current_role: Roles | null;
 };
 
 export type AuthResponse = {

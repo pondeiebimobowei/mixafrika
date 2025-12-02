@@ -25,7 +25,11 @@ export default function useFundApplication() {
         type: 'success',
         text1: response.message,
       });
-      router.back()
+
+      setTimeout(()=> {
+        router.back()
+
+      }, 5000)
     } else {
       Toast.show({
         type: 'error',

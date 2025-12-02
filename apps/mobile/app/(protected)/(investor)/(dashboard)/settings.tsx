@@ -87,7 +87,7 @@ export default function SettingsSheet() {
             isFirst
             isLast
             icon={<Repeat size={18} color="#8A8A8E" />}
-            label="Switch to Investor View"
+            label="Switch to Trader View"
             control={
               <View>
                 {true &&  current_role !== 'trader' && (

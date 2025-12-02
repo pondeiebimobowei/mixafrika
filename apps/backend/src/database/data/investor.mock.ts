@@ -1,12 +1,33 @@
 // import * as bcrypt from 'bcryptjs';
 import * as bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
 
 import { IUser } from "@shared/shared/src/types/user";
 
 export const mockInvestorSeed: () => Promise<IUser[]> = ( async () => {
     return [
+
+
   {
-    id: "1e4f7e8b-5b8d-4c96-9312-dc0f8b7c94e2",
+    id: uuidv4(),
+    first_name: 'Aria',
+    last_name: 'Brown',
+    image: "https://picsum.photos/seed/401/150/150",
+    is_email_verified: true,
+    is_verified: true,
+    user_name: "beastInvestor",
+    credit_score: 10,
+    credit_score_status: 'Good',
+    email: 'investor@mixafrica.com',
+    password: await bcrypt.hash('password123', 10),
+    role: 'investor',
+    
+    createdAt: "2025-11-12T16:13:42.425Z",
+    updatedAt: "2025-11-12T16:13:42.425Z"
+  },
+  
+  {
+    id: uuidv4(),
     first_name: "Chidi",
     last_name: "Okafor",
     image: "https://picsum.photos/seed/101/150/150",
@@ -23,7 +44,7 @@ export const mockInvestorSeed: () => Promise<IUser[]> = ( async () => {
   },
 
   {
-    id: "92fae1fc-02b3-4c7e-8bcd-02cd598b79af",
+    id: uuidv4(),
     first_name: "Zainab",
     last_name: "Lawal",
     image: "https://picsum.photos/seed/102/150/150",
@@ -40,7 +61,7 @@ export const mockInvestorSeed: () => Promise<IUser[]> = ( async () => {
   },
 
   {
-    id: "d3814d1b-1558-43dc-8a87-61d5e7b9ac8e",
+    id: uuidv4(),
     first_name: "Samuel",
     last_name: "Adeyemi",
     image: "https://picsum.photos/seed/103/150/150",
@@ -57,7 +78,7 @@ export const mockInvestorSeed: () => Promise<IUser[]> = ( async () => {
   },
 
   {
-    id: "4a5d9b20-7ffe-4a92-9c74-56b4b40c7bfb",
+    id: uuidv4(),
     first_name: "Aisha",
     last_name: "Bello",
     image: "https://picsum.photos/seed/104/150/150",
@@ -74,7 +95,7 @@ export const mockInvestorSeed: () => Promise<IUser[]> = ( async () => {
   },
 
   {
-    id: "cfd8e2d1-d0f1-4575-a570-058d1ab9bfa0",
+    id: uuidv4(),
     first_name: "Tunde",
     last_name: "Balogun",
     image: "https://picsum.photos/seed/105/150/150",

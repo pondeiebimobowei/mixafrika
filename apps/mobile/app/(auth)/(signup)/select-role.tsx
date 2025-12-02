@@ -1,3 +1,4 @@
+import { Roles } from '@mixafrica/shared/enums';
 import { Create_user_dto } from '@mixafrica/shared/validation/create-user-dto';
 import { useRouter } from 'expo-router';
 import { Handshake, Sprout, TrendingUp } from 'lucide-react-native';
@@ -7,7 +8,13 @@ import { Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
-const roles = [
+interface selectRoleType {
+  id: Roles;
+  title: string;
+  description: string;
+  icon: any;
+}
+const roles: selectRoleType[] = [
   {
     id: 'trader',
     title: 'Trader',
