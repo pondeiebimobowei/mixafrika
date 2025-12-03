@@ -7,6 +7,7 @@ import { mockLoanRepaySeed } from '../data/loan-repayment.mock';
 import { mockTransactionsSeed } from '../data/transactions.mock';
 import { mockApplicationSeed } from '../data/application.mock';
 import { mockClusterSeed } from '../data/cluster.mock';
+import { mockColectionSeed } from '../data/collection.mock';
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -19,8 +20,10 @@ module.exports = {
 
       const users = await mockUserSeed()
       const investors = await mockInvestorSeed()
+      const collection = await mockColectionSeed()
       const transactions = await mockTransactionsSeed([...users, ...investors])
-      const clusters = await mockClusterSeed();
+      const clusters = await mockClusterSeed(collection);
+      await queryInterface.bulkInsert('collection', collection, { returning: true, transaction: t });
       await queryInterface.bulkInsert('cluster', clusters, { returning: true, transaction: t });
       const application = await mockApplicationSeed(users, clusters)
 

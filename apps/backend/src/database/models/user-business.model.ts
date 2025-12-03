@@ -40,8 +40,17 @@ export class UserBusiness
   @Column(DataType.INTEGER)
   declare phone: string;
 
-  @Column(DataType.INTEGER)
-  declare address: string;
+  @Column(DataType.STRING)
+  declare street_address: string;
+
+  @Column(DataType.STRING)
+  declare city: string;
+
+  @Column(DataType.STRING)
+  declare state: string;
+
+  @Column(DataType.STRING)
+  declare country: string;
 
   @BelongsTo(() => User, { foreignKey: 'user_id', as: 'user' })
   declare user?: User;

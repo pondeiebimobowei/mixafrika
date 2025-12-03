@@ -5,5 +5,8 @@ export interface IUserBusiness extends BaseModel {
   name: string;
   type: string;
   phone: string;
-  address: string;
+  street_address: string;
+  city: string;
+  state: string;
+  country: string;
 }

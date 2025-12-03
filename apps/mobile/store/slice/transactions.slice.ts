@@ -1,4 +1,4 @@
-import { Filters } from '@/app/(protected)/(trader)/(dashboard)/transactions';
+import { Filters } from '../../app/(protected)/(trader)/transactions';
 import { getTransactions } from '@/axios/transaction';
 import { ITransaction } from '@mixafrica/shared/types/transaction';
 import { type StateCreator } from 'zustand';

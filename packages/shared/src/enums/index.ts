@@ -17,6 +17,15 @@ export const LoanStatus = {
 
 export type LoanStatus = (typeof LoanStatus)[keyof typeof LoanStatus];
 
+export const duration = {
+    THIRITY: 30,
+    SIXTY: 60,
+    NINETY: 90,
+
+} as const;
+
+export type Duration = (typeof duration)[keyof typeof duration];
+
 export const sourceType = {
   BANK: 'bank',
   WALLET: 'wallet',

@@ -1,4 +1,4 @@
-import { Roles } from "@shared/enums";
+import { Roles } from "../../enums";
 import { IUser } from "../user";
 
 export type loginProps = {

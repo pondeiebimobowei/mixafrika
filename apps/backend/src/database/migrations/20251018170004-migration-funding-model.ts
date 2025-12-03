@@ -13,6 +13,7 @@ module.exports = {
         business_type: { type: Sequelize.STRING, allowNull: false },
         business_location: { type: Sequelize.STRING, allowNull: false },
         amount: { type: Sequelize.DECIMAL(15, 2), allowNull: false, defaultValue: 0.00 },
+        allocated_amount: { type: Sequelize.DECIMAL(15, 2), allowNull: false, defaultValue: 0.00 },
         duration: { type: Sequelize.STRING, allowNull: false },
         repayment_plan: { type: Sequelize.STRING, allowNull: false },
         purpose: { type: Sequelize.STRING, allowNull: false },

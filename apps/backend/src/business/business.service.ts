@@ -23,10 +23,10 @@ export class BusinessService {
         }
     }
     
-    async handleSubmitUserBusiness(user_id:string, { address, name, phone, type }: Submit_business): Promise<Response<IUserBusiness>> {
+    async handleSubmitUserBusiness(user_id:string, { street_address, city, state, country, name, phone, type }: Submit_business): Promise<Response<IUserBusiness>> {
 
         const business = await UserBusiness.create( {
-            address, name, phone, type, user_id,
+            city, state, country, street_address, name, phone, type, user_id,
         })
 
         return {

@@ -19,7 +19,6 @@ import { Cluster } from './cluster.model';
 @Table({ tableName: 'funding_application' })
 export class FundingApplication
   extends Model<IFundingApplication>
-  implements IFundingApplication
 {
   @PrimaryKey
   @Default(DataTypes.UUIDV4)
@@ -43,6 +42,9 @@ export class FundingApplication
   @Column(DataType.DECIMAL(15, 2))
   declare amount: number;
 
+  @Column(DataType.DECIMAL(15, 2))
+  declare allocated_amount: number;
+
   @Column(DataType.STRING)
   declare duration: string;
 
@@ -56,7 +58,7 @@ export class FundingApplication
   declare statement_of_account_doc: string | null;
 
   @BelongsTo(() => Cluster)
-  declare cluster: Cluster;
+  declare cluster?: Cluster;
 
   @CreatedAt
   declare createdAt: string;

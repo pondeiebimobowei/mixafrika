@@ -18,9 +18,10 @@ import { ILoanAccount } from '@shared/shared/src/types/loan-account';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { LoanStatus } from '@shared/shared/src/enums';
 import { FundingApplication } from './funding_application';
+import { Cluster } from './cluster.model';
 
 @Table({ tableName: 'loan_account' })
-export class LoanAccount extends Model<ILoanAccount> implements ILoanAccount {
+export class LoanAccount extends Model<ILoanAccount> {
   @PrimaryKey
   @Default(DataTypes.UUIDV4)
   @Column(DataTypes.UUID)
@@ -31,7 +32,7 @@ export class LoanAccount extends Model<ILoanAccount> implements ILoanAccount {
   declare user_id: string;
 
   @Column(DataType.DECIMAL(15, 2))
-  declare received_amount: number;
+  declare disbursed_amount: number;
 
   @Column(DataType.DECIMAL(15, 2))
   declare repaid_amount: number;
@@ -51,11 +52,17 @@ export class LoanAccount extends Model<ILoanAccount> implements ILoanAccount {
   @BelongsTo(() => FundingApplication)
   declare application: FundingApplication;
 
+  @BelongsTo(() => Cluster)
+  declare cluster?: Cluster;
+
   @HasMany(() => RepaymentHistory)
   declare repayment_history: RepaymentHistory[];
 
   @ForeignKey(() => FundingApplication)
   declare application_id: string;
+
+  @ForeignKey(() => Cluster)
+  declare cluster_id: string;
 
   @Column(DataType.STRING)
   declare status: LoanStatus;

@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button';
 import { CheckCircle2, Info, XCircle } from 'lucide-react-native';
 import { useLoanAccountStore, useLoanHistory } from '@/store';
 import { formatCurrency, formatDate } from '@/lib/utils';
-import { useFetchLoanRepaymentHistory, useLoanRepaymentHistory } from '../../../../store/hooks/repayment-history.hook';
+import { useFetchLoanRepaymentHistory, useLoanRepaymentHistory } from '@/store/hooks/repayment-history.hook';
+// import { useFetchLoanRepaymentHistory, useLoanRepaymentHistory } from '../../../../store/hooks/repayment-history.hook';
 
 
 const upcomingRepayment = { amount: 5500, dueDate: 'Tomorrow' };
@@ -33,7 +34,8 @@ export default function RepaymentScreen() {
             </View>
 
             <View>
-              <Text className="text-white text-2xl font-bold">{formatCurrency(Number(loan_account?.repayment_amount)/Number(loan_account?.duration))}</Text>
+              {/* FIX NOW */}
+              {/* <Text className="text-white text-2xl font-bold">{formatCurrency(Number(loan_account?.repayment_amount)/Number(loan_account.))}</Text> */}
               <Text className="text-white/80 text-sm">Due {upcomingRepayment.dueDate}</Text>
             </View>
             <Button className="bg-white rounded-lg px-6 py-3" onPress={handlePayNow}>

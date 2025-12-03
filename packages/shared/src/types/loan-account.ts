@@ -4,11 +4,11 @@ import type { BaseModel } from "./base-model-type";
 export interface ILoanAccount extends BaseModel {
   user_id: string;
   application_id: string;
-  received_amount: number;
+  cluster_id:string;
+
+  disbursed_amount: number,
   status: LoanStatus;
   repaid_amount: number;
   repayment_amount: number;
-  interest_rate: number;
-  duration: number;
   approvedAt: string;
 }

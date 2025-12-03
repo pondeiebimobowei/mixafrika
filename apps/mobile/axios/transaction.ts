@@ -1,4 +1,4 @@
-import { Filters } from '@/app/(protected)/(trader)/(dashboard)/transactions';
+import { Filters } from '../app/(protected)/(trader)/transactions';
 import { apiPrivate } from './axios-config';
 import { ITransaction } from '@mixafrica/shared/types/transaction';
 

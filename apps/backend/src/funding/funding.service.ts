@@ -31,6 +31,7 @@ export class FundingService {
     const data =  await FundingApplication.create({
       ...createFundingApplicationDto,
       amount: Number(amount),
+      allocated_amount: Number(amount),
       statement_of_account_doc: image_url,
       user_id: userId,
     });

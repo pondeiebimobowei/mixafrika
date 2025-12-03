@@ -39,10 +39,10 @@ export function useLogin(role: Roles) {
 
       switch(role){
         case 'investor':
-          router.push('/(protected)/(investor)');
+          router.push('/(protected)/(investor)/(tabs)');
           break;
         case 'trader':
-          router.push('/(protected)/(trader)');
+          router.push('/(protected)/(trader)/(tabs)');
           break;
       }
     } else {

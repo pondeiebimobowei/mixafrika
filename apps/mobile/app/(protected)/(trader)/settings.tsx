@@ -90,12 +90,12 @@ export default function SettingsSheet() {
             label="Switch to Investor View"
             control={
               <View>
-                {true &&  current_role !== 'trader' && (
+                {true &&  current_role === 'investor' && (
                   <Button variant='outline' size='sm' className='border-green-500 bg-transparent px-4' onPress={() => set_current_role('trader')}>
                     <Text className="text-green-500">Switch</Text>
                   </Button>
                 )}
-                {true && current_role !== 'investor' && (
+                {true && current_role === 'trader' && (
                   <Button variant='outline' size='sm'  className='border-green-500 bg-transparent px-4' onPress={() => set_current_role('investor')}>
                     <Text className="text-green-500">Switch</Text>
                   </Button>

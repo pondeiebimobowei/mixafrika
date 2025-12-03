@@ -15,28 +15,27 @@ export type Duration = (typeof duration)[keyof typeof duration];
 module.exports = {
   async up(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
     await queryInterface.sequelize.transaction(async (t) => {
-      await queryInterface.createTable('cluster', {
+      await queryInterface.createTable('collection', {
         id: {
           type: Sequelize.UUID,
           defaultValue: sequelize.UUIDV4,
           primaryKey: true,
         },
-
-        collection_id: {
-          type: Sequelize.UUID,
-          allowNull: false,
-          references: {
-            model: 'collection',
-            key: 'id',
-            
-          },
-          onDelete: 'CASCADE',
-          onUpdate: 'CASCADE'
-          
-        },
-
+        
         name: { type: Sequelize.STRING, allowNull: false },
         
+        description: { type: Sequelize.STRING, allowNull: false },
+        
+        total_traders: {
+          type: Sequelize.INTEGER,
+          defaultValue: 0,
+        },
+        
+        about: { 
+          type: Sequelize.STRING, 
+          allowNull: false 
+        },
+
         cover_image: { 
           type: Sequelize.STRING, 
           allowNull: true 
@@ -48,45 +47,29 @@ module.exports = {
           defaultValue: 0.0,
         },
 
-        is_active: {
-          type: Sequelize.BOOLEAN,
+        min_investment: {
+          type: Sequelize.DECIMAL(15, 2),
           allowNull: false,
-          defaultValue: false,
+          defaultValue: 0,
         },
 
-        status: {
+        city: {
           type: Sequelize.STRING,
           allowNull: false,
 
         },
 
-        duration: {
-          type: Sequelize.INTEGER,
+        state: {
+          type: Sequelize.STRING,
           allowNull: false,
-          validate: {
-            isIn: [Object.values(duration)]
-          }
 
         },
 
-        description: { type: Sequelize.STRING, allowNull: false },
-        
-        about: { 
-          type: Sequelize.STRING, 
-          allowNull: false 
-        },
-
-        start_date: {
+        country: {
           type: Sequelize.STRING,
-          allowNull: false
-        },
+          allowNull: false,
 
-        end_date: {
-          type: Sequelize.STRING,
-          allowNull: false
         },
-
-        repayment: { type: Sequelize.STRING, allowNull: false },
 
         createdAt: {
           allowNull: false,
@@ -107,6 +90,6 @@ module.exports = {
     });
   },
   async down(queryInterface: QueryInterface) {
-    await queryInterface.dropTable('cluster');
+    await queryInterface.dropTable('collection');
   },
 };

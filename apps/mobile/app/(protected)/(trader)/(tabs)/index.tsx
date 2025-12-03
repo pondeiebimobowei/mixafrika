@@ -77,7 +77,7 @@ export default function TraderDashboard() {
         <View className="flex flex-row gap-10">
           <Pressable
             onPress={() =>
-              router.push('/(protected)/(trader)/(dashboard)/notification')
+              router.push('/(protected)/(trader)/notification')
             }
           >
             <Bell color={'orange'} className="h-6 w-6" />

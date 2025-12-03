@@ -6,6 +6,7 @@ import { RepaymentHistory } from 'src/database/models/repayment-history.model';
 import { LoanStatus, RepaymentStatus, Types, Status } from '@shared/shared/src/enums';
 import Decimal from 'decimal.js';
 import { FundingApplication } from 'src/database/models/funding_application';
+import { Cluster } from 'src/database/models/cluster.model';
 
 @Injectable()
 export class LoanAccountService {
@@ -20,15 +21,14 @@ export class LoanAccountService {
     }
 
     async handleCreate( user_id:string, application_id: string) {
-        const application = await FundingApplication.findOne({ where: { id: application_id }})
+        const application = await FundingApplication.findOne({ where: { id: application_id }, include: { model: Cluster }})
 
         const loan_account = await LoanAccount.create({
             application_id,
-            duration: Number(application?.dataValues.duration),
-            interest_rate: 15,
-            approvedAt: '2025-11-12T16:13:42.425Z',
-            received_amount: Number(application?.dataValues.amount),
-            repayment_amount: Number(application?.dataValues.amount) * 1.15,
+            cluster_id: application?.cluster?.id as string,
+            approvedAt: new Date() as unknown as string,
+            disbursed_amount: Number(application?.allocated_amount),
+            repayment_amount: Number(application?.allocated_amount) * 1.15,
             repaid_amount: 0,
             status: LoanStatus.APPROVED,
             user_id,
@@ -85,11 +85,11 @@ export class LoanAccountService {
     }
 
     async calculateDynamicRepayment(user_id: string, daysToPay: number): Promise<number> {
-        const loan = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED } });
+        const loan = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED }, include: [{ model: Cluster }] });
         if (!loan) throw new HttpException({ success: false, message: "No Active Loan Found!"}, 500 );
             
         const outstandingBalance = new Decimal(loan.dataValues.repayment_amount).minus(loan.dataValues.repaid_amount);
-        const regularInstallment = new Decimal(loan.dataValues.repayment_amount).div(loan.dataValues.duration);
+        const regularInstallment = new Decimal(loan.dataValues.repayment_amount).div(loan?.cluster?.duration as number);
         const days = new Decimal(daysToPay);
 
         const calculatedAmount = regularInstallment.mul(days).toDecimalPlaces(2, Decimal.ROUND_DOWN);

@@ -1,68 +1,52 @@
-import { TabBar } from '@/components/ui/tab-bar';
 import { Ionicons } from '@expo/vector-icons';
-import { Stack, Tabs } from 'expo-router';
-import React from 'react';
+import { Stack, useRouter } from 'expo-router';
+import { Pressable, TouchableOpacity } from 'react-native';
+import Toast from 'react-native-toast-message';
 
-export default function InvestorLayout() {
-    return (
+export default function RootLayout() {
+  const router = useRouter();
+
+  return (
     <>
-      <Tabs
-        screenOptions={{ headerShown: false,}}
+      <Stack screenOptions={{ headerShown: false }}>
+
+        <Stack.Screen 
+            name="(tabs)" 
+            options={{ 
+                title: "Home",
+                headerShown: false,
+            }} 
+        />
+
         
-        tabBar={props => <TabBar {...props} />}
-      >
-        <Tabs.Screen
-          name="index"
+        <Stack.Screen
+          name="settings"
           options={{
-            title: 'Dashboard',
-            tabBarIcon: ({ color }) => (
-              <Ionicons name="home-outline" size={24} color={color} />
+            headerShown: true,
+            title: 'Settings',
+            headerStyle: {
+              backgroundColor: 'black',
+            },
+            headerTitleAlign: 'center',
+            headerTintColor: '#ffffff',
+            headerTitleStyle: {
+              fontWeight: '900',
+            },
+            headerLeft: () => (
+              <TouchableOpacity
+                onPress={() => {
+                  router.back();
+                }}
+              >
+                <Ionicons name="arrow-back" size={24} color="#fff" />
+              </TouchableOpacity>
             ),
           }}
         />
 
-        <Tabs.Screen
-          name="explore"
-          options={{
-            title: 'Explore',
-            tabBarIcon: ({ color }) => (
-              <Ionicons name="cash-outline" size={24} color={color} />
-            ),
-          }}
-        />
-
-        <Tabs.Screen
-          name="activity"
-          options={{
-            title: 'Activity',
-            tabBarIcon: ({ color }) => (
-              <Ionicons name="cash-outline" size={24} color={color} />
-            ),
-          }}
-        />
-
-        <Tabs.Screen
-          name="profile"
-          options={{
-            title: 'Profile',
-            tabBarIcon: ({ color }) => (
-              <Ionicons name="man" size={24} color={color} />
-            ),
-            headerShown: false,
-
-          }}
-        />
-
-
-        <Tabs.Screen
-          name="(dashboard)"
-          options={{
-            title: '(dashboard)',
-            href: null,
-          }}
-        />
-      </Tabs>
+      </Stack>
       
+      <Toast />
     </>
   );
 }

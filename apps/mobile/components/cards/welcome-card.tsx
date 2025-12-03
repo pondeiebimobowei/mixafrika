@@ -25,7 +25,7 @@ export default function WelcomeCard() {
         <View className="bg-white w-11/12 px-6 py-3 rounded-xl">
           <Pressable
             onPress={() =>
-              router.push('/(protected)/(trader)/(dashboard)/loan/apply')
+              router.push('/(protected)/(trader)/loan/apply')
             }
           >
             <Text className="text-primary font-semibold text-center">

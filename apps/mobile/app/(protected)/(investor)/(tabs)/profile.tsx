@@ -33,7 +33,6 @@ export default function Profile() {
 
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-gray-200 dark:bg-primary justify-start">
-      <View className='dark:bg-primary text-gray-600 dark:text-gray-400 text-red-600 dark:text-red-400 text-yellow-600 dark:text-yellow-400' />
       <View className="pb-6 px-4 mb-10">
         <View className="flex flex-col items-center justify-between pt-4 pb-4">
 
@@ -55,7 +54,7 @@ export default function Profile() {
 
 
             
-            <Link href="/(protected)/(investor)/(dashboard)/settings" asChild>
+            <Link href="/(protected)/(investor)/settings" asChild>
               <TouchableOpacity>
                 <Settings size={24} color="#fff" />
               </TouchableOpacity>

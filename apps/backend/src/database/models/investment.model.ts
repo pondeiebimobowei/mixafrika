@@ -36,6 +36,9 @@ export class Investment extends Model<IInvestment> implements IInvestment {
   declare amount_invested: number;
 
   @Column(DataType.DECIMAL(15, 2))
+  declare total_earnings: number;
+
+  @Column(DataType.DECIMAL(15, 2))
   declare current_value: number;
 
   @Column(DataType.INTEGER)

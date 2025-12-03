@@ -13,6 +13,7 @@ export const mockApplicationSeed: (response, cluster) => Promise<IFundingApplica
         "business_location": "lagos",
         "cluster_id": cluster_id[0],
         "amount": 500_000,
+        "allocated_amount": 500_000,
         "duration": "30_days",
         "repayment_plan": "daily",
         "purpose": "For boosting account",
