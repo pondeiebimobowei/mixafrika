@@ -18,7 +18,7 @@ export function RepaymentSheet({ onClose }: { onClose?: () => void }) {
     useEffect(() => {
         if (!loan_account) return;
 
-        const dailyAmount = Number(loan_account.repayment_amount) / Number(loan_account.duration);
+        const dailyAmount = Number(loan_account.total_repayment_amount) / Number(loan_account.duration);
         let days = 1;
 
         if (duration === 1) {
@@ -59,7 +59,7 @@ export function RepaymentSheet({ onClose }: { onClose?: () => void }) {
         return '...';
     };
 
-    const dailyAmount = Number(loan_account?.repayment_amount) / Number(loan_account?.duration) * Number(days);
+    const dailyAmount = Number(loan_account?.total_repayment_amount) / Number(loan_account?.duration) * Number(days);
 
 
     return (
@@ -81,7 +81,7 @@ export function RepaymentSheet({ onClose }: { onClose?: () => void }) {
             <View className="flex-row items-center mb-6">
                 <Wallet size={16} color="#6B7280" className="mr-2" />
                 <Text className="text-gray-400">Wallet Balance: </Text>
-                <Text className="text-[#27AE60] font-bold">{formatCurrency(data?.amount || 0)}</Text>
+                <Text className="text-[#27AE60] font-bold">{formatCurrency(data?.available_balance || 0)}</Text>
             </View>
 
             <View className="flex-row justify-between mb-6 gap-2">

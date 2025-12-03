@@ -76,6 +76,20 @@ module.exports = {
           allowNull: false 
         },
 
+
+        target_fundraising_amount: {
+          type: Sequelize.DECIMAL(15, 2),
+          allowNull: false,
+          defaultValue: 0.0,
+        },
+
+
+        total_funds_raised: {
+          type: Sequelize.DECIMAL(15, 2),
+          allowNull: false,
+          defaultValue: 0.0,
+        },
+
         start_date: {
           type: Sequelize.STRING,
           allowNull: false

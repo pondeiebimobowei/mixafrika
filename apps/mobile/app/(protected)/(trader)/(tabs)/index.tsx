@@ -32,7 +32,7 @@ import { LoanStatus } from '@mixafrica/shared/enums';
 export default function TraderDashboard() {
   const { business } = useUserBusiness();
   const { user } = useAuthStore();
-  const { amount } = useWallet();
+  const { available_balance } = useWallet();
   const router = useRouter();
 
   const [sheetIsOpen, setSheetIsOpen] = useState<SheetsState>({ isFundingOpen: false, isRepayOpen: false, isWithdrawOpen: false })
@@ -100,7 +100,7 @@ export default function TraderDashboard() {
           <View className="w-[48%] py-6 px-4 rounded-xl bg-white dark:bg-card">
             <Text className="dark:text-slate-300 text-sm">Wallet Balance</Text>
             <Text className="dark:text-white text-xl">
-              {formatCurrency(amount)}
+              {formatCurrency(available_balance)}
             </Text>
           </View>
 

@@ -10,6 +10,11 @@ import { Savings } from './database/models/saving.model';
 import { FundingApplication } from './database/models/funding_application';
 import { UserBusiness } from './database/models/user-business.model';
 import { Cluster } from './database/models/cluster.model';
+import { Feed } from './database/models/feed.model';
+import { Goal } from './database/models/goal.model';
+import { Investment } from './database/models/investment.model';
+import { LoanHistory } from './database/models/loan-history.model';
+import { SavingsHistory } from './database/models/saving-history.model';
 
 @Injectable()
 export class AppService {
@@ -17,9 +22,13 @@ export class AppService {
     const user = await User.findAll( { include: [ 
       { model: LoanAccount, include: [ { model: RepaymentHistory }, { model: FundingApplication, include: [Cluster] }] },
       { model: Notification },
+      { model: LoanHistory },
+      { model: Feed },
       { model: Transaction },
       { model: Wallet },
-      { model: Savings },
+      { model: Goal },
+      { model: Investment },
+      { model: Savings, include: [ SavingsHistory] },
       { model: UserBusiness },
       { model: FundingApplication },
       { model: Setting }

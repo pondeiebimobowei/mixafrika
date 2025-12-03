@@ -21,6 +21,13 @@ module.exports = {
           onUpdate: 'Cascade',
         },
         content: { type: Sequelize.STRING, allowNull: false },
+        image_url: {
+          type: Sequelize.STRING,
+          allowNull: true,
+
+        },
+
+
         likes: {
           type: Sequelize.DECIMAL(15, 2),
           allowNull: false,

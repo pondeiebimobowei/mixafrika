@@ -6,12 +6,13 @@ import { fundWallet } from '@/axios/wallet';
 
 export interface UserWallet extends BaseSlice {
   id: string,
-  amount: number,
-  total_portfolio: number,
+  available_balance: number,
+  active_investment_principal: number,
+  total_growth_earned: number
 
-  setWallet: ({ amount, total_portfolio }: IWallet) => void;
+  setWallet: ({ available_balance, active_investment_principal }: IWallet) => void;
   getWalletBalance: () => void;
-  fundWallet: (amount: number) =>void ;
+  fundWallet: (available_balance: number) => void;
 }
 
 export const createUserWallet: StateCreator<UserWallet, [], [], UserWallet> = (
@@ -21,11 +22,12 @@ export const createUserWallet: StateCreator<UserWallet, [], [], UserWallet> = (
   loading: false,
   error: null,
 
-  amount: 0,
-  total_portfolio: 0,
+  total_growth_earned: 0,
+  available_balance: 0,
+  active_investment_principal: 0,
 
-  setWallet: ({ amount, total_portfolio }) => {
-    set({ amount, total_portfolio });
+  setWallet: ({ available_balance, active_investment_principal }) => {
+    set({ available_balance, active_investment_principal });
   },
 
   getWalletBalance: async () => {
@@ -34,10 +36,10 @@ export const createUserWallet: StateCreator<UserWallet, [], [], UserWallet> = (
     try {
       const {
         data: {
-          data: { id, amount, total_portfolio },
+          data: { id, available_balance, active_investment_principal },
         },
       } = await apiPrivate.get('wallet');
-      set({ amount, id, total_portfolio });
+      set({ available_balance, id, active_investment_principal });
     } catch (err: any) {
       if (err.response) {
         set({ error: err.response.data.message, loading: false });
@@ -48,9 +50,9 @@ export const createUserWallet: StateCreator<UserWallet, [], [], UserWallet> = (
     set({ loading: false });
   },
 
-  fundWallet: async (amount: number) => {
+  fundWallet: async (available_balance: number) => {
     set({ loading: true, error: null });
-    const { success, message, data } = await fundWallet(amount);
+    const { success, message, data } = await fundWallet(available_balance);
 
     if (success) {
       get().getWalletBalance();

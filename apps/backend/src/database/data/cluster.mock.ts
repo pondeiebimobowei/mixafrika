@@ -18,6 +18,8 @@ export const mockClusterSeed: (collection: ICollection[]) => Promise<ICluster[]>
             name: 'Swali Traders Cluster',
             repayment: '',
             cover_image: '',
+            target_fundraising_amount: 1_000_000,
+            total_funds_raised: 45_000,
             roi: 15,
             createdAt: "2025-11-19T14:10:12.425Z",
             updatedAt: "2025-11-19T14:10:12.425Z"
@@ -36,6 +38,8 @@ export const mockClusterSeed: (collection: ICollection[]) => Promise<ICluster[]>
             name: 'Ahoada Traders Cluster',
             repayment: '',
             cover_image: '',
+            target_fundraising_amount: 2_000_000,
+            total_funds_raised: 1_500_00,
             roi: 15,
             createdAt: "2025-11-19T15:11:12.425Z",
             updatedAt: "2025-11-19T15:11:12.425Z"
@@ -54,6 +58,8 @@ export const mockClusterSeed: (collection: ICollection[]) => Promise<ICluster[]>
             name: 'Igbogene Traders Cluster',
             repayment: '',
             cover_image: '',
+            target_fundraising_amount: 3_000_000,
+            total_funds_raised: 1_800_000,
             roi: 15,
             createdAt: "2025-11-19T16:09:12.425Z",
             updatedAt: "2025-11-19T16:09:12.425Z"

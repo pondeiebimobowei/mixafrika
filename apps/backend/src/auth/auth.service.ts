@@ -32,7 +32,8 @@ export class AuthService {
 
     await Wallet.create({
       user_id: user.id,
-      amount: 0,
+      available_balance: 0,
+      active_investment_principal: 0,
       total_portfolio: 0,
     })
 

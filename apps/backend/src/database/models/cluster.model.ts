@@ -25,9 +25,6 @@ export class Cluster extends Model<ICluster> implements ICluster {
   @Column(DataType.STRING)
   declare name: string;
 
-  @Column(DataType.STRING)
-  declare category: string;
-
   @Column(DataType.UUID)
   declare collection_id: string;
 
@@ -40,8 +37,14 @@ export class Cluster extends Model<ICluster> implements ICluster {
   @Column(DataType.STRING)
   declare duration: Duration;
 
-  @Column(DataType.FLOAT)
+  @Column(DataType.DECIMAL(15,2))
   declare roi: number;
+
+  @Column(DataType.DECIMAL(15,2))
+  declare total_funds_raised: number;
+
+  @Column(DataType.DECIMAL(15,2))
+  declare target_fundraising_amount: number;
 
   @Column(DataType.STRING)
   declare repayment: string;

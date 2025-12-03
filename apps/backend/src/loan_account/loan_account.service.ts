@@ -25,10 +25,11 @@ export class LoanAccountService {
 
         const loan_account = await LoanAccount.create({
             application_id,
+            daily_repayment_amount: Number(application?.allocated_amount) / Number(application?.duration),
             cluster_id: application?.cluster?.id as string,
-            approvedAt: new Date() as unknown as string,
+            approved_at: new Date() as unknown as string,
             disbursed_amount: Number(application?.allocated_amount),
-            repayment_amount: Number(application?.allocated_amount) * 1.15,
+            total_repayment_amount: Number(application?.allocated_amount) * 1.15,
             repaid_amount: 0,
             status: LoanStatus.APPROVED,
             user_id,
@@ -46,18 +47,18 @@ export class LoanAccountService {
 
         const wallet = await Wallet.findOne({ where: { user_id } });
         
-        if (Number(wallet?.dataValues.amount) < Number(amount)) {
+        if (Number(wallet?.dataValues.available_balance) < Number(amount)) {
             throw new HttpException({ success: false, message: "Insufficient Funds"}, 500 );
         }
 
-        await Wallet.decrement( 'amount', { by: amount, where: { user_id } });
+        await Wallet.decrement( 'available_balance', { by: amount, where: { user_id } });
 
         await LoanAccount.increment( 'repaid_amount', {  by: amount, where: { user_id } });
 
         let loan_account = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED } });
 
 
-        if(Number(loan_account?.dataValues.repaid_amount) >= Number(loan_account?.dataValues.repayment_amount)) {
+        if(Number(loan_account?.dataValues.repaid_amount) >= Number(loan_account?.dataValues.total_repayment_amount)) {
             await LoanAccount.update({ status: LoanStatus.COMPLETED }, { where: { user_id } });
         }
 
@@ -88,8 +89,8 @@ export class LoanAccountService {
         const loan = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED }, include: [{ model: Cluster }] });
         if (!loan) throw new HttpException({ success: false, message: "No Active Loan Found!"}, 500 );
             
-        const outstandingBalance = new Decimal(loan.dataValues.repayment_amount).minus(loan.dataValues.repaid_amount);
-        const regularInstallment = new Decimal(loan.dataValues.repayment_amount).div(loan?.cluster?.duration as number);
+        const outstandingBalance = new Decimal(loan.dataValues.total_repayment_amount).minus(loan.dataValues.repaid_amount);
+        const regularInstallment = new Decimal(loan.dataValues.total_repayment_amount).div(loan?.cluster?.duration as number);
         const days = new Decimal(daysToPay);
 
         const calculatedAmount = regularInstallment.mul(days).toDecimalPlaces(2, Decimal.ROUND_DOWN);

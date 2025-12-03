@@ -47,7 +47,7 @@ const Investments: PortfolioItemProps[] = [
 
 export default function InvestorDashboard() {
     const { user } = useAuthStore();
-    const { amount } = useWallet();
+    const { available_balance, total_growth_earned, active_investment_principal } = useWallet();
     const { colorScheme, toggleColorScheme } = useColorScheme();
 
     return (
@@ -96,7 +96,7 @@ export default function InvestorDashboard() {
                     <>
                         {/* Balance Section */}
                         <InvestorBalanceCard
-                            balance={amount || 2450.00}
+                            balance={available_balance || 2450.00}
                             onDeposit={() => console.log('Deposit')}
                             onWithdraw={() => console.log('Withdraw')}
                         />
@@ -105,11 +105,11 @@ export default function InvestorDashboard() {
                         <View className="flex-row gap-4">
                             <InvestorStatsCard
                                 label="Total Investment"
-                                amount={125430}
+                                amount={active_investment_principal}
                             />
                             <InvestorStatsCard
                                 label="Total Earnings"
-                                amount={15880}
+                                amount={total_growth_earned}
                                 icon={<BarChart3 size={16} color="#22c55e" />}
                             />
                         </View>

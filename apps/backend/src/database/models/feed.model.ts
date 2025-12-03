@@ -30,7 +30,7 @@ export class Feed extends Model<IFeed> implements IFeed {
   declare content: string;
 
   @Column(DataType.STRING)
-  declare image: string;
+  declare image_url: string;
 
   @Column(DataType.INTEGER)
   declare likes: number;

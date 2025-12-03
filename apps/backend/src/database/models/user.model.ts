@@ -26,6 +26,7 @@ import { UserBusiness } from './user-business.model';
 import { Setting } from './setting.model';
 import { Transaction } from './transaction.model';
 import { FundingApplication } from './funding_application';
+import { LoanHistory } from './loan-history.model';
 
 @Table({
   tableName: 'user',
@@ -120,6 +121,9 @@ export class User extends Model<IUser> implements IUser {
 
   @HasMany(() => Setting)
   declare setting: Setting;
+
+  @HasMany(() => LoanHistory)
+  declare loan_history: LoanHistory;
 
   @HasMany(() => Feed)
   declare feeds: Feed[];

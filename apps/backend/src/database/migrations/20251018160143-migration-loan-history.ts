@@ -28,6 +28,7 @@ module.exports = {
           onDelete: 'Cascade',
           onUpdate: 'Cascade',
         },
+
         cluster_id: {
           type: Sequelize.UUID,
           allowNull: false,
@@ -35,6 +36,7 @@ module.exports = {
           onDelete: 'Cascade',
           onUpdate: 'Cascade',
         },
+        
         status: {
           type: Sequelize.STRING,
           validate: { isIn: [Object.values(LoanStatus)] },

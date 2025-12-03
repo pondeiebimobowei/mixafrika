@@ -34,17 +34,17 @@ export default function LoanOverviewCard() {
               </View>
 
               <Text className="text-white text-5xl font-bold">
-                {formatCurrency(loan_account?.received_amount)}
+                {formatCurrency(loan_account?.disbursed_amount)}
               </Text>
               <View className="h-2 w-full mt-4 mb-1 rounded-full bg-white/40 overflow-hidden">
                 <View
-                  style={{ width: `${(Number(loan_account?.repaid_amount) / Number(loan_account?.repayment_amount)) * 100}%` }}
+                  style={{ width: `${(Number(loan_account?.repaid_amount) / Number(loan_account?.total_repayment_amount)) * 100}%` }}
                   className="h-full bg-white"
                 />
               </View>
               <View className='flex flex-row justify-between items-center'>
-                <Text className='text-white text-sm'>{((Number(loan_account?.repaid_amount) / Number(loan_account?.repayment_amount)) * 100).toFixed(2)}% Repaid</Text>
-                <Text className='text-white text-sm'>{formatCurrency(Number(loan_account?.repayment_amount) - Number(loan_account?.repaid_amount)).toLocaleString()} left</Text>
+                <Text className='text-white text-sm'>{((Number(loan_account?.repaid_amount) / Number(loan_account?.total_repayment_amount)) * 100).toFixed(2)}% Repaid</Text>
+                <Text className='text-white text-sm'>{formatCurrency(Number(loan_account?.total_repayment_amount) - Number(loan_account?.repaid_amount)).toLocaleString()} left</Text>
               </View>
             </View>
 
@@ -53,7 +53,7 @@ export default function LoanOverviewCard() {
                 <Calendar color={"white"} size={18} strokeWidth={1} />
                 <View>
                   <Text className='text-white text-xs'>Date Received</Text>
-                  <Text className='text-white text-xs'>{formatDate(loan_account?.approvedAt)}</Text>
+                  <Text className='text-white text-xs'>{formatDate(loan_account?.approved_at)}</Text>
                 </View>
               </View>
 
@@ -77,12 +77,12 @@ export default function LoanOverviewCard() {
 
               <View className='w-5/12 '>
                 <Text className='text-white/50'>Total Repayment</Text>
-                <Text className='text-white font-semibold'>{formatCurrency(loan_account?.repayment_amount)}</Text>
+                <Text className='text-white font-semibold'>{formatCurrency(loan_account?.total_repayment_amount)}</Text>
               </View>
               
               <View className='w-5/12 '>
                 <Text className='text-white/50'>Next Payment</Text>
-                <Text className='text-white font-semibold'>{formatCurrency(Number(loan_account?.repayment_amount)/Number(loan_account?.duration))}</Text>
+                <Text className='text-white font-semibold'>{formatCurrency(Number(loan_account?.total_repayment_amount)/Number(loan_account?.duration))}</Text>
               </View>
 
               <View className='w-full '>

@@ -9,6 +9,8 @@ import {
   CreatedAt,
   PrimaryKey,
   Default,
+  HasMany,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { LoanStatus } from '@shared/shared/src/enums';
 import { CreationOptional, DataTypes } from 'sequelize';
@@ -32,11 +34,11 @@ export class LoanHistory extends Model<ILoanHistory> implements ILoanHistory {
   @Column(DataType.STRING)
   declare status: LoanStatus;
 
-  @Column(DataType.STRING)
-  declare cluster: string;
+  @Column(DataType.UUID)
+  declare cluster_id: string;
 
-  @Column(DataType.STRING)
-  declare category: string;
+  @BelongsTo(() => User)
+  declare user: User;
 
   @CreatedAt
   declare createdAt: string;

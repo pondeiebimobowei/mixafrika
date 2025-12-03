@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import React from "react";
 import { View, ViewProps, Text } from "react-native";
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
@@ -28,7 +29,7 @@ export const Progress = ({
   }));
 
   return (
-    <View className={`w-full ${className}`} {...props}>
+    <View className={`w-full`} {...props}>
       {showLabel && (
         <View className="flex-row justify-between mb-2">
           <Text className="text-muted-foreground dark:text-slate-400 text-xs">
@@ -41,11 +42,11 @@ export const Progress = ({
       )}
 
       <View
-        className="bg-muted dark:bg-slate-800 rounded-full overflow-hidden"
+        className={cn("bg-muted dark:bg-slate-800 rounded-full overflow-hidden", className )}
         style={{ height }}
       >
         <Animated.View
-          className={`bg-green-500 rounded-full ${indicatorClassName}`}
+          className={cn("bg-green-500 rounded-full", indicatorClassName)}
           style={[{ height: "100%" }, animatedStyle]}
         />
       </View>

@@ -12,6 +12,8 @@ export interface ICluster extends BaseModel {
   duration: Duration;
   description: string;
   about:string;
+  target_fundraising_amount: number;
+  total_funds_raised: number
   start_date: string;
   end_date: string;
 }

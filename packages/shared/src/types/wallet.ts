@@ -2,6 +2,7 @@ import type { BaseModel } from "./base-model-type";
 
 export interface IWallet extends BaseModel {
   user_id: string;
-  amount: number;
+  available_balance: number;
+  active_investment_principal: number;
   total_portfolio: number;
 }

@@ -27,10 +27,13 @@ export class Wallet extends Model<IWallet> implements IWallet {
   declare user_id: string;
 
   @Column({ type: DataType.DECIMAL(15, 2), defaultValue: 0 })
-  declare amount: number;
+  declare available_balance: number;
 
   @Column({ type: DataType.DECIMAL(15, 2), defaultValue: 0 })
   declare total_portfolio: number;
+
+  @Column({ type: DataType.DECIMAL(15, 2), defaultValue: 0 })
+  declare active_investment_principal: number;
 
   @BelongsTo(() => User)
   declare user: User;

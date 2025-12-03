@@ -38,15 +38,6 @@ export class Investment extends Model<IInvestment> implements IInvestment {
   @Column(DataType.DECIMAL(15, 2))
   declare total_earnings: number;
 
-  @Column(DataType.DECIMAL(15, 2))
-  declare current_value: number;
-
-  @Column(DataType.INTEGER)
-  declare cycle_progress: number;
-
-  @Column(DataType.DATE)
-  declare cycle_ends: Date;
-
   @Column(DataType.STRING)
   declare status: Status;
 

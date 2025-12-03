@@ -85,7 +85,7 @@ export default function Profile() {
             </TouchableOpacity>
           </View>
           <Text className="text-4xl font-bold text-black dark:text-white mt-1">
-            {isBalanceVisible ? formatCurrency(data?.amount) : '∗∗∗∗∗∗∗∗∗∗'}
+            {isBalanceVisible ? formatCurrency(data?.available_balance) : '∗∗∗∗∗∗∗∗∗∗'}
           </Text>
         </View>
       </View>

@@ -13,9 +13,10 @@ import {
 } from 'sequelize-typescript';
 import { User } from './user.model';
 import { CreationOptional, DataTypes } from 'sequelize';
+import { IGoal } from '@shared/shared/src/types/goal';
 
 @Table({ tableName: 'goal' })
-export class Goal extends Model<Goal> {
+export class Goal extends Model<IGoal> {
   @PrimaryKey
   @Default(DataTypes.UUIDV4)
   @Column(DataTypes.UUID)
@@ -29,7 +30,7 @@ export class Goal extends Model<Goal> {
   declare name: string;
 
   @Column(DataType.DECIMAL(15, 2))
-  declare currentAmount: number;
+  declare current_amount: number;
 
   @Column(DataType.DECIMAL(15, 2))
   declare target: number;
@@ -38,7 +39,7 @@ export class Goal extends Model<Goal> {
   declare image: string;
 
   @Column(DataType.DATE)
-  declare targetDate: Date;
+  declare target_date: Date;
 
   @BelongsTo(() => User)
   declare user: User;

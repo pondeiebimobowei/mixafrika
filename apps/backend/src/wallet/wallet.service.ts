@@ -18,7 +18,7 @@ export class WalletService {
 
   async handleFundWallet(user_id: string, amount: number) {
 
-    const wallet = await Wallet.increment("amount", { by: amount, where: { user_id } });
+    const wallet = await Wallet.increment("available_balance", { by: amount, where: { user_id } });
 
     const transaction = await Transaction.create({
       user_id,

@@ -9,6 +9,7 @@ export interface ILoanAccount extends BaseModel {
   disbursed_amount: number,
   status: LoanStatus;
   repaid_amount: number;
-  repayment_amount: number;
-  approvedAt: string;
+  daily_repayment_amount: number;
+  total_repayment_amount: number;
+  approved_at: string;
 }
