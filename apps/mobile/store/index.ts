@@ -15,6 +15,7 @@ import {
 import { createLoanHistory, LoanHistory } from './slice/loan-history.slice';
 import { createUserWallet, UserWallet } from './slice/wallet.slice';
 import { createLoanAccount, LoanAccount } from './slice/loan-account.slice';
+import { createCluster, Cluster } from './slice/cluster.slice';
 import { createTraderRecord, TraderRecord } from './slice/trader.slice';
 import { createUserBusiness, UserBusiness } from './slice/business.slice';
 import { createUserSettings, UserSettingsSlice } from './slice/settings.slice';
@@ -48,6 +49,10 @@ export const useTraderRecord = create<TraderRecord>()((...a) => ({
 
 export const useLoanAccountStore = create<LoanAccount>()((...a) => ({
   ...createLoanAccount(...a),
+}));
+
+export const useClusterStore = create<Cluster>()((...a) => ({
+  ...createCluster(...a),
 }));
 
 export const useWallet = create<UserWallet>()((...a) => ({

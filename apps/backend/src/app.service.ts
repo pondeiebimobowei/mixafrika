@@ -15,12 +15,13 @@ import { Goal } from './database/models/goal.model';
 import { Investment } from './database/models/investment.model';
 import { LoanHistory } from './database/models/loan-history.model';
 import { SavingsHistory } from './database/models/saving-history.model';
+import { Collection } from './database/models/collection.model';
 
 @Injectable()
 export class AppService {
   async getHello() {
     const user = await User.findAll( { include: [ 
-      { model: LoanAccount, include: [ { model: RepaymentHistory }, { model: FundingApplication, include: [Cluster] }] },
+      { model: LoanAccount, include: [ { model: RepaymentHistory }, { model: FundingApplication, include: [{ model: Cluster, include: [Collection]}] }] },
       { model: Notification },
       { model: LoanHistory },
       { model: Feed },

@@ -3,7 +3,7 @@ import { NativeOnlyAnimatedView } from '@/components/ui/native-only-animated-vie
 import { TextClassContext } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 import * as SelectPrimitive from '@rn-primitives/select';
-import { Check, ChevronDown, ChevronDownIcon, ChevronUpIcon } from 'lucide-react-native';
+import { Check, ChevronDown, ChevronDownIcon, ChevronUpIcon, GlobeLock, LucideIcon } from 'lucide-react-native';
 import * as React from 'react';
 import { Platform, ScrollView, StyleSheet, View } from 'react-native';
 import { FadeIn, FadeOut } from 'react-native-reanimated';
@@ -41,11 +41,13 @@ function SelectTrigger({
   ref,
   className,
   children,
+  icon,
   size = 'default',
   ...props
 }: SelectPrimitive.TriggerProps &
   React.RefAttributes<SelectPrimitive.TriggerRef> & {
     children?: React.ReactNode;
+    icon?: LucideIcon,
     size?: 'default' | 'sm';
   }) {
   return (
@@ -61,7 +63,10 @@ function SelectTrigger({
         className
       )}
       {...props}>
-      <>{children}</>
+      <View className='flex flex-row gap-2 items-center'>
+        {icon && <Icon as={icon} className='text-muted-foreground size-4' /> }
+        {children}
+      </View>
       <Icon as={ChevronDown} aria-hidden={true} className="text-muted-foreground size-4" />
     </SelectPrimitive.Trigger>
   );

@@ -7,7 +7,7 @@ export class ClusterController {
 
   @Get()
   getClusters() {
-    return this.clusterService.handleGetClusters;
+    return this.clusterService.handleGetClusters();
   }
 
   @Get(':cluster_id')

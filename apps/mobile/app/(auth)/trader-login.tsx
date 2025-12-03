@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLogin } from '@/hooks/use-login.hook';
 import { Controller } from 'react-hook-form';
 import Toast from 'react-native-toast-message';
-import { useRouter } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
 
 const CustomIcons = {
   GoogleIcon: () => <Text className="text-xl">G</Text>,
@@ -116,12 +116,13 @@ const LoginScreen = () => {
         {/* Sign Up Link */}
         <Text className="text-gray-600 text-center">
           Don't have an account?{' '}
-          <Text
-            className="text-blue-500 font-semibold"
-            onPress={() => router.push('/(auth)/(signup)/select-role')}
-          >
-            Sign up
-          </Text>
+          <Link href={'/select-role'} asChild>
+            <Text
+              className="text-blue-500 font-semibold"
+            >
+              Sign up
+            </Text>
+          </Link>
         </Text>
       </View>
       <Toast />

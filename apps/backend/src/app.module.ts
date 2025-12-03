@@ -45,6 +45,7 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { FundingApplication } from './database/models/funding_application';
 import { LoanAccountModule } from './loan_account/loan_account.module';
 import { LoanRepaymentHistoryModule } from './loan_repayment_history/loan_repayment_history.module';
+import { Collection } from './database/models/collection.model';
 
 @Module({
   imports: [
@@ -64,7 +65,7 @@ import { LoanRepaymentHistoryModule } from './loan_repayment_history/loan_repaym
     AdminModule,
     LoanModule,
     SettingsModule,
-    SequelizeModule.forFeature([User, Savings, FundingApplication, Goal, Investment, Notification, Feed, Cluster, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, UserBusiness, Transaction, Wallet, LoanAccount]),
+    SequelizeModule.forFeature([User, Savings, FundingApplication, Goal, Investment, Notification, Feed, Cluster, Collection, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, UserBusiness, Transaction, Wallet, LoanAccount]),
     ConfigModule.forRoot({ isGlobal: true }),
     SequelizeModule.forRootAsync({
       useFactory: getSequelizeConfig,

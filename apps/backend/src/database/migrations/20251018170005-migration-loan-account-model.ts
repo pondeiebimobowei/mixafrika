@@ -50,36 +50,8 @@ module.exports = {
           onUpdate: 'CASCADE',
           onDelete: 'CASCADE',
         },
-
-        received_amount: {
-          type: Sequelize.DECIMAL(15, 2),
-          allowNull: false,
-          defaultValue: 0.0,
-        },
         
         disbursed_amount: {
-          type: Sequelize.DECIMAL(15, 2),
-          allowNull: false,
-          defaultValue: 0.0,
-        },
-
-        repaid_amount: {
-          type: Sequelize.DECIMAL(15, 2),
-          allowNull: false,
-          defaultValue: 0.0,
-        },
-        repayment_amount: {
-          type: Sequelize.DECIMAL(15, 2),
-          allowNull: false,
-          defaultValue: 0.0,
-        },
-        interest_rate: {
-          type: Sequelize.DECIMAL(15, 2),
-          allowNull: false,
-          defaultValue: 0.0,
-        },
-
-        duration: {
           type: Sequelize.DECIMAL(15, 2),
           allowNull: false,
           defaultValue: 0.0,
@@ -90,8 +62,26 @@ module.exports = {
           validate: { isIn: [Object.values(LoanStatus)] },
           defaultValue: 'pending',
         },
+        
+        repaid_amount: {
+          type: Sequelize.DECIMAL(15, 2),
+          allowNull: false,
+          defaultValue: 0.0,
+        },
 
-        approvedAt: {
+        daily_repayment_amount: {
+          type: Sequelize.DECIMAL(15, 2),
+          allowNull: false,
+          defaultValue: 0.0,
+        },
+
+        total_repayment_amount: {
+          type: Sequelize.DECIMAL(15, 2),
+          allowNull: false,
+          defaultValue: 0.0,
+        },
+
+        approved_at: {
           allowNull: false,
           type: Sequelize.DATE
         },

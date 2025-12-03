@@ -4,7 +4,7 @@ import { ChartArea, LucideIcon, TrendingUp } from 'lucide-react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
+import { Link, router } from 'expo-router';
 
 type RootStackParamList = {
   '/(auth)/trader-login': undefined;
@@ -126,12 +126,13 @@ export default function LoginPage() {
 
             <Text className="text-white text-center my-20">
               Don't have an account?{' '}
-              <Text
-                className="text-primary text-lg font-semibold"
-                onPress={() => router.push('/(auth)/(signup)/select-role')}
-              >
-                Sign up
-              </Text>
+              <Link href={'/select-role'} asChild>
+                <Text
+                  className="text-primary text-lg font-semibold"
+                >
+                  Sign up
+                </Text>
+              </Link>
             </Text>
           </View>
         </View>

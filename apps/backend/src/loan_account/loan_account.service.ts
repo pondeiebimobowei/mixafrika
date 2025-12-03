@@ -12,7 +12,7 @@ import { Cluster } from 'src/database/models/cluster.model';
 export class LoanAccountService {
 
     async getLoanAccount(user_id: string,) {
-        const loan_account = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED } })
+        const loan_account = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED }, include: { model: Cluster } })
         return {
             success: true,
             message: "Loan account record found!",
@@ -27,7 +27,7 @@ export class LoanAccountService {
             application_id,
             daily_repayment_amount: Number(application?.allocated_amount) / Number(application?.duration),
             cluster_id: application?.cluster?.id as string,
-            approved_at: new Date() as unknown as string,
+            approved_at: new Date().toISOString() ,
             disbursed_amount: Number(application?.allocated_amount),
             total_repayment_amount: Number(application?.allocated_amount) * 1.15,
             repaid_amount: 0,
@@ -55,7 +55,7 @@ export class LoanAccountService {
 
         await LoanAccount.increment( 'repaid_amount', {  by: amount, where: { user_id } });
 
-        let loan_account = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED } });
+        let loan_account = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED }, include: { model: Cluster } });
 
 
         if(Number(loan_account?.dataValues.repaid_amount) >= Number(loan_account?.dataValues.total_repayment_amount)) {

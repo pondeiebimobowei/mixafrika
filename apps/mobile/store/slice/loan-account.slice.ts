@@ -1,6 +1,6 @@
 import { getLoanAccount } from '@/axios/loan_account';
 import { repayLoan } from '@/axios/wallet';
-import { ILoanAccount } from '@mixafrica/shared/types/loan-account';
+import { ILoanAccountWithCluster } from '@mixafrica/shared/types/loan-account';
 import Toast from 'react-native-toast-message';
 import type { StateCreator } from 'zustand';
 import { useWallet } from '..';
@@ -8,9 +8,9 @@ import { useWallet } from '..';
 export interface LoanAccount {
   loading: boolean;
   error: string | null;
-  loan_account: ILoanAccount | null;
+  loan_account: ILoanAccountWithCluster | null;
   get_loan_account: ()=> void;
-  set_loan_account: ({ loan_account }: { loan_account: ILoanAccount }) => void;
+  set_loan_account: ({ loan_account }: { loan_account: ILoanAccountWithCluster }) => void;
   repay_loan: (amount: number) => Promise<boolean>;
 
 }

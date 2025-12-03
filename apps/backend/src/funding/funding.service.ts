@@ -30,6 +30,7 @@ export class FundingService {
 
     const data =  await FundingApplication.create({
       ...createFundingApplicationDto,
+      duration: Number(createFundingApplicationDto.duration),
       amount: Number(amount),
       allocated_amount: Number(amount),
       statement_of_account_doc: image_url,
@@ -53,7 +54,7 @@ export class FundingService {
 
     const cluster = await Cluster.findOne()
 
-    await FundingApplication.update( { cluster_id: cluster?.id }, { where: {  id: application_id }})
+    await FundingApplication.update( { cluster_id: cluster?.id, approved_at: new Date().toISOString() }, { where: {  id: application_id }})
 
     const { data} = await this.loanService.handleCreate(user_id, application_id )
 

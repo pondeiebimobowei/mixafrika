@@ -18,7 +18,6 @@ export function RepaymentSheet({ onClose }: { onClose?: () => void }) {
     useEffect(() => {
         if (!loan_account) return;
 
-        const dailyAmount = Number(loan_account.total_repayment_amount) / Number(loan_account.duration);
         let days = 1;
 
         if (duration === 1) {
@@ -59,9 +58,6 @@ export function RepaymentSheet({ onClose }: { onClose?: () => void }) {
         return '...';
     };
 
-    const dailyAmount = Number(loan_account?.total_repayment_amount) / Number(loan_account?.duration) * Number(days);
-
-
     return (
         <View className="px-4 py-6 pb-10 rounded-xl bg-white dark:bg-[#1A1A1A]">
             {renderHeader('Make Repayment', onClose)}
@@ -69,7 +65,7 @@ export function RepaymentSheet({ onClose }: { onClose?: () => void }) {
             <View className="mb-4">
                 <Text className="text-black dark:text-white font-semibold mb-2">Amount</Text>
                 <TextInput
-                    value={dailyAmount.toFixed()}
+                    value={(Number(loan_account?.daily_repayment_amount) * Number(days)).toFixed()}
                     editable={false}
                     placeholder="Enter amount"
                     placeholderTextColor="#6B7280"
@@ -134,7 +130,7 @@ export function RepaymentSheet({ onClose }: { onClose?: () => void }) {
 
             <View className="bg-gray-100 dark:bg-[#2A2D35] p-4 rounded-xl mb-8">
                 <Text className="text-gray-800 dark:text-gray-400 text-sm">
-                    Your upcoming repayment of <Text className="text-black dark:text-white font-bold">{formatCurrency(Number(dailyAmount) || 0)}</Text> is due <Text className="text-black dark:text-white font-bold">{getDueText()}</Text>.
+                    You have an upcoming repayment of <Text className="text-black dark:text-white font-bold">{formatCurrency(Number(loan_account?.daily_repayment_amount))}</Text> due today <Text className="text-black dark:text-white font-bold">today</Text>.
                 </Text>
             </View>
 
@@ -143,7 +139,7 @@ export function RepaymentSheet({ onClose }: { onClose?: () => void }) {
                 disabled={loading || !days}
                 className={clsx("p-4 rounded-xl items-center", (loading || !days) ? "bg-[#2A2D35] opacity-50" : "bg-[#27AE60]")}
             >
-                <Text className="text-white font-bold text-lg">{loading ? 'Processing...' : `Pay ${formatCurrency(Number(dailyAmount) || 0)}`}</Text>
+                <Text className="text-white font-bold text-lg">{loading ? 'Processing...' : `Pay ${formatCurrency(Number(loan_account?.daily_repayment_amount))}`}</Text>
             </TouchableOpacity>
         </View>
     );

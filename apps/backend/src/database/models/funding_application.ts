@@ -57,6 +57,9 @@ export class FundingApplication
   @Column(DataType.STRING)
   declare statement_of_account_doc: string | null;
 
+  @Column(DataType.DATE)
+  declare approved_at: string;
+
   @BelongsTo(() => Cluster)
   declare cluster?: Cluster;
 

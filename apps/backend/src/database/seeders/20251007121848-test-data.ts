@@ -57,18 +57,18 @@ module.exports = {
       
       const notificationUser = await mockNotificationSeed([responseUser[0], responseInvestor[0], responseInvestor[1]])
       await queryInterface.bulkInsert('notification', notificationUser, { transaction: t });
-      
+
       const loan_account = await queryInterface.bulkInsert('loan_account', [{
-        user_id: users[0].id,
         id: uuidv4(),
+        user_id: users[0].id,
         application_id: application[0].id,
         cluster_id: application[0].cluster_id,
         disbursed_amount: application[0].allocated_amount,
         status: 'approved',
         repaid_amount: 0,
-        repayment_amount: application[0].amount * 1.15,
-        interest_rate: 15,
-        approvedAt: new Date(),
+        daily_repayment_amount: Number(application[0].allocated_amount * 1.15) / Number(application[0].duration),
+        total_repayment_amount: Number(application[0].allocated_amount * 1.15),
+        approved_at: new Date(),
         createdAt: new Date(),
         updatedAt: new Date()
       }],

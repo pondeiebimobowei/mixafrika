@@ -7,8 +7,9 @@ export interface IFundingApplication extends BaseModel {
   business_location: string;
   amount: number;
   allocated_amount: number;
-  duration: string;
+  duration: number;
   repayment_plan: string;
+  approved_at: string | null;
   purpose: string;
   statement_of_account_doc: string | null;
 }

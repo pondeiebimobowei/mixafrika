@@ -7,10 +7,6 @@ import { formatCurrency, formatDate } from '@/lib/utils';
 export default function LoanOverviewCard() {
   const { loan_account } = useLoanAccountStore();
 
-  const repaidPercentage =
-  // @ts-expect-error÷
-    (loan_account.repaid_amount / loan_account?.recieied_amount) * 100;
-
   return (
     <View className=" px-6 py-10 my-4 bg-primary  rounded-xl flex-1 items-center justify-center ">
       <Accordion type='single' collapsable>
@@ -38,7 +34,7 @@ export default function LoanOverviewCard() {
               </Text>
               <View className="h-2 w-full mt-4 mb-1 rounded-full bg-white/40 overflow-hidden">
                 <View
-                  style={{ width: `${(Number(loan_account?.repaid_amount) / Number(loan_account?.total_repayment_amount)) * 100}%` }}
+                  style={{ width: `${(Number(loan_account?.daily_repayment_amount) / Number(loan_account?.total_repayment_amount)) * 100}%` }}
                   className="h-full bg-white"
                 />
               </View>
@@ -61,7 +57,7 @@ export default function LoanOverviewCard() {
                 <TrendingUp color={"white"} size={18} strokeWidth={1} />
                 <View>
                   <Text className='text-white text-xs'>Repayment:</Text>
-                  <Text className='text-white text-xs'>{formatCurrency(loan_account?.repaid_amount)}</Text>
+                  <Text className='text-white text-xs'>{formatCurrency(loan_account?.daily_repayment_amount)}</Text>
                 </View>
               </View>
 
@@ -72,7 +68,7 @@ export default function LoanOverviewCard() {
             <View className='flex flex-row flex-wrap gap-4 items-center justify-between'>
               <View className='w-5/12 '>
                 <Text className='text-white/50'>Interest Rate</Text>
-                <Text className='text-white font-semibold'>{Number(loan_account?.interest_rate).toFixed()}%</Text>
+                <Text className='text-white font-semibold'>{Number(loan_account?.cluster.roi).toFixed()}%</Text>
               </View>
 
               <View className='w-5/12 '>
@@ -82,12 +78,12 @@ export default function LoanOverviewCard() {
               
               <View className='w-5/12 '>
                 <Text className='text-white/50'>Next Payment</Text>
-                <Text className='text-white font-semibold'>{formatCurrency(Number(loan_account?.total_repayment_amount)/Number(loan_account?.duration))}</Text>
+                <Text className='text-white font-semibold'>{formatCurrency(Number(loan_account?.daily_repayment_amount))}</Text>
               </View>
 
               <View className='w-full '>
                 <Text className='text-white/50'>Loan duration</Text>
-                <Text className='text-white font-semibold'>{Number(loan_account?.duration).toFixed()} days</Text>
+                <Text className='text-white font-semibold'>{Number(loan_account?.cluster.duration).toFixed()} days</Text>
               </View>
 
               <View>

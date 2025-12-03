@@ -10,15 +10,6 @@ module.exports = {
         id: { type: Sequelize.UUID, defaultValue: sequelize.UUIDV4, primaryKey: true },
         
         user_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user', key: 'id' }, onDelete: "Cascade", onUpdate: "Cascade"  }, 
-        business_type: { type: Sequelize.STRING, allowNull: false },
-        business_location: { type: Sequelize.STRING, allowNull: false },
-        amount: { type: Sequelize.DECIMAL(15, 2), allowNull: false, defaultValue: 0.00 },
-        allocated_amount: { type: Sequelize.DECIMAL(15, 2), allowNull: false, defaultValue: 0.00 },
-        duration: { type: Sequelize.STRING, allowNull: false },
-        repayment_plan: { type: Sequelize.STRING, allowNull: false },
-        purpose: { type: Sequelize.STRING, allowNull: false },
-        statement_of_account_doc: { type: Sequelize.STRING, allowNull: false },
-        
         cluster_id: {
           type: Sequelize.UUID,
           allowNull: true,
@@ -29,6 +20,15 @@ module.exports = {
           onUpdate: 'CASCADE',
           onDelete: 'CASCADE',
         },
+        business_type: { type: Sequelize.STRING, allowNull: false },
+        business_location: { type: Sequelize.STRING, allowNull: false },
+        amount: { type: Sequelize.DECIMAL(15, 2), allowNull: false, defaultValue: 0.00 },
+        allocated_amount: { type: Sequelize.DECIMAL(15, 2), allowNull: false, defaultValue: 0.00 },
+        duration: { type: Sequelize.STRING, allowNull: false },
+        repayment_plan: { type: Sequelize.STRING, allowNull: false },
+        approved_at: { type: Sequelize.DATE, allowNull: true },
+        purpose: { type: Sequelize.STRING, allowNull: false },
+        statement_of_account_doc: { type: Sequelize.STRING, allowNull: false },
 
         createdAt: { allowNull: false, type: Sequelize.DATE, defaultValue: Sequelize.NOW },
         deletedAt: {

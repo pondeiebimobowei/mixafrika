@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLogin } from '@/hooks/use-login.hook';
 import { Controller } from 'react-hook-form';
 import Toast from 'react-native-toast-message';
+import { Link } from 'expo-router';
 
 const CustomIcons = {
   // Placeholder components for social icons - replace with actual SVGs or Image components
@@ -116,11 +117,13 @@ const InvestorLoginScreen = () => {
         {/* Sign Up Link */}
         <Text className="text-gray-600 text-center">
           Don't have an account?{' '}
-          <Text
-            className="text-blue-500 font-semibold"
-          >
-            Sign up
-          </Text>
+          <Link href={'/select-role'} asChild>
+            <Text
+              className="text-blue-500 font-semibold"
+            >
+              Sign up
+            </Text>
+          </Link>
         </Text>
       </View>
       <Toast />

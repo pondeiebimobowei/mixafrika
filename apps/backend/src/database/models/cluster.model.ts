@@ -9,11 +9,15 @@ import {
   Default,
   PrimaryKey,
   HasOne,
+  ForeignKey,
+  HasMany,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { ICluster } from '@shared/shared/src/types/cluster';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { FundingApplication } from './funding_application';
 import { Duration } from '@shared/shared/src/enums';
+import { Collection } from './collection.model';
 
 @Table({ tableName: 'cluster' })
 export class Cluster extends Model<ICluster> implements ICluster {
@@ -24,9 +28,6 @@ export class Cluster extends Model<ICluster> implements ICluster {
 
   @Column(DataType.STRING)
   declare name: string;
-
-  @Column(DataType.UUID)
-  declare collection_id: string;
 
   @Column(DataType.STRING)
   declare status: string;
@@ -67,6 +68,12 @@ export class Cluster extends Model<ICluster> implements ICluster {
   @HasOne(() => FundingApplication)
   declare application: FundingApplication;
 
+  @BelongsTo(() => Collection)
+  declare collection: Collection;
+
+  @ForeignKey(() => Collection)
+  @Column(DataType.UUID)
+  declare collection_id: string;
 
   @CreatedAt
   declare createdAt: string;

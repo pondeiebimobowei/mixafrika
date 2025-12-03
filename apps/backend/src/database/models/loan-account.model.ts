@@ -34,17 +34,17 @@ export class LoanAccount extends Model<ILoanAccount> {
   @Column(DataType.DECIMAL(15, 2))
   declare disbursed_amount: number;
 
+  @Column(DataType.STRING)
+  declare status: LoanStatus;
+
   @Column(DataType.DECIMAL(15, 2))
   declare repaid_amount: number;
 
   @Column(DataType.DECIMAL(15, 2))
-  declare repayment_amount: number;
+  declare daily_repayment_amount: number;
 
-  @Column(DataType.FLOAT)
-  declare interest_rate: number;
-
-  @Column(DataType.INTEGER)
-  declare duration: number;
+  @Column(DataType.DECIMAL(15, 2))
+  declare total_repayment_amount: number;
 
   @BelongsTo(() => User)
   declare user: User;
@@ -64,11 +64,9 @@ export class LoanAccount extends Model<ILoanAccount> {
   @ForeignKey(() => Cluster)
   declare cluster_id: string;
 
-  @Column(DataType.STRING)
-  declare status: LoanStatus;
 
-  @Column(DataType.STRING)
-  declare approvedAt: string;
+  @Column({type: DataType.DATE, allowNull: true })
+  declare approved_at: string;
 
   @CreatedAt
   declare createdAt: string;
