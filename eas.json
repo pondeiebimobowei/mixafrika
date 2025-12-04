@@ -17,8 +17,9 @@
         "COREPACK_ENABLED": "true",
         "YARN_ENABLE_IMMUTABLE_INSTALLS": "false"
       },
-      "hooks": {
-        "pre-build": "corepack enable || true"
+      "node": "18.18.0",
+      "commands": {
+        "preinstall": "corepack enable && corepack prepare yarn@4.12.0 --activate"
       }
     },
     "production": {
