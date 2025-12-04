@@ -40,7 +40,7 @@
     "migrate:skeleton": "sequelize-cli migration:generate --name migration-skeleton"
   },
   "dependencies": {
-    "@mixafrica/shared": "workspace:*",
+    "@mixafrica/shared": "link:../../packages/shared",
     "@nestjs/cli": "^11.0.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
