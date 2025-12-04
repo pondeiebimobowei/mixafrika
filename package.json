@@ -22,10 +22,10 @@
     "packages/*"
   ],
   "devDependencies": {
-    "typescript": "^5.9.3",
-    "zod": "latest"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
+    "zod": "latest",
     "concurrently": "^9.2.1"
   }
 }
