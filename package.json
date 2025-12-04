@@ -12,7 +12,8 @@
     "build:backend": "npm run build --workspace @mixafrica/backend",
     "build:frontend": "npm run build --workspace @mixafrica/frontend",
     "build": "npm run build:backend && npm run build:frontend",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "eas-build-pre-install": "corepack enable"
   },
   "keywords": [],
   "author": "",

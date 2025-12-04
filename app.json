@@ -1,0 +1,12 @@
+{
+  "expo": {
+    "extra": {
+      "eas": {
+        "projectId": "d1c16637-c2cb-4a94-80cd-a4cd3b41fc06"
+      }
+    },
+    "android": {
+      "package": "com.ebimo21.mixafrica"
+    }
+  }
+}
