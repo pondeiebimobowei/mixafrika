@@ -1,4 +1,5 @@
 import { BaseModel } from "./base-model-type";
+import { ICluster } from "./cluster";
 
 export interface ICollection extends BaseModel {
   name: string;
@@ -11,4 +12,8 @@ export interface ICollection extends BaseModel {
   city: string;
   state: string;
   country: string;
+}
+
+export interface ICollectionWithCluster extends ICollection {
+  cluster: ICluster[]
 }

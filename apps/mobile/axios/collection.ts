@@ -1,10 +1,10 @@
 import { apiPrivate } from './axios-config';
 import { Response } from '@mixafrica/shared/types/api/responses';
-import { ICluster, IClusterWithCollection } from '@mixafrica/shared/types/cluster';
+import { ICollectionWithCluster } from '@mixafrica/shared/types/collection';
 
-export const getClusters = async (id: string): Promise<Response<IClusterWithCollection[]>> => {
+export const getCollection = async (): Promise<Response<ICollectionWithCluster[]>> => {
   try {
-    const res = await apiPrivate.get(`/cluster`);
+    const res = await apiPrivate.get(`/collection`);
     return res.data;
   } catch (err: any) {
     if (err.response) {
@@ -16,9 +16,9 @@ export const getClusters = async (id: string): Promise<Response<IClusterWithColl
 };
 
 
-export const getClusterById = async (id: string): Promise<Response<IClusterWithCollection | null>> => {
+export const getCollectionById = async (id: string): Promise<Response<ICollectionWithCluster | null>> => {
     try {
-        const res = await apiPrivate.get(`/cluster/${id}`);
+        const res = await apiPrivate.get(`/collection/${id}`);
         return res.data;
     } catch (err: any) {
         if (err.response) {

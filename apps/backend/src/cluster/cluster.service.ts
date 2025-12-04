@@ -5,19 +5,20 @@ import { Collection } from 'src/database/models/collection.model';
 @Injectable()
 export class ClusterService {
   async handleGetClusters() {
-    const clusters = await Cluster.findAll({ include: [Collection]})
+    const clusters = await Collection.findAll({ include: [Cluster]})
     return {
       success: true,
-      message: '',
+      message: 'Clusters found',
       data: clusters,
     };
   }
 
   async handleGetClusterById(cluster_id: string) {
+    const cluster = await Cluster.findByPk(cluster_id)
     return {
       success: true,
-      message: '',
-      data: [],
+      message: 'Cluster found',
+      data: cluster,
     };
   }
 }

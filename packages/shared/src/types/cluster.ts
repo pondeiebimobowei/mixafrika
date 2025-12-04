@@ -3,8 +3,7 @@ import { BaseModel } from "./base-model-type";
 import { ICollection } from "./collection";
 
 export interface ICluster extends BaseModel {
-  collection_id:string;
-  
+  collection_id: string;
   name: string;
   cover_image: string;
   roi: number;
@@ -12,13 +11,13 @@ export interface ICluster extends BaseModel {
   status: string;
   duration: Duration;
   description: string;
-  about:string;
+  about: string;
   target_fundraising_amount: number;
   total_funds_raised: number
   start_date: string;
   end_date: string;
 }
 
-export interface IClusterWithCollection extends ICollection {
+export interface IClusterWithCollection extends ICluster {
   collection: ICollection
 }

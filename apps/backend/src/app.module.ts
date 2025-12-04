@@ -46,6 +46,7 @@ import { FundingApplication } from './database/models/funding_application';
 import { LoanAccountModule } from './loan_account/loan_account.module';
 import { LoanRepaymentHistoryModule } from './loan_repayment_history/loan_repayment_history.module';
 import { Collection } from './database/models/collection.model';
+import { CollectionModule } from './collection/collection.module';
 
 @Module({
   imports: [
@@ -76,6 +77,7 @@ import { Collection } from './database/models/collection.model';
     CloudinaryModule,
     LoanAccountModule,
     LoanRepaymentHistoryModule,
+    CollectionModule,
   ],
   controllers: [AppController],
   providers: [

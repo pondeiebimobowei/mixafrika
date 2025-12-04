@@ -4,11 +4,7 @@ import { ClusterService } from './cluster.service';
 @Controller('v1/cluster')
 export class ClusterController {
   constructor(private readonly clusterService: ClusterService) {}
-
-  @Get()
-  getClusters() {
-    return this.clusterService.handleGetClusters();
-  }
+  
 
   @Get(':cluster_id')
   getClusterById(@Param('cluster_id') cluster_id: string) {

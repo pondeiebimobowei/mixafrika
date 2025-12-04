@@ -2,10 +2,12 @@ import { useEffect } from 'react';
 import { useClusterStore } from '..';
 
 export function useClusterState() {
-  const { cluster, loading, error } = useClusterStore();
+  const { clusters, loading, error, cluster_by_id, get_cluster_by_id } = useClusterStore();
 
   const data = {
-    cluster
+    clusters,
+    cluster_by_id,
+    get_cluster_by_id
   };
 
   return {
@@ -15,19 +17,4 @@ export function useClusterState() {
   };
 }
 
-export function useFetchCluster() {
-  const { get_cluster } = useClusterStore();
 
-  useEffect(() => {
-    const fetchCluster = async () => {
-      const fetches = [get_cluster()];
-
-      try {
-        await Promise.allSettled(fetches);
-      } catch (err) {
-        console.log('One or more loan account fetches failed');
-      }
-    };
-    fetchCluster();
-  }, [get_cluster]);
-}

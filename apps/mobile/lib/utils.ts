@@ -10,7 +10,7 @@ export const formatDate = (
   dateString: string | Date = '',
   format = "DD MMM, YYYY",
 ) => {
-  if (!dateString) return;
+  if (!dateString) return '';
   return dayjs(dateString).format(format);
 };
 

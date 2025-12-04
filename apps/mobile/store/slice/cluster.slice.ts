@@ -1,12 +1,14 @@
-import { getCluster } from '@/axios/cluster';
+import { getClusters, getClusterById } from '@/axios/cluster';
 import { ICluster, IClusterWithCollection } from '@mixafrica/shared/types/cluster';
 import type { StateCreator } from 'zustand';
 
 export interface Cluster {
   loading: boolean;
   error: string | null;
-  cluster: IClusterWithCollection[];
-  get_cluster: ()=> void;
+  clusters: IClusterWithCollection[];
+  cluster_by_id: ICluster | null;
+  get_clusters: (id:string)=> void;
+  get_cluster_by_id: (id: string)=> void;
 
 }
 
@@ -18,14 +20,26 @@ export const createCluster: StateCreator<
 > = (set) => ({
   loading: false,
   error: null,
-  cluster: [],
-
-  get_cluster: async () => {
+  clusters: [],
+  cluster_by_id: null,
+  get_clusters: async (id:string) => {
       set({ loading: true, error: null });
-      const response = await getCluster();
+      const response = await getClusters(id);
       if (response.success) {
         set({
-          cluster: response.data,
+          clusters: response.data,
+          loading: false,
+        });
+      } else {
+        set({ error: response.message, loading: false });
+      }
+    },
+    get_cluster_by_id: async (id: string) => {
+      set({ loading: true, error: null });
+      const response = await getClusterById(id);
+      if (response.success) {
+        set({
+          cluster_by_id: response.data,
           loading: false,
         });
       } else {

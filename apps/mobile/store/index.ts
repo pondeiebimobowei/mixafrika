@@ -21,6 +21,7 @@ import { createUserBusiness, UserBusiness } from './slice/business.slice';
 import { createUserSettings, UserSettingsSlice } from './slice/settings.slice';
 import { createRepaymentHistory, RepaymentHistory } from './slice/repayment-history.slice';
 import { createSavingsSlice, SavingsSlice } from './slice/savings.slice';
+import { Collection, createCollection } from './slice/collection.slice';
 
 export interface BaseSlice {
   loading: boolean;
@@ -53,6 +54,10 @@ export const useLoanAccountStore = create<LoanAccount>()((...a) => ({
 
 export const useClusterStore = create<Cluster>()((...a) => ({
   ...createCluster(...a),
+}));
+
+export const useCollectionStore = create<Collection>()((...a) => ({
+  ...createCollection(...a),
 }));
 
 export const useWallet = create<UserWallet>()((...a) => ({

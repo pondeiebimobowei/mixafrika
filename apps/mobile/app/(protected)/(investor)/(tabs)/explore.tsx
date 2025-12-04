@@ -8,49 +8,26 @@ import {
     Image,
     Pressable,
 } from 'react-native';
+import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Bell, Search, SlidersHorizontal, Sun, Moon, Globe } from 'lucide-react-native';
 import { useAuthStore } from '@/store';
 import { useColorScheme } from 'nativewind';
 import ContinentalBanner from '@/components/banners/continental-banner';
-import MarketCard, { MarketCardProps } from '@/components/cards/market-card';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useClusterState, useFetchCluster } from '@/store/hooks/cluster.hook';
+import { useCollectionState, useFetchCollection } from '@/store/hooks/collection.hook';
+import ClusterCardItem from '@/components/cards/cluster-card-item';
 
-const MARKETS: MarketCardProps[] = [
-    {
-        name: 'Silicon Savannah Startups',
-        location: 'Nairobi, Kenya',
-        description:
-            'Funding early-stage fintech and agrotech startups in the kilimani tech ecosystem.',
-        returnRate: 16.2,
-        minInvestment: 4000,
-        investorsCount: 210,
-        cyclesCount: 3,
-        iconType: 'rocket',
-    },
-    {
-        name: 'Mombasa Logistics',
-        location: 'Mombasa, Kenya',
-        description:
-            'Port operations and cargo transport fleet expansion for East African trade routes.',
-        returnRate: 13.8,
-        minInvestment: 3500,
-        investorsCount: 156,
-        cyclesCount: 3,
-        iconType: 'truck',
-    },
-];
 
 
 export default function Explore() {
+    const router = useRouter();
     const { user } = useAuthStore();
     const { colorScheme, toggleColorScheme } = useColorScheme();
     const [searchQuery, setSearchQuery] = useState('');
-    const { data: { cluster } } = useClusterState()
+    const { data: { collections } } = useCollectionState()
 
-
-    useFetchCluster()
+    useFetchCollection()
 
     const COUNTRIES = [
         { label: 'Nigeria', value: 'Nigeria' },
@@ -121,40 +98,41 @@ export default function Explore() {
                             </SelectTrigger>
                             <SelectContent className='w-11/12  border-none outline-none stroke-none'>
                                 <SelectGroup>
-                                {
-                                    COUNTRIES.map((duration) => (
-                                    <SelectItem key={duration.value} label={duration.label} value={duration.value}>
-                                        {duration.label}
-                                    </SelectItem>
-                                    ))
-                                }
+                                    {
+                                        COUNTRIES.map((duration) => (
+                                            <SelectItem key={duration.value} label={duration.label} value={duration.value}>
+                                                {duration.label}
+                                            </SelectItem>
+                                        ))
+                                    }
                                 </SelectGroup>
                             </SelectContent>
-                            </Select>
+                        </Select>
                     </View>
 
                     <Pressable className="bg-white dark:bg-[#1f2937] p-3 rounded-xl">
-                        <SlidersHorizontal size={20} color={ colorScheme == 'light' ? 'black': 'white'} />
+                        <SlidersHorizontal size={20} color={colorScheme == 'light' ? 'black' : 'white'} />
                     </Pressable>
 
-                    
+
 
                 </View>
 
                 {/* Results Count */}
                 <View className="flex-row items-center justify-between mb-4">
                     <Text className="text-gray-400 font-medium">
-                        {cluster?.length} Markets Found
+                        {collections?.length} Markets Found
                     </Text>
                     <TouchableOpacity>
                         <Text className="text-[#10b981] font-semibold">Clear all</Text>
                     </TouchableOpacity>
                 </View>
+                
 
                 {/* Market List */}
                 <View className="pb-8">
-                    {cluster?.map((market, index) => (
-                        <MarketCard key={index} {...{... market}} />
+                    {collections?.map((market, index) => (
+                        <ClusterCardItem key={index} {...market} onPress={() => router.push(`/market/${market.id}`)} />
                     ))}
                 </View>
             </ScrollView>
