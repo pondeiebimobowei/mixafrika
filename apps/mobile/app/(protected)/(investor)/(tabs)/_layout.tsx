@@ -26,7 +26,17 @@ export default function InvestorLayout() {
           options={{
             title: 'Explore',
             tabBarIcon: ({ color }) => (
-              <Ionicons name="cash-outline" size={24} color={color} />
+              <Ionicons name="globe-outline" size={24} color={color} />
+            ),
+          }}
+        />
+
+        <Tabs.Screen
+          name="savings"
+          options={{
+            title: 'Savings',
+            tabBarIcon: ({ color }) => (
+              <Ionicons name="basket-outline" size={24} color={color} />
             ),
           }}
         />

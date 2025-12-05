@@ -37,7 +37,7 @@ const GoalItem = ({ title, current_amount, target_amount, icon, color }: GoalIte
 export default function FinancialGoalsCard() {
     const { goals} = useGoalsStore()
     return (
-        <View className="bg-white dark:bg-[rgb(23,26,33)] p-5 rounded-2xl dark:border border-slate-800">
+        <View className="bg-white dark:bg-[rgb(23,26,33)] my-6 p-5 rounded-2xl dark:border border-slate-800">
             <View className="flex-row justify-between items-center mb-4">
                 <View className="flex-row items-center gap-2">
                     <TargetIcon size={24} color="#3b82f6" />

@@ -64,7 +64,7 @@ export default function SettingsSheet() {
   );
 
   return (
-    <SafeAreaView edges={[]} className="bg-gray-200 dark:bg-[#1A1A1A] p-4 pt-6 flex-1">
+    <SafeAreaView edges={[]} className="bg-gray-200  p-4 pt-6 flex-1">
       <ScrollView>
         <Section title="Appearance">
           <Item

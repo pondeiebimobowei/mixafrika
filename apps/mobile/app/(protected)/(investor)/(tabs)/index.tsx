@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Text, ScrollView, Image, Pressable, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, Image, Pressable, TouchableOpacity, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Bell, Sun, Moon, BarChart3 } from 'lucide-react-native';
+import { Bell, Sun, Moon, BarChart3, IdCard, CreditCard, Wallet, Rocket, PiggyBank, ChevronRight } from 'lucide-react-native';
 import { useAuthStore, useWallet } from '@/store';
 import { useColorScheme } from 'nativewind';
 import InvestorBalanceCard from '@/components/cards/investor-balance-card';
@@ -9,50 +9,19 @@ import InvestorStatsCard from '@/components/cards/investor-stats-card';
 import InvestorEarningsChart from '@/components/cards/investor-earnings-chart';
 import FinancialGoalsCard from '@/components/cards/financial-goals-card';
 import PortfolioItem, { PortfolioItemProps } from '@/components/list-items/portfolio-item';
-import { useFetchWallet } from '@/store/hooks/wallet.hook';
+import { useRouter } from 'expo-router';
 
-const Investments: PortfolioItemProps[] = [
-    {
-        name: "Kano Rice Mills",
-        category: "Agriculture",
-        duration: "90 Days",
-        investedAmount: 15000,
-        currentReturn: 1250,
-        status: "Pending",
-        repaymentProgress: 65,
-        iconType: "agriculture",
-    },
-    {
-        name: "Aba Textile Co.",
-        category: "Manufacturing",
-        duration: "30 Days",
-        investedAmount: 8500,
-        currentReturn: 980,
-        status: "Active",
-        repaymentProgress: 82,
-        iconType: "manufacturing",
-    },
-    {
-        name: "Lekki Tech Hub",
-        category: "Technology",
-        duration: "60 Days",
-        investedAmount: 22000,
-        currentReturn: 2130,
-        status: "Active",
-        repaymentProgress: 45,
-        iconType: "technology",
-    },
-]
-// useFetchWallet()
+const Investments: PortfolioItemProps[] = []
 
 export default function InvestorDashboard() {
     const { user } = useAuthStore();
     const { available_balance, total_growth_earned, active_investment_principal } = useWallet();
     const { colorScheme, toggleColorScheme } = useColorScheme();
 
+    const router = useRouter()
+
     return (
         <SafeAreaView edges={['top']} className="flex-1 bg-gray-100 dark:bg-black px-4 pt-0 pb-6">
-            {/* Header Section */}
             <View className="flex flex-row items-center justify-between py-4 mb-2">
                 <View className="flex flex-row gap-3 items-center">
                     {user?.image ? (
@@ -87,43 +56,62 @@ export default function InvestorDashboard() {
                 </View>
             </View>
 
-            {/* <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ gap: 20 }}> */}
-            <FlatList
-                data={[1]} // dummy 1-item list to render the entire screen
+            { <FlatList
+                data={[1]} 
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{ gap: 20, paddingBottom: 40 }}
                 renderItem={() => (
                     <>
-                        {/* Balance Section */}
-                        <InvestorBalanceCard
-                            balance={available_balance || 2450.00}
-                            onDeposit={() => console.log('Deposit')}
-                            onWithdraw={() => console.log('Withdraw')}
-                        />
-
-                        {/* Stats Section */}
-                        <View className="flex-row gap-4">
-                            <InvestorStatsCard
-                                label="Total Investment"
-                                amount={active_investment_principal}
+                        <>
+                            <InvestorBalanceCard
+                                balance={available_balance || 2450.00}
+                                onDeposit={() => console.log('Deposit')}
+                                onWithdraw={() => console.log('Withdraw')}
                             />
-                            <InvestorStatsCard
-                                label="Total Earnings"
-                                amount={total_growth_earned}
-                                icon={<BarChart3 size={16} color="#22c55e" />}
-                            />
-                        </View>
 
-                        {/* Earnings Chart */}
-                        <InvestorEarningsChart
-                            amount={210.55}
-                            percentageChange={1.5}
-                        />
+                        </>
+                        {user?.is_verified ? (
+                            <>
+                                <View className="flex-row gap-4 my-6">
+                                    <InvestorStatsCard
+                                        label="Total Investment"
+                                        amount={active_investment_principal}
+                                    />
+                                    <InvestorStatsCard
+                                        label="Total Earnings"
+                                        amount={total_growth_earned}
+                                        icon={<BarChart3 size={16} color="#22c55e" />}
+                                    />
+                                </View>
 
-                        {/* Financial Goals */}
-                        <FinancialGoalsCard />
+                                <InvestorEarningsChart
+                                    amount={210.55}
+                                    percentageChange={1.5}
+                                />
 
-                        {/* Portfolio Section */}
+                                <FinancialGoalsCard />
+
+                            </>
+                        ): (
+                            <View className="gap-3 my-6">
+                        {SETUP_STEPS.map((step, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                className="flex-row items-center justify-between bg-[#1f2937] p-4 rounded-xl border border-gray-700"
+                                onPress={() => router.push(step.route as any)}
+                            >
+                                <View className="flex-row items-center gap-3">
+                                    <View className="w-8 h-8 rounded-lg bg-[#374151] items-center justify-center">
+                                        <step.icon size={16} color="#9ca3af" />
+                                    </View>
+                                    <Text className="text-white font-semibold">{step.title}</Text>
+                                </View>
+                                <ChevronRight size={16} color="#6b7280" />
+                            </TouchableOpacity>
+                        ))}
+                    </View>
+                        )}
+
                         <View>
                             <View className="flex-row justify-between items-center mb-4">
                                 <Text className="text-lg font-bold text-black dark:text-white">
@@ -134,27 +122,76 @@ export default function InvestorDashboard() {
                                 </TouchableOpacity>
                             </View>
 
-                            <FlatList
-                                data={Investments}
-                                renderItem={({item}) => (
-                                    <PortfolioItem
-                                        name={item.name}
-                                        category={item.category}
-                                        duration={item.duration}
-                                        investedAmount={item.investedAmount}
-                                        currentReturn={item.currentReturn}
-                                        status={item.status}
-                                        repaymentProgress={item.repaymentProgress}
-                                        iconType={item.iconType}
+                            {
+                                Investments.length > 0 ? (
+                                    <FlatList
+                                        data={Investments}
+                                        renderItem={({item}) => (
+                                            <PortfolioItem
+                                                name={item.name}
+                                                category={item.category}
+                                                duration={item.duration}
+                                                investedAmount={item.investedAmount}
+                                                currentReturn={item.currentReturn}
+                                                status={item.status}
+                                                repaymentProgress={item.repaymentProgress}
+                                                iconType={item.iconType}
+                                            />
+                                        )}
+                                        keyExtractor={(item, index) => index.toString()}
                                     />
-                                )}
-                                keyExtractor={(item, index) => index.toString()}
-                            />
+                                ): (
+
+                    <View>
+                    <View className="bg-[#0f172a] rounded-3xl p-8 items-center justify-center border border-dashed border-gray-800 h-[300px]">
+                            <View className="w-16 h-16 bg-[#1f2937] rounded-full items-center justify-center mb-4">
+                                <PiggyBank size={32} color="#6b7280" />
+                            </View>
+                            <Text className="text-white font-bold text-lg mb-2">No active investments</Text>
+                            <Text className="text-gray-400 text-center mb-6 px-8 text-xs leading-5">
+                                Start your journey by exploring available market clusters.
+                            </Text>
+                            <TouchableOpacity
+                                className="bg-[#10b981] px-6 py-3 rounded-xl"
+                                onPress={() => router.push('/(protected)/(investor)/(tabs)/explore')}
+                            >
+                                <Text className="text-white font-bold">Explore Markets</Text>
+                            </TouchableOpacity>
+                        </View>
+                        </View>
+
+                                )
+                            }
                         </View>
                     </>
                 )}
-            />
-            {/* </ScrollView> */}
+            />}
+
         </SafeAreaView>
     );
 }
+
+
+
+    const SETUP_STEPS = [
+        {
+            icon: IdCard,
+            title: "Verify Identity",
+            route: "/(protected)/(investor)/verification"
+        },
+        {
+            icon: CreditCard,
+            title: "Add Payment Method",
+            route: "/(protected)/(investor)/payment-methods"
+        },
+        {
+            icon: Wallet,
+            title: "Make First Deposit",
+            route: "/(protected)/(investor)/deposit"
+        },
+        {
+            icon: Rocket,
+            title: "Invest in a Cluster",
+            route: "/(protected)/(investor)/(tabs)/explore"
+        }
+    ];
