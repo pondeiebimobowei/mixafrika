@@ -93,7 +93,7 @@ export default function ProfileStackLayout() {
         <Stack.Screen
             name="esusu/target"
             options={{
-                headerShown: true,
+                headerShown: false,
                 title: 'Esusu - Target Savings',
                 headerStyle: {
                 backgroundColor: 'black',

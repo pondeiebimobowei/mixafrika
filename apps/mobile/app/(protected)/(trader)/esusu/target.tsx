@@ -6,7 +6,10 @@ import useCreateSavingsPlan from '@/hooks/use-create-savings-plan.hook';
 import ErrorMessageDisplay from '@/components/form/error-message-display';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TriggerRef } from '@rn-primitives/select';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ArrowLeft } from 'lucide-react-native';
+import { useColorScheme } from 'nativewind';
+import { useRouter } from 'expo-router';
 
 export default function TargetSavings() {
 
@@ -38,162 +41,175 @@ export default function TargetSavings() {
         { label: 'Monthly', value: 'monthly' }
     ]
 
+    const { colorScheme } = useColorScheme()
+    const router = useRouter();
+
     return (
-        <ScrollView className="flex-1 p-4 pb-10 bg-gray-200 md:bg-black">
-            <View className="flex-1">
-
-                <View className='mb-4'>
-                    <Text className="text-black dark:text-white font-semibold mb-2">Plan Name</Text>
-                    <Controller
-                        control={control}
-                        name="name"
-                        render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                            <>
-                                <TextInput
-                                    placeholder="e.g. New Car"
-                                    className="border border-slate-600 text-white p-4 rounded-xl font-medium"
-                                    value={value}
-                                    onChangeText={onChange}
-                                    placeholderTextColor="#6B7280"
-                                    onBlur={onBlur}
-                                />
-
-                                {error && <ErrorMessageDisplay message={error.message} />}
-                            </>
-                        )}
-                    />
+        <SafeAreaView edges={['top']} className='flex-1 bg-gray-200 dark:bg-black'>
+            <ScrollView className="flex-1 p-4 pb-10">
+                <View className="flex-row items-center justify-between px-0 py-3 mb-3">
+                    <View className="flex-row items-center gap-10">
+                        <TouchableOpacity onPress={() => router.back()}>
+                            <ArrowLeft size={24} color={colorScheme === 'dark' ? 'white' : 'black'} />
+                        </TouchableOpacity>
+                        <Text className="text-black dark:text-white text-lg font-bold">Target Savings - Esusu</Text>
+                    </View>
                 </View>
+                <View className="flex-1">
 
-                <View className='mb-4'>
-                    <Text className="text-white font-semibold mb-2">Target Amount</Text>
-                    <Controller
-                        control={control}
-                        name="target_amount"
-                        render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                            <>
-                                <TextInput
-                                    placeholder="e.g. 500,000"
-                                    className="border border-slate-600 text-white p-4 rounded-xl font-medium"
-                                    value={value}
-                                    onChangeText={onChange}
-                                    placeholderTextColor="#6B7280"
-                                    keyboardType='numeric'
-                                    onBlur={onBlur}
-                                />
-
-                                {error && <ErrorMessageDisplay message={error.message} />}
-                            </>
-                        )}
-                    />
-                </View>
-                
-                <View className='flex flex-wrap flex-row justify-between '>
-
-                    <View className='mb-4 w-full'>
-                        <Text className="text-white font-semibold mb-2">Frequency</Text>
+                    <View className='mb-4'>
+                        <Text className="text-black dark:text-white font-semibold mb-2">Plan Name</Text>
                         <Controller
                             control={control}
-                            name="frequency"
-                            render={({ field, fieldState: { error },
-                            }) => (
-                                <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>
-                                    <SelectTrigger onTouchStart={onTouchStart} className='w-full'>
-                                        <SelectValue placeholder='Select a frequency' />
-                                    </SelectTrigger>
-                                    <SelectContent className='w-11/12'>
-                                        <SelectGroup>
-                                        {
-                                            SAVING_FREQUENCY_OPTIONS.map((duration) => (
-                                            <SelectItem key={duration.value} label={duration.label} value={duration.value}>
-                                                {duration.label}
-                                            </SelectItem>
-                                            ))
-                                        }
-                                        </SelectGroup>
-                                    </SelectContent>
-                                    {error && <ErrorMessageDisplay message={error.message} />}
+                            name="name"
+                            render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+                                <>
+                                    <TextInput
+                                        placeholder="e.g. New Car"
+                                        className="border border-slate-600 text-black dark:text-white p-4 rounded-xl font-medium"
+                                        value={value}
+                                        onChangeText={onChange}
+                                        placeholderTextColor="#6B7280"
+                                        onBlur={onBlur}
+                                    />
 
-                                    </Select>
+                                    {error && <ErrorMessageDisplay message={error.message} />}
+                                </>
                             )}
                         />
                     </View>
 
-                    <View className=' w-full hidden'>
-                        <Text className="text-white font-semibold mb-2">Frequency</Text>
+                    <View className='mb-4'>
+                        <Text className="text-white font-semibold mb-2">Target Amount</Text>
                         <Controller
                             control={control}
-                            name="type"
-                            defaultValue='target'
-                            render={ _ => <></> }
+                            name="target_amount"
+                            render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
+                                <>
+                                    <TextInput
+                                        placeholder="e.g. 500,000"
+                                        className="border border-slate-600 text-white p-4 rounded-xl font-medium"
+                                        value={value}
+                                        onChangeText={onChange}
+                                        placeholderTextColor="#6B7280"
+                                        keyboardType='numeric'
+                                        onBlur={onBlur}
+                                    />
+
+                                    {error && <ErrorMessageDisplay message={error.message} />}
+                                </>
+                            )}
                         />
                     </View>
-                </View>
+                    
+                    <View className='flex flex-wrap flex-row justify-between '>
 
-                <View className="mb-6">
-                    <Text className="text-white font-semibold mb-2">Funding Source</Text>
-
-                    <Controller
-                        control={control}
-                        name="source_id"
-                        render={({ field: { value, onChange }, fieldState: { error } }) => (
-                            <Select className='w-full' onValueChange={(raw) => { 
-                                console.log('raw', raw?.value)
-                                // @ts-expect-error
-                                const option = JSON.parse(raw?.value)
-                                console.log('parsed', option)
-                                setValue('source_type', option.type); onChange(option.id)}}>
-                                    <SelectTrigger onTouchStart={onTouchStart} className='w-full'>
-                                        <SelectValue placeholder='Select a frequency' />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
+                        <View className='mb-4 w-full'>
+                            <Text className="text-white font-semibold mb-2">Frequency</Text>
+                            <Controller
+                                control={control}
+                                name="frequency"
+                                render={({ field, fieldState: { error },
+                                }) => (
+                                    <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>
+                                        <SelectTrigger onTouchStart={onTouchStart} className='w-full'>
+                                            <SelectValue placeholder='Select a frequency' />
+                                        </SelectTrigger>
+                                        <SelectContent className='w-11/12'>
+                                            <SelectGroup>
                                             {
-                                                [
-                                                    {
-                                                        id: '1e4f7e8b-5b8d-4c96-9312-dc0f8b7c94e4',
-                                                        type: 'card',
-                                                        masked_number: '5123...4193',
-                                                        account_number: null,
-                                                    },
-                                                ].map((option) => (
-                                                <SelectItem key={option.id} label={`Card (${option.masked_number})`} value={JSON.stringify({ id: option.id, type: option.type })} />
+                                                SAVING_FREQUENCY_OPTIONS.map((duration) => (
+                                                <SelectItem key={duration.value} label={duration.label} value={duration.value}>
+                                                    {duration.label}
+                                                </SelectItem>
                                                 ))
                                             }
-                                            {
-                                                [
-                                                    {
-                                                        id: '1e4f7e8b-5b8d-4c96-9312-dc0f8b7c94e7',
-                                                        type: 'bank',
-                                                        masked_number: null,
-                                                        account_number: '12345678901',
-                                                    },
-                                                ].map((option) => (
-                                                <SelectItem key={option.id} label={`Bank (${option.account_number})`} value={JSON.stringify({ id: option.id, type: option.type })} />
-                                                ))
-                                            }
-                                        </SelectGroup>
-                                    </SelectContent>
-                                    {error && <ErrorMessageDisplay message={error.message} />}
+                                            </SelectGroup>
+                                        </SelectContent>
+                                        {error && <ErrorMessageDisplay message={error.message} />}
 
-                                    </Select>
+                                        </Select>
+                                )}
+                            />
+                        </View>
+
+                        <View className=' w-full hidden'>
+                            <Text className="text-white font-semibold mb-2">Frequency</Text>
+                            <Controller
+                                control={control}
+                                name="type"
+                                defaultValue='target'
+                                render={ _ => <></> }
+                            />
+                        </View>
+                    </View>
+
+                    <View className="mb-6">
+                        <Text className="text-white font-semibold mb-2">Funding Source</Text>
+
+                        <Controller
+                            control={control}
+                            name="source_id"
+                            render={({ field: { value, onChange }, fieldState: { error } }) => (
+                                <Select className='w-full' onValueChange={(raw) => { 
+                                    console.log('raw', raw?.value)
+                                    // @ts-expect-error
+                                    const option = JSON.parse(raw?.value)
+                                    console.log('parsed', option)
+                                    setValue('source_type', option.type); onChange(option.id)}}>
+                                        <SelectTrigger onTouchStart={onTouchStart} className='w-full'>
+                                            <SelectValue placeholder='Select a frequency' />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectGroup>
+                                                {
+                                                    [
+                                                        {
+                                                            id: '1e4f7e8b-5b8d-4c96-9312-dc0f8b7c94e4',
+                                                            type: 'card',
+                                                            masked_number: '5123...4193',
+                                                            account_number: null,
+                                                        },
+                                                    ].map((option) => (
+                                                    <SelectItem key={option.id} label={`Card (${option.masked_number})`} value={JSON.stringify({ id: option.id, type: option.type })} />
+                                                    ))
+                                                }
+                                                {
+                                                    [
+                                                        {
+                                                            id: '1e4f7e8b-5b8d-4c96-9312-dc0f8b7c94e7',
+                                                            type: 'bank',
+                                                            masked_number: null,
+                                                            account_number: '12345678901',
+                                                        },
+                                                    ].map((option) => (
+                                                    <SelectItem key={option.id} label={`Bank (${option.account_number})`} value={JSON.stringify({ id: option.id, type: option.type })} />
+                                                    ))
+                                                }
+                                            </SelectGroup>
+                                        </SelectContent>
+                                        {error && <ErrorMessageDisplay message={error.message} />}
+
+                                        </Select>
+                            )}
+                        />
+
+                    </View>
+
+
+                    <TouchableOpacity
+                        onPress={handleSubmit(handleCreateSavgingsPlan)}
+                        disabled={is_loading}
+                        className="bg-[#27AE60] p-4 rounded-xl items-center mt-4"
+                    >
+                        {is_loading ? (
+                            <ActivityIndicator color="white" />
+                        ) : (
+                            <Text className="text-white font-bold text-lg">Create Plan</Text>
                         )}
-                    />
-
+                    </TouchableOpacity>
                 </View>
-
-
-                <TouchableOpacity
-                    onPress={handleSubmit(handleCreateSavgingsPlan)}
-                    disabled={is_loading}
-                    className="bg-[#27AE60] p-4 rounded-xl items-center mt-4"
-                >
-                    {is_loading ? (
-                        <ActivityIndicator color="white" />
-                    ) : (
-                        <Text className="text-white font-bold text-lg">Create Plan</Text>
-                    )}
-                </TouchableOpacity>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </SafeAreaView>
     );
 }
