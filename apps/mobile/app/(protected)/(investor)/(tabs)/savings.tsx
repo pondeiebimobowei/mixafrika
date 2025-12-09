@@ -122,7 +122,7 @@ export default function Savings() {
     );
 }
 
-const savingRates = [
+export const savingRates = [
         {
             title: "Flex Save",
             description: "Withdraw anytime. Interest paid daily.",
