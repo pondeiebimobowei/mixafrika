@@ -7,139 +7,134 @@ import {
   Image,
   Pressable,
 } from 'react-native';
-import { User, Bell, FileText, Repeat, PiggyBank } from 'lucide-react-native';
+import { User, Bell, FileText, Repeat, PiggyBank, History, Sun, Coins } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   useAuthStore,
-  useLoanAccountStore,
   useUserBusiness,
-  useWallet,
 } from '@/store';
-import WelcomeCard from '@/components/cards/welcome-card';
-import LoanOverviewCard from '@/components/cards/loan-overview-card';
-import MakePaymentModal from '@/components/modal/make-payment-modal';
 import { useFetchWallet } from '@/store/hooks/wallet.hook';
 import { useRouter } from 'expo-router';
-import NewsAndUpdates from '@/components/cards/news-and-update.card';
-import CreditScoreOverView from '@/components/cards/credit-score-overview.card';
 import { useFetchLoanAccount } from '@/store/hooks/loan-account';
-import { formatCurrency } from '@/lib/utils';
-import Sheet from '@/components/ui/sheet';
-import { RepaymentSheet } from '@/components/sheets/repayment.sheet';
 import { SheetsState } from './profile';
-import { LoanStatus } from '@mixafrica/shared/enums';
+
+// New Components
+import TraderProfileCard from '@/components/cards/trader-profile-card';
+import ActiveLoanDashboardCard from '@/components/cards/active-loan-dashboard-card';
+import EsusuGroupDashboardCard from '@/components/cards/esusu-group-dashboard-card';
+import CreditInsightsCard from '@/components/cards/credit-insights-card';
+import PrimaryGoalCard from '@/components/cards/primary-goal-card';
+import RecentActivityCard from '@/components/cards/recent-activity-card';
 
 export default function TraderDashboard() {
   const { business } = useUserBusiness();
   const { user } = useAuthStore();
-  const { available_balance } = useWallet();
   const router = useRouter();
 
-  const [sheetIsOpen, setSheetIsOpen] = useState<SheetsState>({ isFundingOpen: false, isRepayOpen: false, isWithdrawOpen: false })
-
   useFetchWallet();
-  const { loan_account } = useLoanAccountStore();
-  useFetchLoanAccount()
-  const hasActiveLoan = Boolean(loan_account?.status === LoanStatus.APPROVED)
+  useFetchLoanAccount();
 
   const quickActions = [
-    { label: 'Apply', icon: FileText, route: '/loan/apply' },
-    { label: 'Repay', icon: Repeat, route: '/repayment-history' },
-    { label: 'Esusu', icon: PiggyBank, route: '/esusu' },
-    { label: 'Profile', icon: User, route: '/profile' },
+    {
+      label: 'Apply',
+      icon: FileText,
+      route: '/loan/apply',
+      color: '#3b82f6', // Blue
+      bg: '#1e293b'
+    },
+    {
+      label: 'Repay',
+      icon: Coins,
+      route: '/repayment-history',
+      color: '#10b981', // Green
+      bg: '#1e293b'
+    },
+    {
+      label: 'Esusu',
+      icon: PiggyBank,
+      route: '/esusu',
+      color: '#a855f7', // Purple
+      bg: '#1e293b'
+    },
+    {
+      label: 'Profile',
+      icon: User,
+      route: '/profile',
+      color: '#f59e0b', // Amber
+      bg: '#1e293b'
+    }
   ];
 
   return (
-    <SafeAreaView edges={['top']} className="flex-1 bg-slate-200 dark:bg-[rgb(23,26,33)] px-4 pt-0 pb-6">
-      <View className="flex flex-row items-center justify-between py-3">
-        <View className="flex flex-row gap-3 items-center">
-          {user?.image ? (
-            <Image
-              className=" w-10 h-10 rounded-full"
-              source={{ uri: 'https://picsum.photos/seed/696/3000/2000' }}
-            />
-          ) : (
-            <View className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
-              <Text className="text-foreground">
-                {business?.name?.charAt(0) || 'T'}
-              </Text>
-            </View>
-          )}
-
-          <View>
-            <Text className="dark:text-white ">Hello,</Text>
-            <Text className="dark:text-white font-bold capitalize">
-              {user?.first_name}
-            </Text>
-          </View>
-        </View>
-
-        <View className="flex flex-row gap-10">
-          <Pressable
-            onPress={() =>
-              router.push('/(protected)/(trader)/notification')
-            }
-          >
-            <Bell color={'orange'} className="h-6 w-6" />
-          </Pressable>
-          <Pressable
-            onPress={() => router.push('/profile')}
-          >
-            <User color={'white'} className="h-6 w-6" />
-          </Pressable>
-        </View>
-      </View>
+    <SafeAreaView edges={['top']} className="flex-1 bg-black px-4 pt-0 pb-6">
       <ScrollView showsVerticalScrollIndicator={false}>
-        {hasActiveLoan ? (
-          <LoanOverviewCard />
-        ) : (
-          <WelcomeCard />
-        )}
 
-        <View className="flex flex-row justify-between">
-          <View className="w-[48%] py-6 px-4 rounded-xl bg-white dark:bg-card">
-            <Text className="dark:text-slate-300 text-sm">Wallet Balance</Text>
-            <Text className="dark:text-white text-xl">
-              {formatCurrency(available_balance)}
-            </Text>
-          </View>
-
-          <TouchableOpacity
-            className='w-[48%] border border-slate-300 dark:border-slate-700 rounded-xl'
-            disabled={!hasActiveLoan}
-            onPress={() => setSheetIsOpen(prev => ({ ...prev, isRepayOpen: !prev.isRepayOpen }))}
-          >
-            <View className="py-6 px-4  rounded-xl">
-              <Text className="dark:text-white  font-semibold">Make Repayment</Text>
-              <Text className="dark:text-slate-400">Next payment due</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-        <View>
-
-          <View className="flex flex-row justify-around items-center my-6">
-            {quickActions.map((action) => (
-              <TouchableOpacity onPress={()=> router.push(action.route as any)} key={action.label}>
-                <View className="flex items-center gap-2 p-4 bg-green-900/10 rounded-full">
-                  <action.icon size={20} color={'hsl(151 51% 33%)'} />
-                </View>
-                <Text className="text-xs text-center dark:text-white mt-1">
-                  {action.label}
+        {/* Header Section */}
+        <View className="flex-row items-center justify-between py-4 mb-2">
+          <View className="flex-row items-center gap-3">
+            {user?.image ? (
+              <Image
+                className="w-10 h-10 rounded-full border-2 border-slate-700"
+                source={{ uri: user.image }}
+              />
+            ) : (
+              <View className="h-10 w-10 rounded-full bg-slate-700 items-center justify-center border-2 border-slate-600">
+                <Text className="text-white font-bold text-lg">
+                  {business?.name?.charAt(0) || user?.first_name?.charAt(0) || 'D'}
                 </Text>
-              </TouchableOpacity>
-            ))}
+              </View>
+            )}
+            <Text className="text-white text-xl font-bold">Dashboard</Text>
+          </View>
+
+          <View className="flex-row items-center gap-4">
+            <Pressable onPress={() => router.push('/(protected)/(trader)/notification')}>
+              <Bell color="white" size={24} />
+              <View className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-black" />
+            </Pressable>
+
+            {/* Theme Toggle */}
+            <Pressable>
+              <Sun color="white" size={24} />
+            </Pressable>
           </View>
         </View>
 
-        <CreditScoreOverView />
-        <NewsAndUpdates />
+        {/* Profile Card */}
+        <TraderProfileCard />
+
+        {/* Quick Actions Row */}
+        <View className="flex-row justify-between mb-6">
+          {quickActions.map((action, idx) => (
+            <TouchableOpacity
+              key={idx}
+              onPress={() => router.push(action.route as any)}
+              className="items-center gap-2"
+            >
+              <View className="w-14 h-14 rounded-2xl items-center justify-center bg-[#1e293b] border border-slate-800">
+                <action.icon size={24} color={action.color} />
+              </View>
+              <Text className="text-slate-400 text-xs font-bold">{action.label}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+
+        {/* Credit Insights */}
+        <CreditInsightsCard />
+
+        {/* Active Loan Card */}
+        <ActiveLoanDashboardCard />
+
+        {/* Primary Goal Card */}
+        <PrimaryGoalCard />
+
+        {/* Recent Activity */}
+        <RecentActivityCard />
+
+        {/* Esusu Groups Card */}
+        <EsusuGroupDashboardCard />
+
       </ScrollView>
-      <Sheet
-        open={sheetIsOpen.isRepayOpen}
-        onOpenChange={() => setSheetIsOpen(prev => ({ ...prev, isRepayOpen: !prev.isRepayOpen }))}
-      >
-        <RepaymentSheet onClose={() => setSheetIsOpen(prev => ({ ...prev, isRepayOpen: false }))} />
-      </Sheet>
     </SafeAreaView>
   );
 }
