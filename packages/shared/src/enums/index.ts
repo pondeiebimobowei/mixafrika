@@ -27,9 +27,9 @@ export const duration = {
 export type Duration = (typeof duration)[keyof typeof duration];
 
 export const sourceType = {
-  BANK: 'bank',
-  WALLET: 'wallet',
-  CARD: 'card'
+    BANK: 'bank',
+    WALLET: 'wallet',
+    CARD: 'card'
 } as const;
 
 export type SourceType = (typeof sourceType)[keyof typeof sourceType];
@@ -39,6 +39,7 @@ export const savingsFrequency = {
     DAILY: 'daily',
     WEEKLY: 'weekly',
     MONTHLY: 'monthly',
+    MARKET_DAY: 'market_day',
 } as const;
 
 export type SavingsFrequency = (typeof savingsFrequency)[keyof typeof savingsFrequency];
@@ -54,6 +55,7 @@ export type RepaymentStatus = (typeof RepaymentStatus)[keyof typeof RepaymentSta
 
 export const savingsType = {
     TARGET: 'target',
+    FIXED: 'fixed',
     LOCKED: 'locked',
     GROUP: 'group',
     MIX: 'mix',
@@ -84,7 +86,7 @@ export type Types = (typeof Types)[keyof typeof Types];
 
 export const NotificationType = {
     ...Types,
-    
+
     GOAL: "goal",
     SYSTEM: "system",
     INVESTMENT: "investment",

@@ -145,10 +145,10 @@ export default function ProfileStackLayout() {
         <Stack.Screen
             name="esusu/fixed"
             options={{
-                headerShown: true,
+                headerShown: false,
                 title: 'Esusu - Fixed Savings',
                 headerStyle: {
-                backgroundColor: 'black',
+                // backgroundColor: 'white',
                 },
                 headerTitleAlign: 'center',
                 headerTintColor: '#ffffff',

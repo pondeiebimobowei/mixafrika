@@ -20,7 +20,7 @@ export class SavingsService {
       name: payload.name,
       type: payload.type,
       target_amount: Number(payload.target_amount),
-      frequency: payload.frequency || '',
+      frequency: payload.frequency,
       total_amount: Number(payload.target_amount) || 0,
       interest_rate: payload.type === 'locked' ? 12 : 15, // Mock interest rate
       source_id: payload.source_id,
