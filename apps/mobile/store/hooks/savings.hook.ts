@@ -2,11 +2,13 @@ import { useEffect } from 'react';
 import { useSavingsStore } from '..';
 
 export function useSavingsState() {
-  const { loading, error, savings, addSaving } = useSavingsStore();
+  const { loading, error, savings, addSaving, selectedSavings, getSavingsById } = useSavingsStore();
 
   const data = {
     savings,
-    addSaving
+    addSaving,
+    selectedSavings,
+    getSavingsById
   };
 
   return {

@@ -14,6 +14,7 @@ import { useFetchSavings, useSavingsState } from '@/store/hooks/savings.hook';
 import SavingsCardItem from '@/components/savings-card-item';
 import { savingRates } from '../../(investor)/(tabs)/savings';
 import ProductCardItem from '@/components/product-card-item';
+import NoActivePlanCard from '@/components/cards/no-active-plan-card';
 
 export default function Esusu() {
   const router = useRouter();
@@ -57,7 +58,7 @@ export default function Esusu() {
                     </View>
 
                     <View className="flex-row gap-3">
-                        <TouchableOpacity className="flex-1 bg-[#10b981] py-3 rounded-xl flex-row items-center justify-center gap-2">
+                        <TouchableOpacity onPress={() => setIsNewPlanOpen(true)} className="flex-1 bg-[#10b981] py-3 rounded-xl flex-row items-center justify-center gap-2">
                             <Plus size={20} color="white" />
                             <Text className="text-white font-bold">Create Plan</Text>
                         </TouchableOpacity>
@@ -103,18 +104,7 @@ export default function Esusu() {
                                 <SavingsCardItem key={index} plan={plan} />
                             ))
                         ) : (
-                            <View className="bg-white dark:bg-[#111827] rounded-3xl p-8 items-center justify-center border-2 border-dashed border-gray-200 dark:border-gray-800">
-                                <View className="w-16 h-16 bg-[#1f2937] rounded-full items-center justify-center mb-4">
-                                    <PiggyBank size={32} color="#6b7280" />
-                                </View>
-                                <Text className="text-black dark:text-white font-bold text-lg mb-2">No Active Plans</Text>
-                                <Text className="text-gray-400 text-center mb-6 px-4">
-                                    Start a fixed deposit or target savings plan today.
-                                </Text>
-                                <TouchableOpacity>
-                                    <Text className="text-[#10b981] font-bold">Create your first plan</Text>
-                                </TouchableOpacity>
-                            </View>
+                            <NoActivePlanCard />
                         )}
                     </View>
                 ) : (

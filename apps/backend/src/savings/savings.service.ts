@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Create_savings_plan } from '@shared/shared/src/validation/create-savings-plan-dto';
+import { SavingsHistory } from 'src/database/models/saving-history.model';
 import { Savings } from 'src/database/models/saving.model';
 
 @Injectable()
@@ -21,11 +22,11 @@ export class SavingsService {
       target_amount: Number(payload.target_amount),
       frequency: payload.frequency || '',
       total_amount: Number(payload.target_amount) || 0,
-      interest_rate: payload.type === 'locked' ? 12 : 0, // Mock interest rate
+      interest_rate: payload.type === 'locked' ? 12 : 15, // Mock interest rate
       source_id: payload.source_id,
       source_type: payload.source_type,
       auto_save: false,
-      is_locked: false,
+      is_locked: payload.is_locked,
       maturity_date: payload.maturity_date ? new Date(Date.now() + Number(payload.maturity_date) * 30 * 24 * 60 * 60 * 1000) : null,
     });
 
@@ -36,8 +37,8 @@ export class SavingsService {
     };
   }
 
-  async handleGetSavingsById(savings_id) {
-    const saving = Savings.findOne({ where: savings_id})
+  async handleGetSavingsById(savings_id: string) {
+    const saving = await Savings.findOne({ where: { id: savings_id }, include: [SavingsHistory]})
     return {
       success: true,
       message: '',
