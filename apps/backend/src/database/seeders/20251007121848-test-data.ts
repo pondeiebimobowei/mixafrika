@@ -41,6 +41,23 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       }));
+
+      const userBusiness = [...responseUser].map((u) => ({
+        id: uuidv4(),
+        user_id: u.id,
+        name: 'Trader Business',
+        type: 'business',
+        phone: '08023467856',
+        street_address: '123 Main St',
+        city: 'Gwarimpa',
+        deletedAt: null,
+        state: 'Abuja',
+        country: 'Nigeria',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }));
+      
+      await queryInterface.bulkInsert('user_business', userBusiness, { transaction: t });
       
       const userSettings = [...responseUser, ...responseInvestor].map((u) => ({
         id: uuidv4(),
