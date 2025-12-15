@@ -27,6 +27,7 @@ import { Setting } from './setting.model';
 import { Transaction } from './transaction.model';
 import { FundingApplication } from './funding_application';
 import { LoanHistory } from './loan-history.model';
+import { BankCard } from './bank-card.model';
 
 @Table({
   tableName: 'user',
@@ -97,6 +98,9 @@ export class User extends Model<IUser> implements IUser {
 
   @HasMany(() => Savings)
   declare savings: Savings[];
+
+  @HasMany(() => BankCard)
+  declare bank_cards: BankCard[];
 
   @HasMany(() => Goal)
   declare goals: Goal[];

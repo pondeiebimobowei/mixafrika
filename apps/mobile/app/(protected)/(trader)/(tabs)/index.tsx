@@ -29,6 +29,8 @@ import RecentActivityCard from '@/components/cards/recent-activity-card';
 import CreditScoreOverView from '@/components/cards/credit-score-overview.card';
 import { LoanStatus } from '@mixafrica/shared/enums';
 import { useFetchBusiness } from '@/store/hooks/business';
+import Sheet from '@/components/ui/sheet';
+import { RepaymentSheet } from '@/components/sheets/repayment.sheet';
 
 export default function TraderDashboard() {
   const { business } = useUserBusiness();
@@ -149,6 +151,12 @@ export default function TraderDashboard() {
         <EsusuGroupDashboardCard />
 
       </ScrollView>
+      <Sheet
+        open={sheetIsOpen.isRepayOpen}
+        onOpenChange={() => setSheetIsOpen(prev => ({ ...prev, isRepayOpen: !prev.isRepayOpen }))}
+      >
+        <RepaymentSheet onClose={() => setSheetIsOpen(prev => ({ ...prev, isRepayOpen: false }))} />
+      </Sheet>
     </SafeAreaView>
   );
 }

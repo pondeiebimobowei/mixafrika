@@ -10,7 +10,7 @@ export const mockClusterSeed: (collection: ICollection[]) => Promise<ICluster[]>
             about:'30 days investment cluster',
             collection_id: collection[0].id  as string ,
             duration: 30,
-            end_date: now.setDate(now.getDate() + 30).toString(),
+            end_date: new Date(new Date().setDate(new Date().getDate() + 30)).toISOString(),
             start_date: now.getDate().toString() ,
             status: '',
             description: '',

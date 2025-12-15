@@ -16,12 +16,14 @@ import { Investment } from './database/models/investment.model';
 import { LoanHistory } from './database/models/loan-history.model';
 import { SavingsHistory } from './database/models/saving-history.model';
 import { Collection } from './database/models/collection.model';
+import { BankCard } from './database/models/bank-card.model';
 
 @Injectable()
 export class AppService {
   async getHello() {
     const user = await User.findAll( { include: [ 
       { model: LoanAccount, include: [ { model: RepaymentHistory }, { model: FundingApplication, include: [{ model: Cluster, include: [Collection]}] }] },
+      { model: BankCard },
       { model: Notification },
       { model: LoanHistory },
       { model: Feed },

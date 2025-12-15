@@ -50,6 +50,13 @@ export const RepaymentStatus = {
     MISSED: "missed",
 } as const;
 
+export const cardType = {
+    VISA: "visa",
+    MASTERCARD: "mastercard",
+    VERVE: "verve",
+} as const;
+
+export type CardType = (typeof cardType)[keyof typeof cardType];
 
 export type RepaymentStatus = (typeof RepaymentStatus)[keyof typeof RepaymentStatus];
 

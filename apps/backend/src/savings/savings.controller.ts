@@ -10,7 +10,7 @@ export class SavingsController {
 
   @Get()
   getSavings(
-    @ParsedToken() jwt:IJwtToken
+    @ParsedToken() jwt: IJwtToken
   ) {
     return this.savingsService.handleGetSavings(jwt.id);
   }
@@ -30,7 +30,16 @@ export class SavingsController {
     return this.savingsService.handleGetSavingsById(savings_id);
   }
 
-  @Get(':savings_id')
+  @Post(':savings_id/top-up')
+  topUpSavings(
+    @Param('savings_id') savings_id: string,
+    @Body() body: { amount: number; source: 'wallet' | 'card' },
+    @ParsedToken() jwt: IJwtToken
+  ) {
+    return this.savingsService.handleTopUpSavings(jwt.id, savings_id, body.amount, body.source);
+  }
+
+  @Get(':savings_id/history')
   getSavingsHistory(@Param('savings_id') savings_id: string) {
     return this.savingsService.handleGetSavingsHistory(savings_id);
   }

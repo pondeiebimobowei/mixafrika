@@ -8,6 +8,7 @@ import { mockTransactionsSeed } from '../data/transactions.mock';
 import { mockApplicationSeed } from '../data/application.mock';
 import { mockClusterSeed } from '../data/cluster.mock';
 import { mockColectionSeed } from '../data/collection.mock';
+import { mockBankCardSeed } from '../data/bank-card.mock';
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -23,6 +24,7 @@ module.exports = {
       const collection = await mockColectionSeed()
       const transactions = await mockTransactionsSeed([...users, ...investors])
       const clusters = await mockClusterSeed(collection);
+      const bankCards = await mockBankCardSeed(users);
       await queryInterface.bulkInsert('collection', collection, { returning: true, transaction: t });
       await queryInterface.bulkInsert('cluster', clusters, { returning: true, transaction: t });
       const application = await mockApplicationSeed(users, clusters)
@@ -31,7 +33,8 @@ module.exports = {
       const responseInvestor = await queryInterface.bulkInsert('user', investors, { returning: true, transaction: t });
       await queryInterface.bulkInsert('transaction', transactions, { returning: true, transaction: t });
       await queryInterface.bulkInsert('funding_application', application, { returning: true, transaction: t });
-    
+
+      await queryInterface.bulkInsert('bank_card', bankCards, { returning: true, transaction: t });
       const userWallets = [...responseUser, ...responseInvestor].map((u) => ({
         id: uuidv4(),
         user_id: u.id,

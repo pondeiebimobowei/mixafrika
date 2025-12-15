@@ -14,6 +14,7 @@ import {
 } from './slice/transactions.slice';
 import { createLoanHistory, LoanHistory } from './slice/loan-history.slice';
 import { createUserWallet, UserWallet } from './slice/wallet.slice';
+import { createUserBankCard, UserBankCard } from './slice/bank-card.slice';
 import { createLoanAccount, LoanAccount } from './slice/loan-account.slice';
 import { createCluster, Cluster } from './slice/cluster.slice';
 import { createTraderRecord, TraderRecord } from './slice/trader.slice';
@@ -62,6 +63,10 @@ export const useCollectionStore = create<Collection>()((...a) => ({
 
 export const useWallet = create<UserWallet>()((...a) => ({
   ...createUserWallet(...a),
+}));
+
+export const useBankCard = create<UserBankCard>()((...a) => ({
+  ...createUserBankCard(...a),
 }));
 
 export const useLoanHistory = create<LoanHistory>()((...a) => ({

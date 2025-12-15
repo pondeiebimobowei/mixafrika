@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { CheckCircle2, Lock, Wallet, CreditCard } from 'lucide-react-native';
 import { cn, formatCurrency } from '@/lib/utils';
 import { useWalletState } from '@/store/hooks/wallet.hook';
+import { useBankCardState, useFetchBankCards } from '@/store/hooks/bank-card.hook';
 
 export default function FixedSavings() {
     const {
@@ -15,6 +16,11 @@ export default function FixedSavings() {
         form: { control, setValue, trigger, handleSubmit, watch },
         handleCreateSavgingsPlan,
     } = useCreateSavingsPlan();
+
+    useFetchBankCards()
+
+    const { data: { bank_cards } } = useBankCardState()
+
 
     const { data: { id: wallet_id } } = useWalletState()
 
@@ -335,7 +341,7 @@ export default function FixedSavings() {
                                             <>
                                                 {paymentMethod === 'card' && (
                                                     <View className="pl-4 border-l-2 border-[#1f2937] ml-5 mb-4">
-                                                        {BANK_CARDS.map((card, idx) => {
+                                                        {bank_cards.map((card, idx) => {
                                                             return(
                                                                 <TouchableOpacity
                                                                 key={idx}
@@ -344,11 +350,11 @@ export default function FixedSavings() {
                                                                     <View className="flex-row items-center gap-3">
                                                                         <CreditCard size={20} color="black" />
                                                                         <View>
-                                                                            <Text className="text-black font-bold">{card.type}</Text>
-                                                                            <Text className="text-gray-500 text-xs">****{card.number.slice(-4)}</Text>
+                                                                            <Text className="text-black font-bold">{card.card_type}</Text>
+                                                                            <Text className="text-gray-500 text-xs">****{card.last_four_digits}</Text>
                                                                         </View>
                                                                     </View>
-                                                                    {value === card.number && <CheckCircle2 size={20} color="#10b981" />}
+                                                                    {value === card.id && <CheckCircle2 size={20} color="#10b981" />}
                                                                 </TouchableOpacity>
                                                             )
                                                         })}

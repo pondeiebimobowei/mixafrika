@@ -9,6 +9,7 @@ export interface ProgressProps extends ViewProps {
   label?: string;
   showLabel?: boolean;
   className?: string;
+  labelClassName?: string;
   indicatorClassName?: string;
 }
 
@@ -19,6 +20,7 @@ export const Progress = ({
   showLabel = false,
   className,
   indicatorClassName,
+  labelClassName,
   ...props
 }: ProgressProps) => {
   const heightMap = { xs: 4, sm: 6, md: 8 };
@@ -32,11 +34,11 @@ export const Progress = ({
     <View className={`w-full`} {...props}>
       {showLabel && (
         <View className="flex-row justify-between mb-2">
-          <Text className="text-muted-foreground dark:text-slate-400 text-xs">
+          <Text className={cn("text-muted-foreground dark:text-slate-400 text-xs", labelClassName)}>
             {label}
           </Text>
-          <Text className="text-muted-foreground dark:text-white text-xs font-medium">
-            {value}%
+          <Text className={cn("text-muted-foreground dark:text-white text-xs font-medium", labelClassName)}>
+            {value.toFixed(1)}%
           </Text>
         </View>
       )}

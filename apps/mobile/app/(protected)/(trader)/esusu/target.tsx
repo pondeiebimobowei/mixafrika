@@ -9,6 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { CheckCircle2, CreditCard, Lock, Wallet } from 'lucide-react-native';
 import { cn, formatCurrency } from '@/lib/utils';
 import { useWalletState } from '@/store/hooks/wallet.hook';
+import { useBankCardState, useFetchBankCards } from '@/store/hooks/bank-card.hook';
 
 export default function TargetSavings() {
 
@@ -16,6 +17,10 @@ export default function TargetSavings() {
     
     const { data: { id: wallet_id } } = useWalletState()
     
+    useFetchBankCards()
+    
+    const { data: { bank_cards } } = useBankCardState()
+
     const {
         is_loading,
         form: { control, setValue, watch, trigger, handleSubmit },
@@ -29,30 +34,12 @@ export default function TargetSavings() {
     const maturityDate = watch('maturity_date');
 
     const estReturn = React.useMemo(() => {
-            const amount = Number(targetAmount) || 0;
-            const months = Number(maturityDate) || 0;
-            const rate = 0.12; // 12% fixed for now
-            // Simple interest: P * R * T (years)
-            return amount * rate * (months / 12);
-        }, [targetAmount, maturityDate]);
-
-    const BANK_CARDS = [
-        {
-           id: "cabe825f-d0aa-409b-94e8-299b4da65d9d",
-           type: 'Visa Debit',
-           number: '1234 5678 9012 3456',
-           expiry: '12/25',
-           cvv: '123',
-        },
-
-        {
-            id: "cabe825f-d0aa-409b-94e8-299b4da65d9a",
-            type: 'Mastercard Gold',
-            number: '5678 1234 5678 1234',
-            expiry: '12/25',
-            cvv: '123',
-        }
-    ];
+        const amount = Number(targetAmount) || 0;
+        const months = Number(maturityDate) || 0;
+        const rate = 0.12; // 12% fixed for now
+        // Simple interest: P * R * T (years)
+        return amount * rate * (months / 12);
+    }, [targetAmount, maturityDate]);
 
     return (
         <SafeAreaView edges={['top']} className="flex-1 bg-gray-200 dark:bg-black">
@@ -197,7 +184,7 @@ export default function TargetSavings() {
                                 </TouchableOpacity>
 
                                 {/* Debit Card Option */}
-                                <TouchableOpacity
+                                { bank_cards.length > 0 && <TouchableOpacity
                                     onPress={() => { setPaymentMethod('card'); setValue('source_id', '');  onChange('card')}}
                                     className={cn(
                                         "p-4 rounded-xl border mb-3 flex-row items-center justify-between",
@@ -213,7 +200,7 @@ export default function TargetSavings() {
                                     <View className={cn("w-5 h-5 rounded-full border items-center justify-center", paymentMethod === 'card' ? "border-[#10b981]" : "border-gray-500")}>
                                         {paymentMethod === 'card' && <View className="w-2.5 h-2.5 bg-[#10b981] rounded-full" />}
                                     </View>
-                                </TouchableOpacity>
+                                </TouchableOpacity>}
 
                                 {error && <ErrorMessageDisplay message={error.message} />}
                                 
@@ -230,7 +217,7 @@ export default function TargetSavings() {
                                             <>
                                                 {paymentMethod === 'card' && (
                                                     <View className="pl-4 border-l-2 border-[#1f2937] ml-5 mb-4">
-                                                        {BANK_CARDS.map((card, idx) => {
+                                                        {bank_cards.map((card, idx) => {
                                                             return(
                                                                 <TouchableOpacity
                                                                 key={idx}
@@ -239,11 +226,11 @@ export default function TargetSavings() {
                                                                     <View className="flex-row items-center gap-3">
                                                                         <CreditCard size={20} color="black" />
                                                                         <View>
-                                                                            <Text className="text-black font-bold">{card.type}</Text>
-                                                                            <Text className="text-gray-500 text-xs">****{card.number.slice(-4)}</Text>
+                                                                            <Text className="text-black capitalize font-bold">{card.card_type}</Text>
+                                                                            <Text className="text-gray-500 text-xs">****{card.last_four_digits}</Text>
                                                                         </View>
                                                                     </View>
-                                                                    {value === card.number && <CheckCircle2 size={20} color="#10b981" />}
+                                                                    {value === card.id && <CheckCircle2 size={20} color="#10b981" />}
                                                                 </TouchableOpacity>
                                                             )
                                                         })}

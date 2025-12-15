@@ -1,12 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Create_savings_plan } from '@shared/shared/src/validation/create-savings-plan-dto';
 import { SavingsHistory } from 'src/database/models/saving-history.model';
 import { Savings } from 'src/database/models/saving.model';
+import { WalletService } from '../wallet/wallet.service';
 
 @Injectable()
 export class SavingsService {
-  async handleGetSavings(user_id:string) {
-    const savings = await Savings.findAll({ where: { user_id }})
+  constructor(private readonly walletService: WalletService) { }
+
+  async handleGetSavings(user_id: string) {
+    const savings = await Savings.findAll({ where: { user_id } })
     return {
       success: true,
       message: 'Savings plans retrieved successfully',
@@ -21,7 +24,7 @@ export class SavingsService {
       type: payload.type,
       target_amount: Number(payload.target_amount),
       frequency: payload.frequency,
-      total_amount: Number(payload.target_amount) || 0,
+      total_amount: 0,
       interest_rate: payload.type === 'locked' ? 12 : 15, // Mock interest rate
       source_id: payload.source_id,
       source_type: payload.source_type,
@@ -37,8 +40,37 @@ export class SavingsService {
     };
   }
 
+  async handleTopUpSavings(user_id: string, savings_id: string, amount: number, source: 'wallet' | 'card') {
+    const savings = await Savings.findOne({ where: { id: savings_id, user_id } });
+
+    if (!savings) {
+      throw new NotFoundException('Savings plan not found');
+    }
+
+    if (source === 'wallet') {
+      await this.walletService.handleDebitWallet(user_id, amount);
+    }
+
+    // Increment total amount
+    await savings.increment('total_amount', { by: amount });
+    await savings.reload();
+
+    // Create history record
+    await SavingsHistory.create({
+      savings_id: savings.id,
+      amount: amount,
+      type: 'deposit' as any, // Cast to any to avoid enum issues for now, or import Types
+    });
+
+    return {
+      success: true,
+      message: 'Top up successful',
+      data: savings,
+    };
+  }
+
   async handleGetSavingsById(savings_id: string) {
-    const saving = await Savings.findOne({ where: { id: savings_id }, include: [SavingsHistory]})
+    const saving = await Savings.findOne({ where: { id: savings_id }, include: [SavingsHistory] })
     return {
       success: true,
       message: '',

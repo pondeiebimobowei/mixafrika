@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, ScrollView, TouchableOpacity } from 'react-native';
 import { Text } from '@/components/ui/text';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -7,19 +7,27 @@ import { ArrowLeft, MoreVertical, CreditCard, ArrowUpCircle, ArrowDown, Store } 
 import { formatCurrency, formatDate } from '@/lib/utils';
 import { useColorScheme } from 'nativewind';
 import { useSavingsState } from '@/store/hooks/savings.hook';
+import Sheet from '@/components/ui/sheet';
+import { TopUpPlanSheet } from '@/components/sheets/top-up-plan.sheet';
 
 export default function SavingsDetails() {
     const { id } = useLocalSearchParams();
     const router = useRouter();
     const { colorScheme } = useColorScheme();
-    const {  data: { selectedSavings, getSavingsById }} = useSavingsState()
+    const { data: { selectedSavings, getSavingsById } } = useSavingsState()
+    const [isTopUpOpen, setIsTopUpOpen] = useState(false);
 
-    
     const progress = Math.min((Number(selectedSavings?.total_amount) / Number(selectedSavings?.target_amount)) * 100, 100);
 
-    useEffect(()=> {
-        getSavingsById(id as string)
-    },[id])
+    const fetchSavings = () => {
+        if (id) {
+            getSavingsById(id as string);
+        }
+    };
+
+    useEffect(() => {
+        fetchSavings();
+    }, [id])
 
 
     return (
@@ -70,19 +78,19 @@ export default function SavingsDetails() {
 
                     {/* Maturity */}
                     {selectedSavings?.type === 'fixed' && (
-                    <View className="flex-1 min-w-[45%] bg-white dark:bg-[#111827] p-4 rounded-2xl border border-gray-200 dark:border-gray-800">
-                        <Text className="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase mb-1">Maturity</Text>
-                        <Text className="text-black dark:text-white text-xl font-bold">{formatDate(selectedSavings?.maturity_date as Date)}</Text>
-                    </View>
+                        <View className="flex-1 min-w-[45%] bg-white dark:bg-[#111827] p-4 rounded-2xl border border-gray-200 dark:border-gray-800">
+                            <Text className="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase mb-1">Maturity</Text>
+                            <Text className="text-black dark:text-white text-xl font-bold">{formatDate(selectedSavings?.maturity_date as Date)}</Text>
+                        </View>
                     )}
-                    
+
 
                     {/* Next Deposit */}
                     {selectedSavings?.type === 'target' && (
-                    <View className="flex-1 min-w-[45%] bg-white dark:bg-[#111827] p-4 rounded-2xl border border-gray-200 dark:border-gray-800">
-                        <Text className="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase mb-1">Frequency</Text>
-                        <Text className="text-black dark:text-white text-xl capitalize font-bold">{selectedSavings?.frequency}</Text>
-                    </View>
+                        <View className="flex-1 min-w-[45%] bg-white dark:bg-[#111827] p-4 rounded-2xl border border-gray-200 dark:border-gray-800">
+                            <Text className="text-gray-500 dark:text-gray-400 text-xs font-bold uppercase mb-1">Frequency</Text>
+                            <Text className="text-black dark:text-white text-xl capitalize font-bold">{selectedSavings?.frequency}</Text>
+                        </View>
                     )}
 
                     {/* Status */}
@@ -99,7 +107,10 @@ export default function SavingsDetails() {
 
                 {/* Action Buttons */}
                 <View className="gap-3 mb-8">
-                    <TouchableOpacity className="bg-[#10b981] py-4 rounded-xl flex-row items-center justify-center gap-2">
+                    <TouchableOpacity
+                        onPress={() => setIsTopUpOpen(true)}
+                        className="bg-[#10b981] py-4 rounded-xl flex-row items-center justify-center gap-2"
+                    >
                         <CreditCard size={20} color="white" />
                         <Text className="text-white font-bold text-base">Top Up with Card / Wallet</Text>
                     </TouchableOpacity>
@@ -136,6 +147,14 @@ export default function SavingsDetails() {
                 </View>
 
             </ScrollView>
+
+            <Sheet open={isTopUpOpen} onOpenChange={setIsTopUpOpen}>
+                <TopUpPlanSheet
+                    onClose={() => setIsTopUpOpen(false)}
+                    savingsId={id as string}
+                    onSuccess={fetchSavings}
+                />
+            </Sheet>
         </SafeAreaView>
     );
 }
