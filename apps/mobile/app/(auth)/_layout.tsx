@@ -10,7 +10,7 @@ export default function SignupFormProviderWrapper() {
     <FormProvider {...form}>
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen
-          name="select-role"
+          name="(signup)/select-role"
           options={{ title: 'Signup' }}
         />
       </Stack>

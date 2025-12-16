@@ -13,7 +13,7 @@ import { useSignup } from '@/hooks/use-signup.hook';
 export default function PersonalDetailsScreen() {
   const { control, handleSubmit, getValues } = useFormContext<Create_user_dto>();
   const router = useRouter();
-  const { colorScheme, toggleColorScheme } = useColorScheme();
+  const { colorScheme } = useColorScheme();
   const [showPassword, setShowPassword] = useState(false);
   const { handleSignup, isLoading } = useSignup();
 
@@ -28,17 +28,6 @@ export default function PersonalDetailsScreen() {
             className="w-10 h-10 rounded-full bg-gray-100 dark:bg-zinc-800 items-center justify-center"
           >
             <ArrowLeft size={20} color={colorScheme === 'dark' ? 'white' : 'black'} />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={toggleColorScheme}
-            className="w-10 h-10 rounded-full bg-gray-100 dark:bg-zinc-800 items-center justify-center"
-          >
-            {colorScheme === 'dark' ? (
-              <Sun size={20} color="white" />
-            ) : (
-              <Moon size={20} color="black" />
-            )}
           </TouchableOpacity>
         </View>
 

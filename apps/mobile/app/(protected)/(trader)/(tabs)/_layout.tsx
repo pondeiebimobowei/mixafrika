@@ -26,6 +26,16 @@ export default function TraderTabsLayout() {
           options={{
             title: 'Esusu',
             tabBarIcon: ({ color }) => (
+              <Ionicons name="basket-outline" size={24} color={color} />
+            ),
+          }}
+        />
+
+        <Tabs.Screen
+          name="activity"
+          options={{
+            title: 'Activity',
+            tabBarIcon: ({ color }) => (
               <Ionicons name="cash-outline" size={24} color={color} />
             ),
           }}
