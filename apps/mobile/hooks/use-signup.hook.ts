@@ -17,8 +17,7 @@ export function useSignup() {
       first_name: '',
       last_name: '',
       email: '',
-      password: '',
-      confirm_password: '',
+      password: ''
     },
   });
 

@@ -7,15 +7,12 @@ import {
   Image,
   Pressable,
 } from 'react-native';
-import { User, Bell, FileText, Repeat, PiggyBank, History, Sun, Coins } from 'lucide-react-native';
+import { User, Bell, FileText, PiggyBank, Sun, Coins } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   useAuthStore,
-  useLoanAccountStore,
   useUserBusiness,
-  useWallet,
 } from '@/store';
-import { useFetchWallet } from '@/store/hooks/wallet.hook';
 import { useRouter } from 'expo-router';
 import { useFetchLoanAccount } from '@/store/hooks/loan-account';
 import { SheetsState } from './profile';
@@ -23,30 +20,22 @@ import { SheetsState } from './profile';
 // New Components
 import TraderProfileCard from '@/components/cards/trader-profile-card';
 import ActiveLoanDashboardCard from '@/components/cards/active-loan-dashboard-card';
-import EsusuGroupDashboardCard from '@/components/cards/esusu-group-dashboard-card';
 import PrimaryGoalCard from '@/components/cards/primary-goal-card';
 import RecentActivityCard from '@/components/cards/recent-activity-card';
 import CreditScoreOverView from '@/components/cards/credit-score-overview.card';
-import { LoanStatus } from '@mixafrica/shared/enums';
 import { useFetchBusiness } from '@/store/hooks/business';
 import Sheet from '@/components/ui/sheet';
 import { RepaymentSheet } from '@/components/sheets/repayment.sheet';
 
 export default function TraderDashboard() {
   const { business } = useUserBusiness();
-  console.log(business)
   const { user } = useAuthStore();
-  const { available_balance } = useWallet();
   const router = useRouter();
 
   useFetchBusiness()
   
   const [sheetIsOpen, setSheetIsOpen] = useState<SheetsState>({ isFundingOpen: false, isRepayOpen: false, isWithdrawOpen: false })
-  const { loan_account } = useLoanAccountStore();
-  const hasActiveLoan = Boolean(loan_account?.status === LoanStatus.APPROVED)
 
-
-  useFetchWallet();
   useFetchLoanAccount();
   
 
@@ -82,7 +71,7 @@ export default function TraderDashboard() {
   ];
 
   return (
-    <SafeAreaView edges={['top']} className="flex-1 bg-black px-4 pt-0 pb-6">
+    <SafeAreaView edges={['top']} className="flex-1 bg-gray-200 dark:bg-black px-4 pt-0">
       <ScrollView showsVerticalScrollIndicator={false}>
 
         {/* Header Section */}
@@ -146,9 +135,6 @@ export default function TraderDashboard() {
 
         {/* Recent Activity */}
         <RecentActivityCard />
-
-        {/* Esusu Groups Card */}
-        <EsusuGroupDashboardCard />
 
       </ScrollView>
       <Sheet

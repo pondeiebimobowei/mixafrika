@@ -25,7 +25,7 @@ const RoleCard: React.FC<RoleCardProps> = ({ title, description, icon: Icon, col
     className={`w-full p-5 rounded-3xl border border-white/10 ${bgColor}`}
     // activeOpacity={0.9}
   >
-    <View className="flex-row justify-between items-start mb-4">
+    <View className="flex-row justify-between items-start mb-2">
       <View className={`p-3 rounded-2xl ${iconBgColor}`}>
         <Icon size={24} color={color} />
       </View>
@@ -33,30 +33,16 @@ const RoleCard: React.FC<RoleCardProps> = ({ title, description, icon: Icon, col
         <ArrowRight size={20} color="white" />
       </View>
     </View>
-    <Text className="text-white text-xl capitalize font-bold mb-2">{title}</Text>
-    <Text className="text-gray-400 w-2/3 text-sm leading-5">{description}</Text>
+    <Text className="text-white text-xl capitalize font-bold mb-1">{title}</Text>
+    <Text className="text-gray-400 w-5/6 text-sm leading-5">{description}</Text>
   </View>
 );
 
 export default function RoleSelectScreen() {
-  const { control, trigger } = useFormContext<Create_user_dto>();
+  const { control } = useFormContext<Create_user_dto>();
     const router = useRouter();
   
     const [selectedRole, setSelectedRole] = useState('');
-  
-    const handleNext = async () => {
-      const isValid = await trigger(['role']);
-  
-      if (isValid) {
-        router.push('/(auth)/(signup)/personal');
-      }else{
-        Toast.show({
-          type: 'error',
-          text1: 'Error',
-          text2: 'Please select a role',
-        } )
-      }
-    };
 
     const roles = [
       {
@@ -91,25 +77,15 @@ export default function RoleSelectScreen() {
   return (
     <SafeAreaView className="flex-1 bg-black">
       <StatusBar style="light" />
-      <ScrollView className="flex-1 px-6" contentContainerStyle={{ paddingBottom: 40 }}>
+      <View className="flex-1 px-0">
 
         {/* Header Icon */}
-        <View className="items-center mt-10 mb-6">
-          <View className="p-4 rounded-3xl bg-green-900/20 border border-green-900/30">
-            {/* Using a generic Box icon or Logo placeholder if actual logo isn't available. 
-                             The image shows a hexagon/box logo. 
-                             I'll use a generic icon for now or just the text if logo is complex.
-                             Using Store for now as a placeholder for the app logo, or just empty View with style.
-                         */}
-            <View className="w-6 h-6 items-center justify-center">
-              {/* Simple SVG shape or icon */}
-              <View className="w-4 h-4 border-2 border-emerald-500 transform rotate-45" />
-            </View>
-          </View>
+        <View className="items-center mt-2 mb-6 ">
+          
         </View>
 
         {/* Title */}
-        <View className="items-center mb-12">
+        <View className="items-center mb-0">
           <Text className="text-white text-4xl font-extrabold text-center">
             Welcome
           </Text>
@@ -163,12 +139,12 @@ export default function RoleSelectScreen() {
 
 
         {/* Footer */}
-        <View className="mt-10 items-center">
+        <View className="mt-0 items-center">
           <Text className="text-gray-500 text-xs text-center">
             By continuing, you agree to our Terms of Service.
           </Text>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }

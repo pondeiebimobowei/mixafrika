@@ -56,12 +56,10 @@ export class AuthService {
     const jwtSecretRefresh = this.configService.get('refresh_token_secret');
 
     const user = await User.findOne({ where: { email: loginDto.email }, include: [UserBusiness] });
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-    const valid = await bcrypt.compare(loginDto.password, user.dataValues.password);
-    if (!valid) {
-      throw new UnauthorizedException('Invalid credentials');
+    
+    const valid = await bcrypt.compare(loginDto.password, user?.dataValues.password || '');
+    if (!valid || !user) {
+      throw new UnauthorizedException({ success: false, message: 'Invalid credentials' });
     }
 
     const payload = { id: user.id, email: user.email };

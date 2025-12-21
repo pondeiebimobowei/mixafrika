@@ -40,7 +40,7 @@ export default function Activity() {
 
 
     return (
-        <SafeAreaView edges={["top"]} className="flex-1 bg-gray-200 dark:bg-[rgb(23,26,33)]">
+        <SafeAreaView edges={["top"]} className="flex-1 bg-gray-200 dark:bg-black">
 
             <Header />
 

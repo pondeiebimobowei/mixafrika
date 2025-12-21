@@ -7,6 +7,7 @@ export default function AuthController() {
   const apiSignup = async (data: Create_user_dto): Promise<AuthResponse> => {
     try {
       const response = await api.post('/auth/signup', data);
+      console.log(response.data);
       return response.data;
     } catch (err: any) {
       if (err.response) {

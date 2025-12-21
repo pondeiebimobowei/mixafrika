@@ -12,7 +12,7 @@ export class TransactionService {
       else if (type === Types.DISBURSEMENT) where.type = Types.DISBURSEMENT;
       else if (type === Types.INVESTMENT) where.type = Types.INVESTMENT;
       else if (type === Types.LOAN) where.type = Types.LOAN;
-      else if (type === Types.REPAYMENT) where.type = Types.REPAYMENT;      
+      else if (type === Types.REPAYMENT) where.type = Types.REPAYMENT;
     }
 
     const transactions = await Transaction.findAll({

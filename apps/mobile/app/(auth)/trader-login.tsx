@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Platform } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLogin } from '@/hooks/use-login.hook';
 import { Controller } from 'react-hook-form';
 import Toast from 'react-native-toast-message';
 import { Link, useRouter } from 'expo-router';
-import { ArrowLeft, Sun, Moon, Eye, EyeOff, Store, Briefcase } from 'lucide-react-native';
+import { ArrowLeft, Eye, EyeOff, Store, Briefcase, Lock } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
 
 const CustomIcons = {
@@ -24,9 +24,9 @@ const TraderLoginScreen = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-background p-6">
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
+      <View className="flex-1">
         {/* Header */}
-        <View className="flex-row justify-between items-center mb-10">
+        <View className="flex-row justify-between items-center mb-4">
           <TouchableOpacity onPress={() => router.back()} className="p-2">
             <ArrowLeft size={24} color={isDark ? 'white' : 'black'} />
           </TouchableOpacity>
@@ -40,12 +40,12 @@ const TraderLoginScreen = () => {
 
         <View className="flex-1 items-center">
           {/* Icon */}
-          <View className="bg-emerald-900/20 p-4 rounded-3xl mb-6">
+          <View className="bg-emerald-900/20 p-4 rounded-3xl mb-0">
             <Store size={40} color="#10B981" />
           </View>
 
 
-          <Text className="text-4xl w-full text-center font-extrabold text-foreground mb-2">
+          <Text className="text-2xl w-full text-center font-extrabold text-foreground mb-2">
             Trader Login
           </Text>
           <Text className="text-muted-foreground text-center mb-10">
@@ -98,6 +98,9 @@ const TraderLoginScreen = () => {
               render={({ field, fieldState: { error } }) => (
                 <>
                   <View className={`flex-row items-center w-full h-14 pl-4 pr-4 border ${error ? 'border-destructive' : 'border-border'} rounded-xl bg-card focus:border-primary`}>
+                    <View className="mr-3">
+                      <Lock size={20} color={isDark ? '#9CA3AF' : '#6B7280'} />
+                    </View>
                     <TextInput
                       className="flex-1 text-base text-foreground h-full"
                       placeholder="........"
@@ -136,13 +139,13 @@ const TraderLoginScreen = () => {
           {/* Login Button */}
           <TouchableOpacity
             onPress={form.handleSubmit(handleLogin)}
-            className="w-full bg-emerald-500 p-4 mb-6 rounded-xl shadow-md shadow-emerald-500/20"
+            className="w-full bg-emerald-500 p-3 mb-6 rounded-xl shadow-md shadow-emerald-500/20"
           >
             {isLoading ? (
               <Text className="text-white text-center text-lg font-bold">Logging in...</Text>
             ) : (
               <View className="flex-row justify-center items-center">
-                <Text className="text-white text-center text-lg font-bold mr-2">Sign In</Text>
+                <Text className="text-white text-center text-lg font-bold">Sign In</Text>
               </View>
             )}
           </TouchableOpacity>
@@ -157,6 +160,7 @@ const TraderLoginScreen = () => {
           {/* Social Login Buttons */}
           <TouchableOpacity className="w-full flex-row items-center justify-center border border-border bg-card py-4 rounded-xl mb-10">
             <CustomIcons.GoogleIcon />
+            
             <Text className="text-foreground text-base font-semibold ml-3">
               Google
             </Text>
@@ -176,7 +180,7 @@ const TraderLoginScreen = () => {
             </Link>
           </View>
         </View>
-      </ScrollView>
+      </View>
       <Toast />
     </SafeAreaView>
   );

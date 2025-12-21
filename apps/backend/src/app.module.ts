@@ -49,6 +49,7 @@ import { Collection } from './database/models/collection.model';
 import { CollectionModule } from './collection/collection.module';
 import { BankCard } from './database/models/bank-card.model';
 import { BankCardModule } from './bank_card/bank_card.module';
+import { SavingsHistoryModule } from './savings_history/savings_history.module';
 
 @Module({
   imports: [
@@ -81,6 +82,7 @@ import { BankCardModule } from './bank_card/bank_card.module';
     LoanRepaymentHistoryModule,
     CollectionModule,
     BankCardModule,
+    SavingsHistoryModule,
   ],
   controllers: [AppController],
   providers: [

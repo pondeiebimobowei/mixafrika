@@ -3,10 +3,13 @@ import { Create_savings_plan } from '@shared/shared/src/validation/create-saving
 import { SavingsHistory } from 'src/database/models/saving-history.model';
 import { Savings } from 'src/database/models/saving.model';
 import { WalletService } from '../wallet/wallet.service';
+import { SavingsHistoryService } from 'src/savings_history/savings_history.service';
 
 @Injectable()
 export class SavingsService {
-  constructor(private readonly walletService: WalletService) { }
+  constructor(
+    private readonly savingsHistoryService: SavingsHistoryService,
+    private readonly walletService: WalletService) { }
 
   async handleGetSavings(user_id: string) {
     const savings = await Savings.findAll({ where: { user_id } })
@@ -55,12 +58,7 @@ export class SavingsService {
     await savings.increment('total_amount', { by: amount });
     await savings.reload();
 
-    // Create history record
-    await SavingsHistory.create({
-      savings_id: savings.id,
-      amount: amount,
-      type: 'deposit' as any, // Cast to any to avoid enum issues for now, or import Types
-    });
+    await this.savingsHistoryService.handleCreateSavingsHistoryRecord(savings.id, amount, 'deposit');
 
     return {
       success: true,
@@ -87,10 +85,12 @@ export class SavingsService {
   }
 
   async handleGetSavingsHistory(savings_id) {
+    const savings_history = await this.savingsHistoryService.handleGetSavingsHistoryBySavingsId(savings_id);
+    
     return {
       success: true,
-      message: '',
-      data: [],
-    };
+      message: 'Savings history retrieved successfully',
+      data: savings_history,
+    }
   }
 }

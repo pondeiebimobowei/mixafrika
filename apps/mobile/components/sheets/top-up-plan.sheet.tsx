@@ -47,7 +47,7 @@ export function TopUpPlanSheet({ onClose, savingsId, onSuccess }: TopUpPlanSheet
 
         setLoading(true);
         try {
-            await apiPrivate.post(`v1/savings/${savingsId}/top-up`, {
+            await apiPrivate.post(`savings/${savingsId}/top-up`, {
                 amount: numAmount,
                 source: source
             });

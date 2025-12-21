@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { View, ScrollView, TouchableOpacity, Image, ImageBackground } from 'react-native';
+import React, { useState } from 'react';
+import { View, ScrollView, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from '@/components/ui/text';
-import { ArrowDown, ArrowLeft, Plus, Users, ShieldCheck, Lock, Target, RefreshCw, ChevronRight, Send, PiggyBank, ArrowRight, Zap } from 'lucide-react-native';
-import { useRouter } from 'expo-router';
-import { clsx } from 'clsx';
+import { ArrowDown, Plus, ShieldCheck, Send, PiggyBank, ArrowRight, Zap } from 'lucide-react-native';
 import { cn, formatCurrency } from '@/lib/utils';
-import { apiPrivate } from '@/axios/axios-config';
 
 import Sheet from '@/components/ui/sheet';
 import { NewPlanSheet } from '@/components/sheets/new-plan.sheet';
@@ -17,18 +14,22 @@ import ProductCardItem from '@/components/product-card-item';
 import NoActivePlanCard from '@/components/cards/no-active-plan-card';
 
 export default function Esusu() {
-  const router = useRouter();
   const [activeTab, setActiveTab] = useState<'Plans' | 'Rates'>('Plans');
   const [isNewPlanOpen, setIsNewPlanOpen] = useState(false);
 
   
-  const { data: { savings } } = useSavingsState()
+  const { data: { savings }, loading } = useSavingsState()
   useFetchSavings()
 
 
   const ActivityIcon = {
     deposit: ArrowDown,
     payout: Send,
+  }
+  
+  const ActivityColor = {
+    deposit: '#27AE60',
+    payout: '#3B82F6',
   }
 
     const totalSavings = 404;
@@ -99,13 +100,13 @@ export default function Esusu() {
                 {activeTab === 'Plans' ? (
                     <View className="pb-8">
                         <Text className="text-black dark:text-white text-lg font-bold mb-4">Active Plans</Text>
-                        {savings && savings.length > 0 ? (
+                        {loading ? <ActivityIndicator /> : (savings && savings.length > 0 ? (
                             savings.map((plan, index) => (
                                 <SavingsCardItem key={index} plan={plan} />
                             ))
                         ) : (
                             <NoActivePlanCard />
-                        )}
+                        ))}
                     </View>
                 ) : (
                     <View className="pb-8">
@@ -127,66 +128,6 @@ export default function Esusu() {
                         </View>
                     </View>
                 )}
-
-        {/* Recent Activity */}
-        <View className="mb-8">
-          <Text className="text-black dark:text-white mb-4">Recent Activity</Text>
-
-          {[{ title: 'Contribution', type: 'deposit'}].map((activity, idx) => {
-                const Icon = ActivityIcon[activity.type as keyof typeof ActivityIcon] || Send;
-            return (
-                <View key={idx} className="flex-row items-center justify-between mb-4 bg-white dark:bg-[#1C1F26] p-3 rounded-xl">
-                  <View className="flex-row items-center">
-                    <View className="w-10 h-10 rounded-full bg-green-900/20 items-center justify-center mr-3">
-                      <ArrowDown size={18} color="#27AE60" />
-                    </View>
-                    <View>
-                      <Text className="text-black dark:text-white font-medium">{activity.title}</Text>
-                      <Text className="text-gray-500 dark:text-slate-400 text-xs">Daily Savings</Text>
-                    </View>
-                  </View>
-                  <View className="items-end">
-                    <Text className="text-[#27AE60] font-bold">+₦1,000</Text>
-                    <Text className="text-gray-400 text-[10px]">2h ago</Text>
-                  </View>
-                </View>
-            )
-          })}
-
-          {/* Mock Activity Items */}
-
-          <View className="flex-row items-center justify-between mb-4 bg-white dark:bg-[#1C1F26] p-3 rounded-xl">
-            <View className="flex-row items-center">
-              <View className="w-10 h-10 rounded-full bg-green-900/20 items-center justify-center mr-3">
-                <ArrowDown size={18} color="#27AE60" />
-              </View>
-              <View>
-                <Text className="text-black dark:text-white font-medium">Contribution</Text>
-                <Text className="text-gray-500 dark:text-gray-400 text-xs">Balogun Market Ajo</Text>
-              </View>
-            </View>
-            <View className="items-end">
-              <Text className="text-[#27AE60] font-bold">+₦10,000</Text>
-              <Text className="text-gray-400 text-[10px]">1d ago</Text>
-            </View>
-          </View>
-
-          <View className="flex-row items-center justify-between mb-4 bg-white dark:bg-[#1C1F26] p-3 rounded-xl">
-            <View className="flex-row items-center">
-              <View className="w-10 h-10 rounded-full bg-blue-900/20 items-center justify-center mr-3">
-                <Send size={18} color="#3B82F6" />
-              </View>
-              <View>
-                <Text className="text-black dark:text-white">Payout</Text>
-                <Text className="text-gray-500 dark:text-gray-400 text-xs">Old Group Savings</Text>
-              </View>
-            </View>
-            <View className="items-end">
-              <Text className="text-[#3B82F6] font-bold">+₦50,000</Text>
-              <Text className="text-gray-400 text-[10px]">1w ago</Text>
-            </View>
-          </View>
-        </View>
 
       </ScrollView>
 

@@ -23,12 +23,20 @@ const transactionIcons = {
     credit: 'bg-primary/15',
     debit: 'bg-gray-100 dark:bg-gray-800/70',
     failed: 'bg-red-100 dark:bg-red-900/30',
+    investment: 'bg-yellow-100 dark:bg-yellow-900/30',
+    loan: 'bg-yellow-100 dark:bg-yellow-900/30',
+    repayment: 'bg-yellow-100 dark:bg-yellow-900/30',
+    withdrawal: 'bg-destructive/10',
   };
 
   const transactionColors = {
     credit: 'text-primary',
     debit: 'text-foreground',
     failed: 'text-destructive',
+    investment: 'text-yellow-600 dark:text-yellow-400',
+    loan: 'text-yellow-600 dark:text-yellow-400',
+    repayment: 'text-yellow-600 dark:text-yellow-400',
+    withdrawal: 'text-destructive',
   };
 
   const formatAmount = (amount: number, type: Types) => {
@@ -69,14 +77,16 @@ export default function TransactionItems({transaction, className}: { transaction
                         transaction.type as keyof typeof transactionIconBg
                         ];
               return (
-                <View key={transaction.id} className={cn("flex flex-row items-center justify-between p-4 bg-white dark:bg-card rounded-xl", className)}>
+                <View key={transaction.id} className={cn("flex flex-row items-center justify-between p-4 bg-white dark:bg-[#12182d] border border-gray-600 rounded-xl", className)}>
                   <View className="flex flex-row items-center gap-2">
                     <View className={cn("flex items-center justify-center h-10 w-10 rounded-full",
-                      transaction.type === Types.WITHDRAWAL ? 'bg-destructive/10' :
-                        transaction.type === Types.INVESTMENT ? 'bg-yellow-100 dark:bg-yellow-900/30' :
+                      transaction.type === Types.WITHDRAWAL ? transactionIconBg['withdrawal'] :
+                        transaction.type === Types.INVESTMENT ? transactionIconBg['investment'] :
                           transaction.type === Types.DISBURSEMENT ? transactionIconBg['credit'] :
                             transaction.type === Types.DEPOSIT ? transactionIconBg['credit'] :
-                              transactionIconBg[transaction.type as keyof typeof transactionIconBg]
+                            transaction.type === Types.LOAN ? transactionIconBg['loan'] :
+                              transaction.type === Types.REPAYMENT ? transactionIconBg['repayment'] :
+                                  transactionIconBg[transaction.type as keyof typeof transactionIconBg]
                     )}>
                       <Icon strokeWidth={3} size={18} color={iconColor} className={iconColor} />
 
@@ -87,11 +97,13 @@ export default function TransactionItems({transaction, className}: { transaction
                     </View>
                   </View>
                   <Text className={cn("font-bold text-sm whitespace-nowrap",
-                    transaction.type === Types.WITHDRAWAL ? 'text-destructive' :
-                      transaction.type === Types.INVESTMENT ? 'text-yellow-600 dark:text-yellow-400' :
+                    transaction.type === Types.WITHDRAWAL ? transactionColors['withdrawal'] :
+                      transaction.type === Types.INVESTMENT ? transactionColors['investment'] :
                         transaction.type === Types.DISBURSEMENT ? transactionColors['credit'] :
                           transaction.type === Types.DEPOSIT ? transactionColors['credit'] :
-                            transactionColors[transaction.type as keyof typeof transactionColors]
+                            transaction.type === Types.LOAN ? transactionColors['loan'] :
+                              transaction.type === Types.REPAYMENT ? transactionColors['repayment'] :
+                                transactionColors[transaction.type as keyof typeof transactionColors]
                   )}>
                     {formatAmount(transaction.amount, transaction.type)}
                   </Text>

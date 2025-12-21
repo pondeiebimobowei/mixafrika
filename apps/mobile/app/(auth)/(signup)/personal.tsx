@@ -19,7 +19,7 @@ export default function PersonalDetailsScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white dark:bg-black">
-      <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="px-5 py-4">
+      <View className="px-5 py-4">
 
         {/* Header */}
         <View className="flex-row justify-between items-center mb-6">
@@ -32,13 +32,13 @@ export default function PersonalDetailsScreen() {
         </View>
 
         {/* Title & Subtitle */}
-        <View className="mb-8">
+        <View className="mb-5">
           <Text className="text-3xl font-bold text-black dark:text-white capitalize mb-2">Create {getValues('role')} Account</Text>
           <Text className="text-gray-500 dark:text-gray-400 text-base">Start building your wealth today</Text>
         </View>
 
         {/* Form Fields */}
-        <View className="gap-5">
+        <View className="gap-2">
 
           {/* Name Row */}
           <View className="flex-row gap-4">
@@ -185,10 +185,10 @@ export default function PersonalDetailsScreen() {
           <Pressable
             className="bg-[#10b981] h-14 rounded-2xl items-center justify-center shadow-sm shadow-[#10b981]/20"
             onPress={handleSubmit(handleSignup, (e)=> console.log("error", e))}
-            disabled={isLoading}
+            // disabled={isLoading}
           >
             <Text className="text-white font-bold text-lg">
-              {isLoading ? "creating Account..." : "Continue"}
+              {isLoading ? "Creating Account..." : "Continue"}
             </Text>
           </Pressable>
 
@@ -205,7 +205,7 @@ export default function PersonalDetailsScreen() {
 
         {/* Bottom spacer */}
         <View className="h-10" />
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 }

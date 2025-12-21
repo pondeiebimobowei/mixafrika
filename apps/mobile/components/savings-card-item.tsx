@@ -48,7 +48,6 @@ export default function SavingsCardItem({ plan }: { plan: any }) {
                 </View>
 
                 <View className="flex-row justify-between items-center pt-3 border-t border-gray-800">
-                    <Text className="text-gray-400 text-xs">Next Due: <Text className="text-white font-bold">{plan.next_due || 'N/A'}</Text></Text>
                     {plan.auto_save && (
                         <View className="flex-row items-center gap-1">
                             <RefreshCw size={12} color="#10b981" />

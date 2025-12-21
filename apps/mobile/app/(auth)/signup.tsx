@@ -121,31 +121,6 @@ const SelectRoleScreen = () => {
               )}
             />
           </View>
-          <View>
-            <Text className="text-base text-white mb-2">Confirm Password</Text>
-
-            <Controller
-              control={form.control}
-              name="confirm_password"
-              render={({ field, fieldState: { error } }) => (
-                <>
-                  <TextInput
-                    className="w-full h-14 pl-4 pr-12 text-base border rounded-xl bg-slate-950 focus:border-white"
-                    keyboardType="visible-password"
-                    secureTextEntry={true}
-                    value={field.value}
-                    onChangeText={field.onChange}
-                    onBlur={field.onBlur}
-                  />
-                  {error && (
-                    <Text className="text-sm text-destructive mt-1">
-                      {error.message}
-                    </Text>
-                  )}
-                </>
-              )}
-            />
-          </View>
         </View>
 
         <TouchableOpacity onPress={form.handleSubmit(handleSignup)}>

@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { useSavingsStore } from '..';
+import { useFocusEffect } from 'expo-router';
 
 export function useSavingsState() {
   const { loading, error, savings, addSaving, selectedSavings, getSavingsById } = useSavingsStore();
@@ -21,16 +22,18 @@ export function useSavingsState() {
 export function useFetchSavings() {
   const { getSavings } = useSavingsStore();
 
-  useEffect(() => {
-    const fetchSavings = async () => {
-      const fetches = [getSavings()];
-
-      try {
-        await Promise.allSettled(fetches);
-      } catch (err) {
-        console.log('One or more savings fetches failed');
-      }
-    };
-    fetchSavings();
-  }, [getSavings]);
+  useFocusEffect(
+    useCallback(() => {
+      const fetchSavings = async () => {
+        const fetches = [getSavings()];
+  
+        try {
+          await Promise.allSettled(fetches);
+        } catch (err) {
+          console.log('One or more savings fetches failed');
+        }
+      };
+      fetchSavings();
+    }, [getSavings])
+  )
 }

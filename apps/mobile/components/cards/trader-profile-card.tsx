@@ -35,14 +35,14 @@ export default function TraderProfileCard() {
                 {/* Balance Box */}
                 <View className="flex-[2] bg-[#0f172a] rounded-xl p-3 justify-center pl-4">
                     <TouchableOpacity
-                        onPress={() => setIsBalanceVisible(!isBalanceVisible)}
+                        onPress={() => setIsBalanceVisible(prev => !prev)}
                         className="flex-[2]  justify-between"
                     >
                         <Text className="text-slate-400 text-xs mb-1">Wallet Balance</Text>
                         
                         <View className='flex-row items-center gap-4 justify-between'>
-                            <Text className="text-white text-xl font-bold">
-                                {isBalanceVisible ? formatCurrency(available_balance) : '₦ •••••'}
+                            <Text className="text-white text-xl font-bold h-7">
+                                {isBalanceVisible ? formatCurrency(available_balance ) : '******'}
                             </Text>
                             {isBalanceVisible ? (
                                 <EyeOff size={16} color="#64748b" />
@@ -53,12 +53,6 @@ export default function TraderProfileCard() {
                         </View>
                     </TouchableOpacity>
                 </View>
-
-                {/* Add Money Button */}
-                <TouchableOpacity className="bg-[#10b981] w-24 rounded-xl items-center justify-center">
-                    <Plus size={24} color="white" />
-                    <Text className="text-white text-xs font-bold mt-1">Add Money</Text>
-                </TouchableOpacity>
             </View>
         </View>
     );
