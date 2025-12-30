@@ -111,7 +111,7 @@ export default function LoanApplication() {
                 }) => (
                   <Select className='w-full ' onValueChange={(option) => field.onChange(option?.value)}>
                     <SelectTrigger className='w-full h-14 bg-white border-0 dark:border-input'>
-                      <SelectValue className='text-black dark:text-white' placeholder='Select a frequency' />
+                      <SelectValue className='text-black dark:text-white' placeholder='Select a business type' />
                     </SelectTrigger>
                     <SelectContent className='w-11/12'>
                       <SelectGroup>
@@ -139,7 +139,7 @@ export default function LoanApplication() {
                 }) => (
                   <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>
                     <SelectTrigger className='w-full h-14 bg-white border-0 dark:border-input'>
-                      <SelectValue className='text-black dark:text-white' placeholder='Select a frequency' />
+                      <SelectValue className='text-black dark:text-white' placeholder='Select a location' />
                     </SelectTrigger>
                     <SelectContent className='w-11/12'>
                       <SelectGroup>

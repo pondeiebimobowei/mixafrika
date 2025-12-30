@@ -6,10 +6,7 @@ export const REPAYMENT_DURATION_OPTIONS = [
 ];
 
 export const PAYMENT_PLAN_OPTIONS = [
-  { label: 'Select repayment plan', value: '' },
   { label: 'Daily', value: 'daily' },
-  { label: 'Weekly', value: 'weekly' },
-  { label: 'Monthly', value: 'monthly' },
 ];
 
 export const BUSINESS_LOCATION_OPTIONS = [

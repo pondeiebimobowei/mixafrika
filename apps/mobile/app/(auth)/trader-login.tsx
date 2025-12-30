@@ -26,14 +26,14 @@ const TraderLoginScreen = () => {
     <SafeAreaView className="flex-1 bg-background p-6">
       <View className="flex-1">
         {/* Header */}
-        <View className="flex-row justify-between items-center mb-4">
-          <TouchableOpacity onPress={() => router.back()} className="p-2">
-            <ArrowLeft size={24} color={isDark ? 'white' : 'black'} />
-          </TouchableOpacity>
+        <View className="flex-row justify-center items-center mb-4">
 
-          <View className="flex-row items-center space-x-2">
-            <Text className="text-foreground font-medium text-base">Switch Role</Text>
-          </View>
+          <TouchableOpacity onPress={() => router.back()} className="p-2">
+            <View className="flex-row items-center space-x-2">
+              <ArrowLeft size={18} color={isDark ? 'white' : 'black'} />
+              <Text className="text-foreground font-medium text-sm">Switch Role</Text>
+            </View>
+          </TouchableOpacity>
 
           <View></View>
         </View>

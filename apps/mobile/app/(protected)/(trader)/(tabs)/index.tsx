@@ -17,7 +17,6 @@ import { useRouter } from 'expo-router';
 import { useFetchLoanAccount } from '@/store/hooks/loan-account';
 import { SheetsState } from './profile';
 
-// New Components
 import TraderProfileCard from '@/components/cards/trader-profile-card';
 import ActiveLoanDashboardCard from '@/components/cards/active-loan-dashboard-card';
 import PrimaryGoalCard from '@/components/cards/primary-goal-card';
@@ -26,6 +25,7 @@ import CreditScoreOverView from '@/components/cards/credit-score-overview.card';
 import { useFetchBusiness } from '@/store/hooks/business';
 import Sheet from '@/components/ui/sheet';
 import { RepaymentSheet } from '@/components/sheets/repayment.sheet';
+import { useTheme } from '@/context/theme context';
 
 export default function TraderDashboard() {
   const { business } = useUserBusiness();
@@ -33,6 +33,8 @@ export default function TraderDashboard() {
   const router = useRouter();
 
   useFetchBusiness()
+
+  const { toggleTheme } =useTheme()
   
   const [sheetIsOpen, setSheetIsOpen] = useState<SheetsState>({ isFundingOpen: false, isRepayOpen: false, isWithdrawOpen: false })
 
@@ -99,7 +101,7 @@ export default function TraderDashboard() {
             </Pressable>
 
             {/* Theme Toggle */}
-            <Pressable>
+            <Pressable onPress={()=> toggleTheme()}>
               <Sun color="white" size={24} />
             </Pressable>
           </View>

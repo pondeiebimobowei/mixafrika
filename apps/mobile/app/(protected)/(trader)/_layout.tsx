@@ -191,6 +191,56 @@ export default function ProfileStackLayout() {
                     ),
                 }}
             />
+
+            <Stack.Screen
+                name="notifications"
+                options={{
+                    headerShown: true,
+                    title: 'Notification Preferences',
+                    headerStyle: {
+                    backgroundColor: 'black',
+                    },
+                    headerTitleAlign: 'center',
+                    headerTintColor: '#ffffff',
+                    headerTitleStyle: {
+                    fontWeight: '900',
+                    },
+                    headerLeft: () => (
+                    <TouchableOpacity
+                        onPress={() => {
+                        router.back();
+                        }}
+                    >
+                        <Ionicons name="arrow-back" size={24} color="#fff" />
+                    </TouchableOpacity>
+                    ),
+                }}
+            />
+
+            <Stack.Screen
+                name="support"
+                options={{
+                    headerShown: true,
+                    title: 'Help & Support',
+                    headerStyle: {
+                    backgroundColor: 'black',
+                    },
+                    headerTitleAlign: 'center',
+                    headerTintColor: '#ffffff',
+                    headerTitleStyle: {
+                    fontWeight: '900',
+                    },
+                    headerLeft: () => (
+                    <TouchableOpacity
+                        onPress={() => {
+                        router.back();
+                        }}
+                    >
+                        <Ionicons name="arrow-back" size={24} color="#fff" />
+                    </TouchableOpacity>
+                    ),
+                }}
+            />
         </Stack>
     );
 }

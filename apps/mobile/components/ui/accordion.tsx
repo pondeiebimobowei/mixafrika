@@ -3,13 +3,14 @@ import { TextClassContext } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 import * as AccordionPrimitive from '@rn-primitives/accordion';
 import { ChevronDown } from 'lucide-react-native';
+import { useEffect } from 'react';
 import { Platform, Pressable, View } from 'react-native';
 import Animated, {
   FadeOutUp,
   LayoutAnimationConfig,
   LinearTransition,
   useAnimatedStyle,
-  useDerivedValue,
+  useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
 
@@ -64,16 +65,21 @@ function AccordionTrigger({
 } & React.RefAttributes<AccordionPrimitive.TriggerRef>) {
   const { isExpanded } = AccordionPrimitive.useItemContext();
 
-  const progress = useDerivedValue(
-    () => (isExpanded ? withTiming(1, { duration: 250 }) : withTiming(0, { duration: 200 })),
-    [isExpanded]
-  );
+
+  const progress = useSharedValue(isExpanded ? 1 : 0);
+  
   const chevronStyle = useAnimatedStyle(
     () => ({
       transform: [{ rotate: `${progress.value * 180}deg` }],
     }),
     [progress]
   );
+
+  useEffect(() => {
+    progress.value = withTiming(isExpanded ? 1 : 0, {
+      duration: isExpanded ? 250 : 200,
+    });
+  }, [isExpanded]);
 
   return (
     <TextClassContext.Provider

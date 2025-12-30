@@ -10,6 +10,9 @@ export default function useFundApplication() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const form = useForm<Create_funding_application_dto>({
     resolver: zodResolver(create_funding_application_dto),
+    defaultValues: {
+      repayment_plan: 'daily'
+    }
   });
   const router = useRouter()
 

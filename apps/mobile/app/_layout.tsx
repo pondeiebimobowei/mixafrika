@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useUserSettings } from "@/store";
 import { useColorScheme } from "nativewind";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { ThemeProvider } from "@/context/theme context";
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -23,11 +24,13 @@ export default function RootLayout() {
 
   return (
       <>
-        <SafeAreaProvider>
-          <Stack screenOptions={{ headerShown: false }} />
-          <Toast />
-          <PortalHost />
-        </SafeAreaProvider>
+        <ThemeProvider>
+          <SafeAreaProvider>
+            <Stack screenOptions={{ headerShown: false }} />
+            <Toast />
+            <PortalHost />
+          </SafeAreaProvider>
+        </ThemeProvider>
       </>
     );
 }
