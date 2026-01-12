@@ -30,6 +30,7 @@ export default function LoanDetailsScreen() {
   const interest = totalRepayment - principal;
   const progressPercentage = totalRepayment > 0 ? (repaidAmount / totalRepayment) * 100 : 0;
   const dailyInstallment = loan_account?.daily_repayment_amount || 0;
+  const dueDate = loan_account?.cluster.end_date || 'NIL';
 
   return (
     <SafeAreaView edges={['bottom']} className="flex-1 bg-black pt-2">
@@ -49,6 +50,7 @@ export default function LoanDetailsScreen() {
 
             <Button
               className="bg-white rounded-xl  mb-6"
+              disabled={outstandingAmount === 0}
               onPress={handlePayNow}
             >
               <View className="flex-row items-center justify-center gap-2">
@@ -117,7 +119,7 @@ export default function LoanDetailsScreen() {
                 </View>
               </View>
               {/* Placeholder for Due Date as we don't have it in ILoanAccount yet */}
-              <Text className="text-white font-bold text-sm">Oct 31, 2023</Text>
+              <Text className="text-white font-bold text-sm">{dueDate}</Text>
             </View>
           </View>
 

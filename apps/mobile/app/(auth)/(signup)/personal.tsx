@@ -184,7 +184,7 @@ export default function PersonalDetailsScreen() {
         <View className="mt-8 gap-6">
           <Pressable
             className="bg-[#10b981] h-14 rounded-2xl items-center justify-center shadow-sm shadow-[#10b981]/20"
-            onPress={handleSubmit(handleSignup, (e)=> console.log("error", e))}
+            onPress={handleSubmit(handleSignup)}
             // disabled={isLoading}
           >
             <Text className="text-white font-bold text-lg">

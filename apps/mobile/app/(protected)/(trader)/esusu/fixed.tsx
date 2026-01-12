@@ -48,24 +48,6 @@ export default function FixedSavings() {
         return amount * rate * (months / 12);
     }, [targetAmount, maturityDate]);
 
-    const BANK_CARDS = [
-        {
-           id: "cabe825f-d0aa-409b-94e8-299b4da65d9d",
-           type: 'Visa Debit',
-           number: '1234 5678 9012 3456',
-           expiry: '12/25',
-           cvv: '123',
-        },
-
-        {
-            id: "cabe825f-d0aa-409b-94e8-299b4da65d9a",
-            type: 'Mastercard Gold',
-            number: '5678 1234 5678 1234',
-            expiry: '12/25',
-            cvv: '123',
-        }
-    ];
-
     return (
         <SafeAreaView edges={['top']} className="flex-1 bg-gray-200 dark:bg-black">
 
@@ -106,7 +88,7 @@ export default function FixedSavings() {
 
                     {/* Target Amount */}
                     <View className='mb-6'>
-                        <Text className="text-black dark:text-gray-400 text-xs font-bold uppercase mb-2">Target Amount</Text>
+                        <Text className="text-black dark:text-gray-400 text-xs font-bold uppercase mb-2">Amount to Lock</Text>
                         <Controller
                             control={control}
                             name="target_amount"
@@ -139,18 +121,16 @@ export default function FixedSavings() {
                                         {SAVINGS_MATURITY_DATE_OPTIONS.map((duration, idx) => {
                                             const isSelected = value === duration.value;
                                             return (
-                                                <>
-                                                    <TouchableOpacity
-                                                        key={duration.label}
-                                                        onPress={() => onChange(duration.value)}
-                                                        className={cn(
-                                                            "flex-1 mr-2 px-2 py-4 rounded-xl items-center justify-center",
-                                                            isSelected ? "bg-[#10b981]" : "bg-[#1f2937]"
-                                                        )}
-                                                    >
-                                                        <Text className={cn("font-bold text-sm", isSelected ? "text-white" : "text-gray-400")}>{duration.label}</Text>
-                                                    </TouchableOpacity>
-                                                </>
+                                                <TouchableOpacity
+                                                    key={idx}
+                                                    onPress={() => onChange(duration.value)}
+                                                    className={cn(
+                                                        "flex-1 mr-2 px-2 py-4 rounded-xl items-center justify-center",
+                                                        isSelected ? "bg-[#10b981]" : "bg-[#1f2937]"
+                                                    )}
+                                                >
+                                                    <Text className={cn("font-bold text-sm", isSelected ? "text-white" : "text-gray-400")}>{duration.label}</Text>
+                                                </TouchableOpacity>
                                             )
                                         })}
                                     </View>
@@ -309,10 +289,12 @@ export default function FixedSavings() {
 
                                 {/* Debit Card Option */}
                                 <TouchableOpacity
+                                    disabled={bank_cards.length === 0}
                                     onPress={() => { setPaymentMethod('card'); setValue('source_id', '');  onChange('card')}}
                                     className={cn(
                                         "p-4 rounded-xl border mb-3 flex-row items-center justify-between",
-                                        paymentMethod === 'card' ? "bg-[#1f2937] border-[#10b981]" : "bg-[#1f2937] border-transparent"
+                                        paymentMethod === 'card' ? "bg-[#1f2937] border-[#10b981]" : "bg-[#1f2937] border-transparent",
+                                        bank_cards.length === 0 && "opacity-50 cursor-not-allowed"
                                     )}
                                 >
                                     <View className="flex-row items-center gap-4">
@@ -396,7 +378,7 @@ export default function FixedSavings() {
                     {/* Actions */}
                     <View className="flex-row gap-4">
                         <TouchableOpacity
-                            onPress={handleSubmit(handleCreateSavgingsPlan, (e) => console.log("Error: ", e))}
+                            onPress={handleSubmit(handleCreateSavgingsPlan)}
                             disabled={is_loading}
                             className="flex-[2] bg-[#10b981] p-4 rounded-xl items-center"
                         >

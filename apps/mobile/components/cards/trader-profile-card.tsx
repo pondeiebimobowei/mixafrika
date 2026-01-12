@@ -16,11 +16,13 @@ export default function TraderProfileCard() {
         <View className="bg-[#1e293b] rounded-2xl p-5 mb-6">
             <View className="flex-row justify-between items-start mb-6">
                 <View>
-                    <Text className="text-white text-2xl font-bold mb-1">{business?.name || 'Business Name'}</Text>
-                    <View className="flex-row items-center gap-1">
+                    <Text className="text-white text-2xl font-bold mb-1">{business?.name || user?.first_name + ' ' + user?.last_name}</Text>
+                    {business ? (<View className="flex-row items-center gap-1">
                         <MapPin size={14} color="#94a3b8" />
                         <Text className="text-slate-400 text-sm">{business?.city}, {business?.state}</Text>
-                    </View>
+                    </View>) : (
+                        <Text className="text-slate-400 text-sm">@{user?.user_name}</Text>
+                    )}
                 </View>
 
                 {/* Credit Score Badge */}

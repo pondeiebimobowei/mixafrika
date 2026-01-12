@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native';
 import { Text } from '@/components/ui/text';
-import { Check, CreditCard, Wallet } from 'lucide-react-native';
+import { Check, CheckCircle2, CreditCard, Wallet } from 'lucide-react-native';
 import { formatCurrency, cn } from '@/lib/utils';
 import { useWalletState } from '@/store/hooks/wallet.hook';
 import { apiPrivate } from '@/axios/axios-config';
@@ -139,67 +139,22 @@ export function TopUpPlanSheet({ onClose, savingsId, onSuccess }: TopUpPlanSheet
                     </View>
                 ) : (
                     <View className="gap-3">
-                        <TouchableOpacity
-                            onPress={() => setSelectedCard('visa')}
-                            className={cn(
-                                "p-4 rounded-2xl border flex-row items-center justify-between",
-                                selectedCard === 'visa' ? "bg-white border-white" : "bg-[#1e293b] border-[#334155]"
-                            )}
-                        >
-                            <View className="flex-row items-center gap-3">
-                                <CreditCard size={24} color={selectedCard === 'visa' ? 'black' : 'white'} />
-                                <View>
-                                    <Text className={cn("font-bold", selectedCard === 'visa' ? "text-black" : "text-white")}>Visa Debit</Text>
-                                    <Text className={cn("text-xs", selectedCard === 'visa' ? "text-gray-500" : "text-gray-400")}>**** 4242</Text>
-                                </View>
-                            </View>
-                            {selectedCard === 'visa' && <Check size={20} color="#10b981" />}
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                            onPress={() => setSelectedCard('mastercard')}
-                            className={cn(
-                                "p-4 rounded-2xl border flex-row items-center justify-between",
-                                selectedCard === 'mastercard' ? "bg-white border-white" : "bg-[#1e293b] border-[#334155]"
-                            )}
-                        >
-                            <View className="flex-row items-center gap-3">
-                                <CreditCard size={24} color={selectedCard === 'mastercard' ? 'black' : 'white'} />
-                                <View>
-                                    <Text className={cn("font-bold", selectedCard === 'mastercard' ? "text-black" : "text-white")}>Mastercard Gold</Text>
-                                    <Text className={cn("text-xs", selectedCard === 'mastercard' ? "text-gray-500" : "text-gray-400")}>**** 8899</Text>
-                                </View>
-                            </View>
-                            {selectedCard === 'mastercard' && (
-                                <View className="w-6 h-6 rounded-full bg-[#10b981] items-center justify-center">
-                                    <Check size={14} color="white" />
-                                </View>
-                            )}
-                        </TouchableOpacity>
-
+                        
                         { bank_cards.map( ( card ) => {
                             return(
                                 <TouchableOpacity
                                     key={card.id}
-                                    onPress={() => setSelectedCard('mastercard')}
-                                    className={cn(
-                                        "p-4 rounded-2xl border flex-row items-center justify-between",
-                                        selectedCard === 'mastercard' ? "bg-white border-white" : "bg-[#1e293b] border-[#334155]"
-                                    )}
-                                >
-                                    <View className="flex-row items-center gap-3">
-                                        <CreditCard size={24} color={selectedCard === 'mastercard' ? 'black' : 'white'} />
-                                        <View>
-                                            <Text className={cn("font-bold", selectedCard === 'mastercard' ? "text-black" : "text-white")}>Mastercard Gold</Text>
-                                            <Text className={cn("text-xs", selectedCard === 'mastercard' ? "text-gray-500" : "text-gray-400")}>**** 8899</Text>
+                                    onPress={() => { onChangeSourceType(card.id) }}
+                                    className="bg-white p-4 rounded-xl flex-row items-center justify-between mb-2">
+                                        <View className="flex-row items-center gap-3">
+                                            <CreditCard size={20} color="black" />
+                                            <View>
+                                                <Text className="text-black font-bold">{card.card_type}</Text>
+                                                <Text className="text-gray-500 text-xs">****{card.last_four_digits}</Text>
+                                            </View>
                                         </View>
-                                    </View>
-                                    {selectedCard === 'mastercard' && (
-                                        <View className="w-6 h-6 rounded-full bg-[#10b981] items-center justify-center">
-                                            <Check size={14} color="white" />
-                                        </View>
-                                    )}
-                                </TouchableOpacity>
+                                        {value === card.id && <CheckCircle2 size={20} color="#10b981" />}
+                                    </TouchableOpacity>
                             )
                         })}
                     </View>

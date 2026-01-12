@@ -271,7 +271,7 @@ export default function TargetSavings() {
 
                             <View className="flex-row gap-4">
                                 <TouchableOpacity
-                                    onPress={handleSubmit(handleCreateSavgingsPlan, (e) => console.log("Error: ", e))}
+                                    onPress={handleSubmit(handleCreateSavgingsPlan)}
                                     disabled={is_loading}
                                     className="flex-[2] bg-[#10b981] p-4 rounded-xl items-center"
                                 >

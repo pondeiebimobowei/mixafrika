@@ -29,7 +29,7 @@ export default function Support() {
     ];
 
     return (
-        <SafeAreaView edges={[]} className="flex-1 bg-black p-4">
+        <SafeAreaView edges={['top']} className="flex-1 bg-black p-4">
             <ScrollView showsVerticalScrollIndicator={false}>
                 {/* Search Bar */}
                 <View className="bg-[#1f2937] rounded-xl flex-row items-center px-4 py-3 mb-8 border border-gray-700">

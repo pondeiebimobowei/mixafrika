@@ -26,6 +26,8 @@ import { useFetchBusiness } from '@/store/hooks/business';
 import Sheet from '@/components/ui/sheet';
 import { RepaymentSheet } from '@/components/sheets/repayment.sheet';
 import { useTheme } from '@/context/theme context';
+import EsusuGroupDashboardCard from '@/components/cards/esusu-group-dashboard-card';
+import { useFetchWallet } from '@/store/hooks/wallet.hook';
 
 export default function TraderDashboard() {
   const { business } = useUserBusiness();
@@ -33,6 +35,7 @@ export default function TraderDashboard() {
   const router = useRouter();
 
   useFetchBusiness()
+  useFetchWallet();
 
   const { toggleTheme } =useTheme()
   
@@ -134,6 +137,10 @@ export default function TraderDashboard() {
 
         {/* Primary Goal Card */}
         <PrimaryGoalCard />
+
+        {/* Esusu Groups Card */}
+        <EsusuGroupDashboardCard />
+
 
         {/* Recent Activity */}
         <RecentActivityCard />
