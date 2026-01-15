@@ -8,25 +8,9 @@ export const mockLoanRepaySeed: (response) => Promise<IRepaymentHistory[]> =( as
             id: uuidv4(),
             loan_account_id: loan_account_id[0],
             status: 'paid',
-            amount: 19_167,
+            amount: 0,
             createdAt: "2025-11-12T16:13:42.425Z",
             updatedAt: "2025-11-12T16:13:42.425Z",
-        },
-        {
-            id: uuidv4(),
-            loan_account_id: loan_account_id[0],
-            status: 'paid (late)',
-            amount: 19_167,
-            createdAt: "2025-11-12T16:13:42.425Z",
-            updatedAt: "2025-11-12T16:13:42.425Z",
-        },
-        {
-            id: uuidv4(),
-            loan_account_id: loan_account_id[0],
-            status: 'missed',
-            amount: 19_167,
-            createdAt: "2025-11-12T16:13:42.425Z",
-            updatedAt: "2025-11-12T16:13:42.425Z",
-        },
+        }
     ]
 })

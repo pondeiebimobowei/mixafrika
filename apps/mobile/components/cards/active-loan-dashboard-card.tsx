@@ -16,7 +16,7 @@ export default function ActiveLoanDashboardCard() {
 
     return (
         <View>
-            { false && (
+            { loan_account?.status === 'approved' && (
             <Pressable onPress={() => router.push('/repayment-history')}>
                 <View className="bg-[#059669] rounded-2xl p-5 mb-6 relative overflow-hidden">
                     <View>

@@ -37,7 +37,7 @@ export class FundingService {
       user_id: userId,
     });
 
-    this.approveFunding(userId, String(data.id))
+    this.approveFunding(userId, String(data.id), String(data.duration))
     
     // if (fs.existsSync(statement_doc)) {
     //       fs.unlinkSync(statement_doc);
@@ -50,13 +50,13 @@ export class FundingService {
     }
   }
 
-  async approveFunding ( user_id: string, application_id: string ) {
+  async approveFunding ( user_id: string, application_id: string, duration: string ) {
 
-    const cluster = await Cluster.findOne()
+    const cluster = await Cluster.findOne({ where: { duration }})
 
     await FundingApplication.update( { cluster_id: cluster?.id, approved_at: new Date().toISOString() }, { where: {  id: application_id }})
 
-    const { data} = await this.loanService.handleCreate(user_id, application_id )
+    const { data } = await this.loanService.handleCreate(user_id, application_id )
 
     return {
       success: true,

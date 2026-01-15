@@ -21,6 +21,8 @@ module.exports = {
         city: { type: Sequelize.STRING, allowNull: false },
         state: { type: Sequelize.STRING, allowNull: false },
         country: { type: Sequelize.STRING, allowNull: false },
+        cac_document: { type: Sequelize.STRING, allowNull: false },
+        national_id_document: { type: Sequelize.STRING, allowNull: false },
 
         createdAt: {
           allowNull: false,

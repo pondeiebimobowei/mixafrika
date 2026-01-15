@@ -7,10 +7,10 @@ import { UserBusiness } from 'src/database/models/user-business.model';
 @Injectable()
 export class BusinessService {
 
-    async handleGetUserBusiness(user_id:string): Promise<Response<IUserBusiness | null>>{
+    async handleGetUserBusiness(user_id: string): Promise<Response<IUserBusiness | null>> {
 
 
-        const business = await UserBusiness.findOne( {
+        const business = await UserBusiness.findOne({
             where: {
                 user_id
             }
@@ -22,11 +22,11 @@ export class BusinessService {
             message: 'Business details retrieved successfully'
         }
     }
-    
-    async handleSubmitUserBusiness(user_id:string, { street_address, city, state, country, name, phone, type }: Submit_business): Promise<Response<IUserBusiness>> {
 
-        const business = await UserBusiness.create( {
-            city, state, country, street_address, name, phone, type, user_id,
+    async handleSubmitUserBusiness(user_id: string, { street_address, city, state, country, name, phone, type, cac_document, national_id_document }: Submit_business): Promise<Response<IUserBusiness>> {
+
+        const business = await UserBusiness.create({
+            city, state, country, street_address, name, phone, type, user_id, cac_document, national_id_document
         })
 
         return {

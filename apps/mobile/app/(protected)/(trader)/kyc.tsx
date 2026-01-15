@@ -162,7 +162,7 @@ export default function KycScreen() {
                                     <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">Legal Business Name</Text>
                                     <Controller
                                         control={control}
-                                        name="business_name"
+                                        name="name"
                                         render={({ field, fieldState: { error } }) => (
                                             <>
                                                 <View className="flex-row items-center border border-gray-200 dark:border-zinc-800 rounded-2xl bg-white dark:bg-zinc-900 px-4 h-14">
@@ -186,7 +186,7 @@ export default function KycScreen() {
                                     <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">Business Category</Text>
                                     <Controller
                                         control={control}
-                                        name="business_type"
+                                        name="type"
                                         render={({ field, fieldState: { error },
                                         }) => (
                                             <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>
@@ -218,7 +218,106 @@ export default function KycScreen() {
                                     <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">Business Location</Text>
                                     <Controller
                                         control={control}
-                                        name="business_location"
+                                        name="street_address"
+                                        render={({ field, fieldState: { error },
+                                        }) => (
+                                            <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>
+                                                <SelectTrigger className='w-full h-14 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl px-4'>
+                                                    <View className="flex-row items-center gap-3">
+                                                        <MapPin size={18} color="#d4d4d8" />
+                                                        <SelectValue className='text-black dark:text-white text-base' placeholder='Enter market or city name' />
+                                                    </View>
+                                                </SelectTrigger>
+                                                <SelectContent className='w-11/12'>
+                                                    <SelectGroup>
+                                                        {
+                                                            BUSINESS_LOCATION_OPTIONS.map((item) => (
+                                                                <SelectItem key={item.value} label={item.label} value={item.value}>
+                                                                    {item.label}
+                                                                </SelectItem>
+                                                            ))
+                                                        }
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                                {error && <ErrorMessageDisplay message={error.message} />}
+
+                                            </Select>
+                                        )}
+                                    />
+                                </View>
+
+                                {/* Business City */}
+                                <View>
+                                    <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">Business Location</Text>
+                                    <Controller
+                                        control={control}
+                                        name="city"
+                                        render={({ field, fieldState: { error },
+                                        }) => (
+                                            <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>
+                                                <SelectTrigger className='w-full h-14 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl px-4'>
+                                                    <View className="flex-row items-center gap-3">
+                                                        <MapPin size={18} color="#d4d4d8" />
+                                                        <SelectValue className='text-black dark:text-white text-base' placeholder='Enter market or city name' />
+                                                    </View>
+                                                </SelectTrigger>
+                                                <SelectContent className='w-11/12'>
+                                                    <SelectGroup>
+                                                        {
+                                                            BUSINESS_LOCATION_OPTIONS.map((item) => (
+                                                                <SelectItem key={item.value} label={item.label} value={item.value}>
+                                                                    {item.label}
+                                                                </SelectItem>
+                                                            ))
+                                                        }
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                                {error && <ErrorMessageDisplay message={error.message} />}
+
+                                            </Select>
+                                        )}
+                                    />
+                                </View>
+
+                                {/* Business State */}
+                                <View>
+                                    <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">Business Location</Text>
+                                    <Controller
+                                        control={control}
+                                        name="state"
+                                        render={({ field, fieldState: { error },
+                                        }) => (
+                                            <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>
+                                                <SelectTrigger className='w-full h-14 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl px-4'>
+                                                    <View className="flex-row items-center gap-3">
+                                                        <MapPin size={18} color="#d4d4d8" />
+                                                        <SelectValue className='text-black dark:text-white text-base' placeholder='Enter market or city name' />
+                                                    </View>
+                                                </SelectTrigger>
+                                                <SelectContent className='w-11/12'>
+                                                    <SelectGroup>
+                                                        {
+                                                            BUSINESS_LOCATION_OPTIONS.map((item) => (
+                                                                <SelectItem key={item.value} label={item.label} value={item.value}>
+                                                                    {item.label}
+                                                                </SelectItem>
+                                                            ))
+                                                        }
+                                                    </SelectGroup>
+                                                </SelectContent>
+                                                {error && <ErrorMessageDisplay message={error.message} />}
+
+                                            </Select>
+                                        )}
+                                    />
+                                </View>
+
+                                {/* Business Country */}
+                                <View>
+                                    <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">Business Location</Text>
+                                    <Controller
+                                        control={control}
+                                        name="country"
                                         render={({ field, fieldState: { error },
                                         }) => (
                                             <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>
@@ -251,7 +350,7 @@ export default function KycScreen() {
                                     <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">Business Phone Number</Text>
                                     <Controller
                                         control={control}
-                                        name="business_phone_number"
+                                        name="phone"
                                         render={({ field, fieldState: { error } }) => (
                                             <>
                                                 <View className="flex-row items-center gap-3">

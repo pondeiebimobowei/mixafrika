@@ -19,8 +19,7 @@ import { CreationOptional, DataTypes } from 'sequelize';
 @Table({ tableName: 'user_business' })
 export class UserBusiness
   extends Model<IUserBusiness>
-  implements IUserBusiness
-{
+  implements IUserBusiness {
   @PrimaryKey
   @Default(DataTypes.UUIDV4)
   @Column(DataTypes.UUID)
@@ -51,6 +50,12 @@ export class UserBusiness
 
   @Column(DataType.STRING)
   declare country: string;
+
+  @Column(DataType.STRING)
+  declare cac_document: string;
+
+  @Column(DataType.STRING)
+  declare national_id_document: string;
 
   @BelongsTo(() => User, { foreignKey: 'user_id', as: 'user' })
   declare user?: User;

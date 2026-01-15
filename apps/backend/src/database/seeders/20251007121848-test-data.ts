@@ -56,6 +56,8 @@ module.exports = {
         deletedAt: null,
         state: 'Abuja',
         country: 'Nigeria',
+        cac_document: 'https://picsum.photos/seed/401/150/150',
+        national_id_document: 'https://picsum.photos/seed/401/150/150',
         createdAt: new Date(),
         updatedAt: new Date(),
       }));

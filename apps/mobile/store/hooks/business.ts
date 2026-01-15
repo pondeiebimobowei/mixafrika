@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { useUserBusiness } from '..';
+import { useFocusEffect } from 'expo-router';
 
 export function useBusinessState() {
   const { business, error, loading } = useUserBusiness();
@@ -18,17 +19,19 @@ export function useBusinessState() {
 export function useFetchBusiness() {
   const { getUserBusiness } = useUserBusiness();
 
-  useEffect(() => {
-    const fetchUserBusiness = async () => {
-      const fetches = [getUserBusiness()];
+  useFocusEffect(
+    useCallback(() => {
+      const fetchUserBusiness = async () => {
+        const fetches = [getUserBusiness()];
 
-      try {
-        await Promise.allSettled(fetches);
-      } catch (err) {
-        console.error('One or more wallet fetches failed:', err);
-      }
-    };
+        try {
+          await Promise.allSettled(fetches);
+        } catch (err) {
+          console.error('One or more wallet fetches failed:', err);
+        }
+      };
 
-    fetchUserBusiness();
-  }, [getUserBusiness]);
+      fetchUserBusiness();
+    }, [getUserBusiness])
+  );
 }

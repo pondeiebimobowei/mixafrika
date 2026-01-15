@@ -9,4 +9,6 @@ export interface IUserBusiness extends BaseModel {
   city: string;
   state: string;
   country: string;
+  cac_document: string;
+  national_id_document: string;
 }

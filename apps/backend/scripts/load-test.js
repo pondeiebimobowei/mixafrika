@@ -13,7 +13,7 @@ export const options = {
 export default function () {
   // 1️⃣ Login payload
   const payload = JSON.stringify({
-    email: "trader@mixafrica.com",
+    email: "trader@mixafrika.com",
     password: "password123",
   });
 

@@ -11,6 +11,12 @@ import { Cluster } from 'src/database/models/cluster.model';
 @Injectable()
 export class LoanAccountService {
 
+    INTEREST_RATE = {
+        '30': 1.15,
+        '60': 1.2,
+        '90': 1.25,
+    }
+
     async getLoanAccount(user_id: string,) {
         const loan_account = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED }, include: { model: Cluster } })
         return {
@@ -22,14 +28,15 @@ export class LoanAccountService {
 
     async handleCreate( user_id:string, application_id: string) {
         const application = await FundingApplication.findOne({ where: { id: application_id }, include: { model: Cluster }})
+        const total_loan_amount = Number(application?.allocated_amount) * this.INTEREST_RATE[application?.duration as string]
 
         const loan_account = await LoanAccount.create({
             application_id,
-            daily_repayment_amount: Number(application?.allocated_amount) / Number(application?.duration),
+            daily_repayment_amount: total_loan_amount / Number(application?.duration),
             cluster_id: application?.cluster?.id as string,
             approved_at: new Date().toISOString() ,
             disbursed_amount: Number(application?.allocated_amount),
-            total_repayment_amount: Number(application?.allocated_amount) * 1.15,
+            total_repayment_amount: total_loan_amount,
             repaid_amount: 0,
             status: LoanStatus.APPROVED,
             user_id,
@@ -44,7 +51,6 @@ export class LoanAccountService {
     async handleRepayment(user_id: string, days: number) {
 
         const amount = await this.calculateDynamicRepayment(user_id, days);
-
         const wallet = await Wallet.findOne({ where: { user_id } });
         
         if (Number(wallet?.dataValues.available_balance) < Number(amount)) {
@@ -88,7 +94,6 @@ export class LoanAccountService {
     async calculateDynamicRepayment(user_id: string, daysToPay: number): Promise<number> {
         const loan = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED }, include: [{ model: Cluster }] });
         if (!loan) throw new HttpException({ success: false, message: "No Active Loan Found!"}, 500 );
-            
         const outstandingBalance = new Decimal(loan.dataValues.total_repayment_amount).minus(loan.dataValues.repaid_amount);
         const regularInstallment = new Decimal(loan.dataValues.total_repayment_amount).div(loan?.cluster?.duration as number);
         const days = new Decimal(daysToPay);

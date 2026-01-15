@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useCallback } from 'react';
 import { useLoanAccountStore } from '..';
+import { useFocusEffect } from 'expo-router';
 
 export function useLoanAccountState() {
   const { loan_account, repay_loan, loading, error } = useLoanAccountStore();
@@ -19,16 +20,18 @@ export function useLoanAccountState() {
 export function useFetchLoanAccount() {
   const { get_loan_account } = useLoanAccountStore();
 
-  useEffect(() => {
-    const fetLoanAccount = async () => {
-      const fetches = [get_loan_account()];
+  useFocusEffect(
+    useCallback(() => {
+      const fetLoanAccount = async () => {
+        const fetches = [get_loan_account()];
 
-      try {
-        await Promise.allSettled(fetches);
-      } catch (err) {
-        console.log('One or more loan account fetches failed');
-      }
-    };
-    fetLoanAccount();
-  }, [get_loan_account]);
+        try {
+          await Promise.allSettled(fetches);
+        } catch (err) {
+          console.log('One or more loan account fetches failed');
+        }
+      };
+      fetLoanAccount();
+    }, [get_loan_account])
+  )
 }

@@ -13,7 +13,7 @@ export const BUSINESS_LOCATION_OPTIONS = [
   { label: 'Select business location', value: '' },
   { label: 'Lagos', value: 'lagos' },
   { label: 'Abuja', value: 'abuja' },
-  { label: 'Port Harcourt', value: 'port_harcourt' },
+  { label: 'Port Harcourt', value: 'port harcourt' },
   { label: 'Kano', value: 'kano' },
   { label: 'Ibadan', value: 'ibadan' },
 ];
