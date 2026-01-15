@@ -15,7 +15,7 @@ export default function PersonalDetailsScreen() {
   const router = useRouter();
   const { colorScheme } = useColorScheme();
   const [showPassword, setShowPassword] = useState(false);
-  const { handleSignup, isLoading } = useSignup();
+  const { handleSignup, isLoading } = useSignup(getValues('role'));
 
   return (
     <SafeAreaView className="flex-1 bg-white dark:bg-black">

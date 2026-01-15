@@ -198,21 +198,21 @@ export default function ProfileStackLayout() {
                     headerShown: true,
                     title: 'Notification Preferences',
                     headerStyle: {
-                    backgroundColor: 'black',
+                        backgroundColor: 'black',
                     },
                     headerTitleAlign: 'center',
                     headerTintColor: '#ffffff',
                     headerTitleStyle: {
-                    fontWeight: '900',
+                        fontWeight: '900',
                     },
                     headerLeft: () => (
-                    <TouchableOpacity
-                        onPress={() => {
-                        router.back();
-                        }}
-                    >
-                        <Ionicons name="arrow-back" size={24} color="#fff" />
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                router.back();
+                            }}
+                        >
+                            <Ionicons name="arrow-back" size={24} color="#fff" />
+                        </TouchableOpacity>
                     ),
                 }}
             />
@@ -223,22 +223,28 @@ export default function ProfileStackLayout() {
                     headerShown: true,
                     title: 'Help & Support',
                     headerStyle: {
-                    backgroundColor: 'black',
+                        backgroundColor: 'black',
                     },
                     headerTitleAlign: 'center',
                     headerTintColor: '#ffffff',
                     headerTitleStyle: {
-                    fontWeight: '900',
+                        fontWeight: '900',
                     },
                     headerLeft: () => (
-                    <TouchableOpacity
-                        onPress={() => {
-                        router.back();
-                        }}
-                    >
-                        <Ionicons name="arrow-back" size={24} color="#fff" />
-                    </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => {
+                                router.back();
+                            }}
+                        >
+                            <Ionicons name="arrow-back" size={24} color="#fff" />
+                        </TouchableOpacity>
                     ),
+                }}
+            />
+            <Stack.Screen
+                name="kyc"
+                options={{
+                    headerShown: false,
                 }}
             />
         </Stack>

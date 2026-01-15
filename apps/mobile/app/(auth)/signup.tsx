@@ -10,11 +10,11 @@ import { useSignup } from '@/hooks/use-signup.hook';
 import { Controller } from 'react-hook-form';
 
 const SelectRoleScreen = () => {
-  const { form, handleSignup } = useSignup();
+  // const { form, handleSignup } = useSignup();
 
   return (
     <SafeAreaView className="flex-1">
-      <ScrollView className="bg-slate-900 py-10 px-4 ">
+      {/* <ScrollView className="bg-slate-900 py-10 px-4 ">
         <View>
           <Text className="text-white text-4xl font-bold">
             Create an Account
@@ -126,7 +126,7 @@ const SelectRoleScreen = () => {
         <TouchableOpacity onPress={form.handleSubmit(handleSignup)}>
           <Text></Text>
         </TouchableOpacity>
-      </ScrollView>
+      </ScrollView> */}
     </SafeAreaView>
   );
 };
