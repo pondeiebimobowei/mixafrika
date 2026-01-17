@@ -10,6 +10,7 @@ module.exports = {
         id: { type: Sequelize.UUID, defaultValue: sequelize.UUIDV4, primaryKey: true },
         
         user_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user', key: 'id' }, onDelete: "Cascade", onUpdate: "Cascade"  }, 
+        user_business_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user_business', key: 'id' }, onDelete: "Cascade", onUpdate: "Cascade"  }, 
         cluster_id: {
           type: Sequelize.UUID,
           allowNull: true,
@@ -20,11 +21,9 @@ module.exports = {
           onUpdate: 'CASCADE',
           onDelete: 'CASCADE',
         },
-        business_type: { type: Sequelize.STRING, allowNull: false },
-        business_location: { type: Sequelize.STRING, allowNull: false },
         amount: { type: Sequelize.DECIMAL(15, 2), allowNull: false, defaultValue: 0.00 },
         allocated_amount: { type: Sequelize.DECIMAL(15, 2), allowNull: false, defaultValue: 0.00 },
-        duration: { type: Sequelize.STRING, allowNull: false },
+        duration: { type: Sequelize.INTEGER, allowNull: false },
         repayment_plan: { type: Sequelize.STRING, allowNull: false },
         approved_at: { type: Sequelize.DATE, allowNull: true },
         purpose: { type: Sequelize.STRING, allowNull: false },

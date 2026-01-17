@@ -4,7 +4,7 @@ import React from 'react';
 import { FormProvider } from 'react-hook-form';
 
 export default function SignupFormProviderWrapper() {
-  const { form } = useSignup();
+  const { form } = useSignup(null);
 
   return (
     <FormProvider {...form}>

@@ -165,7 +165,7 @@ export default function Profile() {
           </View>
 
           <Text className="text-white text-xl font-bold mb-1">
-            {business?.name || `${user?.first_name} ${user?.last_name}`}
+            {business[0]?.name || `${user?.first_name} ${user?.last_name}`}
           </Text>
           <Text className="text-gray-400 mb-4">{user?.email}</Text>
 

@@ -1,8 +1,7 @@
 import { z } from 'zod';
 
 export const create_funding_application_dto = z.object({
-  business_type: z.string('Select a business type').min(1, 'Please select a business type.'),
-  business_location: z.string('Select a business location').min(1, 'Please select a business location.'),
+  user_business_id: z.string('Select a business').min(1, 'Please select a business.'),
   amount: z.string('Enter funding amount'),
   duration: z.string('Select duration').min(1, 'Please select a duration.'),
   repayment_plan: z.string('Select repayment plan').min(1, 'Please select a repayment plan.'),

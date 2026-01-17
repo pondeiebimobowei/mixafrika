@@ -90,7 +90,7 @@ export default function TraderDashboard() {
             ) : (
               <View className="h-10 w-10 rounded-full bg-slate-700 items-center justify-center border-2 border-slate-600">
                 <Text className="text-white font-bold text-lg">
-                  {business?.name?.charAt(0) || user?.first_name?.charAt(0) || 'D'}
+                  {business[0]?.name?.charAt(0) || user?.first_name?.charAt(0) || 'D'}
                 </Text>
               </View>
             )}

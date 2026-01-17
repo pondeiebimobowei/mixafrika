@@ -6,8 +6,8 @@ import { IUserBusiness } from '@mixafrica/shared/types/user-business';
 import { Submit_business } from '@mixafrica/shared/validation/submit-business-dto';
 
 export interface UserBusiness extends BaseSlice {
-  business: IUserBusiness | null;
-  setUserBusiness: ({ business }: { business: IUserBusiness }) => void;
+  business: IUserBusiness[];
+  setUserBusiness: ({ business }: { business: IUserBusiness[] }) => void;
   getUserBusiness: () => void;
   updateUserBusiness: (business_data: Submit_business) => void;
 }
@@ -20,7 +20,7 @@ export const createUserBusiness: StateCreator<
 > = (set) => ({
   loading: false,
   error: null,
-  business: null,
+  business: [],
   setUserBusiness: ({ business }) => {
     set({ business });
   },

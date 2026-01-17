@@ -27,12 +27,10 @@ module.exports = {
       const bankCards = await mockBankCardSeed(users);
       await queryInterface.bulkInsert('collection', collection, { returning: true, transaction: t });
       await queryInterface.bulkInsert('cluster', clusters, { returning: true, transaction: t });
-      const application = await mockApplicationSeed(users, clusters)
 
       const responseUser = await queryInterface.bulkInsert('user', users, { returning: true, transaction: t });
       const responseInvestor = await queryInterface.bulkInsert('user', investors, { returning: true, transaction: t });
       await queryInterface.bulkInsert('transaction', transactions, { returning: true, transaction: t });
-      await queryInterface.bulkInsert('funding_application', application, { returning: true, transaction: t });
 
       await queryInterface.bulkInsert('bank_card', bankCards, { returning: true, transaction: t });
       const userWallets = [...responseUser, ...responseInvestor].map((u) => ({
@@ -61,8 +59,12 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       }));
+
+      const application = await mockApplicationSeed(users, clusters, userBusiness)
       
       await queryInterface.bulkInsert('user_business', userBusiness, { transaction: t });
+      await queryInterface.bulkInsert('funding_application', application, { returning: true, transaction: t });
+
       
       const userSettings = [...responseUser, ...responseInvestor].map((u) => ({
         id: uuidv4(),

@@ -103,7 +103,6 @@ export default function RoleSelectScreen() {
                 <>
                   <View className="flex justify-between gap-4 items-center">
                     {roles.map((role) => {
-                      const isSelected = selectedRole === role.title;
 
                       return (
                         <Pressable

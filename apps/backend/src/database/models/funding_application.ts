@@ -15,6 +15,7 @@ import { CreationOptional, DataTypes } from 'sequelize';
 import { User } from './user.model';
 import { IFundingApplication } from '@shared/shared/src/types/funding-application';
 import { Cluster } from './cluster.model';
+import { UserBusiness } from './user-business.model';
 
 @Table({ tableName: 'funding_application' })
 export class FundingApplication
@@ -33,6 +34,10 @@ export class FundingApplication
   @Column(DataType.STRING)
   declare cluster_id: string | null;
 
+  @ForeignKey(() => UserBusiness)
+  @Column(DataType.STRING)
+  declare user_business_id: string;
+
   @Column(DataType.STRING)
   declare business_type: string;
 
@@ -45,8 +50,8 @@ export class FundingApplication
   @Column(DataType.DECIMAL(15, 2))
   declare allocated_amount: number;
 
-  @Column(DataType.STRING)
-  declare duration: string;
+  @Column(DataType.INTEGER)
+  declare duration: number;
 
   @Column(DataType.STRING)
   declare repayment_plan: string;

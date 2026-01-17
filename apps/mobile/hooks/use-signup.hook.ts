@@ -8,7 +8,7 @@ import { create_user_dto, Create_user_dto } from '@mixafrica/shared/validation/c
 import { useAuthStore } from '@/store';
 import { Roles } from '@mixafrica/shared/enums';
 
-export function useSignup(role: Roles) {
+export function useSignup(role: Roles | null) {
   const [isLoading, setIsLoading] = useState(false);
   const { apiSignup } = AuthController();
   const router = useRouter();

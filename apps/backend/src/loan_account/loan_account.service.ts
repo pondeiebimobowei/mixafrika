@@ -28,7 +28,7 @@ export class LoanAccountService {
 
     async handleCreate( user_id:string, application_id: string) {
         const application = await FundingApplication.findOne({ where: { id: application_id }, include: { model: Cluster }})
-        const total_loan_amount = Number(application?.allocated_amount) * this.INTEREST_RATE[application?.duration as string]
+        const total_loan_amount = Number(application?.allocated_amount) * this.INTEREST_RATE[application?.duration as number]
 
         const loan_account = await LoanAccount.create({
             application_id,

@@ -17,7 +17,7 @@ interface TopUpPlanSheetProps {
 export function TopUpPlanSheet({ onClose, savingsId, onSuccess }: TopUpPlanSheetProps) {
     const [amount, setAmount] = useState('0');
     const [source, setSource] = useState<'wallet' | 'card'>('wallet');
-    const [selectedCard, setSelectedCard] = useState('mastercard');
+    const [selectedCard, setSelectedCard] = useState<string>('');
     const [loading, setLoading] = useState(false);
 
     const { data: walletData } = useWalletState();
@@ -144,7 +144,7 @@ export function TopUpPlanSheet({ onClose, savingsId, onSuccess }: TopUpPlanSheet
                             return(
                                 <TouchableOpacity
                                     key={card.id}
-                                    onPress={() => { onChangeSourceType(card.id) }}
+                                    onPress={() => { setSelectedCard(String(card.id)) }}
                                     className="bg-white p-4 rounded-xl flex-row items-center justify-between mb-2">
                                         <View className="flex-row items-center gap-3">
                                             <CreditCard size={20} color="black" />
@@ -153,7 +153,7 @@ export function TopUpPlanSheet({ onClose, savingsId, onSuccess }: TopUpPlanSheet
                                                 <Text className="text-gray-500 text-xs">****{card.last_four_digits}</Text>
                                             </View>
                                         </View>
-                                        {value === card.id && <CheckCircle2 size={20} color="#10b981" />}
+                                        {selectedCard === card.id && <CheckCircle2 size={20} color="#10b981" />}
                                     </TouchableOpacity>
                             )
                         })}

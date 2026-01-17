@@ -5,15 +5,15 @@ import { Response } from '@mixafrica/shared/types/api/responses';
 
 
 
-export const updateBusiness = async (data: Submit_business): Promise<Response<IUserBusiness | null>> => {
+export const updateBusiness = async (data: Submit_business): Promise<Response<IUserBusiness[]>> => {
   try {
     const res = await apiPrivate.post(`/v1/business`, { ...data });
     return res.data;
   } catch (err: any) {
     if (err.response) {
-      return { success: false, message: err.response.data.message, data: null };
+      return { success: false, message: err.response.data.message, data: [] };
     } else {
-      return { success: false, message: err.message, data: null };
+      return { success: false, message: err.message, data: [] };
     }
   }
 };

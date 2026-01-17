@@ -8,9 +8,7 @@ import {
   CreatedAt,
   Default,
   PrimaryKey,
-  HasOne,
   HasMany,
-  BelongsTo,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { ICollection } from '@shared/shared/src/types/collection';
@@ -43,7 +41,6 @@ export class Collection extends Model<ICollection> {
   
   @Column(DataType.DECIMAL(15,2))
   declare min_investment: number;
-
 
   @Column(DataType.STRING)
   declare city: string;
