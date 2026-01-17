@@ -16,7 +16,7 @@ import { SavingsHistory } from './saving-history.model';
 import { User } from './user.model';
 import { ISaving } from '@shared/shared/src/types/saving';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { savingsFrequency, sourceType, SourceType, SavingsFrequency, SavingsType } from '@shared/shared/src/enums';
+import { type SourceType, type SavingsFrequency, type SavingsType, savingsFrequency, sourceType } from '@shared/shared/src/enums';
 
 @Table({ tableName: 'saving' })
 export class Savings extends Model<ISaving> implements ISaving {

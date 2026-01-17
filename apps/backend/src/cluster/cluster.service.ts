@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
+import { CollectionService } from 'src/collection/collection.service';
 import { Cluster } from 'src/database/models/cluster.model';
-import { Collection } from 'src/database/models/collection.model';
 
 @Injectable()
 export class ClusterService {
+
+  constructor( private readonly collectionService: CollectionService ){}
+
   async handleGetClusters() {
-    const clusters = await Collection.findAll({ include: [Cluster]})
+    const clusters = this.collectionService.handleGetCollections()
     return {
       success: true,
       message: 'Clusters found',

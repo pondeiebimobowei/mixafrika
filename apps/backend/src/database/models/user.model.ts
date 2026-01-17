@@ -19,7 +19,7 @@ import { Goal } from './goal.model';
 import { Investment } from './investment.model';
 import { Notification } from './notification.model';
 import { Feed } from './feed.model';
-import { roles, Roles } from '@shared/shared/src/enums';
+import { roles, type Roles } from '@shared/shared/src/enums';
 import { CreationOptional } from 'sequelize';
 import { LoanAccount } from './loan-account.model';
 import { UserBusiness } from './user-business.model';

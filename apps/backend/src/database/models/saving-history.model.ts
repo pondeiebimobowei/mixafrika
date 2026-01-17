@@ -13,7 +13,7 @@ import {
 } from 'sequelize-typescript';
 import { Savings } from './saving.model';
 import { ISavingsHistory } from '@shared/shared/src/types/savings-history';
-import { Types } from '@shared/shared/src/enums';
+import type { Types } from '@shared/shared/src/enums';
 import { CreationOptional, DataTypes } from 'sequelize';
 
 @Table({ tableName: 'saving_history' })

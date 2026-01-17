@@ -25,8 +25,9 @@ import {
 import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
 import {
-    BUSINESS_LOCATION_OPTIONS,
     BUSINESS_TYPE_OPTIONS,
+    COUNTRY,
+    STATE,
 } from '@/data/options';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import KeyboardAvoidingAreaView from '@/components/keyboard-avoiding-area-view';
@@ -159,7 +160,7 @@ export default function KycScreen() {
 
                                 {/* Business Name */}
                                 <View>
-                                    <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">Legal Business Name</Text>
+                                    <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">Business Name</Text>
                                     <Controller
                                         control={control}
                                         name="name"
@@ -183,7 +184,7 @@ export default function KycScreen() {
 
                                 {/* Business Type */}
                                 <View>
-                                    <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">Business Category</Text>
+                                    <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">Category</Text>
                                     <Controller
                                         control={control}
                                         name="type"
@@ -215,73 +216,57 @@ export default function KycScreen() {
 
                                 {/* Business Location */}
                                 <View>
-                                    <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">Business Location</Text>
+                                    <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">Street Address</Text>
                                     <Controller
                                         control={control}
                                         name="street_address"
                                         render={({ field, fieldState: { error },
                                         }) => (
-                                            <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>
-                                                <SelectTrigger className='w-full h-14 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl px-4'>
-                                                    <View className="flex-row items-center gap-3">
-                                                        <MapPin size={18} color="#d4d4d8" />
-                                                        <SelectValue className='text-black dark:text-white text-base' placeholder='Enter market or city name' />
-                                                    </View>
-                                                </SelectTrigger>
-                                                <SelectContent className='w-11/12'>
-                                                    <SelectGroup>
-                                                        {
-                                                            BUSINESS_LOCATION_OPTIONS.map((item) => (
-                                                                <SelectItem key={item.value} label={item.label} value={item.value}>
-                                                                    {item.label}
-                                                                </SelectItem>
-                                                            ))
-                                                        }
-                                                    </SelectGroup>
-                                                </SelectContent>
+                                            <>
+                                                <View className="flex-row items-center border border-gray-200 dark:border-zinc-800 rounded-2xl bg-white dark:bg-zinc-900 px-4 h-14">
+                                                    <TextInput
+                                                        className="flex-1 text-black dark:text-white text-base"
+                                                        placeholder="Street address"
+                                                        placeholderTextColor="#9ca3af"
+                                                        value={field.value}
+                                                        onChangeText={field.onChange}
+                                                        onBlur={field.onBlur}
+                                                    />
+                                                </View>
                                                 {error && <ErrorMessageDisplay message={error.message} />}
-
-                                            </Select>
+                                            </>
                                         )}
                                     />
                                 </View>
 
                                 {/* Business City */}
                                 <View>
-                                    <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">Business Location</Text>
+                                    <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">City</Text>
                                     <Controller
                                         control={control}
                                         name="city"
                                         render={({ field, fieldState: { error },
                                         }) => (
-                                            <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>
-                                                <SelectTrigger className='w-full h-14 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl px-4'>
-                                                    <View className="flex-row items-center gap-3">
-                                                        <MapPin size={18} color="#d4d4d8" />
-                                                        <SelectValue className='text-black dark:text-white text-base' placeholder='Enter market or city name' />
-                                                    </View>
-                                                </SelectTrigger>
-                                                <SelectContent className='w-11/12'>
-                                                    <SelectGroup>
-                                                        {
-                                                            BUSINESS_LOCATION_OPTIONS.map((item) => (
-                                                                <SelectItem key={item.value} label={item.label} value={item.value}>
-                                                                    {item.label}
-                                                                </SelectItem>
-                                                            ))
-                                                        }
-                                                    </SelectGroup>
-                                                </SelectContent>
+                                            <>
+                                                <View className="flex-row items-center border border-gray-200 dark:border-zinc-800 rounded-2xl bg-white dark:bg-zinc-900 px-4 h-14">
+                                                    <TextInput
+                                                        className="flex-1 text-black dark:text-white text-base"
+                                                        placeholder="City"
+                                                        placeholderTextColor="#9ca3af"
+                                                        value={field.value}
+                                                        onChangeText={field.onChange}
+                                                        onBlur={field.onBlur}
+                                                    />
+                                                </View>
                                                 {error && <ErrorMessageDisplay message={error.message} />}
-
-                                            </Select>
+                                            </>
                                         )}
                                     />
                                 </View>
 
                                 {/* Business State */}
                                 <View>
-                                    <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">Business Location</Text>
+                                    <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">State</Text>
                                     <Controller
                                         control={control}
                                         name="state"
@@ -291,13 +276,13 @@ export default function KycScreen() {
                                                 <SelectTrigger className='w-full h-14 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl px-4'>
                                                     <View className="flex-row items-center gap-3">
                                                         <MapPin size={18} color="#d4d4d8" />
-                                                        <SelectValue className='text-black dark:text-white text-base' placeholder='Enter market or city name' />
+                                                        <SelectValue className='text-black dark:text-white text-base' placeholder='Select state' />
                                                     </View>
                                                 </SelectTrigger>
                                                 <SelectContent className='w-11/12'>
                                                     <SelectGroup>
                                                         {
-                                                            BUSINESS_LOCATION_OPTIONS.map((item) => (
+                                                            STATE.map((item) => (
                                                                 <SelectItem key={item.value} label={item.label} value={item.value}>
                                                                     {item.label}
                                                                 </SelectItem>
@@ -314,7 +299,7 @@ export default function KycScreen() {
 
                                 {/* Business Country */}
                                 <View>
-                                    <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">Business Location</Text>
+                                    <Text className="text-gray-600 dark:text-gray-300 mb-2 text-xs font-bold uppercase tracking-wider">Country</Text>
                                     <Controller
                                         control={control}
                                         name="country"
@@ -324,13 +309,13 @@ export default function KycScreen() {
                                                 <SelectTrigger className='w-full h-14 bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-2xl px-4'>
                                                     <View className="flex-row items-center gap-3">
                                                         <MapPin size={18} color="#d4d4d8" />
-                                                        <SelectValue className='text-black dark:text-white text-base' placeholder='Enter market or city name' />
+                                                        <SelectValue className='text-black dark:text-white text-base' placeholder='Select country' />
                                                     </View>
                                                 </SelectTrigger>
                                                 <SelectContent className='w-11/12'>
                                                     <SelectGroup>
                                                         {
-                                                            BUSINESS_LOCATION_OPTIONS.map((item) => (
+                                                            COUNTRY.map((item) => (
                                                                 <SelectItem key={item.value} label={item.label} value={item.value}>
                                                                     {item.label}
                                                                 </SelectItem>
@@ -393,7 +378,7 @@ export default function KycScreen() {
                                 {/* CAC Document */}
                                 <View className="bg-white dark:bg-zinc-900 p-4 rounded-3xl border border-gray-100 dark:border-zinc-800 shadow-sm">
                                     <View className="border border-dashed border-gray-300 dark:border-zinc-700 rounded-2xl h-32 items-center justify-center mb-4 bg-gray-50 dark:bg-black/20">
-                                        <Upload size={32} color="#a1a1aa" className="mb-2" />
+                                        <Upload size={32} color="green" className="mb-2" />
                                         <Text className="text-gray-400 text-xs text-center">Click or drag to upload</Text>
                                     </View>
 
@@ -402,7 +387,7 @@ export default function KycScreen() {
 
                                     <View className="flex-row items-center justify-between">
                                         <View>
-                                            <Text className="text-[#a16207] dark:text-[#fbbf24] text-[10px] font-bold uppercase tracking-wider mb-1">Accepted Formats</Text>
+                                            <Text className="text-[#a16207] dark:text-primary text-[10px] font-bold uppercase tracking-wider mb-1">Accepted Formats</Text>
                                             <Text className="text-black dark:text-white text-xs font-medium">PDF, JPG (Max 5MB)</Text>
                                         </View>
                                         <Controller
@@ -414,9 +399,9 @@ export default function KycScreen() {
                                                     <View>
                                                         <Pressable
                                                             onPress={() => handlePickerChoice(onChange)}
-                                                            className={`px-6 py-3 rounded-xl ${fileInfo ? 'bg-green-100 dark:bg-green-900/30' : 'bg-[#a16207] dark:bg-[#fbbf24]'} `}
+                                                            className={`px-6 py-3 rounded-xl ${fileInfo ? 'bg-green-100 dark:bg-green-900/30' : 'bg-primary dark:bg-primary'} `}
                                                         >
-                                                            <Text className={`${fileInfo ? 'text-green-700 dark:text-green-400' : 'text-white dark:text-black'} font-bold`}>
+                                                            <Text className={`${fileInfo ? 'text-green-700 dark:text-green-400' : 'text-white dark:text-white'} font-bold`}>
                                                                 {fileInfo ? 'Changed' : 'Select File'}
                                                             </Text>
                                                         </Pressable>
@@ -432,7 +417,7 @@ export default function KycScreen() {
                                 <View className="bg-white dark:bg-zinc-900 p-4 rounded-3xl border border-gray-100 dark:border-zinc-800 shadow-sm">
                                     <View className="border border-dashed border-gray-300 dark:border-zinc-700 rounded-2xl h-32 items-center justify-center mb-4 bg-gray-50 dark:bg-black/20">
                                         <View className="bg-[#a16207]/10 p-2 rounded-lg">
-                                            <Building2 size={24} color="#a16207" />
+                                            <Building2 size={24} color="green" />
                                         </View>
                                         <Text className="text-gray-400 text-xs text-center mt-2">Click or drag to upload</Text>
                                     </View>
@@ -442,7 +427,7 @@ export default function KycScreen() {
 
                                     <View className="flex-row items-center justify-between">
                                         <View>
-                                            <Text className="text-[#a16207] dark:text-[#fbbf24] text-[10px] font-bold uppercase tracking-wider mb-1">Accepted Formats</Text>
+                                            <Text className="text-primary dark:text-primary text-[10px] font-bold uppercase tracking-wider mb-1">Accepted Formats</Text>
                                             <Text className="text-black dark:text-white text-xs font-medium">JPG, PNG (Max 5MB)</Text>
                                         </View>
                                         <Controller
@@ -456,7 +441,7 @@ export default function KycScreen() {
                                                             onPress={() => handlePickerChoice(onChange)}
                                                             className={`px-6 py-3 rounded-xl ${fileInfo ? 'bg-green-100 dark:bg-green-900/30' : 'bg-gray-100 dark:bg-zinc-800'}`}
                                                         >
-                                                            <Text className={`${fileInfo ? 'text-green-700 dark:text-green-400' : 'text-[#a16207] dark:text-[#fbbf24]'} font-bold`}>
+                                                            <Text className={`${fileInfo ? 'text-primary dark:text-primary' : 'text-primary dark:text-primary'} font-bold`}>
                                                                 {fileInfo ? 'Changed' : 'Select File'}
                                                             </Text>
                                                         </Pressable>
@@ -481,7 +466,7 @@ export default function KycScreen() {
 
                         {/* Action Buttons */}
                         <Pressable
-                            className="bg-[#10b981] h-14 rounded-2xl items-center justify-center shadow-sm shadow-[#10b981]/20 mt-4 flex-row gap-2"
+                            className="bg-primary h-14 rounded-2xl items-center justify-center shadow-sm shadow-[#10b981]/20 mt-4 flex-row gap-2"
                             disabled={formState.isSubmitting || isLoading}
                             onPress={currentStep === totalSteps ? handleSubmit(handleKycSubmit) : goNext}
                         >
@@ -499,7 +484,7 @@ export default function KycScreen() {
 
                         {currentStep === 1 && (
                             <Text className="text-center text-gray-400 text-xs py-2">
-                                By continuing, you agree to our <Text className="underline text-[#a16207] dark:text-[#fbbf24]">Terms of Service</Text>
+                                By continuing, you agree to our <Text className="underline text-primary dark:text-primary">Terms of Service</Text>
                             </Text>
                         )}
 

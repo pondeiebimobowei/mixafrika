@@ -18,6 +18,20 @@ export const BUSINESS_LOCATION_OPTIONS = [
   { label: 'Ibadan', value: 'ibadan' },
 ];
 
+export const STATE = [
+  { label: 'Select state', value: '' },
+  { label: 'Lagos', value: 'lagos' },
+  { label: 'Abuja', value: 'abuja' },
+  { label: 'Port Harcourt', value: 'port harcourt' },
+  { label: 'Kano', value: 'kano' },
+  { label: 'Ibadan', value: 'ibadan' },
+];
+
+export const COUNTRY = [
+  { label: 'Select country', value: '' },
+  { label: 'Nigeria', value: 'nigeria' },
+];
+
 export const BUSINESS_TYPE_OPTIONS = [
   { label: 'Select business type', value: '' },
   { label: 'Auto Mobile', value: 'auto_mobile' },
