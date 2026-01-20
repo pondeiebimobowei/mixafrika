@@ -19,7 +19,7 @@ import { Goal } from './goal.model';
 import { Investment } from './investment.model';
 import { Notification } from './notification.model';
 import { Feed } from './feed.model';
-import { roles, type Roles } from '@shared/shared/src/enums';
+import { roles, VerificationStatus, type Roles } from '@shared/shared/src/enums';
 import { CreationOptional } from 'sequelize';
 import { LoanAccount } from './loan-account.model';
 import { UserBusiness } from './user-business.model';
@@ -59,11 +59,14 @@ export class User extends Model<IUser> implements IUser {
   @Column({ type: DataType.STRING, allowNull: false })
   declare password: string;
 
-  @Column({ type: DataType.BOOLEAN, allowNull: false })
-  declare is_verified: boolean;
+  @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(VerificationStatus)] } })
+  declare verification_status: VerificationStatus;
 
   @Column({ type: DataType.BOOLEAN, allowNull: false })
   declare is_email_verified: boolean;
+
+  @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(VerificationStatus)] } })
+  declare business_verification_status: VerificationStatus;
 
   @Column({ type: DataType.DECIMAL(5, 2), allowNull: false })
   declare credit_score: number;

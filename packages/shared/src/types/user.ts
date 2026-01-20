@@ -4,6 +4,7 @@ import { type BaseModel } from "./base-model-type";
 import { type ITrader } from "./trader";
 import { type ITransaction } from "./transaction";
 import { type IUserBusiness } from "./user-business";
+import { VerificationStatus } from "../enums";
 
 export interface IUser extends BaseModel {
   image: string | null;
@@ -13,7 +14,8 @@ export interface IUser extends BaseModel {
   email: string;
   password: string;
   role: Roles;
-  is_verified: boolean;
+  verification_status: VerificationStatus;
+  business_verification_status: VerificationStatus;
   is_email_verified: boolean;
   credit_score: number;
   credit_score_status: string;

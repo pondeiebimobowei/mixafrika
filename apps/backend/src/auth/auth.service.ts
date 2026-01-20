@@ -30,7 +30,8 @@ export class AuthService {
       credit_score_status: "not set",
       role: create_user_dto.role as Roles,
       is_email_verified: false,
-      is_verified: false,
+      business_verification_status: 'unverified',
+      verification_status: 'unverified',
     });
 
     await Wallet.create({

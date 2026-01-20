@@ -3,6 +3,7 @@ import { Response } from '@shared/shared/src/types/api/responses';
 import { IUserBusiness } from '@shared/shared/src/types/user-business';
 import { Submit_business } from '@shared/shared/src/validation/submit-business-dto';
 import { UserBusiness } from 'src/database/models/user-business.model';
+import { User } from 'src/database/models/user.model';
 
 @Injectable()
 export class BusinessService {
@@ -24,6 +25,9 @@ export class BusinessService {
     }
 
     async handleSubmitUserBusiness(user_id: string, { street_address, city, state, country, name, phone, type, cac_document, national_id_document }: Submit_business): Promise<Response<IUserBusiness>> {
+
+        // temp verify user business
+        await User.update({ business_verification_status: 'verified' } , { where: { id: user_id }})
 
         const business = await UserBusiness.create({
             city, state, country, street_address, name, phone, type, user_id, cac_document, national_id_document

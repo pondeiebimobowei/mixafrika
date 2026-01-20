@@ -117,3 +117,12 @@ export const ApplicationStatus = {
 } as const;
 
 export type ApplicationStatus = (typeof ApplicationStatus)[keyof typeof ApplicationStatus];
+
+export const VerificationStatus = {
+    PENDING: "pending",
+    VERIFIED: "verified",
+    UNVERIFIED: 'unverified',
+    REJECTED: "rejected",
+} as const;
+
+export type VerificationStatus = (typeof VerificationStatus)[keyof typeof VerificationStatus];
