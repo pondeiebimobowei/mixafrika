@@ -14,6 +14,7 @@ module.exports = {
         },
 
         user_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        collection_id: { type: Sequelize.UUID, allowNull: true, references: { model: 'collection', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         name: { type: Sequelize.STRING, allowNull: false },
         type: { type: Sequelize.STRING, allowNull: false },
         phone: { type: Sequelize.STRING, allowNull: false },

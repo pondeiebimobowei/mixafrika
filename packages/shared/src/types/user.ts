@@ -24,11 +24,11 @@ export interface IUser extends BaseModel {
 }
 
 export interface IuserWithBusiness extends IUser {
-  business: IUserBusiness
+  business: IUserBusiness[]
 }
 
 export interface IuserWithBusinessWithTransactions extends IUser {
-  business: IUserBusiness,
+  business: IUserBusiness[],
   transactions: ITransaction[]
 }
 

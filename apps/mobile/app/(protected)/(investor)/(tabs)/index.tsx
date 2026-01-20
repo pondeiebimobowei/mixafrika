@@ -10,6 +10,7 @@ import InvestorEarningsChart from '@/components/cards/investor-earnings-chart';
 import FinancialGoalsCard from '@/components/cards/financial-goals-card';
 import PortfolioItem, { PortfolioItemProps } from '@/components/list-items/portfolio-item';
 import { useRouter } from 'expo-router';
+import { useFetchWallet } from '@/store/hooks/wallet.hook';
 
 const Investments: PortfolioItemProps[] = []
 
@@ -19,6 +20,7 @@ export default function InvestorDashboard() {
     const { colorScheme, toggleColorScheme } = useColorScheme();
 
     const router = useRouter()
+    useFetchWallet()
 
     return (
         <SafeAreaView edges={['top']} className="flex-1 bg-gray-100 dark:bg-black px-4 pt-0 pb-6">
@@ -76,7 +78,7 @@ export default function InvestorDashboard() {
                         </View>}
                         <>
                             <InvestorBalanceCard
-                                balance={available_balance || 2450.00}
+                                balance={available_balance}
                                 onDeposit={() => console.log('Deposit')}
                                 onWithdraw={() => console.log('Withdraw')}
                             />

@@ -13,6 +13,7 @@ import {
   AllowNull,
 } from 'sequelize-typescript';
 import { User } from './user.model';
+import { Collection } from './collection.model';
 import { IUserBusiness } from '@shared/shared/src/types/user-business';
 import { CreationOptional, DataTypes } from 'sequelize';
 
@@ -56,6 +57,13 @@ export class UserBusiness
 
   @Column(DataType.STRING)
   declare national_id_document: string;
+
+  @ForeignKey(() => Collection)
+  @Column(DataTypes.UUID)
+  declare collection_id: string;
+
+  @BelongsTo(() => Collection)
+  declare collection: Collection;
 
   @BelongsTo(() => User, { foreignKey: 'user_id', as: 'user' })
   declare user?: User;

@@ -13,6 +13,7 @@ import {
 import { CreationOptional, DataTypes } from 'sequelize';
 import { ICollection } from '@shared/shared/src/types/collection';
 import { Cluster } from './cluster.model';
+import { UserBusiness } from './user-business.model';
 
 @Table({ tableName: 'collection' })
 export class Collection extends Model<ICollection> {
@@ -29,17 +30,17 @@ export class Collection extends Model<ICollection> {
 
   @Column(DataType.STRING)
   declare total_traders: string;
-  
+
   @Column(DataType.STRING)
   declare about: string;
-  
+
   @Column(DataType.STRING)
   declare cover_image: string;
-  
-  @Column(DataType.DECIMAL(15,2))
+
+  @Column(DataType.DECIMAL(15, 2))
   declare roi: number;
-  
-  @Column(DataType.DECIMAL(15,2))
+
+  @Column(DataType.DECIMAL(15, 2))
   declare min_investment: number;
 
   @Column(DataType.STRING)
@@ -53,6 +54,9 @@ export class Collection extends Model<ICollection> {
 
   @HasMany(() => Cluster)
   declare cluster: Cluster
+
+  @HasMany(() => UserBusiness)
+  declare user_businesses: UserBusiness[];
 
   @CreatedAt
   declare createdAt: string;
