@@ -77,7 +77,7 @@ export default function TraderDashboard() {
 
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-gray-200 dark:bg-black px-4 pt-0">
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView showsVerticalScrollIndicator={false} className='mb-36'>
 
         {/* Header Section */}
         <View className="flex-row items-center justify-between py-4 mb-2">

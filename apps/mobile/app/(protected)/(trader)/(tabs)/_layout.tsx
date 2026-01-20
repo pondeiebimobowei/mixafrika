@@ -14,9 +14,9 @@ export default function TraderTabsLayout() {
         <Tabs.Screen
           name="index"
           options={{
-            title: 'Dashboard',
+            title: 'Home',
             tabBarIcon: ({ color }) => (
-              <Ionicons name="apps-outline" size={24} color={color} />
+              <Ionicons name="home" size={24} color={color} />
             ),
           }}
         />

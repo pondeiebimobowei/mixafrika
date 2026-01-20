@@ -35,10 +35,10 @@ export default function TraderProfileCard() {
             {/* Wallet Section */}
             <View className="flex-row gap-4">
                 {/* Balance Box */}
-                <View className="flex-[2] bg-[#0f172a] rounded-xl p-3 justify-center pl-4">
+                <View className="flex w-full bg-[#0f172a] rounded-xl p-3 justify-center pl-4">
                     <TouchableOpacity
                         onPress={() => setIsBalanceVisible(prev => !prev)}
-                        className="flex-[2]  justify-between"
+                        className="flex justify-between"
                     >
                         <Text className="text-slate-400 text-xs mb-1">Wallet Balance</Text>
                         

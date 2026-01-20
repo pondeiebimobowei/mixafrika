@@ -32,7 +32,7 @@ const GreenAreaChart = () => {
         showDataPointLabelOnFocus
 
         curved
-        width={width-70}
+        width={width-1}
         color={LINE_COLOR}
         thickness={1}
         hideDataPoints

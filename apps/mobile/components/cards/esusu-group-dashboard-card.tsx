@@ -40,7 +40,7 @@ export default function EsusuGroupDashboardCard() {
                         </Text>
                     </View>
                 ))) : (
-                    <View className="flex-1 items-center justify-center">
+                    <View className="flex items-center justify-center">
                         <Text className="text-white text-sm text-center">Join a savings circle today</Text>
                         <TouchableOpacity
                             onPress={() => router.push('/esusu')}

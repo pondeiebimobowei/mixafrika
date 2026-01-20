@@ -19,19 +19,20 @@ import {
 import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
 import {
-  BUSINESS_LOCATION_OPTIONS,
-  BUSINESS_TYPE_OPTIONS,
   PAYMENT_PLAN_OPTIONS,
   REPAYMENT_DURATION_OPTIONS,
 } from '@/data/options';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import KeyboardAvoidingAreaView from '@/components/keyboard-avoiding-area-view';
+import { useBusinessState } from '@/store/hooks/business';
 
 export default function LoanApplication() {
   const {
     form: { control, formState, handleSubmit },
     handleFundingApplication,
   } = useFundApplication();
+
+  const { data: { business } } = useBusinessState();
 
   const handleDocumentSelection = async (
     onChange: (...event: any[]) => void,
@@ -103,50 +104,22 @@ export default function LoanApplication() {
         <ScrollView showsVerticalScrollIndicator={false} className="flex-1">
           <View className='flex gap-5'>
             <View>
-              <Text className="dark:text-white mb-2">Business Type</Text>
+              <Text className="dark:text-white mb-2">Business</Text>
               <Controller
                 control={control}
-                name="business_type"
+                name="user_business_id"
                 render={({ field, fieldState: { error },
                 }) => (
                   <Select className='w-full ' onValueChange={(option) => field.onChange(option?.value)}>
                     <SelectTrigger className='w-full h-14 bg-white border-0 dark:border-input'>
-                      <SelectValue className='text-black dark:text-white' placeholder='Select a business type' />
+                      <SelectValue className='text-black dark:text-white' placeholder='Select a business' />
                     </SelectTrigger>
                     <SelectContent className='w-11/12'>
                       <SelectGroup>
                         {
-                          BUSINESS_TYPE_OPTIONS.map((duration) => (
-                            <SelectItem key={duration.value} label={duration.label} value={duration.value}>
-                              {duration.label}
-                            </SelectItem>
-                          ))
-                        }
-                      </SelectGroup>
-                    </SelectContent>
-                    {error && <ErrorMessageDisplay message={error.message} />}
-
-                  </Select>
-                )}
-              />
-            </View>
-            <View>
-              <Text className="dark:text-white mb-2">Business Location</Text>
-              <Controller
-                control={control}
-                name="business_location"
-                render={({ field, fieldState: { error },
-                }) => (
-                  <Select className='w-full' onValueChange={(option) => field.onChange(option?.value)}>
-                    <SelectTrigger className='w-full h-14 bg-white border-0 dark:border-input'>
-                      <SelectValue className='text-black dark:text-white' placeholder='Select a location' />
-                    </SelectTrigger>
-                    <SelectContent className='w-11/12'>
-                      <SelectGroup>
-                        {
-                          BUSINESS_LOCATION_OPTIONS.map((duration) => (
-                            <SelectItem key={duration.value} label={duration.label} value={duration.value}>
-                              {duration.label}
+                          business.map((business) => (
+                            <SelectItem key={business.id} label={business.name} value={business.id as string}>
+                              {business.name}
                             </SelectItem>
                           ))
                         }

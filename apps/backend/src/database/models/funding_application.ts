@@ -38,12 +38,6 @@ export class FundingApplication
   @Column(DataType.STRING)
   declare user_business_id: string;
 
-  @Column(DataType.STRING)
-  declare business_type: string;
-
-  @Column(DataType.STRING)
-  declare business_location: string;
-
   @Column(DataType.DECIMAL(15, 2))
   declare amount: number;
 

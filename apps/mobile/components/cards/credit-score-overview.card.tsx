@@ -12,10 +12,10 @@ export default function CreditScoreOverView(){
 
 
     return(
-        <View className="py-10 mb-6 px-6 bg-white dark:bg-[#1e293b] rounded-xl">
+        <View className="py-10 mb-6 px-0 rounded-xl">
             <View>
-                <Text className="dark:text-white text-lg font-semibold">Credit Score</Text>
-                <View className="my-2">
+                <Text className="dark:text-white text-lg font-semibold px-0">Credit Score</Text>
+                <View className="my-2 px-0">
                     <View className="flex flex-row justify-between">
                         <View>
                             <Text className="dark:text-white text-3xl font-semibold">{user?.credit_score}</Text>
