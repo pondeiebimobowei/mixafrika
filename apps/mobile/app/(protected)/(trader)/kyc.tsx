@@ -482,6 +482,10 @@ export default function KycScreen() {
                             )}
                         </Pressable>
 
+                        <Pressable onPress={() => router.replace('/(protected)/(trader)/(tabs)')}>
+                            <Text className='text-primary text-lg text-center'>Skip</Text>
+                        </Pressable>
+
                         {currentStep === 1 && (
                             <Text className="text-center text-gray-400 text-xs py-2">
                                 By continuing, you agree to our <Text className="underline text-primary dark:text-primary">Terms of Service</Text>

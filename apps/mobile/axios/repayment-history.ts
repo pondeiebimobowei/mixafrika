@@ -1,13 +1,9 @@
 import { IRepaymentHistory } from '@mixafrica/shared/types/repayment-history';
 import { apiPrivate } from './axios-config';
+import { Response } from '@mixafrica/shared/types/api/responses';
 
-interface Response {
-  success: boolean;
-  message: string;
-  data: IRepaymentHistory[] | [];
-}
 
-export const getRepaymentHistory = async (): Promise<Response> => {
+export const getRepaymentHistory = async (): Promise<Response<IRepaymentHistory[]>> => {
   try {
     const res = await apiPrivate.get(`/loan-repayment-history`);
     return res.data;

@@ -1,16 +1,12 @@
 import { Create_funding_application_dto } from '@mixafrica/shared/validation/funding-application.dto';
 import { apiPrivate } from './axios-config';
 import { IFundingApplication } from '@mixafrica/shared/types/funding-application';
+import { Response } from '@mixafrica/shared/types/api/responses';
 
-interface Response {
-  success: boolean;
-  message: string;
-  data: IFundingApplication[] | [];
-}
 
 export const submitFundingApplication = async (
   data: Create_funding_application_dto,
-) : Promise<Response> => {
+) : Promise<Response<IFundingApplication[]>> => {
   try {
     const formData = new FormData();
     

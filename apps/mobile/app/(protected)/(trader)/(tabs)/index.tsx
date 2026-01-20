@@ -7,7 +7,7 @@ import {
   Image,
   Pressable,
 } from 'react-native';
-import { User, Bell, FileText, PiggyBank, Sun, Coins } from 'lucide-react-native';
+import { User, Bell, FileText, PiggyBank, Sun, Coins, ShieldCheck, ArrowRight } from 'lucide-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
   useAuthStore,
@@ -28,6 +28,7 @@ import { RepaymentSheet } from '@/components/sheets/repayment.sheet';
 import { useTheme } from '@/context/theme context';
 import EsusuGroupDashboardCard from '@/components/cards/esusu-group-dashboard-card';
 import { useFetchWallet } from '@/store/hooks/wallet.hook';
+import { useFetchUser } from '@/store/hooks/user.hook';
 
 export default function TraderDashboard() {
   const { business } = useUserBusiness();
@@ -42,7 +43,7 @@ export default function TraderDashboard() {
   const [sheetIsOpen, setSheetIsOpen] = useState<SheetsState>({ isFundingOpen: false, isRepayOpen: false, isWithdrawOpen: false })
 
   useFetchLoanAccount();
-  
+  useFetchUser()  
 
   const quickActions = [
     {
@@ -111,10 +112,24 @@ export default function TraderDashboard() {
         </View>
 
         {/* Profile Card */}
+        { user?.business_verification_status !== 'verified' && <View className='bg-primary p-6 rounded-2xl mb-6'>
+            <View className=''>
+                    <ShieldCheck size={28} color={'white'}/>
+                </View>
+
+                <View className='my-8'>
+                    <Text className='text-2xl text-white font-bold mb-2'>Verify Business</Text>
+                    <Text className='text-white'>Verify your business to unlock trading in African clusters and access zero-interest business loans.</Text>
+                </View>
+
+                <Pressable onPress={()=> router.push('/(protected)/(trader)/kyc')} className='bg-secondary rounded-lg flex gap-2 flex-row px-2 py-4 items-center justify-center'>
+                  <Text className='text-white'>Verify Now</Text><ArrowRight size={18} color={'white'} />
+                </Pressable>
+            </View>}
         <TraderProfileCard />
 
         {/* Quick Actions Row */}
-        <View className="flex-row justify-between mb-6">
+        { user?.business_verification_status === 'verified' && <View className="flex-row justify-between mb-6">
           {quickActions.map((action, idx) => (
             <TouchableOpacity
               key={idx}
@@ -127,7 +142,7 @@ export default function TraderDashboard() {
               <Text className="text-slate-400 text-xs font-bold">{action.label}</Text>
             </TouchableOpacity>
           ))}
-        </View>
+        </View>}
 
         {/* Credit Insights */}
         <CreditScoreOverView />

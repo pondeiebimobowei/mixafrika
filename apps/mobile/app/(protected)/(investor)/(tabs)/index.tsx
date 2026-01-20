@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, Image, Pressable, TouchableOpacity, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Bell, Sun, Moon, BarChart3, IdCard, CreditCard, Wallet, Rocket, PiggyBank, ChevronRight } from 'lucide-react-native';
+import { Bell, Sun, Moon, BarChart3, IdCard, CreditCard, Wallet, Rocket, PiggyBank, ArrowRight, ShieldCheck } from 'lucide-react-native';
 import { useAuthStore, useWallet } from '@/store';
 import { useColorScheme } from 'nativewind';
 import InvestorBalanceCard from '@/components/cards/investor-balance-card';
@@ -62,6 +62,18 @@ export default function InvestorDashboard() {
                 contentContainerStyle={{ gap: 20, paddingBottom: 40 }}
                 renderItem={() => (
                     <>
+                        { user?.verification_status !== 'verified' && <View className='bg-primary p-6 rounded-2xl mb-6'>
+                            <View className=''>
+                                <ShieldCheck size={28} color={'white'}/>
+                            </View>
+
+                            <View className='my-8'>
+                                <Text className='text-2xl text-white font-bold mb-2'>Verify Identity</Text>
+                                <Text className='text-white'>Unlock trading in African clusters and access zero-interest business loans.</Text>
+                            </View>
+
+                            <Pressable className='bg-secondary rounded-lg flex gap-2 flex-row px-2 py-4 items-center justify-center'><Text className='text-white'>Verify Now</Text><ArrowRight size={18} color={'white'} /></Pressable>
+                        </View>}
                         <>
                             <InvestorBalanceCard
                                 balance={available_balance || 2450.00}
@@ -70,7 +82,7 @@ export default function InvestorDashboard() {
                             />
 
                         </>
-                        {user?.is_verified ? (
+                        {user?.verification_status === 'verified' && (
                             <>
                                 <View className="flex-row gap-4 my-6">
                                     <InvestorStatsCard
@@ -92,28 +104,10 @@ export default function InvestorDashboard() {
                                 <FinancialGoalsCard />
 
                             </>
-                        ): (
-                            <View className="gap-3 my-6">
-                        {SETUP_STEPS.map((step, index) => (
-                            <TouchableOpacity
-                                key={index}
-                                className="flex-row items-center justify-between bg-[#1f2937] p-4 rounded-xl border border-gray-700"
-                                onPress={() => router.push(step.route as any)}
-                            >
-                                <View className="flex-row items-center gap-3">
-                                    <View className="w-8 h-8 rounded-lg bg-[#374151] items-center justify-center">
-                                        <step.icon size={16} color="#9ca3af" />
-                                    </View>
-                                    <Text className="text-white font-semibold">{step.title}</Text>
-                                </View>
-                                <ChevronRight size={16} color="#6b7280" />
-                            </TouchableOpacity>
-                        ))}
-                    </View>
                         )}
 
                         <View>
-                            <View className="flex-row justify-between items-center mb-4">
+                            <View className="flex-row justify-between items-center mb-4 mt-6">
                                 <Text className="text-lg font-bold text-black dark:text-white">
                                     Your Portfolio
                                 </Text>
