@@ -1,10 +1,11 @@
 
 import { type Roles } from "../enums/index";
 import { type BaseModel } from "./base-model-type";
+import { IBusinessVerification } from "./business-verification";
 import { type ITrader } from "./trader";
 import { type ITransaction } from "./transaction";
 import { type IUserBusiness } from "./user-business";
-import { VerificationStatus } from "../enums";
+import { IUserVerification } from "./user-verification";
 
 export interface IUser extends BaseModel {
   image: string | null;
@@ -14,13 +15,14 @@ export interface IUser extends BaseModel {
   email: string;
   password: string;
   role: Roles;
-  verification_status: VerificationStatus;
-  business_verification_status: VerificationStatus;
   is_email_verified: boolean;
   credit_score: number;
   credit_score_status: string;
-  
+  verification?: IUserVerification;
+  business_verification?: IBusinessVerification;
+
   trader?: ITrader,
+
 }
 
 export interface IuserWithBusiness extends IUser {

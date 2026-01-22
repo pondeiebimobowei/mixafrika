@@ -42,3 +42,10 @@ export const BUSINESS_TYPE_OPTIONS = [
   { label: 'Healthcare', value: 'healthcare' },
   { label: 'Manufacturing', value: 'manufacturing' },
 ];
+
+export const ID_TYPES = [
+    { label: "National ID / NIN", value: "national_id" },
+    { label: "International Passport", value: "intl_passport" },
+    { label: "Voters Card", value: "voters_card" },
+    { label: "Driver's License", value: "drivers_license" },
+] as const;

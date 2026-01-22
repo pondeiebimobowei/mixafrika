@@ -9,7 +9,9 @@ import { mockApplicationSeed } from '../data/application.mock';
 import { mockClusterSeed } from '../data/cluster.mock';
 import { mockColectionSeed } from '../data/collection.mock';
 import { mockBankCardSeed } from '../data/bank-card.mock';
-
+import { mockBusinessVerificationSeed } from '../data/business-verification.mock';
+import { mockUserVerificationSeed } from '../data/user-verification.mock';
+  
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface) {
@@ -33,6 +35,7 @@ module.exports = {
       await queryInterface.bulkInsert('transaction', transactions, { returning: true, transaction: t });
 
       await queryInterface.bulkInsert('bank_card', bankCards, { returning: true, transaction: t });
+
       const userWallets = [...responseUser, ...responseInvestor].map((u) => ({
         id: uuidv4(),
         user_id: u.id,
@@ -46,6 +49,7 @@ module.exports = {
       const userBusiness = [...responseUser].map((u) => ({
         id: uuidv4(),
         user_id: u.id,
+        collection_id: collection[0].id,
         name: 'Trader Business',
         type: 'business',
         phone: '08023467856',
@@ -54,17 +58,21 @@ module.exports = {
         deletedAt: null,
         state: 'Abuja',
         country: 'Nigeria',
-        cac_document: 'https://picsum.photos/seed/401/150/150',
-        national_id_document: 'https://picsum.photos/seed/401/150/150',
         createdAt: new Date(),
         updatedAt: new Date(),
       }));
-
+      
       const application = await mockApplicationSeed(users, clusters, userBusiness)
       
       await queryInterface.bulkInsert('user_business', userBusiness, { transaction: t });
       await queryInterface.bulkInsert('funding_application', application, { returning: true, transaction: t });
 
+      const userVerification = await mockUserVerificationSeed(users);
+      await queryInterface.bulkInsert('user_verification', userVerification, { transaction: t });
+      
+      const businessVerifications = await mockBusinessVerificationSeed(userBusiness, users);
+      await queryInterface.bulkInsert('business_verification', businessVerifications, { transaction: t });
+      
       
       const userSettings = [...responseUser, ...responseInvestor].map((u) => ({
         id: uuidv4(),
@@ -111,7 +119,10 @@ module.exports = {
   async down(queryInterface) {
     await queryInterface.sequelize.transaction(async (t) => {
       await queryInterface.bulkDelete('user', null, { transaction: t });
+      await queryInterface.bulkDelete('bank_card', null, { transaction: t });
+      await queryInterface.bulkDelete('business_verification', null, { transaction: t });
       await queryInterface.bulkDelete('cluster', null, { transaction: t });
+      await queryInterface.bulkDelete('collection', null, { transaction: t });
       await queryInterface.bulkDelete('feed', null, { transaction: t });
       await queryInterface.bulkDelete('funding_application', null, { transaction: t });
       await queryInterface.bulkDelete('goal', null, { transaction: t });
@@ -126,6 +137,8 @@ module.exports = {
       await queryInterface.bulkDelete('transaction', null, { transaction: t });
       await queryInterface.bulkDelete('update', null, { transaction: t });
       await queryInterface.bulkDelete('wallet', null, { transaction: t });
+      await queryInterface.bulkDelete('user_business', null, { transaction: t });
+      await queryInterface.bulkDelete('user_verification', null, { transaction: t });
     });
   },
 };

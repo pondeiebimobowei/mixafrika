@@ -13,8 +13,6 @@ export const mockUserSeed: () => Promise<IUser[]> = (async () => {
       last_name: 'Johnson',
       image: "https://picsum.photos/seed/401/150/150",
       is_email_verified: true,
-      verification_status: 'verified',
-      business_verification_status: 'unverified',
       user_name: "beastTrader",
       credit_score: 10,
       credit_score_status: 'Good',

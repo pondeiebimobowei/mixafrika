@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { User } from 'src/database/models/user.model';
+import { UserVerification } from 'src/database/models/user-verification';
+import { Verify_identity } from '@shared/shared/src/validation/verify-identity-dto';
 
 @Injectable()
 export class UserService {
@@ -8,6 +10,7 @@ export class UserService {
       where: {
         id: user_id,
       },
+      include: [UserVerification]
     });
 
     return {
@@ -46,6 +49,28 @@ export class UserService {
       success: true,
       message: '',
       data: [],
+    };
+  }
+
+  async handleVerifyIdentity(
+    userId: string,
+    data: Verify_identity,
+  ) {
+
+    await UserVerification.create({
+      ...data,
+      user_id: userId,
+      status: 'verified',
+      rejection_reason: '',
+      reviewed_by_id: userId,
+      reviewed_at: new Date().toDateString(),
+      
+      
+    })
+
+    return {
+      success: true,
+      message: 'Identity verification submitted successfully',
     };
   }
 }

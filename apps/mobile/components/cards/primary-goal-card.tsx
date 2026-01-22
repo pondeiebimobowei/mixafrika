@@ -7,13 +7,9 @@ import { useRouter } from 'expo-router';
 export default function PrimaryGoalCard() {
     const router = useRouter();
 
-    const goal = {
-        name: "Shop Rent 2024",
-        saved: 125000,
-        target: 600000,
-    };
+    const goal: Record<string, any> = {};
 
-    const progress = (goal.saved / goal.target) * 100;
+    const progress = (goal.saved / goal.target) * 100 || 0;
 
     return (
         <View className="bg-[#1e293b] rounded-2xl p-5 mb-6">

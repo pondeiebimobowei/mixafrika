@@ -50,6 +50,8 @@ import { CollectionModule } from './collection/collection.module';
 import { BankCard } from './database/models/bank-card.model';
 import { BankCardModule } from './bank_card/bank_card.module';
 import { SavingsHistoryModule } from './savings_history/savings_history.module';
+import { UserVerification } from './database/models/user-verification';
+import { BusinessVerification } from './database/models/business-verification.model';
 
 @Module({
   imports: [
@@ -69,7 +71,7 @@ import { SavingsHistoryModule } from './savings_history/savings_history.module';
     AdminModule,
     LoanModule,
     SettingsModule,
-    SequelizeModule.forFeature([User, Savings, FundingApplication, Goal, BankCard, Investment, Notification, Feed, Cluster, Collection, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, UserBusiness, Transaction, Wallet, LoanAccount]),
+    SequelizeModule.forFeature([User, UserVerification, BusinessVerification, Savings, FundingApplication, Goal, BankCard, Investment, Notification, Feed, Cluster, Collection, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, UserBusiness, Transaction, Wallet, LoanAccount]),
     ConfigModule.forRoot({ isGlobal: true }),
     SequelizeModule.forRootAsync({
       useFactory: getSequelizeConfig,

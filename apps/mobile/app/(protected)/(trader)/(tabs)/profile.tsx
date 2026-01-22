@@ -66,7 +66,7 @@ export default function Profile() {
       icon: ShieldCheck,
       title: 'Identity Verification',
       subtitle: 'Tier 1 - Verified',
-      route: '/(protected)/(investor)/verification'
+      route: '/(protected)/personal-verification'
     },
     {
       icon: User,

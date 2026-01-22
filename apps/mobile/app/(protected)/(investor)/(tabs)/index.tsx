@@ -11,6 +11,7 @@ import FinancialGoalsCard from '@/components/cards/financial-goals-card';
 import PortfolioItem, { PortfolioItemProps } from '@/components/list-items/portfolio-item';
 import { useRouter } from 'expo-router';
 import { useFetchWallet } from '@/store/hooks/wallet.hook';
+import { useFetchUser } from '@/store/hooks/user.hook';
 
 const Investments: PortfolioItemProps[] = []
 
@@ -20,7 +21,8 @@ export default function InvestorDashboard() {
     const { colorScheme, toggleColorScheme } = useColorScheme();
 
     const router = useRouter()
-    useFetchWallet()
+    useFetchWallet();
+    useFetchUser();
 
     return (
         <SafeAreaView edges={['top']} className="flex-1 bg-gray-100 dark:bg-black px-4 pt-0 pb-6">
@@ -64,7 +66,7 @@ export default function InvestorDashboard() {
                 contentContainerStyle={{ gap: 20, paddingBottom: 40 }}
                 renderItem={() => (
                     <>
-                        { user?.verification_status !== 'verified' && <View className='bg-primary p-6 rounded-2xl mb-6'>
+                        { user?.verification?.status !== 'verified' && <View className='bg-primary p-6 rounded-2xl mb-6'>
                             <View className=''>
                                 <ShieldCheck size={28} color={'white'}/>
                             </View>
@@ -74,7 +76,7 @@ export default function InvestorDashboard() {
                                 <Text className='text-white'>Unlock trading in African clusters and access zero-interest business loans.</Text>
                             </View>
 
-                            <Pressable className='bg-secondary rounded-lg flex gap-2 flex-row px-2 py-4 items-center justify-center'><Text className='text-white'>Verify Now</Text><ArrowRight size={18} color={'white'} /></Pressable>
+                            <Pressable onPress={() => router.push('/personal-verification')} className='bg-secondary rounded-lg flex gap-2 flex-row px-2 py-4 items-center justify-center'><Text className='text-white'>Verify Now</Text><ArrowRight size={18} color={'white'} /></Pressable>
                         </View>}
                         <>
                             <InvestorBalanceCard
@@ -84,7 +86,7 @@ export default function InvestorDashboard() {
                             />
 
                         </>
-                        {user?.verification_status === 'verified' && (
+                        {user?.verification?.status === 'verified' && (
                             <>
                                 <View className="flex-row gap-4 my-6">
                                     <InvestorStatsCard

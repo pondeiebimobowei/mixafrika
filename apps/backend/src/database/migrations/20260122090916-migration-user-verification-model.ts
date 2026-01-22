@@ -2,11 +2,18 @@
 import sequelize from 'sequelize';
 import { QueryInterface, DataTypes } from 'sequelize';
 
+const VerificationStatus = {
+    PENDING: "pending",
+    VERIFIED: "verified",
+    UNVERIFIED: 'unverified',
+    REJECTED: "rejected",
+} as const;
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
     await queryInterface.sequelize.transaction(async (t) => {
-      await queryInterface.createTable('user_business', {
+      await queryInterface.createTable('user_verification', {
         id: {
           type: Sequelize.UUID,
           defaultValue: sequelize.UUIDV4,
@@ -14,14 +21,18 @@ module.exports = {
         },
 
         user_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        collection_id: { type: Sequelize.UUID, allowNull: true, references: { model: 'collection', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        name: { type: Sequelize.STRING, allowNull: false },
-        type: { type: Sequelize.STRING, allowNull: false },
-        phone: { type: Sequelize.STRING, allowNull: false },
-        street_address: { type: Sequelize.STRING, allowNull: false },
-        city: { type: Sequelize.STRING, allowNull: false },
-        state: { type: Sequelize.STRING, allowNull: false },
-        country: { type: Sequelize.STRING, allowNull: false },
+        status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(VerificationStatus)]} },
+        id_type: { type: Sequelize.STRING, allowNull: false },
+        id_number: { type: Sequelize.STRING, allowNull: false },
+        id_image_front: { type: Sequelize.STRING, allowNull: false },
+        id_image_back: { type: Sequelize.STRING, allowNull: false },
+        rejection_reason: { type: Sequelize.STRING, allowNull: false },
+        reviewed_by_id: { type: Sequelize.UUID, allowNull: true, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        reviewed_at: {
+          allowNull: false,
+          type: Sequelize.DATE,
+          defaultValue: Sequelize.NOW,
+        },
 
         createdAt: {
           allowNull: false,
@@ -41,6 +52,6 @@ module.exports = {
     });
   },
   async down(queryInterface: QueryInterface) {
-    await queryInterface.dropTable('user_business');
+    await queryInterface.dropTable('user_verification');
   },
 };

@@ -112,7 +112,7 @@ export default function TraderDashboard() {
         </View>
 
         {/* Profile Card */}
-        { user?.business_verification_status !== 'verified' && <View className='bg-primary p-6 rounded-2xl mb-6'>
+        { business[0]?.verification?.status !== 'verified' && <View className='bg-primary p-6 rounded-2xl mb-6'>
             <View className=''>
                     <ShieldCheck size={28} color={'white'}/>
                 </View>
@@ -126,10 +126,11 @@ export default function TraderDashboard() {
                   <Text className='text-white'>Verify Now</Text><ArrowRight size={18} color={'white'} />
                 </Pressable>
             </View>}
+            
         <TraderProfileCard />
 
         {/* Quick Actions Row */}
-        { user?.business_verification_status === 'verified' && <View className="flex-row justify-between mb-6">
+        { business[0]?.verification?.status === 'verified' && <View className="flex-row justify-between mb-6">
           {quickActions.map((action, idx) => (
             <TouchableOpacity
               key={idx}

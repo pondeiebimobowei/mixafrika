@@ -11,11 +11,13 @@ import {
   PrimaryKey,
   Default,
   AllowNull,
+  HasOne,
 } from 'sequelize-typescript';
 import { User } from './user.model';
 import { Collection } from './collection.model';
 import { IUserBusiness } from '@shared/shared/src/types/user-business';
 import { CreationOptional, DataTypes } from 'sequelize';
+import { BusinessVerification } from './business-verification.model';
 
 @Table({ tableName: 'user_business' })
 export class UserBusiness
@@ -52,12 +54,6 @@ export class UserBusiness
   @Column(DataType.STRING)
   declare country: string;
 
-  @Column(DataType.STRING)
-  declare cac_document: string;
-
-  @Column(DataType.STRING)
-  declare national_id_document: string;
-
   @ForeignKey(() => Collection)
   @Column(DataTypes.UUID)
   declare collection_id: string;
@@ -67,6 +63,9 @@ export class UserBusiness
 
   @BelongsTo(() => User, { foreignKey: 'user_id', as: 'user' })
   declare user?: User;
+
+  @HasOne(() => BusinessVerification)
+  declare verification: BusinessVerification;
 
   @CreatedAt
   declare createdAt: string;

@@ -1,4 +1,5 @@
 import { type BaseModel } from "./base-model-type";
+import { IBusinessVerification } from "./business-verification";
 import { ICollection } from "./collection";
 
 export interface IUserBusiness extends BaseModel {
@@ -11,8 +12,8 @@ export interface IUserBusiness extends BaseModel {
   city: string;
   state: string;
   country: string;
-  cac_document: string;
-  national_id_document: string;
+
+  verification?: IBusinessVerification;
 }
 
 

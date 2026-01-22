@@ -17,6 +17,8 @@ import { LoanHistory } from './database/models/loan-history.model';
 import { SavingsHistory } from './database/models/saving-history.model';
 import { Collection } from './database/models/collection.model';
 import { BankCard } from './database/models/bank-card.model';
+import { BusinessVerification } from './database/models/business-verification.model';
+import { UserVerification } from './database/models/user-verification';
 
 @Injectable()
 export class AppService {
@@ -27,12 +29,13 @@ export class AppService {
       { model: Notification },
       { model: LoanHistory },
       { model: Feed },
+      { model: UserVerification },
       { model: Transaction },
       { model: Wallet },
       { model: Goal },
       { model: Investment },
       { model: Savings, include: [ SavingsHistory] },
-      { model: UserBusiness },
+      { model: UserBusiness, include: [ BusinessVerification ] },
       { model: FundingApplication },
       { model: Setting }
     ]});

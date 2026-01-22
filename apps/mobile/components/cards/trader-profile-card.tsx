@@ -17,7 +17,7 @@ export default function TraderProfileCard() {
             <View className="flex-row justify-between items-start mb-6">
                 <View>
                     <Text className="text-white text-2xl font-bold mb-1">{business[0]?.name || user?.first_name + ' ' + user?.last_name}</Text>
-                    {business ? (<View className="flex-row items-center gap-1">
+                    {business.length > 0 ? (<View className="flex-row items-center gap-1">
                         <MapPin size={14} color="#94a3b8" />
                         <Text className="text-slate-400 text-sm">{business[0]?.city}, {business[0]?.state}</Text>
                     </View>) : (
