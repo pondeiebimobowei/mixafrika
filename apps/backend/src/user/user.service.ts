@@ -37,10 +37,11 @@ export class UserService {
   }
 
   async handleGetUsers() {
+    const users = await User.findAll();
     return {
       success: true,
-      message: '',
-      data: [],
+      message: 'Users found successfully!',
+      data: users,
     };
   }
 

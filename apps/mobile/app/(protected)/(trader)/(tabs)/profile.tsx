@@ -72,55 +72,55 @@ export default function Profile() {
       icon: User,
       title: 'Personal Information',
       subtitle: 'Name, Email, Phone',
-      route: '/(protected)/(investor)/personal-info'
+      route: '/(protected)/(trader)/(tabs)/profile'
     },
     {
       icon: Wallet,
       title: 'Payment Methods',
       subtitle: 'Bank Accounts, Cards',
-      route: '/(protected)/(investor)/payment-methods'
+      route: '/(protected)/(trader)/(tabs)/profile'
     },
     {
       icon: Leaf,
       title: 'My Impact',
       subtitle: 'Social & Environmental stats',
-      route: '/(protected)/(investor)/impact'
+      route: '/(protected)/(trader)/(tabs)/profile'
     },
     {
       icon: Gift,
       title: 'Refer & Earn',
       subtitle: 'Invite friends, earn cash',
-      route: '/(protected)/(investor)/referrals'
+      route: '/(protected)/(trader)/(tabs)/profile'
     },
     {
       icon: GraduationCap,
       title: 'Learning Hub',
       subtitle: 'Tutorials, Guides, News',
-      route: '/(protected)/(investor)/learning'
+      route: '/(protected)/(trader)/(tabs)/profile'
     },
     {
       icon: Shield,
       title: 'Security',
       subtitle: 'Password, 2FA',
-      route: '/(protected)/(investor)/security'
+      route: '/(protected)/(trader)/(tabs)/profile'
     },
     {
       icon: Bell,
       title: 'Notifications',
       subtitle: 'Email, Push, SMS',
-      route: '/(protected)/(trader)/notifications'
+      route: '/(protected)/(trader)/(tabs)/profile'
     },
     {
       icon: FileText,
       title: 'Terms & Privacy',
       subtitle: 'Legal Information',
-      route: '/(protected)/(investor)/legal'
+      route: '/(protected)/(trader)/(tabs)/profile'
     },
     {
       icon: HelpCircle,
       title: 'Help & Support',
       subtitle: 'FAQ, Contact Support',
-      route: '/(protected)/(trader)/support'
+      route: '/(protected)/(trader)/(tabs)/profile'
     },
   ];
 
@@ -280,7 +280,7 @@ export default function Profile() {
 
           <Button size='sm' className='flex-row items-center justify-center gap-2 bg-transparent' onPress={() => set_current_role(current_role === 'investor' ? 'trader' : 'investor')}>
             <Repeat size={18} color={'white'} />
-            <Text className="text-white text-base">Switch Check</Text>
+            <Text className="text-white text-base">Switch To Investor</Text>
           </Button>
         </View>
 

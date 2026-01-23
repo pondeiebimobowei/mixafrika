@@ -11,6 +11,8 @@ import { createTraderRecord, type TraderRecord } from './slice/trader.slice';
 import { createLoanAccount, type LoanAccount } from './slice/loan-account.slice';
 import { createUserWallet, type UserWallet } from './slice/wallet';
 import { createLoanHistory, type LoanHistory } from './slice/loan-history.slice';
+import { createUserSlice, type UsersSlice } from './slice/user.slice';
+import { createCollectionSlice, type CollectionSlice } from './slice/collection.slice';
 
 export interface BaseSlice {
   loading: boolean,
@@ -18,15 +20,21 @@ export interface BaseSlice {
 }
 
 export const useAuthStore = create<AuthSlice>()(
-  // immer(
     (...a) => ({
     ...persist(createAuthSlice, { name: "auth-storage"})(...a),
   })
-// )
 );
 
 export const useUserBusiness = create<UserBusiness>()((...a) => ({
   ...createUserBusiness(...a),
+}))
+
+export const useUsers = create<UsersSlice>()((...a) => ({
+  ...createUserSlice(...a),
+}))
+
+export const useCollections = create<CollectionSlice>()((...a) => ({
+  ...createCollectionSlice(...a),
 }))
 
 export const useTraderRecord = create<TraderRecord>()((...a) => ({

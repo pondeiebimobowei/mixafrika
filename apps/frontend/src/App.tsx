@@ -22,6 +22,11 @@ import RepaymentsPage from './pages/trader/repayment'
 import SignupPage from './pages/auth/signup/signup'
 import InvestorDashboardPage from './pages/investor/dashboard'
 import VerifyEmailPage from './pages/auth/verify-email'
+import AdminDashboardPage from './pages/admin/dashboard'
+import UserPage from './pages/admin/user'
+import UserDetailsPage from './pages/admin/user-detail'
+import CollectionPage from './pages/admin/collection'
+import ClustersPage from './pages/admin/clusters'
 
 function AppRouter() {
 
@@ -37,7 +42,7 @@ function AppRouter() {
         <Route path='/verify-email' element={<VerifyEmailPage />} />
 
 
-        
+
         <Route path='/market' element={<AgentLoginPage />} />
 
         <Route path='/clusters/:id' element={<ClusterDetailPage />} />
@@ -45,9 +50,9 @@ function AppRouter() {
         <Route path='/profile' element={<ClusterDetailPage />} />
 
         <Route path='/dashboard' element={<TraderDashboard />} />
-        
+
         <Route path='/trader'>
-          <Route  element={<TraderDashboard />} />
+          <Route element={<TraderDashboard />} />
           <Route path='dashboard' element={<TraderDashboard />} />
           <Route path='profile' element={<TraderProfilePage />} />
           <Route path='apply' element={<FundApplicationPage />} />
@@ -73,6 +78,15 @@ function AppRouter() {
         <Route path='investor'>
           <Route element={<InvestorDashboardPage />} />
           <Route path='dashboard' element={<InvestorDashboardPage />} />
+        </Route>
+
+        <Route path='/admin'>
+          <Route element={<AdminDashboardPage />} />
+          <Route path='dashboard' element={<AdminDashboardPage />} />
+          <Route path='users' element={<UserPage />} />
+          <Route path='users/:id' element={<UserDetailsPage />} />
+          <Route path='collections' element={<CollectionPage />} />
+          <Route path='clusters' element={<ClustersPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

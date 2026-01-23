@@ -157,14 +157,14 @@ export default function Profile() {
 
         {/* Footer */}
         <View>
-                {(
-                  <Button size='sm'  className='flex-row items-center justify-center gap-2 bg-transparent px-4' onPress={() => set_current_role(current_role === 'investor' ? 'trader' : 'investor')}>
-                    <Repeat size={18} color={colorScheme === 'dark' ? 'white' : 'black'} />
-                    <Text className="text-black dark:text-white text-xl">
-                      Switch</Text>
-                  </Button>
-      )}
-              </View>
+          {(
+            <Button size='sm' className='flex-row items-center justify-center gap-2 bg-transparent px-4' onPress={() => set_current_role(current_role === 'investor' ? 'trader' : 'investor')}>
+              <Repeat size={18} color={colorScheme === 'dark' ? 'white' : 'black'} />
+              <Text className="text-black dark:text-white text-xl">
+                Switch to Trader</Text>
+            </Button>
+          )}
+        </View>
 
         <TouchableOpacity
           className="flex-row items-center justify-center gap-2 mb-8"
@@ -186,58 +186,58 @@ export default function Profile() {
 
 
 const MENU_ITEMS = [
-    {
-      icon: ShieldCheck,
-      title: 'Identity Verification',
-      subtitle: 'Tier 1 - Verified',
-      route: '/(protected)/(investor)/verification'
-    },
-    {
-      icon: User,
-      title: 'Personal Information',
-      subtitle: 'Name, Email, Phone',
-      route: '/(protected)/(investor)/personal-info'
-    },
-    {
-      icon: Wallet,
-      title: 'Payment Methods',
-      subtitle: 'Bank Accounts, Cards',
-      route: '/(protected)/(investor)/payment-methods'
-    },
-    {
-      icon: Gift,
-      title: 'Refer & Earn',
-      subtitle: 'Invite friends, earn cash',
-      route: '/(protected)/(investor)/referrals'
-    },
-    {
-      icon: GraduationCap,
-      title: 'Learning Hub',
-      subtitle: 'Tutorials, Guides, News',
-      route: '/(protected)/(investor)/learning'
-    },
-    {
-      icon: Shield,
-      title: 'Security',
-      subtitle: 'Password, 2FA',
-      route: '/(protected)/(investor)/security'
-    },
-    {
-      icon: Bell,
-      title: 'Notifications',
-      subtitle: 'Email, Push, SMS',
-      route: '/(protected)/(investor)/notifications'
-    },
-    {
-      icon: FileText,
-      title: 'Terms & Privacy',
-      subtitle: 'Legal Information',
-      route: '/(protected)/(investor)/legal'
-    },
-    {
-      icon: HelpCircle,
-      title: 'Help & Support',
-      subtitle: 'FAQ, Contact Support',
-      route: '/(protected)/(investor)/support'
-    },
-  ];
+  {
+    icon: ShieldCheck,
+    title: 'Identity Verification',
+    subtitle: 'Tier 1 - Verified',
+    route: '/(protected)/personal-verification'
+  },
+  {
+    icon: User,
+    title: 'Personal Information',
+    subtitle: 'Name, Email, Phone',
+    route: '/(protected)/(investor)/(tabs)/profile'
+  },
+  {
+    icon: Wallet,
+    title: 'Payment Methods',
+    subtitle: 'Bank Accounts, Cards',
+    route: '/(protected)/(investor)/(tabs)/profile'
+  },
+  {
+    icon: Gift,
+    title: 'Refer & Earn',
+    subtitle: 'Invite friends, earn cash',
+    route: '/(protected)/(investor)/(tabs)/profile'
+  },
+  {
+    icon: GraduationCap,
+    title: 'Learning Hub',
+    subtitle: 'Tutorials, Guides, News',
+    route: '/(protected)/(investor)/(tabs)/profile'
+  },
+  {
+    icon: Shield,
+    title: 'Security',
+    subtitle: 'Password, 2FA',
+    route: '/(protected)/(investor)/(tabs)/profile'
+  },
+  {
+    icon: Bell,
+    title: 'Notifications',
+    subtitle: 'Email, Push, SMS',
+    route: '/(protected)/(investor)/(tabs)/profile'
+  },
+  {
+    icon: FileText,
+    title: 'Terms & Privacy',
+    subtitle: 'Legal Information',
+    route: '/(protected)/(investor)/(tabs)/profile'
+  },
+  {
+    icon: HelpCircle,
+    title: 'Help & Support',
+    subtitle: 'FAQ, Contact Support',
+    route: '/(protected)/(investor)/(tabs)/profile'
+  },
+];

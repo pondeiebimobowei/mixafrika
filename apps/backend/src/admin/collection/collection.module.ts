@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { CollectionController } from './collection.controller';
 import { CollectionService } from './collection.service';
-import { ClusterService } from 'src/cluster/cluster.service';
+import { CollectionModule } from 'src/collection/collection.module';
 
 @Module({
-  // imports: [ClusterModule],
   controllers: [CollectionController],
-  providers: [CollectionService, ClusterService],
-  exports: [CollectionService]
+  providers: [CollectionService],
+  imports: [CollectionModule]
 })
-export class CollectionModule {}
+export class AdminCollectionModule {}
