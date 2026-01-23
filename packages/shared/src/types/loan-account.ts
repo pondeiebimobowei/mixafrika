@@ -1,6 +1,7 @@
 import { LoanStatus } from "../enums";
 import type { BaseModel } from "./base-model-type";
-import { ICluster } from "./cluster";
+import { type ICluster } from "./cluster";
+import { type IFundingApplication } from "./funding-application";
 
 export interface ILoanAccount extends BaseModel {
   user_id: string;
@@ -17,4 +18,8 @@ export interface ILoanAccount extends BaseModel {
 
 export interface ILoanAccountWithCluster extends ILoanAccount {
   cluster: ICluster
+}
+
+export interface ILoanAccountWithClusterAndApplication extends ILoanAccountWithCluster {
+  application: IFundingApplication
 }

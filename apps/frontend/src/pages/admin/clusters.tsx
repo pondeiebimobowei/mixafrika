@@ -6,8 +6,8 @@ import AdminLayout from "@/components/layouts/admin-layout";
 import ClusterCard from "@/components/admin/card/cluster-card";
 
 export default function ClustersPage(){
-    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-    const [selectedClusterId, setSelectedClusterId] = useState<string | null>(null);
+    const [__, setIsCreateModalOpen] = useState(false);
+    const [_, setSelectedClusterId] = useState<string | null>(null);
 
     const clusters: ICluster[] = [
         

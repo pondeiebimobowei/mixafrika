@@ -1,4 +1,4 @@
-import { BaseModel } from "./base-model-type";
+import { type BaseModel } from "./base-model-type";
 
 export interface IFundingApplication extends BaseModel {
   user_id: string;

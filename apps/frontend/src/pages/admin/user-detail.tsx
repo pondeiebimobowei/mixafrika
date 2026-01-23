@@ -1,4 +1,4 @@
-import { ArrowLeft, Ban, Calendar, CreditCard, Edit, Lock, LogOut, MapPin, RefreshCw } from "lucide-react";
+import { ArrowLeft, Ban, Calendar, CreditCard, Edit, Lock, LogOut, RefreshCw } from "lucide-react";
 import { useLocation, useNavigate, useParams } from "react-router"
 import InvestorDetailView from "@/components/admin/user/investor-detail-view";
 import AdminLayout from "@/components/layouts/admin-layout";

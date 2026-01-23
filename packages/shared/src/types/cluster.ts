@@ -1,6 +1,6 @@
-import { Duration } from "../enums";
-import { BaseModel } from "./base-model-type";
-import { ICollection } from "./collection";
+import { type Duration } from "../enums";
+import { type BaseModel } from "./base-model-type";
+import { type ICollection } from "./collection";
 
 export interface ICluster extends BaseModel {
   collection_id: string;

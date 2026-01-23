@@ -1,5 +1,5 @@
-import { VerificationStatus } from "../enums";
-import { BaseModel } from "./base-model-type";
+import { type VerificationStatus } from "../enums";
+import { type BaseModel } from "./base-model-type";
 
 export interface IBusinessVerification extends BaseModel {
   business_id: string;

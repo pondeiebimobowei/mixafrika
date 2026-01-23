@@ -112,7 +112,8 @@ export default function AgentManagedTradersPage() {
                                     </Avatar>
                                     <div>
                                         <p className="font-bold">{trader.first_name}</p>
-                                        <p className="text-sm text-muted-foreground">{trader.business?.type}</p>
+                                        {/* @ts-ignore */}
+                                        <p className="text-sm text-muted-foreground">{trader?.business[0].type}</p>
                                     </div>
                                 </Link>
                                  <DropdownMenu>

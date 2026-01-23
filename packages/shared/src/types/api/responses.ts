@@ -1,5 +1,5 @@
-import { Roles } from "../../enums";
-import { IUser } from "../user";
+import { type Roles } from "../../enums";
+import { type IUser } from "../user";
 
 export type loginProps = {
   token: string;

@@ -1,6 +1,6 @@
 import { type BaseModel } from "./base-model-type";
-import { IBusinessVerification } from "./business-verification";
-import { ICollection } from "./collection";
+import { type IBusinessVerification } from "./business-verification";
+import { type ICollection } from "./collection";
 
 export interface IUserBusiness extends BaseModel {
   user_id: string;

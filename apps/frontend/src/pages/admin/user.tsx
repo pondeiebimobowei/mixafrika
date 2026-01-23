@@ -1,4 +1,3 @@
-import type { IUser } from "../../../../../packages/shared/src/types/user";
 import { roles, type Roles } from "../../../../../packages/shared/src/enums/index";
 import { Download, Filter, MoreHorizontal, Plus } from "lucide-react";
 import { useState } from "react";

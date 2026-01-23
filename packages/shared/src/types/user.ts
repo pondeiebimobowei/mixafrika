@@ -1,11 +1,11 @@
 
 import { type Roles } from "../enums/index";
 import { type BaseModel } from "./base-model-type";
-import { IBusinessVerification } from "./business-verification";
+import { type IBusinessVerification } from "./business-verification";
 import { type ITrader } from "./trader";
 import { type ITransaction } from "./transaction";
 import { type IUserBusiness } from "./user-business";
-import { IUserVerification } from "./user-verification";
+import { type IUserVerification } from "./user-verification";
 
 export interface IUser extends BaseModel {
   image: string | null;

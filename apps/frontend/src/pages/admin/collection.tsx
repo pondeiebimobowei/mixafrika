@@ -6,8 +6,8 @@ import AdminLayout from "@/components/layouts/admin-layout";
 import { useCollectionState, useFetchCollections } from "@/store/hooks/collections.hook";
 
 export default function CollectionPage(){
-    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-    const [selectedCollectionId, setSelectedCollectionId] = useState<string | null>(null);
+    const [__, setIsCreateModalOpen] = useState(false);
+    const [_, setSelectedCollectionId] = useState<string | null>(null);
     useFetchCollections();
     const { data: { collections } } = useCollectionState();
 

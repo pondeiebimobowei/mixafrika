@@ -1,5 +1,5 @@
 import { VerificationStatus } from "../enums";
-import { BaseModel } from "./base-model-type";
+import { type BaseModel } from "./base-model-type";
 
 export interface IUserVerification extends BaseModel {
   user_id: string;

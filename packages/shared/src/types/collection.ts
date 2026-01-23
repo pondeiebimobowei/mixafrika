@@ -1,5 +1,5 @@
-import { BaseModel } from "./base-model-type";
-import { ICluster } from "./cluster";
+import { type BaseModel } from "./base-model-type";
+import { type ICluster } from "./cluster";
 
 export interface ICollection extends BaseModel {
   name: string;
