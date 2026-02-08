@@ -15,6 +15,7 @@ import { Savings } from './saving.model';
 import { ISavingsHistory } from '@shared/shared/src/types/savings-history';
 import type { Types } from '@shared/shared/src/enums';
 import { CreationOptional, DataTypes } from 'sequelize';
+import { Transaction } from './transaction.model';
 
 @Table({ tableName: 'saving_history' })
 export class SavingsHistory
@@ -29,6 +30,10 @@ export class SavingsHistory
   @ForeignKey(() => Savings)
   @Column
   declare savings_id: string;
+
+  @ForeignKey(() => Transaction)
+  @Column
+  declare transaction_id: string;
 
   @Column(DataType.DECIMAL(15, 2))
   declare amount: number;

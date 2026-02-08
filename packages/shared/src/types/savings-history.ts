@@ -4,6 +4,7 @@ import { BaseModel } from "./base-model-type";
 
 export interface ISavingsHistory extends BaseModel{
   savings_id: string;
+  transaction_id: string;
   amount: number;
   type: Types
 }

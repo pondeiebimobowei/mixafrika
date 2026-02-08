@@ -16,6 +16,7 @@ import { User } from './user.model';
 import { Cluster } from './cluster.model';
 import { Status } from '@shared/shared/src/enums';
 import { CreationOptional, DataTypes } from 'sequelize';
+import { Transaction } from './transaction.model';
 
 @Table({ tableName: 'investment' })
 export class Investment extends Model<IInvestment> implements IInvestment {
@@ -31,6 +32,10 @@ export class Investment extends Model<IInvestment> implements IInvestment {
   @ForeignKey(() => Cluster)
   @Column
   declare cluster_id: string;
+
+  @ForeignKey(() => Transaction)
+  @Column
+  declare transaction_id: string;
 
   @Column(DataType.DECIMAL(15, 2))
   declare amount_invested: number;

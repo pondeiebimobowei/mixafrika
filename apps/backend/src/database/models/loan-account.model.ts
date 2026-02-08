@@ -19,6 +19,7 @@ import { CreationOptional, DataTypes } from 'sequelize';
 import { LoanStatus } from '@shared/shared/src/enums';
 import { FundingApplication } from './funding_application';
 import { Cluster } from './cluster.model';
+import { Transaction } from './transaction.model';
 
 @Table({ tableName: 'loan_account' })
 export class LoanAccount extends Model<ILoanAccount> {
@@ -30,6 +31,10 @@ export class LoanAccount extends Model<ILoanAccount> {
   @ForeignKey(() => User)
   @Column
   declare user_id: string;
+
+  @ForeignKey(() => Transaction)
+  @Column
+  declare transaction_id: string;
 
   @Column(DataType.DECIMAL(15, 2))
   declare disbursed_amount: number;

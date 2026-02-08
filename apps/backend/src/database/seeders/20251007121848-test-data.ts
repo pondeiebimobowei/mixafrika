@@ -11,6 +11,7 @@ import { mockColectionSeed } from '../data/collection.mock';
 import { mockBankCardSeed } from '../data/bank-card.mock';
 import { mockBusinessVerificationSeed } from '../data/business-verification.mock';
 import { mockUserVerificationSeed } from '../data/user-verification.mock';
+import { LoanAccount } from '../models/loan-account.model';
   
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -90,12 +91,31 @@ module.exports = {
       const notificationUser = await mockNotificationSeed([responseUser[0], responseInvestor[0], responseInvestor[1]])
       await queryInterface.bulkInsert('notification', notificationUser, { transaction: t });
 
-      const loan_account = await queryInterface.bulkInsert('loan_account', [{
+      const loan_account_tx = await queryInterface.bulkInsert('transaction', [
+        {
+            id: uuidv4(),
+            amount: application[0].allocated_amount,
+            category: 'loan',
+            status: 'active',
+            title: 'Loan Disbursement',
+            type: 'loan',
+            user_id: users[0].id as string,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          }
+      ],
+    {
+      returning: true,
+      transaction: t
+    });
+
+      const loan_account: LoanAccount[] = await queryInterface.bulkInsert('loan_account', [{
         id: uuidv4(),
         user_id: users[0].id,
         application_id: application[0].id,
         cluster_id: application[0].cluster_id,
         disbursed_amount: application[0].allocated_amount,
+        transaction_id: loan_account_tx[0].id,
         status: 'approved',
         repaid_amount: 0,
         daily_repayment_amount: Number(application[0].allocated_amount * 1.15) / Number(application[0].duration),
@@ -111,7 +131,25 @@ module.exports = {
         transaction: t }
       )
 
-      const repayment_history = await mockLoanRepaySeed(loan_account)
+      const repayment_tx = await queryInterface.bulkInsert('transaction', [
+        {
+            id: uuidv4(),
+            amount: application[0].allocated_amount,
+            category: 'repayment',
+            status: 'active',
+            title: 'Loan Repayment',
+            type: 'repayment',
+            user_id: users[0].id as string,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          }
+      ],
+    {
+      returning: true,
+      transaction: t
+    });
+
+      const repayment_history = await mockLoanRepaySeed(loan_account, repayment_tx)
       const rh = await queryInterface.bulkInsert('repayment_history', repayment_history, { returning: true, transaction: t });      
     });
   },

@@ -1,8 +1,9 @@
 import { ITransaction } from "@shared/shared/src/types/transaction";
+import { IUser } from "@shared/shared/src/types/user";
 import { v4 as uuidv4 } from 'uuid';
 
-export const mockTransactionsSeed: (response) => Promise<ITransaction[]> =( async (response: { id: string }[]) => {
-    const user_id = response.map((u) => u.id)
+export const mockTransactionsSeed: (response: IUser[]) => Promise<ITransaction[]> =( async (response: IUser[]) => {
+    const user_id = response.map((u) => u.id) as string[];
       const randomNumber = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
 
     return [

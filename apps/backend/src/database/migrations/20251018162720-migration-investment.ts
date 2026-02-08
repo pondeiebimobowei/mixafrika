@@ -26,6 +26,15 @@ module.exports = {
           onDelete: 'Cascade',
           onUpdate: 'Cascade',
         },
+
+        transaction_id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          references: { model: 'transaction', key: 'id' },
+          onDelete: 'Cascade',
+          onUpdate: 'Cascade',
+        },
+
         user_id: {
           type: Sequelize.UUID,
           allowNull: false,

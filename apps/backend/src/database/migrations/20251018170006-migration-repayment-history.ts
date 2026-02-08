@@ -31,6 +31,13 @@ module.exports = {
           onDelete: 'Cascade',
           onUpdate: 'Cascade',
         },
+        transaction_id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          references: { model: 'transaction', key: 'id' },
+          onDelete: 'Cascade',
+          onUpdate: 'Cascade',
+        },
         status: {
           type: Sequelize.STRING,
           validate: { isIn: [Object.values(PaymentStatus)] },

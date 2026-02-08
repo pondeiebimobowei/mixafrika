@@ -30,8 +30,18 @@ export class LoanAccountService {
         const application = await FundingApplication.findOne({ where: { id: application_id }, include: { model: Cluster }})
         const total_loan_amount = Number(application?.allocated_amount) * this.INTEREST_RATE[application?.duration as number]
 
+        const tx = await Transaction.create({
+            amount: Number(application?.allocated_amount),
+            user_id,
+            type: Types.LOAN,
+            status: Status.COMPLETED,
+            title: 'Loan Disbursement',
+            category: 'Loan',
+        })
+        
         const loan_account = await LoanAccount.create({
             application_id,
+            transaction_id: tx.id,
             daily_repayment_amount: total_loan_amount / Number(application?.duration),
             cluster_id: application?.cluster?.id as string,
             approved_at: new Date().toISOString() ,
@@ -68,13 +78,7 @@ export class LoanAccountService {
             await LoanAccount.update({ status: LoanStatus.COMPLETED }, { where: { user_id } });
         }
 
-        await RepaymentHistory.create({
-            loan_account_id: loan_account?.id as string,
-            amount: amount,
-            status: RepaymentStatus.PAID,
-        });
-
-        await Transaction.create({
+        const tx = await Transaction.create({
             user_id,
             type: Types.REPAYMENT,
             status: Status.COMPLETED,
@@ -83,6 +87,12 @@ export class LoanAccountService {
             category: 'Loan',
         });
 
+        await RepaymentHistory.create({
+            transaction_id: tx.id,
+            loan_account_id: loan_account?.id as string,
+            amount: amount,
+            status: RepaymentStatus.PAID,
+        });
 
         return {
             success: true,

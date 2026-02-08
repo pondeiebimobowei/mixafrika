@@ -15,6 +15,7 @@ import { LoanAccount } from './loan-account.model';
 import { IRepaymentHistory } from '@shared/shared/src/types/repayment-history';
 import { RepaymentStatus } from '@shared/shared/src/enums';
 import { CreationOptional, DataTypes } from 'sequelize';
+import { Transaction } from './transaction.model';
 
 @Table({ tableName: 'repayment_history' })
 export class RepaymentHistory
@@ -29,6 +30,10 @@ export class RepaymentHistory
     @ForeignKey(() => LoanAccount)
     @Column
     declare loan_account_id: string;
+
+    @ForeignKey(() => Transaction)
+    @Column
+    declare transaction_id: string;
 
     @Column(DataType.DECIMAL(15, 2))
     declare amount: number;

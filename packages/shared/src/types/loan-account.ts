@@ -8,6 +8,8 @@ export interface ILoanAccount extends BaseModel {
   application_id: string;
   cluster_id:string;
 
+  transaction_id: string;
+
   disbursed_amount: number,
   status: LoanStatus;
   repaid_amount: number;
