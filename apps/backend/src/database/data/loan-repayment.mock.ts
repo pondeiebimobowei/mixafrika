@@ -11,7 +11,7 @@ export const mockLoanRepaySeed: (response: ILoanAccount[], tx: ITransaction[]) =
             transaction_id: tx[0].id as string,
             loan_account_id: loan_account_id[0],
             status: 'paid',
-            amount: 0,
+            amount: tx[0].amount,
             createdAt: "2025-11-12T16:13:42.425Z",
             updatedAt: "2025-11-12T16:13:42.425Z",
         }

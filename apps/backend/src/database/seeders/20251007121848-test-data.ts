@@ -109,6 +109,8 @@ module.exports = {
       transaction: t
     });
 
+    const daily_repayment_amount = Number(application[0].allocated_amount * 1.15) / Number(application[0].duration);
+
       const loan_account: LoanAccount[] = await queryInterface.bulkInsert('loan_account', [{
         id: uuidv4(),
         user_id: users[0].id,
@@ -118,7 +120,7 @@ module.exports = {
         transaction_id: loan_account_tx[0].id,
         status: 'approved',
         repaid_amount: 0,
-        daily_repayment_amount: Number(application[0].allocated_amount * 1.15) / Number(application[0].duration),
+        daily_repayment_amount,
         total_repayment_amount: Number(application[0].allocated_amount * 1.15),
         approved_at: new Date(),
         createdAt: new Date(),
@@ -134,7 +136,7 @@ module.exports = {
       const repayment_tx = await queryInterface.bulkInsert('transaction', [
         {
             id: uuidv4(),
-            amount: application[0].allocated_amount,
+            amount: daily_repayment_amount * 2 ,
             category: 'repayment',
             status: 'active',
             title: 'Loan Repayment',
