@@ -139,7 +139,7 @@ const TraderLoginScreen = () => {
           {/* Login Button */}
           <TouchableOpacity
             onPress={form.handleSubmit(handleLogin)}
-            className="w-full bg-emerald-500 p-3 mb-6 rounded-xl shadow-md shadow-emerald-500/20"
+            className="w-full bg-emerald-500 text-[rgb(16,185,129)] p-3 mb-6 rounded-xl shadow-md shadow-emerald-500/20"
           >
             {isLoading ? (
               <Text className="text-white text-center text-lg font-bold">Logging in...</Text>

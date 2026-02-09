@@ -58,7 +58,7 @@ export class SavingsService {
     await savings.increment('total_amount', { by: amount });
     await savings.reload();
 
-    await this.savingsHistoryService.handleCreateSavingsHistoryRecord(savings.id, amount, 'deposit');
+    await this.savingsHistoryService.handleCreateSavingsHistoryRecord( user_id, savings.id, amount, 'deposit');
 
     return {
       success: true,
@@ -68,10 +68,10 @@ export class SavingsService {
   }
 
   async handleGetSavingsById(savings_id: string) {
-    const saving = await Savings.findOne({ where: { id: savings_id }, include: [SavingsHistory] })
+    const saving = await Savings.findOne( { where: { id: savings_id }})
     return {
       success: true,
-      message: '',
+      message: 'Savings plan retrieved successfully',
       data: saving,
     };
   }

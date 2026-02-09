@@ -33,7 +33,7 @@ export class UserController {
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'id_image_front', maxCount: 1 },
     { name: 'id_image_back', maxCount: 1 },
-   ]))
+  ]))
   async verifyIdentity(
     @ParsedToken() user: User,
     @Body(new ZodPipe(verify_identity)) body: Verify_identity,
@@ -58,7 +58,7 @@ export class UserController {
       ...body,
       id_image_front: id_image_front_url,
       id_image_back: id_image_back_url,
-      
+
     });
   }
 }

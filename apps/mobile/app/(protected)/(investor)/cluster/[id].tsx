@@ -1,20 +1,39 @@
-import React, { useEffect } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, Pressable } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { ArrowLeft, MapPin, Calendar, CheckCircle2, Circle } from 'lucide-react-native';
-import { cn, formatCurrency, formatDate } from '@/lib/utils';
+import { ArrowLeft, MapPin, Calendar } from 'lucide-react-native';
+import { formatDate } from '@/lib/utils';
 import { useClusterState } from '@/store/hooks/cluster.hook';
 import { useColorScheme } from 'nativewind';
 import TimelineItem from '@/components/timeline-item';
+import Sheet from '@/components/ui/sheet';
+import { useInvestment } from '@/store/hooks/use-investment.hook';
+import { TextInput, ActivityIndicator, Alert } from 'react-native';
 
 export default function ClusterDetails() {
     const { id } = useLocalSearchParams();
     const router = useRouter();
-    const { data: { cluster_by_id, get_cluster_by_id  } } = useClusterState();
+    const { data: { cluster_by_id, get_cluster_by_id } } = useClusterState();
+    const [sheetIsOpen, setSheetIsOpen] = useState<boolean>(false)
+    const [amount, setAmount] = useState<string>('');
+    const { create_investment, is_loading } = useInvestment();
+
+    const handleInvest = async () => {
+        if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
+            Alert.alert('Error', 'Please enter a valid amount');
+            return;
+        }
+        await create_investment({
+            cluster_id: id as string,
+            amount: Number(amount)
+        });
+        setSheetIsOpen(false);
+        setAmount('');
+    };
 
 
-    useEffect(()=>{
+    useEffect(() => {
         get_cluster_by_id(id as string)
     }, [id])
 
@@ -139,15 +158,47 @@ export default function ClusterDetails() {
             {/* Bottom Bar */}
             <View className="absolute bottom-0 left-0 right-0 bg-slate-100 dark:bg-[#0f1522] dark:border-t border-gray-800 p-4 pb-8">
                 <View className="flex-row items-center justify-between gap-4">
-                    <View>
-                        <Text className="text-black dark:text-gray-400 text-sm mb-1">Total Payable</Text>
-                        {/* <Text className="text-white text-2xl font-bold">{formatCurrency(collection.min_investment)}</Text> */}
-                    </View>
-                    <TouchableOpacity className="flex-1 bg-[#10b981] py-4 rounded-xl items-center">
+                    <Pressable onPress={() => setSheetIsOpen(prev => !prev)} className="flex-1 bg-[#10b981] py-4 rounded-xl items-center">
                         <Text className="text-white font-bold text-lg">Invest Now</Text>
-                    </TouchableOpacity>
+                    </Pressable>
                 </View>
             </View>
+
+            <Sheet
+                open={sheetIsOpen}
+                onOpenChange={() => setSheetIsOpen(prev => !prev)}
+            >
+                <View className='bg-white dark:bg-[#1A1A1A]'>
+                    <View>
+                        <Text className='text-black dark:text-white mb-4'>Invest in {collection?.name} - {cluster_by_id?.name}</Text>
+                    </View>
+
+                    <View className='gap-4'>
+                        <Text className='text-gray-500'>Enter Investment Amount</Text>
+                        <TextInput
+                            keyboardType='numeric'
+                            className='bg-gray-100 dark:bg-zinc-800 p-4 rounded-xl text-black dark:text-white'
+                            placeholder='Amount'
+                            placeholderTextColor='#6b7280'
+                            value={amount}
+                            onChangeText={setAmount}
+                        />
+
+                        <Pressable
+                            onPress={handleInvest}
+                            disabled={is_loading}
+                            className={`py-4 rounded-xl items-center ${is_loading ? 'bg-gray-400' : 'bg-[#10b981]'}`}
+                        >
+                            {is_loading ? (
+                                <ActivityIndicator color='white' />
+                            ) : (
+                                <Text className="text-white font-bold text-lg">Confirm Investment</Text>
+                            )}
+                        </Pressable>
+                    </View>
+                </View>
+
+            </Sheet>
         </View>
     );
 }
