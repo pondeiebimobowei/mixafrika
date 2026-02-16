@@ -16,6 +16,7 @@ import { LoanStatus } from '@shared/shared/src/enums';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { User } from './user.model';
 import { ILoanHistory } from '@shared/shared/src/types/loan-history';
+import { LoanAccount } from './loan-account.model';
 
 @Table({ tableName: 'loan_history' })
 export class LoanHistory extends Model<ILoanHistory> implements ILoanHistory {
@@ -28,6 +29,10 @@ export class LoanHistory extends Model<ILoanHistory> implements ILoanHistory {
   @Column
   declare user_id: string;
 
+  @ForeignKey(() => LoanAccount)
+  @Column
+  declare loan_account_id: string;
+
   @Column(DataType.DECIMAL(15, 2))
   declare amount: number;
 
@@ -39,6 +44,9 @@ export class LoanHistory extends Model<ILoanHistory> implements ILoanHistory {
 
   @BelongsTo(() => User)
   declare user: User;
+
+  @BelongsTo(() => LoanAccount)
+  declare loan_account: LoanAccount;
 
   @CreatedAt
   declare createdAt: string;

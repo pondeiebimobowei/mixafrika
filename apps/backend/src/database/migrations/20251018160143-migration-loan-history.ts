@@ -29,6 +29,14 @@ module.exports = {
           onUpdate: 'Cascade',
         },
 
+        loan_account_id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          references: { model: 'loan_account', key: 'id' },
+          onDelete: 'Cascade',
+          onUpdate: 'Cascade',
+        },
+
         cluster_id: {
           type: Sequelize.UUID,
           allowNull: false,

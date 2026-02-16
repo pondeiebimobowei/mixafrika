@@ -3,6 +3,7 @@ import type { BaseModel } from "./base-model-type";
 
 export interface ILoanHistory extends BaseModel {
   user_id: string;
+  loan_account_id: string;
   cluster_id: string;
   amount: number;
   status: LoanStatus

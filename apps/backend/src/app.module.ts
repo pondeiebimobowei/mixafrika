@@ -15,7 +15,7 @@ import { FeedModule } from './feed/feed.module';
 import { UpdateModule } from './update/update.module';
 import { SystemModule } from './system/system.module';
 import { AdminModule } from './admin/admin.module';
-import { LoanModule } from './loan_history/loan_history.module';
+import { LoanAccountHistoryModule } from './loan_history/loan_history.module';
 import { SettingsModule } from './settings/settings.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -69,7 +69,7 @@ import { BusinessVerification } from './database/models/business-verification.mo
     UpdateModule,
     SystemModule,
     AdminModule,
-    LoanModule,
+    LoanAccountHistoryModule,
     SettingsModule,
     SequelizeModule.forFeature([User, UserVerification, BusinessVerification, Savings, FundingApplication, Goal, BankCard, Investment, Notification, Feed, Cluster, Collection, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, UserBusiness, Transaction, Wallet, LoanAccount]),
     ConfigModule.forRoot({ isGlobal: true }),

@@ -39,7 +39,7 @@ export class SavingsController {
     return this.savingsService.handleTopUpSavings(jwt.id, savings_id, body.amount, body.source);
   }
 
-  @Get(':savings_id/history')
+  @Get('transactions/:savings_id')
   getSavingsHistory(@Param('savings_id') savings_id: string) {
     return this.savingsService.handleGetSavingsHistory(savings_id);
   }

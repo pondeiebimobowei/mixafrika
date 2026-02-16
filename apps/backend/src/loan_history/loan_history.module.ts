@@ -5,5 +5,6 @@ import { LoanHistoryController } from './loan_history.controller';
 @Module({
   providers: [LoanHistoryService],
   controllers: [LoanHistoryController],
+  exports: [LoanHistoryService]
 })
-export class LoanModule {}
+export class LoanAccountHistoryModule {}
