@@ -35,7 +35,7 @@ FThemeData get greenDark {
     error: Color(0xFF7F1D1D),
     errorForeground: Color(0xFFFAFAFA),
     border: Color(0xFF27272A),
-    card: Color(0xFFEF4444),
+    card: Color.fromARGB(255, 24, 32, 46),
   );
 
   final typography = _typography(colors: colors);
