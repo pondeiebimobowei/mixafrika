@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/routing/router.dart';
 import 'package:spine/theme/app-theme.dart';
+import 'package:uuid/uuid.dart';
 
 
 void main() async {
@@ -16,8 +17,28 @@ void main() async {
       .into(database.product)
       .insert(
         ProductCompanion.insert(
+          id: Uuid().v4(),
           name: 'A product name',
-          description: 'A product description',
+          bulkUnitName: 'Bulk unit name',
+          pieceUnitName: 'Piece unit name',
+          unitsPerBulk: 'Units per bulk',
+          costPricePerPiece: 'Cost price per piece',
+          sellingPricePerPiece: 'Selling price per piece',
+          sellingPricePerBulk: 'Selling price per bulk',
+          category: 'Category',
+          serialNumber: 'Serial number',
+          stockBalances: 'Stock balances',
+          batches: 'Batches',
+          bulkQuantity: 'Bulk quantity',
+          pieceQuantity: 'Piece quantity',
+          imageUrl: 'Image URL',
+          images: 'Images',
+          reviews: 'Reviews',
+          // createdAt: DateTime.now(),
+          // updatedAt: DateTime.now(),
+          // deletedAt: DateTime.now(),
+          syncStatus: 'Sync status',
+          // syncDate: DateTime.now(),
         ),
       );
   List<ProductData> allItems = await database.select(database.product).get();

@@ -1,9 +1,22 @@
 import 'package:drift/drift.dart';
+import 'package:spine/drift/model/base.dart';
+import 'package:spine/drift/model/user_business.dart';
+
+class Product extends Table with TableMixin {
+    late final name = text()();
+    late final description = text()();
+    late final bulkUnitName = text()();
+    late final pieceUnitName = text()();
+    late final unitsPerBulk = text()();
+    late final costPrice = text()();
+    late final sellingPricePerPiece = text()();
+    late final sellingPricePerBulk = text()();
+    late final category = text()();
+    late final serialNumber = text()();
+    late final imageUrl = text()();
+    late final reviews = text()();
 
 
-class Product extends Table {
-  IntColumn get id => integer().autoIncrement()();
-  TextColumn get name => text().withLength(min: 6, max: 32)();
-  TextColumn get description => text().named('body')();
-  DateTimeColumn get createdAt => dateTime().nullable()();
+    late final businessId = text().references(UserBusiness, #id)();
+
 }
