@@ -1,45 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:spine/drift/database.dart';
+import 'package:spine/routing/router.dart';
 import 'package:spine/theme/app-theme.dart';
-import 'package:spine/screens/splash_screen.dart';
-import 'package:spine/screens/dashboard_screen.dart';
-import 'package:spine/screens/login_screen.dart';
-import 'package:spine/screens/signup_screen.dart';
-import 'package:spine/screens/business_details_screen.dart';
 
-void main() {
+
+void main() async {
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  final database = AppDatabase();
+
+  await database
+      .into(database.product)
+      .insert(
+        ProductCompanion.insert(
+          name: 'A product name',
+          description: 'A product description',
+        ),
+      );
+  List<ProductData> allItems = await database.select(database.product).get();
+
+  print('items in database: $allItems');
+  
   runApp(const Application());
 }
-
-final GoRouter _router = GoRouter(
-  initialLocation: '/',
-  routes: [
-    GoRoute(path: '/splash', builder: (context, state) => const SplashScreen()),
-    GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
-    GoRoute(path: '/signup', builder: (context, state) => const SignupScreen()),
-    GoRoute(
-      path: '/business-details',
-      builder: (context, state) {
-        final userData = state.extra as Map<String, dynamic>;
-        return BusinessDetailsScreen(userData: userData);
-      },
-    ),
-    GoRoute(path: '/', builder: (context, state) => const DashboardScreen()),
-  ],
-);
 
 class Application extends StatelessWidget {
   const Application({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     final theme = AppTheme.dark;
 
     return MaterialApp.router(
-      title: 'SpineS',
+      title: 'Spine',
       debugShowCheckedModeBanner: false,
-      routerConfig: _router,
+      routerConfig: router,
       supportedLocales: FLocalizations.supportedLocales,
       localizationsDelegates: const [...FLocalizations.localizationsDelegates],
       theme: theme.toApproximateMaterialTheme(),

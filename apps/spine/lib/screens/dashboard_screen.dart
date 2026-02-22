@@ -3,8 +3,177 @@ import 'package:forui/forui.dart';
 import 'package:spine/theme/typography.dart';
 import 'package:spine/widget/icon_widget.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  final List<String> _shops = [
+    'Main Shop (Lagos)',
+    'Second Shop (Ibadan)',
+    'Warehouse (Kano)',
+    'Distribution Center (Abuja)',
+  ];
+
+  late String _selectedShop;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedShop = _shops.first;
+  }
+
+  void _showShopSelectionSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: context.theme.colors.background,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (context) {
+        String searchQuery = "";
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            return DraggableScrollableSheet(
+              initialChildSize: 0.6,
+              minChildSize: 0.4,
+              maxChildSize: 0.9,
+              expand: false,
+              builder: (context, scrollController) {
+                final filteredShops = _shops
+                    .where(
+                      (shop) => shop.toLowerCase().contains(
+                        searchQuery.toLowerCase(),
+                      ),
+                    )
+                    .toList();
+
+                return Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 12),
+                      Container(
+                        width: 40,
+                        height: 4,
+                        decoration: BoxDecoration(
+                          color: context.theme.colors.border,
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+                      Row(
+                        children: [
+                          HeadingText(
+                            title: 'Select Shop',
+                            fontSize: 18,
+                            color: context.theme.colors.primaryForeground,
+                          ),
+                          const Spacer(),
+                          // FButton(
+                          //   onPress: () => Navigator.pop(context),
+                          //   child: const Icon(Icons.close, size: 18),
+                          // ),
+                          GestureDetector(
+                            onTap: () => Navigator.pop(context),
+                            child: IconWidget(icon: Icons.close),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      TextField(
+                        onChanged: (value) {
+                          setModalState(() {
+                            searchQuery = value;
+                          });
+                        },
+                        style: TextStyle(
+                          color: context.theme.colors.foreground,
+                        ),
+                        decoration: InputDecoration(
+                          hintText: 'Search shops...',
+                          hintStyle: TextStyle(
+                            color: context.theme.colors.mutedForeground,
+                          ),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: context.theme.colors.mutedForeground,
+                          ),
+                          filled: true,
+                          fillColor: context.theme.colors.secondary,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide.none,
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 16,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Expanded(
+                        child: ListView.builder(
+                          controller: scrollController,
+                          itemCount: filteredShops.length,
+                          itemBuilder: (context, index) {
+                            final shop = filteredShops[index];
+                            final isSelected = shop == _selectedShop;
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 8.0),
+                              child: ListTile(
+                                onTap: () {
+                                  setState(() {
+                                    _selectedShop = shop;
+                                  });
+                                  Navigator.pop(context);
+                                },
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                tileColor: isSelected
+                                    ? context.theme.colors.primary.withValues(
+                                        alpha: 0.1,
+                                      )
+                                    : Colors.transparent,
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 4,
+                                ),
+                                title: RegularText(
+                                  title: shop,
+                                  fontSize: 14,
+                                  bold: isSelected,
+                                  color: isSelected
+                                      ? context.theme.colors.primary
+                                      : context.theme.colors.primaryForeground,
+                                ),
+                                trailing: isSelected
+                                    ? Icon(
+                                        Icons.check_circle,
+                                        color: context.theme.colors.primary,
+                                        size: 20,
+                                      )
+                                    : null,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,12 +181,12 @@ class DashboardScreen extends StatelessWidget {
       header: FHeader(
         title: Row(
           children: [
-            CircleAvatar(
-              radius: 16,
-              backgroundImage: NetworkImage(
-                'https://placeholder.com/150',
-              ), // Placeholder for profile pic
-            ),
+            // CircleAvatar(
+            //   radius: 16,
+            //   backgroundImage: NetworkImage(
+            //     'https://placeholder.com/150',
+            //   ), // Placeholder for profile pic
+            // ),
             const SizedBox(width: 12),
             const HeadingText(title: 'Dashboard', fontSize: 12),
             const Spacer(),
@@ -56,28 +225,34 @@ class DashboardScreen extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          // flex: 2,
-          child: FCard(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.location_on_outlined,
-                    size: 16,
-                    color: context.theme.colors.primary,
-                  ),
-                  const SizedBox(width: 8),
-                  const Expanded(
-                    child: XSmallText(
-                      title: 
-                      'MAIN SHOP (LAGOS)',
-                      fontSize: 8,
-                      bold: true,
+          child: GestureDetector(
+            onTap: () => _showShopSelectionSheet(context),
+            child: FCard(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.location_on_outlined,
+                      size: 16,
+                      color: context.theme.colors.primary,
                     ),
-                  ),
-                  Icon(Icons.keyboard_arrow_down, textDirection: TextDirection.rtl,  color: context.theme.colors.primaryForeground, size: 16),
-                ],
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: XSmallText(
+                        title: _selectedShop,
+                        fontSize: 8,
+                        bold: true,
+                      ),
+                    ),
+                    Icon(
+                      Icons.keyboard_arrow_down,
+                      textDirection: TextDirection.rtl,
+                      color: context.theme.colors.primaryForeground,
+                      size: 16,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -111,9 +286,7 @@ class DashboardScreen extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          const HeadingText(
-            title: '₦23,500',
-          ),
+          const HeadingText(title: '₦23,500'),
           const SizedBox(height: 8),
           Row(
             children: [
@@ -509,37 +682,17 @@ class DashboardScreen extends StatelessWidget {
         ), // Purple gradient
         borderRadius: BorderRadius.circular(32),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
+      child: Container(
+        padding: const EdgeInsets.all(20.0),
+        child: Container(
+          child: Column(
             children: [
-              Icon(Icons.auto_awesome, color: Colors.white, size: 18),
-              const SizedBox(width: 8),
-              const Text(
-                'SPINE INTELLIGENCE',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12,
-                ),
+              GestureDetector(
+                child: RegularText(title: 'Update Products'),
               ),
             ],
           ),
-          const SizedBox(height: 16),
-          const Text(
-            '"Classic Ankara" has a 4.2x faster turnover on Market Days. Increase your restock by 15% this Thursday to capture ₦2,400 in extra profit.',
-            style: TextStyle(color: Colors.white, fontSize: 14, height: 1.5),
-          ),
-          const SizedBox(height: 24),
-          FButton(
-            onPress: () {},
-            child: const Text(
-              'VIEW FULL ANALYSIS',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
