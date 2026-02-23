@@ -126,3 +126,20 @@ export const VerificationStatus = {
 } as const;
 
 export type VerificationStatus = (typeof VerificationStatus)[keyof typeof VerificationStatus];
+
+export const SalesStatus = {
+    PENDING: "pending",
+    VERIFIED: "verified",
+    UNVERIFIED: 'unverified',
+    REJECTED: "rejected",
+} as const;
+
+export type SalesStatus = (typeof SalesStatus)[keyof typeof SalesStatus];
+
+export const syncStatus = {
+    PENDING: "pending",
+    COMPLETED: "completed",
+    FAILED: "failed",
+} as const;
+
+export type syncStatus = (typeof syncStatus)[keyof typeof syncStatus];
