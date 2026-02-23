@@ -1,14 +1,15 @@
 import {
-  Table,
-  Column,
-  Model,
-  DataType,
-  ForeignKey,
-  DeletedAt,
-  UpdatedAt,
-  CreatedAt,
-  PrimaryKey,
-  Default,
+    Table,
+    Column,
+    Model,
+    DataType,
+    ForeignKey,
+    DeletedAt,
+    UpdatedAt,
+    CreatedAt,
+    PrimaryKey,
+    Default,
+    BelongsTo,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { User } from './user.model';
@@ -18,48 +19,56 @@ import { syncStatus } from '@shared/shared/src/enums';
 
 @Table({ tableName: 'sales' })
 export class Sales
-  extends Model<ISales> implements ISales
-{
-  @PrimaryKey
-  @Default(DataTypes.UUIDV4)
-  @Column(DataTypes.UUID)
-  declare id: CreationOptional<string>;
+    extends Model<ISales> implements ISales {
+    @PrimaryKey
+    @Default(DataTypes.UUIDV4)
+    @Column(DataTypes.UUID)
+    declare id: CreationOptional<string>;
 
-  @ForeignKey(() => UserBusiness)
-  @Column(DataType.STRING)
-  declare branch_id: string;
+    @ForeignKey(() => UserBusiness)
+    @Column(DataType.STRING)
+    declare branch_id: string;
 
-  @ForeignKey(() => User)
-  @Column(DataType.STRING)
-  declare customer_id: string;
+    @ForeignKey(() => User)
+    @Column(DataType.STRING)
+    declare customer_id: string;
 
-  @Column(DataType.STRING)
-  declare total_amount: string;
+    @Column(DataType.STRING)
+    declare total_amount: string;
 
-  @Column(DataType.STRING)
-  declare payment_method: string;
+    @Column(DataType.STRING)
+    declare payment_method: string;
 
-  @Column(DataType.STRING)
-  declare status: string;
+    @Column(DataType.STRING)
+    declare status: string;
 
-  @ForeignKey(() => User)
-  @Column(DataType.UUID)
-  declare created_by_id: string;
+    @ForeignKey(() => User)
+    @Column(DataType.UUID)
+    declare created_by_id: string;
 
-  @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
-  declare syncStatus: syncStatus;
+    @BelongsTo(() => UserBusiness, 'branch_id')
+    declare branch: UserBusiness;
 
-  @Column({ type: DataType.STRING, allowNull: false })
-  declare syncDate: string;
+    @BelongsTo(() => User, 'customer_id')
+    declare customer: User;
+
+    @BelongsTo(() => User, 'created_by_id')
+    declare created_by: User;
+
+    @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
+    declare syncStatus: syncStatus;
+
+    @Column({ type: DataType.STRING, allowNull: false })
+    declare syncDate: string;
 
 
-  
-  @CreatedAt
-  declare createdAt: string;
 
-  @UpdatedAt
-  declare updatedAt: string;
+    @CreatedAt
+    declare createdAt: string;
 
-  @DeletedAt
-  declare deletedAt?: string;
+    @UpdatedAt
+    declare updatedAt: string;
+
+    @DeletedAt
+    declare deletedAt?: string;
 }
