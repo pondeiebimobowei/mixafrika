@@ -52,6 +52,16 @@ import { BankCardModule } from './bank_card/bank_card.module';
 import { SavingsHistoryModule } from './savings_history/savings_history.module';
 import { UserVerification } from './database/models/user-verification';
 import { BusinessVerification } from './database/models/business-verification.model';
+import { BatchModule } from './batch/batch.module';
+import { InventoryModule } from './inventory/inventory.module';
+import { SalesModule } from './sales/sales.module';
+import { SalesItemModule } from './sales_item/sales_item.module';
+import { ProductModule } from './product/product.module';
+import { Product } from './database/models/product.model';
+import { Batch } from './database/models/batch.model';
+import { Inventory } from './database/models/inventory.model';
+import { Sales } from './database/models/sales.model';
+import { SalesItem } from './database/models/sales-item.model';
 
 @Module({
   imports: [
@@ -71,7 +81,7 @@ import { BusinessVerification } from './database/models/business-verification.mo
     AdminModule,
     LoanAccountHistoryModule,
     SettingsModule,
-    SequelizeModule.forFeature([User, UserVerification, BusinessVerification, Savings, FundingApplication, Goal, BankCard, Investment, Notification, Feed, Cluster, Collection, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, UserBusiness, Transaction, Wallet, LoanAccount]),
+    SequelizeModule.forFeature([User, UserVerification, BusinessVerification, Savings, FundingApplication, Goal, BankCard, Investment, Notification, Feed, Cluster, Collection, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, UserBusiness, Transaction, Wallet, LoanAccount, Product, Batch, Inventory, Sales, SalesItem]),
     ConfigModule.forRoot({ isGlobal: true }),
     SequelizeModule.forRootAsync({
       useFactory: getSequelizeConfig,
@@ -85,6 +95,11 @@ import { BusinessVerification } from './database/models/business-verification.mo
     CollectionModule,
     BankCardModule,
     SavingsHistoryModule,
+    BatchModule,
+    InventoryModule,
+    SalesModule,
+    SalesItemModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [
@@ -95,6 +110,6 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)
-      .forRoutes('*'); 
+      .forRoutes('*');
   }
 }
