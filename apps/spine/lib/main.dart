@@ -1,64 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
-import 'package:spine/drift/database.dart';
+
 import 'package:spine/routing/router.dart';
 import 'package:spine/theme/app-theme.dart';
 import 'package:uuid/uuid.dart';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
 
-  final database = AppDatabase();
-
-  await database
-      .into(database.product)
-      .insert(
-        ProductCompanion.insert(
-          id: Uuid().v4(),
-          name: 'A product name',
-          bulkUnitName: 'Bulk unit name',
-          pieceUnitName: 'Piece unit name',
-          unitsPerBulk: 'Units per bulk',
-          costPricePerPiece: 'Cost price per piece',
-          sellingPricePerPiece: 'Selling price per piece',
-          sellingPricePerBulk: 'Selling price per bulk',
-          category: 'Category',
-          serialNumber: 'Serial number',
-          stockBalances: 'Stock balances',
-          batches: 'Batches',
-          bulkQuantity: 'Bulk quantity',
-          pieceQuantity: 'Piece quantity',
-          imageUrl: 'Image URL',
-          images: 'Images',
-          reviews: 'Reviews',
-          // createdAt: DateTime.now(),
-          // updatedAt: DateTime.now(),
-          // deletedAt: DateTime.now(),
-          syncStatus: 'Sync status',
-          // syncDate: DateTime.now(),
-        ),
-      );
-  List<ProductData> allItems = await database.select(database.product).get();
-
-  print('items in database: $allItems');
-  
-  runApp(const Application());
+  runApp(ProviderScope(child: const Application()));
 }
 
 class Application extends StatelessWidget {
   const Application({super.key});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     final theme = AppTheme.dark;
 
     return MaterialApp.router(
       title: 'Spine',
       debugShowCheckedModeBanner: false,
-      routerConfig: router,
+      routerConfig: router(),
       supportedLocales: FLocalizations.supportedLocales,
       localizationsDelegates: const [...FLocalizations.localizationsDelegates],
       theme: theme.toApproximateMaterialTheme(),
