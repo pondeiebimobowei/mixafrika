@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:spine/data/shared_preference.dart';
 
-const String baseUrl = '';
+const String baseUrl = 'http://localhost:3003/v1';
 
 final Dio apiPrivate =
     Dio(
