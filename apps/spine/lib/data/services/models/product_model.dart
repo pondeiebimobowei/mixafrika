@@ -15,6 +15,7 @@ class Product extends BaseModel{
   final String serialNumber;
   final String imageUrl;
   final String reviews;
+  
   final String syncDate;
   final String syncStatus;
 

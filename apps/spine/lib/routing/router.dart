@@ -4,9 +4,10 @@ import 'package:spine/screens/dashboard_screen.dart';
 import 'package:spine/screens/signup_screen.dart';
 import 'package:spine/screens/splash_screen.dart';
 import 'package:spine/ui/auth/view/login_view.dart';
+import 'package:spine/ui/home/widget/home_screen.dart';
 
 GoRouter router() => GoRouter(
-  initialLocation: Routes.splash,
+  initialLocation: Routes.dashboard,
   routes: [
     GoRoute(
       path: Routes.splash,
@@ -24,7 +25,7 @@ GoRouter router() => GoRouter(
     ),
     GoRoute(
       path: Routes.dashboard,
-      builder: (context, state) => const DashboardScreen(),
+      builder: (context, state) => HomeView(),
     ),
   ],
 );
