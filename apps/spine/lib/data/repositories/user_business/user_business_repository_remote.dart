@@ -50,23 +50,14 @@ class UserBusinessRepositoryRemote implements UserBusinessRepositoryAbstract {
   }
 
   @override
-  Future<UserBusinessData> getUserBusiness(String id) async {
+  Future<UserBusinessData> getUserBusinessById(String id) async {
     final res = await _database.select(_database.userBusiness).get();
 
     return UserBusinessData.fromJson(res.first.toJson());
   }
 
   @override
-  Future<List<UserBusinessData>> getUserBusinesses() async {
-    List<UserBusinessData> allItems = await _database
-        .select(_database.userBusiness)
-        .get();
-
-    return allItems.map((e) => UserBusinessData.fromJson(e.toJson())).toList();
-  }
-
-  @override
-  Future<List<UserBusinessData>> getUserBusinessess() async {
+  Future<List<UserBusinessData>> getUserBusiness() async {
     List<UserBusinessData> allItems = await _database
         .select(_database.userBusiness)
         .get();

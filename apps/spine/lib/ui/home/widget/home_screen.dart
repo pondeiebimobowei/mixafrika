@@ -3,7 +3,6 @@ import 'package:forui/forui.dart';
 import 'package:spine/theme/typography.dart';
 import 'package:spine/ui/home/view_model/home_view_model.dart';
 import 'package:spine/ui/user_business/active_user_business_provider.dart';
-import 'package:spine/ui/user_business/view_model/user_business_view_model.dart';
 import 'package:spine/widget/icon_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,7 +11,6 @@ class HomeView extends ConsumerWidget {
 
   void _showShopSelectionSheet(BuildContext context, WidgetRef ref) {
     final homeState = ref.read(homeViewModelProvider).value;
-    print(homeState);
 
     showModalBottomSheet(
       context: context,
@@ -165,7 +163,6 @@ class HomeView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeViewModelProvider);
-    print(homeState);
 
     return FScaffold(
       header: FHeader(
@@ -219,7 +216,7 @@ class HomeView extends ConsumerWidget {
 
   Widget _buildTopBar(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeViewModelProvider).value;
-    final selectedBusiness = homeState?.activeUserBusiness;
+    final activeBusiness = homeState?.activeUserBusiness;
 
     return Row(
       children: [
@@ -239,7 +236,7 @@ class HomeView extends ConsumerWidget {
                     const SizedBox(width: 8),
                     Expanded(
                       child: XSmallText(
-                        title: selectedBusiness?.name ?? "Select Shop",
+                        title: activeBusiness?.name ?? "Select Shop",
                         fontSize: 8,
                         bold: true,
                       ),

@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/repositories/user_business/user_business_repository.dart';
+import 'package:spine/data/repositories/user_business/user_business_repository_remote.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/user_business/active_user_business_provider.dart';
@@ -8,7 +9,7 @@ class UserBusinessViewModel
     extends AutoDisposeAsyncNotifier<List<UserBusinessData>> {
   @override
   Future<List<UserBusinessData>> build() async {
-    // await ref.read(userBusinessRepositoryRemoteProvider).getUserBusinesses();
+    ref.read(userBusinessRepositoryRemoteProvider).getUserBusiness();
     final userBusiness = await getUserBusinesses();
     if (userBusiness.isNotEmpty) {
       ref
@@ -26,7 +27,7 @@ class UserBusinessViewModel
   }
 
   Future<List<UserBusinessData>> getUserBusinesses() async {
-    return await ref.read(userBusinessRepositoryProvider).getUserBusinesses();
+    return await ref.read(userBusinessRepositoryProvider).getUserBusiness();
   }
 }
 
