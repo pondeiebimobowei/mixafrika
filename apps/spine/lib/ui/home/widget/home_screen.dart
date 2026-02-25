@@ -1,21 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
+import 'package:go_router/go_router.dart';
+import 'package:spine/routing/routes.dart';
+import 'package:spine/theme/app-theme.dart';
 import 'package:spine/theme/typography.dart';
 import 'package:spine/ui/home/view_model/home_view_model.dart';
 import 'package:spine/ui/user_business/active_user_business_provider.dart';
-import 'package:spine/widget/icon_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:spine/widget/icon_widget.dart';
 
 class HomeView extends ConsumerWidget {
   const HomeView({super.key});
 
   void _showShopSelectionSheet(BuildContext context, WidgetRef ref) {
     final homeState = ref.read(homeViewModelProvider).value;
+    final FColors colors = context.theme.colors;
 
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: context.theme.colors.background,
+      backgroundColor: colors.background,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -48,17 +52,19 @@ class HomeView extends ConsumerWidget {
                         width: 40,
                         height: 4,
                         decoration: BoxDecoration(
-                          color: context.theme.colors.border,
+                          color: colors.border,
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
                       const SizedBox(height: 24),
                       Row(
                         children: [
-                          HeadingText(
-                            title: 'Select Shop',
-                            fontSize: 18,
-                            color: context.theme.colors.primaryForeground,
+                          Text(
+                            'Select Shop',
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: colors.primaryForeground,
+                            ),
                           ),
                           const Spacer(),
                           GestureDetector(
@@ -75,19 +81,19 @@ class HomeView extends ConsumerWidget {
                           });
                         },
                         style: TextStyle(
-                          color: context.theme.colors.foreground,
+                          color: colors.foreground,
                         ),
                         decoration: InputDecoration(
                           hintText: 'Search shops...',
                           hintStyle: TextStyle(
-                            color: context.theme.colors.mutedForeground,
+                            color: colors.mutedForeground,
                           ),
                           prefixIcon: Icon(
                             Icons.search,
-                            color: context.theme.colors.mutedForeground,
+                            color: colors.mutedForeground,
                           ),
                           filled: true,
-                          fillColor: context.theme.colors.secondary,
+                          fillColor: Colors.white,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide.none,
@@ -114,14 +120,16 @@ class HomeView extends ConsumerWidget {
                                   ref
                                           .read(
                                             activeUserBusinessProvider.notifier,
-                                          ).state = shop;
+                                          )
+                                          .state =
+                                      shop;
                                   Navigator.pop(context);
                                 },
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 tileColor: isSelected
-                                    ? context.theme.colors.primary.withValues(
+                                    ? colors.primary.withValues(
                                         alpha: 0.1,
                                       )
                                     : Colors.transparent,
@@ -129,18 +137,20 @@ class HomeView extends ConsumerWidget {
                                   horizontal: 16,
                                   vertical: 4,
                                 ),
-                                title: RegularText(
-                                  title: shop.name,
+                                title: Text(
+                                  shop.name,
+                                  style: TextStyle(
                                   fontSize: 14,
-                                  bold: isSelected,
+                                  fontWeight: isSelected ? .bold : .normal,
                                   color: isSelected
-                                      ? context.theme.colors.primary
-                                      : context.theme.colors.primaryForeground,
+                                      ? colors.primary
+                                      : colors.primaryForeground,
+                                  ),
                                 ),
                                 trailing: isSelected
                                     ? Icon(
                                         Icons.check_circle,
-                                        color: context.theme.colors.primary,
+                                        color: colors.primary,
                                         size: 20,
                                       )
                                     : null,
@@ -163,29 +173,34 @@ class HomeView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeViewModelProvider);
+    final themeNotifier = ref.read(themeProvider.notifier);
+    final colors = context.theme.colors;
 
     return FScaffold(
       header: FHeader(
         title: Row(
           children: [
-            CircleAvatar(
-              radius: 16,
-              backgroundImage: NetworkImage(
-                'https://placeholder.com/150',
-              ), // Placeholder for profile pic
-            ),
+            // CircleAvatar(
+            //   radius: 16,
+            //   backgroundImage: NetworkImage(
+            //     'https://placeholder.com/150',
+            //   ), // Placeholder for profile pic
+            // ),
             const SizedBox(width: 12),
             const HeadingText(title: 'Dashboard', fontSize: 12),
             const Spacer(),
             IconWidget(icon: Icons.notifications_outlined),
-            IconWidget(icon: Icons.wb_sunny_outlined),
+            GestureDetector(
+              onTap: () => themeNotifier.toggleTheme(),
+              child: IconWidget(icon: Icons.wb_sunny_outlined),
+            )
           ],
         ),
       ),
       child: homeState.when(
         data: (homeState) {
           return Material(
-            color: Colors.transparent,
+            color: colors.background,
             child: SingleChildScrollView(
               padding: const EdgeInsets.all(8),
               child: Column(
@@ -217,6 +232,7 @@ class HomeView extends ConsumerWidget {
   Widget _buildTopBar(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeViewModelProvider).value;
     final activeBusiness = homeState?.activeUserBusiness;
+    final FColors colors = context.theme.colors;
 
     return Row(
       children: [
@@ -231,20 +247,21 @@ class HomeView extends ConsumerWidget {
                     Icon(
                       Icons.location_on_outlined,
                       size: 16,
-                      color: context.theme.colors.primary,
+                      color: colors.primary,
                     ),
                     const SizedBox(width: 8),
                     Expanded(
-                      child: XSmallText(
-                        title: activeBusiness?.name ?? "Select Shop",
-                        fontSize: 8,
-                        bold: true,
+                      child: Text(
+                        activeBusiness?.name ?? "Select Shop",
+                        style: context.theme.typography.sm.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     Icon(
                       Icons.keyboard_arrow_down,
                       textDirection: TextDirection.rtl,
-                      color: context.theme.colors.primaryForeground,
+                      color: colors.primaryForeground,
                       size: 16,
                     ),
                   ],
@@ -262,10 +279,13 @@ class HomeView extends ConsumerWidget {
   }
 
   Widget _buildActivityCard(BuildContext context) {
+    final FColors colors = context.theme.colors;
+    final FTypography typography = context.theme.typography;
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: context.theme.colors.secondaryForeground, // Dark slate/navy
+        color: colors.secondaryForeground,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
@@ -274,21 +294,21 @@ class HomeView extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              HeadingText(
-                title: "TODAY'S ACTIVITY (NET REVENUE)",
-                fontSize: 10,
+              Text(
+                "TODAY'S ACTIVITY (NET REVENUE)",
+                style: typography.xs.copyWith(fontWeight: FontWeight.bold, color: colors.primaryForeground.withValues(alpha: .6)),
               ),
-              Icon(Icons.refresh, size: 16, color: Colors.white),
+              Icon(Icons.refresh, size: 16, color: colors.primaryForeground),
             ],
           ),
-          const SizedBox(height: 12),
-          const HeadingText(title: '₦23,500'),
+          const SizedBox(height: 24),
+          Text('₦23,500', style: typography.xl4.copyWith(fontWeight: FontWeight.w800 )),
           const SizedBox(height: 8),
           Row(
             children: [
-              _buildStatusIndicator(context, '₦23,500 REALIZED', Colors.green),
+              _buildStatusIndicator(context, '₦23,500 REALIZED', colors.primary),
               const SizedBox(width: 12),
-              _buildStatusIndicator(context, 'NO PENDING', Colors.red),
+              _buildStatusIndicator(context, 'NO PENDING', colors.destructive),
             ],
           ),
           const SizedBox(height: 24),
@@ -298,14 +318,14 @@ class HomeView extends ConsumerWidget {
                 context,
                 'EST. PROFIT',
                 '₦6,800',
-                Colors.greenAccent,
+                colors.primary,
               ),
               const SizedBox(width: 12),
               _buildSubMetricCard(
                 context,
                 'PHYSICAL INFLOW',
                 '₦23,500',
-                Colors.blueAccent,
+                colors.secondary,
               ),
             ],
           ),
@@ -341,20 +361,23 @@ class HomeView extends ConsumerWidget {
     String value,
     Color highlightColor,
   ) {
+    final FColors colors = context.theme.colors;
+
     return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.05),
+      child: FCard(
+        style: FCardStyle(decoration: BoxDecoration(
+          color: colors.primaryForeground.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(16),
-        ),
+
+        ), contentStyle: FCardContentStyle(titleTextStyle: TextStyle(), subtitleTextStyle: TextStyle())),
+        
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               title,
               style: TextStyle(
-                color: Colors.grey[400],
+                color: colors.primaryForeground.withValues(alpha: .7),
                 fontSize: 9,
                 fontWeight: FontWeight.bold,
               ),
@@ -375,16 +398,17 @@ class HomeView extends ConsumerWidget {
   }
 
   Widget _buildQuickActions(BuildContext context) {
+    final FColors colors = context.theme.colors;
     return Row(
       children: [
         _buildActionCard(
           context,
           'Sell Item',
           FIcons.shoppingCart,
-          Colors.green,
+          colors.primary,
         ),
         const SizedBox(width: 12),
-        _buildActionCard(context, 'Add Stock', FIcons.shoppingBag, Colors.blue),
+        _buildActionCard(context, 'Add Stock', FIcons.shoppingBag, colors.secondary),
       ],
     );
   }
@@ -402,12 +426,12 @@ class HomeView extends ConsumerWidget {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [color.withOpacity(0.8), color],
+            colors: [color.withValues(alpha: .8), color],
           ),
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: color.withOpacity(0.3),
+              color: color.withValues(alpha: .3),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -419,7 +443,7 @@ class HomeView extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: .2),
                 shape: BoxShape.circle,
               ),
               child: Icon(icon, color: Colors.white, size: 28),
@@ -448,7 +472,12 @@ class HomeView extends ConsumerWidget {
       crossAxisSpacing: 12,
       childAspectRatio: 2.2,
       children: [
-        _buildSmallMenuCard(context, 'INVENTORY', FIcons.package),
+        _buildSmallMenuCard(
+          context,
+          'INVENTORY',
+          FIcons.package,
+          onTap: () => context.push(Routes.inventory),
+        ),
         _buildSmallMenuCard(context, 'SALES LOG', FIcons.list),
         _buildSmallMenuCard(context, 'CALC', FIcons.calculator),
         _buildSmallMenuCard(context, 'GROWTH', FIcons.trendingUp),
@@ -459,34 +488,40 @@ class HomeView extends ConsumerWidget {
   Widget _buildSmallMenuCard(
     BuildContext context,
     String title,
-    IconData icon,
-  ) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E293B), // Navy blue
-        borderRadius: BorderRadius.circular(16),
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.05),
-              borderRadius: BorderRadius.circular(8),
+    IconData icon, {
+    VoidCallback? onTap,
+  }) {
+    final FColors colors = context.theme.colors;
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: colors.secondaryForeground, // Navy blue
+          borderRadius: BorderRadius.circular(16),
+        ),
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: BoxDecoration(
+                color: colors.primaryForeground.withValues(alpha: .05),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Icon(icon, size: 20, color: colors.primaryForeground.withValues(alpha: .7)),
             ),
-            child: Icon(icon, size: 20, color: Colors.grey[400]),
-          ),
-          const SizedBox(width: 12),
-          Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
+            const SizedBox(width: 12),
+            Text(
+              title,
+              style: TextStyle(
+                color: colors.primaryForeground.withValues(alpha: .7),
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -512,7 +547,7 @@ class HomeView extends ConsumerWidget {
                 ),
               ],
             ),
-            _buildBadge('5 ISSUES', Colors.red),
+            FBadge(child: Text('15 Issues'), variant: FBadgeVariant.destructive),
           ],
         ),
         const SizedBox(height: 16),
@@ -523,7 +558,7 @@ class HomeView extends ConsumerWidget {
           'Organic Bananas',
           'CRITICAL EXPIRY',
           Colors.red,
-          'REVIEW',
+          'Review',
         ),
         const SizedBox(height: 12),
         _buildAlertItem(
@@ -531,7 +566,7 @@ class HomeView extends ConsumerWidget {
           'Premium Parboiled Rice',
           'BATCH EXPIRING SOON',
           Colors.amber,
-          'REVIEW',
+          'Review',
         ),
         const SizedBox(height: 12),
         _buildAlertItem(
@@ -539,7 +574,7 @@ class HomeView extends ConsumerWidget {
           'Shea Butter Soap',
           'SOLD OUT',
           Colors.red,
-          'RESTOCK',
+          'Restock',
         ),
         const SizedBox(height: 12),
         _buildAlertItem(
@@ -547,7 +582,7 @@ class HomeView extends ConsumerWidget {
           'Standard Cement Bag',
           'SOLD OUT',
           Colors.red,
-          'RESTOCK',
+          'Restock',
         ),
       ],
     );
@@ -637,11 +672,12 @@ class HomeView extends ConsumerWidget {
               ],
             ),
           ),
-          FButton(
-            onPress: () {},
-            child: Text(
-              actionText,
-              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+          GestureDetector(
+            onTap: () {},
+            child: SizedBox(
+              width: 80,
+              height: 30,
+              child: FBadge(child: Text(actionText, style: TextStyle(fontSize: 14),), variant: .android),
             ),
           ),
         ],
@@ -678,15 +714,46 @@ class HomeView extends ConsumerWidget {
         ), // Purple gradient
         borderRadius: BorderRadius.circular(32),
       ),
-      child: Container(
-        padding: const EdgeInsets.all(20.0),
-        child: Container(
-          child: Column(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              GestureDetector(child: RegularText(title: 'Update Products')),
+              Icon(Icons.auto_awesome, color: Colors.white, size: 18),
+              const SizedBox(width: 8),
+              const Text(
+                'SPINE INTELLIGENCE',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                ),
+              ),
             ],
           ),
-        ),
+          const SizedBox(height: 16),
+          const Text(
+            '"Classic Ankara" has a 4.2x faster turnover on Market Days. Increase your restock by 15% this Thursday to capture ₦2,400 in extra profit."',
+            style: TextStyle(color: Colors.white, fontSize: 14, height: 1.5),
+          ),
+          const SizedBox(height: 24),
+          SizedBox(
+            width: 150,
+            height: 40,
+            child: FButton(
+            onPress: () {},
+            style: FButtonStyleDelta.delta(
+              decoration: FVariants.from(BoxDecoration(
+                color: Colors.white.withValues(alpha: .05),
+                borderRadius: BorderRadius.circular(16)), variants: {})),
+            variant: .ghost,
+            child: const Text(
+              'VIEW FULL ANALYSIS',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white),
+            ),
+          ),
+          )
+        ],
       ),
     );
   }

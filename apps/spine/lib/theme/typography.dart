@@ -9,6 +9,7 @@ class RegularText extends StatelessWidget {
   final bool? bold;
   final int? maxLines;
   final TextAlign? textAlign;
+  final TextStyle? style;
 
   final double? letterSpacing;
 
@@ -21,19 +22,22 @@ class RegularText extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.letterSpacing,
+    this.style,
   });
 
   @override
   Widget build(BuildContext context) {
     final FColors colors = context.theme.colors;
+    String? fontFamily = GoogleFonts.montserrat().fontFamily;
     return Text(
       title,
       maxLines: maxLines,
       textAlign: textAlign,
       overflow: maxLines == null ? TextOverflow.ellipsis : null,
-      style: GoogleFonts.montserrat(
+      style: style?.copyWith(
+        fontFamily: fontFamily,
         fontSize: fontSize ?? 16,
-        color: color ?? colors.primaryForeground,
+        color: colors.primaryForeground,
         fontWeight: bold ?? false ? FontWeight.bold : FontWeight.normal,
         letterSpacing: letterSpacing,
       ),
@@ -48,6 +52,7 @@ class SmallText extends StatelessWidget {
   final bool? bold;
   final int? maxLines;
   final TextAlign? textAlign;
+  final TextStyle? style;
 
   final double? letterSpacing;
 
@@ -60,6 +65,7 @@ class SmallText extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.letterSpacing,
+    this.style,
   });
 
   @override

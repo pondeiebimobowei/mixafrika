@@ -1,6 +1,9 @@
 import 'package:forui/forui.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:spine/theme/badge_styles.dart';
+import 'package:spine/theme/card_style.dart';
+
 
 // ignore_for_file: avoid_redundant_argument_values
 
@@ -21,101 +24,110 @@ FThemeData get greenDark {
   const colors = FColors(
     brightness: .dark,
     systemOverlayStyle: .light,
-    barrier: Color(0x7A000000),
+    barrier: Color.fromARGB(255, 109, 40, 217),
     background: Color(0xFF09090B),
     foreground: Color.fromARGB(255, 23, 26, 33),
     primary: Color.fromARGB(255, 16, 185, 129),
     primaryForeground: Color.fromARGB(255, 255, 255, 255),
-    secondary: Color(0xFF27272A),
+    secondary: Color.fromARGB(255, 7, 133, 236),
     secondaryForeground: Color.fromARGB(255, 24, 32, 46),
     muted: Color(0xFF27272A),
     mutedForeground: Color(0xFFA1A1AA),
-    destructive: Color(0xFF7F1D1D),
+    destructive: Color.fromARGB(255, 255, 0, 0),
     destructiveForeground: Color(0xFFFAFAFA),
     error: Color(0xFF7F1D1D),
     errorForeground: Color(0xFFFAFAFA),
     border: Color(0xFF27272A),
     card: Color.fromARGB(255, 24, 32, 46),
+    
   );
 
-  final typography = _typography(colors: colors);
+  final typography = _typography(colors: colors, defaultFontFamily: GoogleFonts.manrope().fontFamily!);
   final style = _style(colors: colors, typography: typography);
 
-  return FThemeData(colors: colors, typography: typography, style: style);
+  return FThemeData(
+    colors: colors, 
+    typography: typography, 
+    style: style,
+    cardStyle: cardStyle(colors: colors, typography: typography, style: style),
+    badgeStyles: badgeStyles(colors: colors, typography: typography, style: style),
+  );
 }
+
 
 FTypography _typography({
   required FColors colors,
-  String defaultFontFamily = 'packages/forui/Inter',
+  required final String defaultFontFamily,
 }) => FTypography(
   xs: TextStyle(
-    color: colors.foreground,
+    color: colors.primaryForeground,
     fontFamily: defaultFontFamily,
     fontSize: 12,
     height: 1,
+    
   ),
   sm: TextStyle(
-    color: colors.foreground,
+    color: colors.primaryForeground,
     fontFamily: defaultFontFamily,
     fontSize: 14,
-    height: 1.25,
+    height: 1,
   ),
   base: TextStyle(
-    color: colors.foreground,
+    color: colors.primaryForeground,
     fontFamily: defaultFontFamily,
     fontSize: 16,
-    height: 1.5,
+    height: 1,
   ),
   lg: TextStyle(
-    color: colors.foreground,
+    color: colors.primaryForeground,
     fontFamily: defaultFontFamily,
     fontSize: 18,
-    height: 1.75,
+    height: 1,
   ),
   xl: TextStyle(
-    color: colors.foreground,
+    color: colors.primaryForeground,
     fontFamily: defaultFontFamily,
     fontSize: 20,
-    height: 1.75,
+    height: 1,
   ),
   xl2: TextStyle(
-    color: colors.foreground,
+    color: colors.primaryForeground,
     fontFamily: defaultFontFamily,
     fontSize: 22,
-    height: 2,
+    height: 1,
   ),
   xl3: TextStyle(
-    color: colors.foreground,
+    color: colors.primaryForeground,
     fontFamily: defaultFontFamily,
     fontSize: 30,
-    height: 2.25,
+    height: 1,
   ),
   xl4: TextStyle(
-    color: colors.foreground,
+    color: colors.primaryForeground,
     fontFamily: defaultFontFamily,
     fontSize: 36,
-    height: 2.5,
+    height: 1,
   ),
   xl5: TextStyle(
-    color: colors.foreground,
+    color: colors.primaryForeground,
     fontFamily: defaultFontFamily,
     fontSize: 48,
     height: 1,
   ),
   xl6: TextStyle(
-    color: colors.foreground,
+    color: colors.primaryForeground,
     fontFamily: defaultFontFamily,
     fontSize: 60,
     height: 1,
   ),
   xl7: TextStyle(
-    color: colors.foreground,
+    color: colors.primaryForeground,
     fontFamily: defaultFontFamily,
     fontSize: 72,
     height: 1,
   ),
   xl8: TextStyle(
-    color: colors.foreground,
+    color: colors.primaryForeground,
     fontFamily: defaultFontFamily,
     fontSize: 96,
     height: 1,

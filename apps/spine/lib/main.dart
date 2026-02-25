@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 
 import 'package:spine/routing/router.dart';
 import 'package:spine/theme/app-theme.dart';
-import 'package:uuid/uuid.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
@@ -13,12 +12,13 @@ void main() async {
   runApp(ProviderScope(child: const Application()));
 }
 
-class Application extends StatelessWidget {
+class Application extends ConsumerWidget {
   const Application({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final theme = AppTheme.dark;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final theme = ref.watch(themeProvider);
+
 
     return MaterialApp.router(
       title: 'Spine',

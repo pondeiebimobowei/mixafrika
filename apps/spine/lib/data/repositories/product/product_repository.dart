@@ -12,12 +12,7 @@ class ProductRepository implements ProductRepositoryAbstract {
 
   final AppDatabase _database;
 
-  @override
-  Future<ApiResponse<void>> createProduct() async {
-    await _database
-        .into(_database.product)
-        .insert(
-          ProductCompanion.insert(
+  final prod = ProductData(
             id: Uuid().v4(),
             name: 'A product name',
             description: '',
@@ -34,12 +29,20 @@ class ProductRepository implements ProductRepositoryAbstract {
 
             reviews: 'Reviews',
 
-            // createdAt: DateTime.now(),
-            // updatedAt: DateTime.now(),
-            // deletedAt: DateTime.now(),
+
+            createdAt: DateTime.now(),
+            updatedAt: DateTime.now(),
+            deletedAt: DateTime.now(),
             syncStatus: 'Sync status',
-            // syncDate: DateTime.now(),
-          ),
+            syncDate: DateTime.now(),
+          );
+
+  @override
+  Future<ApiResponse<void>> createProduct() async {
+    await _database
+        .into(_database.product)
+        .insert(
+          prod,
         );
 
     return ApiResponse(
@@ -64,6 +67,16 @@ class ProductRepository implements ProductRepositoryAbstract {
 
     // final res = await _productsService.getProducts();
     return allItems.map((e) => ProductData.fromJson(e.toJson())).toList();
+  }
+
+  @override
+  Future<List<ProductData>> getProductsByBusinessId(String businessId) async {
+    List<ProductData> products = await _database
+        .select(_database.product)
+        // ..where((t) => t.businessId.equals(businessId))
+        .get();
+
+    return products.map((e) => ProductData.fromJson(e.toJson())).toList();
   }
 
   @override

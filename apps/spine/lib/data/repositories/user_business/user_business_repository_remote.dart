@@ -1,6 +1,6 @@
 import 'package:spine/data/repositories/user_business/user_business_repository_abstract.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
-import 'package:spine/data/services/api/user_business_services.dart';
+import 'package:spine/data/services/api/user_business_api_services.dart';
 import 'package:spine/drift/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';

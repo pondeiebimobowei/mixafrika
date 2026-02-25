@@ -1,6 +1,9 @@
 import 'package:forui/forui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:spine/theme/badge_styles.dart';
+import 'package:spine/theme/card_style.dart';
 
 // ignore_for_file: avoid_redundant_argument_values
 
@@ -21,32 +24,38 @@ FThemeData get greenLight {
   const colors = FColors(
     brightness: .light,
     systemOverlayStyle: .dark,
-    barrier: Color(0x33000000),
+    barrier: Color.fromARGB(255, 109, 40, 217),
     background: Color.fromARGB(255, 240, 240, 240),
     foreground: Color.fromARGB(255, 23, 26, 33),
     primary: Color.fromARGB(255, 16, 185, 129),
     primaryForeground: Color.fromARGB(255, 0, 0, 0),
-    secondary: Color(0xFFF4F4F5),
+    secondary: Color.fromARGB(255, 7, 133, 236),
     secondaryForeground: Color.fromARGB(255, 255, 255, 255),
     muted: Color(0xFFF4F4F5),
     mutedForeground: Color(0xFF71717A),
-    destructive: Color(0xFFEF4444),
+    destructive: Color.fromARGB(255, 255, 0, 0),
     destructiveForeground: Color(0xFFFAFAFA),
     error: Color(0xFFEF4444),
     errorForeground: Color(0xFFFAFAFA),
     border: Color(0xFFE4E4E7),
-    card: Color(0xFFEF4444),
+    card: Color.fromARGB(255, 250, 250, 250),
   );
 
-  final typography = _typography(colors: colors);
+  final typography = _typography(colors: colors, defaultFontFamily: GoogleFonts.manrope().fontFamily!);
   final style = _style(colors: colors, typography: typography);
 
-  return FThemeData(colors: colors, typography: typography, style: style);
+  return FThemeData(
+    colors: colors, 
+    typography: typography, 
+    style: style,
+    cardStyle: cardStyle(colors: colors, typography: typography, style: style),
+    badgeStyles: badgeStyles(colors: colors, typography: typography, style: style),
+    );
 }
 
 FTypography _typography({
   required FColors colors,
-  String defaultFontFamily = 'packages/forui/Inter',
+  required final String defaultFontFamily,
 }) => FTypography(
   xs: TextStyle(
     color: colors.foreground,
@@ -58,43 +67,43 @@ FTypography _typography({
     color: colors.foreground,
     fontFamily: defaultFontFamily,
     fontSize: 14,
-    height: 1.25,
+    height: 1,
   ),
   base: TextStyle(
     color: colors.foreground,
     fontFamily: defaultFontFamily,
     fontSize: 16,
-    height: 1.5,
+    height: 1,
   ),
   lg: TextStyle(
     color: colors.foreground,
     fontFamily: defaultFontFamily,
     fontSize: 18,
-    height: 1.75,
+    height: 1,
   ),
   xl: TextStyle(
     color: colors.foreground,
     fontFamily: defaultFontFamily,
     fontSize: 20,
-    height: 1.75,
+    height: 1,
   ),
   xl2: TextStyle(
     color: colors.foreground,
     fontFamily: defaultFontFamily,
     fontSize: 22,
-    height: 2,
+    height: 1,
   ),
   xl3: TextStyle(
     color: colors.foreground,
     fontFamily: defaultFontFamily,
     fontSize: 30,
-    height: 2.25,
+    height: 1,
   ),
   xl4: TextStyle(
     color: colors.foreground,
     fontFamily: defaultFontFamily,
     fontSize: 36,
-    height: 2.5,
+    height: 1,
   ),
   xl5: TextStyle(
     color: colors.foreground,
