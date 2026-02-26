@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/inventory/view_model/product_details_view_model.dart';
 import 'package:spine/widget/icon_widget.dart';
 import 'package:intl/intl.dart';
@@ -36,7 +37,11 @@ class ProductDetailsView extends ConsumerWidget {
               ),
             ),
             IconButton(
-              onPressed: () {}, // Edit action
+              onPressed: state.item == null
+                  ? null
+                  : () => context.push(
+                      '${Routes.editProduct}/${state.item!.product.id}',
+                    ),
               icon: Icon(
                 Icons.edit_outlined,
                 color: colors.mutedForeground,

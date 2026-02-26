@@ -6,6 +6,7 @@ import 'package:spine/ui/auth/view/login_view.dart';
 import 'package:spine/ui/home/widget/home_screen.dart';
 import 'package:spine/ui/inventory/view/add_product_view.dart';
 import 'package:spine/ui/inventory/view/add_stock_view.dart';
+import 'package:spine/ui/inventory/view/edit_product_view.dart';
 import 'package:spine/ui/inventory/view/inventory_screen.dart';
 import 'package:spine/ui/inventory/view/product_details_view.dart';
 
@@ -44,6 +45,13 @@ GoRouter router() => GoRouter(
       builder: (context, state) {
         final id = state.pathParameters['id']!;
         return ProductDetailsView(productId: id);
+      },
+    ),
+    GoRoute(
+      path: '${Routes.editProduct}/:id',
+      builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        return EditProductView(productId: id);
       },
     ),
   ],
