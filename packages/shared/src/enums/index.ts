@@ -1,5 +1,4 @@
 export const roles = {
-    USER: "user",
     TRADER: "trader",
     INVESTOR: "investor",
     AGENT: "agent",
@@ -13,9 +12,37 @@ export const LoanStatus = {
     PENDING: "pending",
     APPROVED: "approved",
     REPAID: "repaid",
+    COMPLETED: 'completed'
 } as const;
 
 export type LoanStatus = (typeof LoanStatus)[keyof typeof LoanStatus];
+
+export const duration = {
+    THIRITY: 30,
+    SIXTY: 60,
+    NINETY: 90,
+
+} as const;
+
+export type Duration = (typeof duration)[keyof typeof duration];
+
+export const sourceType = {
+    BANK: 'bank',
+    WALLET: 'wallet',
+    CARD: 'card'
+} as const;
+
+export type SourceType = (typeof sourceType)[keyof typeof sourceType];
+
+export const savingsFrequency = {
+    MANUAL: 'manual',
+    DAILY: 'daily',
+    WEEKLY: 'weekly',
+    MONTHLY: 'monthly',
+    MARKET_DAY: 'market_day',
+} as const;
+
+export type SavingsFrequency = (typeof savingsFrequency)[keyof typeof savingsFrequency];
 
 export const RepaymentStatus = {
     PAID: "paid",
@@ -23,7 +50,25 @@ export const RepaymentStatus = {
     MISSED: "missed",
 } as const;
 
+export const cardType = {
+    VISA: "visa",
+    MASTERCARD: "mastercard",
+    VERVE: "verve",
+} as const;
+
+export type CardType = (typeof cardType)[keyof typeof cardType];
+
 export type RepaymentStatus = (typeof RepaymentStatus)[keyof typeof RepaymentStatus];
+
+export const savingsType = {
+    TARGET: 'target',
+    FIXED: 'fixed',
+    LOCKED: 'locked',
+    GROUP: 'group',
+    MIX: 'mix',
+}
+
+export type SavingsType = (typeof savingsType)[keyof typeof savingsType];
 
 export const Status = {
     ACTIVE: "active",
@@ -48,7 +93,7 @@ export type Types = (typeof Types)[keyof typeof Types];
 
 export const NotificationType = {
     ...Types,
-    
+
     GOAL: "goal",
     SYSTEM: "system",
     INVESTMENT: "investment",
@@ -72,3 +117,29 @@ export const ApplicationStatus = {
 } as const;
 
 export type ApplicationStatus = (typeof ApplicationStatus)[keyof typeof ApplicationStatus];
+
+export const VerificationStatus = {
+    PENDING: "pending",
+    VERIFIED: "verified",
+    UNVERIFIED: 'unverified',
+    REJECTED: "rejected",
+} as const;
+
+export type VerificationStatus = (typeof VerificationStatus)[keyof typeof VerificationStatus];
+
+export const SalesStatus = {
+    PENDING: "pending",
+    VERIFIED: "verified",
+    UNVERIFIED: 'unverified',
+    REJECTED: "rejected",
+} as const;
+
+export type SalesStatus = (typeof SalesStatus)[keyof typeof SalesStatus];
+
+export const syncStatus = {
+    PENDING: "pending",
+    COMPLETED: "completed",
+    FAILED: "failed",
+} as const;
+
+export type syncStatus = (typeof syncStatus)[keyof typeof syncStatus];

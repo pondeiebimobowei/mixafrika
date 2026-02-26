@@ -6,6 +6,14 @@ const Roles = {
   SUBADMIN: 'subadmin',
 } as const;
 
+export const VerificationStatus = {
+    PENDING: "pending",
+    VERIFIED: "verified",
+    UNVERIFIED: 'unverified',
+    REJECTED: "rejected",
+} as const;
+
+
 import sequelize from 'sequelize';
 import { QueryInterface, DataTypes } from 'sequelize';
 
@@ -35,15 +43,22 @@ module.exports = {
           allowNull: false,
           defaultValue: 'not set',
         },
-        is_verified: {
-          type: Sequelize.BOOLEAN,
+        verification_status: {
+          type: Sequelize.STRING,
           allowNull: false,
-          defaultValue: false,
+          defaultValue: 'unverified',
+          validate: { isIn: [Object.values(VerificationStatus)] },
         },
         is_email_verified: {
           type: Sequelize.BOOLEAN,
           allowNull: false,
           defaultValue: false,
+        },
+        business_verification_status: {
+          type: Sequelize.STRING,
+          allowNull: false,
+          defaultValue: 'unverified',
+          validate: { isIn: [Object.values(VerificationStatus)] },
         },
         role: {
           type: Sequelize.STRING,

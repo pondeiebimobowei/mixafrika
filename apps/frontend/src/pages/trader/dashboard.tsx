@@ -14,7 +14,7 @@ import { newsItems, creditScoreChartData } from "@/data/trader";
 import type { ChartType, Timeframe } from '@/types';
 import { Link } from "react-router";
 import { MakeRepaymentSheet } from "@/components/sheets/make-repayment-sheet";
-import { useAuthStore, useLoanAccount, useLoanHistory, useTraderRecord, useUserBusiness, useWallet } from "@/store";
+import { useAuthStore, useLoanHistory, useTraderRecord, useUserBusiness, useWallet } from "@/store";
 import { useFetchWallet } from "@/store/hooks/wallet.hook";
 
 const WelcomeCard = () => (
@@ -36,9 +36,8 @@ const WelcomeCard = () => (
 
 const ActiveLoanDashboard = () => {
     const { trader_record } = useTraderRecord( )
-    const { loan_account } = useLoanAccount()
     const { history } = useLoanHistory( )
-    const { amount } = useWallet( )
+    const { available_balance } = useWallet( )
     const { user } = useAuthStore( )
     const [isAmountVisible, setIsAmountVisible] = useState(true);
     const [isLoanOverviewExpanded, setIsLoanOverviewExpanded] = useState(false);
@@ -114,7 +113,7 @@ const ActiveLoanDashboard = () => {
                                 <div className="border-t border-white/20 pt-4 grid grid-cols-2 gap-3">
                                     <div>
                                         <p className="text-primary-foreground/80">Interest Rate</p>
-                                        <p className="font-semibold">{loan_account?.interest_rate}%</p>
+                                        {/* <p className="font-semibold">{loan_account?.interest_rate}%</p> */}
                                     </div>
                                     <div>
                                         <p className="text-primary-foreground/80">Total Repayment</p>
@@ -122,15 +121,15 @@ const ActiveLoanDashboard = () => {
                                     </div>
                                     <div>
                                         <p className="text-primary-foreground/80">Next Payment</p>
-                                        <p className="font-semibold">₦{loan_account?.repayment_amount.toLocaleString()}</p>
+                                        {/* <p className="font-semibold">₦{loan_account?.repayment_amount.toLocaleString()}</p> */}
                                     </div>
                                     <div>
                                         <p className="text-primary-foreground/80">Due Date</p>
-                                        <p className="font-semibold">{loan_account?.repayment_amount}</p>
+                                        {/* <p className="font-semibold">{loan_account?.repayment_amount}</p> */}
                                     </div>
                                         <div>
                                         <p className="text-primary-foreground/80">Loan Duration</p>
-                                        <p className="font-semibold">{loan_account?.duration}</p>
+                                        {/* <p className="font-semibold">{loan_account?.duration}</p> */}
                                     </div>
                                 </div>
 
@@ -162,7 +161,7 @@ const ActiveLoanDashboard = () => {
                 <Card>
                     <CardContent className="p-4">
                         <p className="text-sm text-muted-foreground">Wallet Balance</p>
-                        <p className="text-xl font-bold">₦{amount?.toLocaleString() || 0}</p>
+                        <p className="text-xl font-bold">₦{available_balance?.toLocaleString() || 0}</p>
                     </CardContent>
                 </Card>
                     <Sheet>
@@ -173,7 +172,7 @@ const ActiveLoanDashboard = () => {
                         </Button>
                     </SheetTrigger>
                     <SheetContent side="bottom" className="rounded-t-3xl">
-                        <MakeRepaymentSheet upcomingRepayment={{amount: 5500, dueDate: "Tomorrow"}} walletBalance={amount || 0} />
+                        <MakeRepaymentSheet upcomingRepayment={{amount: 5500, dueDate: "Tomorrow"}} walletBalance={available_balance || 0} />
                     </SheetContent>
                 </Sheet>
             </div>
@@ -299,7 +298,7 @@ const ActiveLoanDashboard = () => {
                                             <HistoryIcon className="h-5 w-5 text-green-500" />
                                         </div>
                                         <div>
-                                            <p className="font-semibold text-sm">Loan - {loan.cluster}</p>
+                                            {/* <p className="font-semibold text-sm">Loan - {loan.cluster}</p> */}
                                             <p className="text-xs text-muted-foreground">{loan.createdAt}</p>
                                         </div>
                                     </div>

@@ -16,6 +16,7 @@ import { User } from './user.model';
 import { Cluster } from './cluster.model';
 import { Status } from '@shared/shared/src/enums';
 import { CreationOptional, DataTypes } from 'sequelize';
+import { Transaction } from './transaction.model';
 
 @Table({ tableName: 'investment' })
 export class Investment extends Model<IInvestment> implements IInvestment {
@@ -26,32 +27,30 @@ export class Investment extends Model<IInvestment> implements IInvestment {
 
   @ForeignKey(() => User)
   @Column
-  user_id: string;
+  declare user_id: string;
 
   @ForeignKey(() => Cluster)
   @Column
-  cluster_id: string;
+  declare cluster_id: string;
+
+  @ForeignKey(() => Transaction)
+  @Column
+  declare transaction_id: string;
 
   @Column(DataType.DECIMAL(15, 2))
-  amount_invested: number;
+  declare amount_invested: number;
 
   @Column(DataType.DECIMAL(15, 2))
-  current_value: number;
-
-  @Column(DataType.INTEGER)
-  cycle_progress: number;
-
-  @Column(DataType.DATE)
-  cycle_ends: Date;
+  declare total_earnings: number;
 
   @Column(DataType.STRING)
-  status: Status;
+  declare status: Status;
 
   @BelongsTo(() => User)
-  user: User;
+  declare user: User;
 
   @BelongsTo(() => Cluster)
-  cluster: Cluster;
+  declare cluster: Cluster;
 
   @CreatedAt
   declare createdAt: string;

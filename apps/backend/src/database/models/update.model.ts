@@ -3,8 +3,6 @@ import {
   Column,
   Model,
   DataType,
-  ForeignKey,
-  BelongsTo,
   Default,
   PrimaryKey,
   DeletedAt,
@@ -23,13 +21,13 @@ export class Update extends Model<IUpdate> implements IUpdate {
   declare id: CreationOptional<string>;
 
   @Column(DataType.STRING)
-  title: string;
+  declare title: string;
 
   @Column(DataType.STRING)
-  category: string;
+  declare category: string;
 
   @Column(DataType.INTEGER)
-  content: string;
+  declare content: string;
 
   @CreatedAt
   declare createdAt: string;

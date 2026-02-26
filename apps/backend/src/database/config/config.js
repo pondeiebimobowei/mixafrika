@@ -18,12 +18,12 @@ const test = {
     port: process.env.DB_PORT,
     seederStorage: 'sequelize',
     dialect: process.env.DB_DIALECT,
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false,
-        }
-    }
+    // dialectOptions: {
+    //     ssl: {
+    //         require: true,
+    //         rejectUnauthorized: false,
+    //     }
+    // }
 }
 
 const production = {

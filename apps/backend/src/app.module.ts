@@ -15,7 +15,7 @@ import { FeedModule } from './feed/feed.module';
 import { UpdateModule } from './update/update.module';
 import { SystemModule } from './system/system.module';
 import { AdminModule } from './admin/admin.module';
-import { LoanModule } from './loan/loan.module';
+import { LoanAccountHistoryModule } from './loan_history/loan_history.module';
 import { SettingsModule } from './settings/settings.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -43,6 +43,25 @@ import { LoggerMiddleware } from './logger/logger.service';
 import { GlobalModule } from './global/global.module';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { FundingApplication } from './database/models/funding_application';
+import { LoanAccountModule } from './loan_account/loan_account.module';
+import { LoanRepaymentHistoryModule } from './loan_repayment_history/loan_repayment_history.module';
+import { Collection } from './database/models/collection.model';
+import { CollectionModule } from './collection/collection.module';
+import { BankCard } from './database/models/bank-card.model';
+import { BankCardModule } from './bank_card/bank_card.module';
+import { SavingsHistoryModule } from './savings_history/savings_history.module';
+import { UserVerification } from './database/models/user-verification';
+import { BusinessVerification } from './database/models/business-verification.model';
+import { BatchModule } from './batch/batch.module';
+import { InventoryModule } from './inventory/inventory.module';
+import { SalesModule } from './sales/sales.module';
+import { SalesItemModule } from './sales_item/sales_item.module';
+import { ProductModule } from './product/product.module';
+import { Product } from './database/models/product.model';
+import { Batch } from './database/models/batch.model';
+import { Inventory } from './database/models/inventory.model';
+import { Sales } from './database/models/sales.model';
+import { SalesItem } from './database/models/sales-item.model';
 
 @Module({
   imports: [
@@ -60,9 +79,9 @@ import { FundingApplication } from './database/models/funding_application';
     UpdateModule,
     SystemModule,
     AdminModule,
-    LoanModule,
+    LoanAccountHistoryModule,
     SettingsModule,
-    SequelizeModule.forFeature([User, Savings, FundingApplication, Goal, Investment, Notification, Feed, Cluster, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, UserBusiness, Transaction, Wallet, LoanAccount]),
+    SequelizeModule.forFeature([User, UserVerification, BusinessVerification, Savings, FundingApplication, Goal, BankCard, Investment, Notification, Feed, Cluster, Collection, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, UserBusiness, Transaction, Wallet, LoanAccount, Product, Batch, Inventory, Sales, SalesItem]),
     ConfigModule.forRoot({ isGlobal: true }),
     SequelizeModule.forRootAsync({
       useFactory: getSequelizeConfig,
@@ -71,6 +90,16 @@ import { FundingApplication } from './database/models/funding_application';
     BusinessModule,
     GlobalModule,
     CloudinaryModule,
+    LoanAccountModule,
+    LoanRepaymentHistoryModule,
+    CollectionModule,
+    BankCardModule,
+    SavingsHistoryModule,
+    BatchModule,
+    InventoryModule,
+    SalesModule,
+    SalesItemModule,
+    ProductModule,
   ],
   controllers: [AppController],
   providers: [
@@ -81,6 +110,6 @@ export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(LoggerMiddleware)
-      .forRoutes('*'); 
+      .forRoutes('*');
   }
 }

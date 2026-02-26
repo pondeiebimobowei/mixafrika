@@ -7,6 +7,7 @@ const LoanStatus = {
   PENDING: 'pending',
   APPROVED: 'approved',
   REPAID: 'repaid',
+  COMPLETED: 'completed'
 } as const;
 
 /** @type {import('sequelize-cli').Migration} */
@@ -27,6 +28,15 @@ module.exports = {
           onDelete: 'Cascade',
           onUpdate: 'Cascade',
         },
+
+        loan_account_id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          references: { model: 'loan_account', key: 'id' },
+          onDelete: 'Cascade',
+          onUpdate: 'Cascade',
+        },
+
         cluster_id: {
           type: Sequelize.UUID,
           allowNull: false,
@@ -34,6 +44,7 @@ module.exports = {
           onDelete: 'Cascade',
           onUpdate: 'Cascade',
         },
+        
         status: {
           type: Sequelize.STRING,
           validate: { isIn: [Object.values(LoanStatus)] },

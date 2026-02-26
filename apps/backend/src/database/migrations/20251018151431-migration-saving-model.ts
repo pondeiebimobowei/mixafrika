@@ -2,6 +2,32 @@
 import sequelize from 'sequelize';
 import { QueryInterface, DataTypes } from 'sequelize';
 
+export const savingsType = {
+    TARGET: 'target',
+    LOCKED: 'locked',
+    GROUP: 'group',
+    MIX: 'mix',
+}
+
+export type SavingsType = (typeof savingsType)[keyof typeof savingsType];
+
+export const savingsFrequency = {
+    MANUAL: 'manual',
+    DAILY: 'daily',
+    WEEKLY: 'weekly',
+    MONTHLY: 'monthly',
+} as const;
+
+export type SavingsFrequency = (typeof savingsFrequency)[keyof typeof savingsFrequency];
+
+export const sourceType = {
+  BANK: 'bank',
+  WALLET: 'wallet',
+  CARD: 'card'
+} as const;
+
+export type SourceType = (typeof sourceType)[keyof typeof sourceType];
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
@@ -29,10 +55,34 @@ module.exports = {
           allowNull: false,
           defaultValue: 0.0,
         },
-        maturity_date: { type: Sequelize.DATE, allowNull: false },
-        auto_save: { type: Sequelize.BOOLEAN, allowNull: false },
-        daily_auto_save: { type: Sequelize.BOOLEAN, allowNull: false },
-        source: { type: Sequelize.STRING, allowNull: false },
+
+        target_amount: {
+          type: Sequelize.DECIMAL(15, 2),
+          allowNull: false,
+          defaultValue: 0.0,
+        },
+
+        interest_rate: {
+          type: Sequelize.DECIMAL(15, 2),
+          allowNull: false,
+          defaultValue: 0.0,
+        },
+
+        frequency: {
+          type: Sequelize.STRING,
+          allowNull: false,
+          validate: { 
+            isIn: [Object.values(savingsFrequency)]
+          }
+        },
+
+        maturity_date: { type: Sequelize.DATE, allowNull: true },
+        auto_save: { type: Sequelize.BOOLEAN, defaultValue: false, allowNull: false },
+        is_locked: { type: Sequelize.BOOLEAN, defaultValue: false, allowNull: false },
+        source_id: { type: Sequelize.UUID, allowNull: false },
+        source_type: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(sourceType)]} },
+        name: { type: Sequelize.STRING, allowNull: false },
+        type: { type: Sequelize.STRING, validate: { isIn: [Object.values(savingsType)]}, allowNull: false },
 
         createdAt: {
           allowNull: false,

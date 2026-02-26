@@ -100,7 +100,7 @@ export default function TraderProfilePage() {
             </Button>
           </div>
           <p className="text-4xl font-bold mt-1">
-            {isBalanceVisible ? `₦${(data.amount || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '∗∗∗∗∗∗∗∗∗∗'}
+            {isBalanceVisible ? `₦${(data.available_balance || 0).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '∗∗∗∗∗∗∗∗∗∗'}
           </p>
         </div>
 
@@ -131,7 +131,7 @@ export default function TraderProfilePage() {
                 </div>
               </SheetTrigger>
               <SheetContent side="bottom" className="rounded-t-3xl">
-                <MakeRepaymentSheet upcomingRepayment={{ amount: 5500, dueDate: "Tomorrow" }} walletBalance={data.amount || 0} />
+                <MakeRepaymentSheet upcomingRepayment={{ amount: 5500, dueDate: "Tomorrow" }} walletBalance={data.available_balance || 0} />
               </SheetContent>
             </Sheet>
 
@@ -195,7 +195,7 @@ export default function TraderProfilePage() {
                         <p className="font-semibold text-muted-foreground">Phone</p>
                         <p className="font-medium text-right">{business.phone}</p>
                         <p className="font-semibold text-muted-foreground">Address</p>
-                        <p className="font-medium text-right">{business.address}</p>
+                        <p className="font-medium text-right">{business.street_address + ', ' + business.city + ', ' + business.state}</p>
                     </CardContent>
                 </Card>
             )}

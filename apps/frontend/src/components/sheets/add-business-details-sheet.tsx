@@ -96,7 +96,7 @@ export function AddBusinessDetailsSheet({ onSuccess } : Props) {
                       />
                      <FormField
                         control={form.control}
-                        name="address"
+                        name="street_address"
                         render={({ field }) => (
                            <FormItem>
                              <FormLabel>Business Location</FormLabel>

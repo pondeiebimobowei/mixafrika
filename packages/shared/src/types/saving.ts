@@ -1,10 +1,22 @@
+import { SavingsFrequency, SavingsType, SourceType } from "../enums";
 import { BaseModel } from "./base-model-type";
+import { ITransaction } from "./transaction";
 
 export interface ISaving extends BaseModel {
   user_id: string;
+  name: string;
+  type: SavingsType;
   total_amount: number;
-  maturity_date: Date;
+  maturity_date: Date | null;
   auto_save: boolean;
-  daily_auto_save: boolean;
-  source: string;
+  is_locked: boolean;
+  source_id: string;
+  source_type: SourceType;
+  target_amount: number;
+  interest_rate: number;
+  frequency: SavingsFrequency;
 }
+
+export interface ISavingWithTransactions extends ISaving {
+    history: ITransaction[]
+} 

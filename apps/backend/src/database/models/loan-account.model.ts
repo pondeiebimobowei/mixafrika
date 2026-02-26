@@ -16,9 +16,13 @@ import { User } from './user.model';
 import { RepaymentHistory } from './repayment-history.model';
 import { ILoanAccount } from '@shared/shared/src/types/loan-account';
 import { CreationOptional, DataTypes } from 'sequelize';
+import { LoanStatus } from '@shared/shared/src/enums';
+import { FundingApplication } from './funding_application';
+import { Cluster } from './cluster.model';
+import { Transaction } from './transaction.model';
 
-@Table({ tableName: 'loan-account' })
-export class LoanAccount extends Model<ILoanAccount> implements ILoanAccount {
+@Table({ tableName: 'loan_account' })
+export class LoanAccount extends Model<ILoanAccount> {
   @PrimaryKey
   @Default(DataTypes.UUIDV4)
   @Column(DataTypes.UUID)
@@ -26,25 +30,48 @@ export class LoanAccount extends Model<ILoanAccount> implements ILoanAccount {
 
   @ForeignKey(() => User)
   @Column
-  user_id: string;
+  declare user_id: string;
+
+  @ForeignKey(() => Transaction)
+  @Column
+  declare transaction_id: string;
 
   @Column(DataType.DECIMAL(15, 2))
-  recieved_amount: number;
+  declare disbursed_amount: number;
+
+  @Column(DataType.STRING)
+  declare status: LoanStatus;
 
   @Column(DataType.DECIMAL(15, 2))
-  repaid_amount: number;
+  declare repaid_amount: number;
 
   @Column(DataType.DECIMAL(15, 2))
-  repayment_amount: number;
+  declare daily_repayment_amount: number;
 
-  @Column(DataType.FLOAT)
-  interest_rate: number;
-
-  @Column(DataType.INTEGER)
-  duration: number;
+  @Column(DataType.DECIMAL(15, 2))
+  declare total_repayment_amount: number;
 
   @BelongsTo(() => User)
-  user: User;
+  declare user: User;
+
+  @BelongsTo(() => FundingApplication)
+  declare application: FundingApplication;
+
+  @BelongsTo(() => Cluster)
+  declare cluster?: Cluster;
+
+  @HasMany(() => RepaymentHistory)
+  declare repayment_history: RepaymentHistory[];
+
+  @ForeignKey(() => FundingApplication)
+  declare application_id: string;
+
+  @ForeignKey(() => Cluster)
+  declare cluster_id: string;
+
+
+  @Column({type: DataType.DATE, allowNull: true })
+  declare approved_at: string;
 
   @CreatedAt
   declare createdAt: string;

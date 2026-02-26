@@ -1,10 +1,23 @@
-import { BaseModel } from "./base-model-type";
+import { type Duration } from "../enums";
+import { type BaseModel } from "./base-model-type";
+import { type ICollection } from "./collection";
 
 export interface ICluster extends BaseModel {
+  collection_id: string;
   name: string;
-  category: string;
+  cover_image: string;
   roi: number;
-  repayment: string;
   is_active: boolean;
+  status: string;
+  duration: Duration;
   description: string;
+  about: string;
+  target_fundraising_amount: number;
+  total_funds_raised: number
+  start_date: string;
+  end_date: string;
+}
+
+export interface IClusterWithCollection extends ICluster {
+  collection: ICollection
 }

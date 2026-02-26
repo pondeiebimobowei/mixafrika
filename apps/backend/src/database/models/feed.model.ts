@@ -23,29 +23,29 @@ export class Feed extends Model<IFeed> implements IFeed {
   declare id: CreationOptional<string>;
 
   @ForeignKey(() => User)
-  @Column
-  user_id: string;
+  @Column(DataType.STRING)
+  declare user_id: string;
 
   @Column(DataType.STRING)
-  content: string;
+  declare content: string;
 
   @Column(DataType.STRING)
-  image: string;
+  declare image_url: string;
 
   @Column(DataType.INTEGER)
-  likes: number;
+  declare likes: number;
 
   @Column(DataType.INTEGER)
-  comments: number;
+  declare comments: number;
 
   @Column(DataType.INTEGER)
-  shares: number;
+  declare shares: number;
 
   @Column(DataType.INTEGER)
-  views: number;
+  declare views: number;
 
   @BelongsTo(() => User)
-  user: User;
+  declare user: User;
 
   @CreatedAt
   declare createdAt: string;

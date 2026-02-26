@@ -28,27 +28,32 @@ describe('AppController (e2e)', () => {
       .send({
         first_name: test_user.first_name,
         last_name: test_user.last_name,
+        phone_number: "+2348105910313",
         email: test_user.email,
-        role: 'user',
+        role: 'trader',
         password: test_user.password,
-        confirm_password: test_user.password,
       })
       .expect(201)
       .expect((res) => {
         expect(res.body).toHaveProperty('success', true);
         expect(res.body).toHaveProperty('message', 'User created successfully');
         expect(res.body).toHaveProperty('data');
-        expect(res.body.data).toHaveProperty('id');
-        expect(res.body.data).toHaveProperty('user_name');
-        expect(res.body.data).toHaveProperty('first_name', test_user.first_name);
-        expect(res.body.data).toHaveProperty('last_name', test_user.last_name);
-        expect(res.body.data).toHaveProperty('email', test_user.email);
-        expect(res.body.data).toHaveProperty('password');
-        expect(res.body.data).toHaveProperty('role', 'user');
-        expect(res.body.data).toHaveProperty('is_verified', false);
-        expect(res.body.data).toHaveProperty('is_email_verified', false);
-        expect(res.body.data).toHaveProperty('credit_score', "0.00");
-        expect(res.body.data).toHaveProperty('credit_score_status', 'not set');
+
+        expect(res.body.data).toHaveProperty('refresh_token')
+        expect(res.body.data).toHaveProperty('token')
+        expect(res.body.data).toHaveProperty('user')
+
+        expect(res.body.data.user).toHaveProperty('id');
+        expect(res.body.data.user).toHaveProperty('user_name');
+        expect(res.body.data.user).toHaveProperty('first_name', test_user.first_name);
+        expect(res.body.data.user).toHaveProperty('last_name', test_user.last_name);
+        expect(res.body.data.user).toHaveProperty('email', test_user.email);
+        expect(res.body.data.user).toHaveProperty('password');
+        expect(res.body.data.user).toHaveProperty('role', 'trader');
+        expect(res.body.data.user).toHaveProperty('is_verified', false);
+        expect(res.body.data.user).toHaveProperty('is_email_verified', false);
+        expect(res.body.data.user).toHaveProperty('credit_score', "0.00");
+        expect(res.body.data.user).toHaveProperty('credit_score_status', 'not set');
       });
   });
 
@@ -59,22 +64,27 @@ describe('AppController (e2e)', () => {
       .send({
         first_name: 'Aria',
         last_name: 'Brown',
+        phone_number: "+2348105910313",
         email: 'ariabrown@test.com',
-        role: 'user',
+        role: 'trader',
         password: 'password123',
-        confirm_password: 'password123',
       })
       .expect(201)
       .expect((res) => {
         expect(res.body).toHaveProperty('success', true);
         expect(res.body).toHaveProperty('message', 'User created successfully');
         expect(res.body).toHaveProperty('data');
-        expect(res.body.data).toHaveProperty('id');
-        expect(res.body.data).toHaveProperty('password');
-        expect(res.body.data).toHaveProperty('first_name', 'Aria');
-        expect(res.body.data).toHaveProperty('last_name', 'Brown');
-        expect(res.body.data).toHaveProperty('email', 'ariabrown@test.com');
-        expect(res.body.data).toHaveProperty('role', 'user');
+
+        expect(res.body.data).toHaveProperty('refresh_token')
+        expect(res.body.data).toHaveProperty('token')
+        expect(res.body.data).toHaveProperty('user')
+
+        expect(res.body.data.user).toHaveProperty('id');
+        expect(res.body.data.user).toHaveProperty('password');
+        expect(res.body.data.user).toHaveProperty('first_name', 'Aria');
+        expect(res.body.data.user).toHaveProperty('last_name', 'Brown');
+        expect(res.body.data.user).toHaveProperty('email', 'ariabrown@test.com');
+        expect(res.body.data.user).toHaveProperty('role', 'trader');
       });
   });
 

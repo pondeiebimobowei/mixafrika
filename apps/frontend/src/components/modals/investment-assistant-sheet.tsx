@@ -6,21 +6,16 @@ import { Button } from '@/components/ui/button';
 import { SheetHeader, SheetTitle } from '@/components/ui/sheet';
 import { Bot, User, X, Loader2, Sparkles, Send, ArrowRight, TrendingUp, Newspaper, History, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { suggestPortfolio } from '@/ai/flows/investment-assistant-flow';
-import type { InvestmentAssistantInput, InvestmentAssistantOutput } from '@/ai/flows/investment-assistant-types';
-import { askAboutHistory } from '@/ai/flows/investment-history-flow';
 import { Card, CardContent } from '../ui/card';
-import { Badge } from '../ui/badge';
 import { Input } from '@/components/ui/input';
 import { pastInvestments } from '@/data/profile';
 import type { Investment } from '@/types';
 import toast from 'react-hot-toast';
-import { Link } from 'react-router';
 
 
 type Message = {
   role: 'user' | 'bot';
-  content: string | InvestmentAssistantOutput | Investment[];
+  content: string | Investment[];
 };
 
 type View = 'home' | 'chat';
@@ -35,7 +30,6 @@ const prebuiltTasks = [
 export function InvestmentAssistantSheet({ onClose }: { onClose: () => void }) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [input, setInput] = useState<Partial<InvestmentAssistantInput>>({});
   const [step, setStep] = useState(0);
   const [view, setView] = useState<View>('home');
   const [historyQuestion, setHistoryQuestion] = useState('');
@@ -48,21 +42,12 @@ export function InvestmentAssistantSheet({ onClose }: { onClose: () => void }) {
   
   const resetChat = () => {
     setMessages([]);
-    setInput({});
     setStep(0);
     setHistoryQuestion('');
   };
 
   const handleStep = async (value: string | number) => {
-    const currentStep = steps[step];
     let newMessages: Message[] = [...messages, { role: 'user', content: String(value) }];
-    const updatedInput = { ...input, [currentStep.key]: value };
-
-    if (currentStep.key === 'investmentAmount') {
-      updatedInput.investmentAmount = Number(value);
-    }
-    
-    setInput(updatedInput);
 
     if (step < steps.length - 1) {
       setStep(step + 1);
@@ -72,16 +57,6 @@ export function InvestmentAssistantSheet({ onClose }: { onClose: () => void }) {
       newMessages.push({ role: 'bot', content: "Got it! Analyzing the best portfolio for you..."});
       setMessages(newMessages);
 
-      try {
-        const result = await suggestPortfolio(updatedInput as InvestmentAssistantInput);
-        setMessages(prev => [...prev, { role: 'bot', content: result }]);
-      } catch (error) {
-        setMessages(prev => [...prev, { role: 'bot', content: 'Sorry, I had trouble finding a portfolio. Please try again.' }]);
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-        setStep(steps.length); // Mark flow as complete
-      }
     }
     setMessages(newMessages);
   };
@@ -110,28 +85,7 @@ export function InvestmentAssistantSheet({ onClose }: { onClose: () => void }) {
     setIsLoading(false);
     setStep(steps.length); // To show the history question input
   };
-  
-  const handleAskHistory = async () => {
-    if (!historyQuestion.trim()) return;
 
-    const currentQuestion = historyQuestion;
-    setMessages(prev => [...prev, { role: 'user', content: currentQuestion }]);
-    setHistoryQuestion('');
-    setIsLoading(true);
-
-    try {
-        const result = await askAboutHistory({
-            question: currentQuestion,
-            investmentHistory: pastInvestments,
-        });
-        setMessages(prev => [...prev, { role: 'bot', content: result }]);
-    } catch (error) {
-        setMessages(prev => [...prev, { role: 'bot', content: "Sorry, I couldn't process that question. Please try asking in a different way." }]);
-        console.error(error);
-    } finally {
-        setIsLoading(false);
-    }
-  };
 
 
   const handleTaskClick = (action: string) => {
@@ -173,31 +127,10 @@ export function InvestmentAssistantSheet({ onClose }: { onClose: () => void }) {
         )
     }
     
-    const portfolioData = message.content as InvestmentAssistantOutput;
 
     return (
         <div className="space-y-4">
-          <p className="font-semibold text-lg">{portfolioData.commentary}</p>
-          <div className="space-y-3">
-             {portfolioData.portfolio.map((item, index) => (
-                <Card key={index} className="bg-background">
-                    <CardContent className="p-3">
-                        <div className="flex justify-between items-center">
-                            <div>
-                                <p className="font-bold text-base">{item.clusterName}</p>
-                                <Badge variant="secondary" className="mt-1">
-                                    {item.allocationPercentage}% Allocation (₦{item.amount.toLocaleString()})
-                                </Badge>
-                            </div>
-                            <Button size="sm" asChild>
-                                <Link to={`/clusters/${item.clusterId}`}>View</Link>
-                            </Button>
-                        </div>
-                        <p className="text-sm text-muted-foreground mt-2">{item.reasoning}</p>
-                    </CardContent>
-                </Card>
-            ))}
-          </div>
+          <p className="font-semibold text-lg">{message.content}</p>
         </div>
     );
   };
@@ -306,7 +239,6 @@ export function InvestmentAssistantSheet({ onClose }: { onClose: () => void }) {
           ) : (
             <form onSubmit={(e) => {
                 e.preventDefault();
-                handleAskHistory();
             }}>
                  <div className="relative">
                     <Input

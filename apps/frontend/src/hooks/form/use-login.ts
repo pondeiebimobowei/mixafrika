@@ -46,6 +46,9 @@ export function useLogin(role: Roles) {
             case 'trader':
                 successRedirect = '/trader/dashboard';
                 break;
+            case 'admin':
+                successRedirect = '/admin/dashboard';
+                break;
             case 'agent':
                 successRedirect = '/agent/dashboard';
                 break;

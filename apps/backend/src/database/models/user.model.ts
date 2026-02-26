@@ -19,10 +19,16 @@ import { Goal } from './goal.model';
 import { Investment } from './investment.model';
 import { Notification } from './notification.model';
 import { Feed } from './feed.model';
-import { roles, Roles } from '@shared/shared/src/enums';
+import { roles, type Roles } from '@shared/shared/src/enums';
 import { CreationOptional } from 'sequelize';
 import { LoanAccount } from './loan-account.model';
 import { UserBusiness } from './user-business.model';
+import { Setting } from './setting.model';
+import { Transaction } from './transaction.model';
+import { FundingApplication } from './funding_application';
+import { LoanHistory } from './loan-history.model';
+import { BankCard } from './bank-card.model';
+import { UserVerification } from './user-verification';
 
 @Table({
   tableName: 'user',
@@ -34,8 +40,8 @@ export class User extends Model<IUser> implements IUser {
   @Column(DataType.UUID)
   declare id: CreationOptional<string>;
 
-  @Column({ type: DataType.STRING, allowNull: true, unique: true  })
-  user_name: string;
+  @Column({ type: DataType.STRING, allowNull: true, unique: true })
+  declare user_name: string;
   @BeforeCreate({ name: 'user_name' })
   static async generateUsername(user: User) {
     const baseUsername = user.dataValues.first_name
@@ -46,38 +52,35 @@ export class User extends Model<IUser> implements IUser {
   }
 
   @Column({ type: DataType.STRING, allowNull: false })
-  first_name: string;
+  declare first_name: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  last_name: string;
+  declare last_name: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  password: string;
+  declare password: string;
 
   @Column({ type: DataType.BOOLEAN, allowNull: false })
-  is_verified: boolean;
-
-  @Column({ type: DataType.BOOLEAN, allowNull: false })
-  is_email_verified: boolean;
+  declare is_email_verified: boolean;
 
   @Column({ type: DataType.DECIMAL(5, 2), allowNull: false })
-  credit_score: number;
+  declare credit_score: number;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  credit_score_status: string;
+  declare credit_score_status: string;
 
   @Column({
     type: DataType.STRING,
     allowNull: false,
     validate: { isIn: [Object.values(roles)] },
   })
-  role: Roles;
+  declare role: Roles;
 
   @Column({ type: DataType.STRING, allowNull: false, unique: true })
-  email: string;
+  declare email: string;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  image: string;
+  declare image: string;
 
   @CreatedAt
   declare createdAt: string;
@@ -89,26 +92,44 @@ export class User extends Model<IUser> implements IUser {
   declare deletedAt?: string;
 
   @HasOne(() => Wallet)
-  wallet: Wallet;
+  declare wallet: Wallet;
+  
+  @HasOne(() => UserVerification)
+  declare verification: UserVerification;
 
   @HasMany(() => Savings)
-  savings: Savings[];
+  declare savings: Savings[];
+
+  @HasMany(() => BankCard)
+  declare bank_cards: BankCard[];
 
   @HasMany(() => Goal)
-  goals: Goal[];
+  declare goals: Goal[];
 
   @HasMany(() => LoanAccount)
-  loans: LoanAccount[];
+  declare loan_acount: LoanAccount[];
+
+  @HasMany(() => Transaction)
+  declare transaction: Transaction[];
+
+  @HasMany(() => FundingApplication)
+  declare application: FundingApplication[];
 
   @HasMany(() => Investment)
-  investments: Investment[];
+  declare investments: Investment[];
 
   @HasOne(() => UserBusiness, { foreignKey: 'user_id', as: 'user_business' })
   declare user_business?: UserBusiness;
 
   @HasMany(() => Notification)
-  notifications: Notification[];
+  declare notifications: Notification[];
+
+  @HasMany(() => Setting)
+  declare setting: Setting;
+
+  @HasMany(() => LoanHistory)
+  declare loan_history: LoanHistory;
 
   @HasMany(() => Feed)
-  feeds: Feed[];
+  declare feeds: Feed[];
 }

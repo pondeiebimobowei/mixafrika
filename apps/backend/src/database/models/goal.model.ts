@@ -7,12 +7,16 @@ import {
   BelongsTo,
   PrimaryKey,
   Default,
+  CreatedAt,
+  UpdatedAt,
+  DeletedAt,
 } from 'sequelize-typescript';
 import { User } from './user.model';
 import { CreationOptional, DataTypes } from 'sequelize';
+import { IGoal } from '@shared/shared/src/types/goal';
 
 @Table({ tableName: 'goal' })
-export class Goal extends Model<Goal> {
+export class Goal extends Model<IGoal> {
   @PrimaryKey
   @Default(DataTypes.UUIDV4)
   @Column(DataTypes.UUID)
@@ -20,23 +24,33 @@ export class Goal extends Model<Goal> {
 
   @ForeignKey(() => User)
   @Column
-  user_id: string;
+  declare user_id: string;
 
   @Column(DataType.STRING)
-  name: string;
+  declare name: string;
 
   @Column(DataType.DECIMAL(15, 2))
-  currentAmount: number;
+  declare current_amount: number;
 
   @Column(DataType.DECIMAL(15, 2))
-  target: number;
+  declare target: number;
 
   @Column(DataType.STRING)
-  image: string;
+  declare image: string;
 
   @Column(DataType.DATE)
-  targetDate: Date;
+  declare target_date: Date;
 
   @BelongsTo(() => User)
-  user: User;
+  declare user: User;
+
+  @CreatedAt
+  declare createdAt: string;
+
+  @UpdatedAt
+  declare updatedAt: string;
+
+  @DeletedAt
+  declare deletedAt?: string;
+  
 }

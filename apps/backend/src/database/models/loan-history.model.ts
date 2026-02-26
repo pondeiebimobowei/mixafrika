@@ -4,17 +4,19 @@ import {
   Model,
   DataType,
   ForeignKey,
-  BelongsTo,
   DeletedAt,
   UpdatedAt,
   CreatedAt,
   PrimaryKey,
   Default,
+  HasMany,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { LoanStatus } from '@shared/shared/src/enums';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { User } from './user.model';
 import { ILoanHistory } from '@shared/shared/src/types/loan-history';
+import { LoanAccount } from './loan-account.model';
 
 @Table({ tableName: 'loan_history' })
 export class LoanHistory extends Model<ILoanHistory> implements ILoanHistory {
@@ -25,19 +27,26 @@ export class LoanHistory extends Model<ILoanHistory> implements ILoanHistory {
 
   @ForeignKey(() => User)
   @Column
-  user_id: string;
+  declare user_id: string;
+
+  @ForeignKey(() => LoanAccount)
+  @Column
+  declare loan_account_id: string;
 
   @Column(DataType.DECIMAL(15, 2))
-  amount: number;
+  declare amount: number;
 
   @Column(DataType.STRING)
-  status: LoanStatus;
+  declare status: LoanStatus;
 
-  @Column(DataType.STRING)
-  cluster: string;
+  @Column(DataType.UUID)
+  declare cluster_id: string;
 
-  @Column(DataType.STRING)
-  category: string;
+  @BelongsTo(() => User)
+  declare user: User;
+
+  @BelongsTo(() => LoanAccount)
+  declare loan_account: LoanAccount;
 
   @CreatedAt
   declare createdAt: string;

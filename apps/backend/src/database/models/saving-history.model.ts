@@ -13,8 +13,9 @@ import {
 } from 'sequelize-typescript';
 import { Savings } from './saving.model';
 import { ISavingsHistory } from '@shared/shared/src/types/savings-history';
-import { Types } from '@shared/shared/src/enums';
+import type { Types } from '@shared/shared/src/enums';
 import { CreationOptional, DataTypes } from 'sequelize';
+import { Transaction } from './transaction.model';
 
 @Table({ tableName: 'saving_history' })
 export class SavingsHistory
@@ -28,16 +29,20 @@ export class SavingsHistory
 
   @ForeignKey(() => Savings)
   @Column
-  savings_id: string;
+  declare savings_id: string;
+
+  @ForeignKey(() => Transaction)
+  @Column
+  declare transaction_id: string;
 
   @Column(DataType.DECIMAL(15, 2))
-  amount: number;
+  declare amount: number;
 
   @Column(DataType.STRING)
-  type: Types;
+  declare type: Types;
 
   @BelongsTo(() => Savings)
-  savings: Savings;
+  declare savings: Savings;
 
   @CreatedAt
   declare createdAt: string;

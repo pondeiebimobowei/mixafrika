@@ -1,0 +1,77 @@
+import {
+  Table,
+  Column,
+  Model,
+  DataType,
+  DeletedAt,
+  UpdatedAt,
+  CreatedAt,
+  PrimaryKey,
+  Default,
+} from 'sequelize-typescript';
+import { CreationOptional, DataTypes } from 'sequelize';
+import { IProduct } from '@shared/shared/src/types/product';
+import { syncStatus } from '@shared/shared/src/enums';
+
+@Table({ tableName: 'product' })
+export class Product
+  extends Model<IProduct> implements IProduct
+{
+  @PrimaryKey
+  @Default(DataTypes.UUIDV4)
+  @Column(DataTypes.UUID)
+  declare id: CreationOptional<string>;
+
+  @Column(DataType.STRING)
+  declare name: string;
+
+  @Column(DataType.STRING)
+  declare description: string;
+
+  @Column(DataType.STRING)
+  declare bulk_unit_name: string;
+
+  @Column(DataType.STRING)
+  declare piece_unit_name: string;
+
+  @Column(DataType.STRING)
+  declare units_per_bulk: string;
+
+  @Column(DataType.STRING)
+  declare cost_price: string;
+
+  @Column(DataType.STRING)
+  declare selling_price_per_piece: string;
+
+  @Column(DataType.STRING)
+  declare selling_price_per_bulk: string;
+
+  @Column(DataType.STRING)
+  declare category: string;
+
+  @Column(DataType.STRING)
+  declare serial_number: string;
+
+  @Column(DataType.STRING)
+  declare image_url: string;
+
+  @Column(DataType.STRING)
+  declare reviews: string;
+
+  @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
+  declare syncStatus: syncStatus;
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  declare syncDate: string;
+
+
+  
+  @CreatedAt
+  declare createdAt: string;
+
+  @UpdatedAt
+  declare updatedAt: string;
+
+  @DeletedAt
+  declare deletedAt?: string;
+}

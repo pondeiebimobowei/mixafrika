@@ -8,3 +8,10 @@ export interface INotification extends BaseModel {
   message: string;
   read: boolean;
 }
+
+export interface GroupedNotifications {
+  today: INotification[];
+  this_week: INotification[];
+  last_week: INotification[];
+  older: INotification[];
+}

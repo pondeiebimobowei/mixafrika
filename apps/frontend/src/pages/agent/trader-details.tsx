@@ -140,15 +140,15 @@ export default function AgentTraderProfilePage() {
                         </div>
                         <div className="flex justify-between">
                             <span className="text-muted-foreground">Business Type</span>
-                            <span className="font-semibold">{trader.business.type}</span>
+                            <span className="font-semibold">{trader.business[0].type}</span>
                         </div>
                         <div className="flex justify-between">
                             <span className="text-muted-foreground">Address</span>
-                            <span className="font-semibold truncate">{trader.business.address}</span>
+                            <span className="font-semibold truncate">{trader.business[0].street_address}</span>
                         </div>
                          <div className="flex justify-between">
                             <span className="text-muted-foreground">Phone Number</span>
-                            <span className="font-semibold">{trader.business.phone}</span>
+                            <span className="font-semibold">{trader.business[0].phone}</span>
                         </div>
                         <div className="flex justify-between">
                             <span className="text-muted-foreground">Last Activity</span>

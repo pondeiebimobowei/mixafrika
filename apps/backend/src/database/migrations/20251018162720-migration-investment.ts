@@ -26,6 +26,15 @@ module.exports = {
           onDelete: 'Cascade',
           onUpdate: 'Cascade',
         },
+
+        transaction_id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          references: { model: 'transaction', key: 'id' },
+          onDelete: 'Cascade',
+          onUpdate: 'Cascade',
+        },
+
         user_id: {
           type: Sequelize.UUID,
           allowNull: false,
@@ -41,17 +50,11 @@ module.exports = {
           allowNull: false,
           defaultValue: 0.0,
         },
-        current_value: {
+        total_earnings: {
           type: Sequelize.DECIMAL(15, 2),
           allowNull: false,
           defaultValue: 0.0,
         },
-        cycle_progress: {
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          defaultValue: 0,
-        },
-        cycle_ends: { allowNull: false, type: Sequelize.DATE },
         status: {
           type: Sequelize.STRING,
           allowNull: false,

@@ -15,8 +15,11 @@ import { Create_user_dto } from '@shared/shared/src/validation/create-user-dto';
 export class AuthService {
 
   constructor(private readonly configService: ConfigService ) {}
-
+  
   async handleSignup(create_user_dto: Create_user_dto) {
+    const jwtSecret = this.configService.get('access_token_secret');
+    const jwtSecretRefresh = this.configService.get('refresh_token_secret');
+
     const passwordHash = await bcrypt.hash(create_user_dto.password, 10);
     const user = await User.create({ 
       first_name: create_user_dto.first_name, 
@@ -27,12 +30,13 @@ export class AuthService {
       credit_score_status: "not set",
       role: create_user_dto.role as Roles,
       is_email_verified: false,
-      is_verified: false,
+      
     });
 
     await Wallet.create({
       user_id: user.id,
-      amount: 0,
+      available_balance: 0,
+      active_investment_principal: 0,
       total_portfolio: 0,
     })
 
@@ -42,11 +46,16 @@ export class AuthService {
       enable_push_notification: false,
       enable_email_notification: true,
     })
+
+    const payload = { id: user.id, email: user.email };
+
+    const token = sign(payload, jwtSecret, { expiresIn: '1h' });
+    const refresh_token = sign(payload, jwtSecretRefresh, { expiresIn: '1d' });
     
     return {
       success: true,
       message: "User created successfully",
-      data: user,
+      data: { token, refresh_token, user },
     };
   }
 
@@ -55,16 +64,16 @@ export class AuthService {
     const jwtSecretRefresh = this.configService.get('refresh_token_secret');
 
     const user = await User.findOne({ where: { email: loginDto.email }, include: [UserBusiness] });
-    if (!user) {
-      throw new UnauthorizedException('Invalid credentials');
-    }
-    const valid = await bcrypt.compare(loginDto.password, user.dataValues.password);
-    if (!valid) {
-      throw new UnauthorizedException('Invalid credentials');
+    
+    const valid = await bcrypt.compare(loginDto.password, user?.dataValues.password || '');
+    if (!valid || !user) {
+      throw new UnauthorizedException({ success: false, message: 'Invalid credentials' });
     }
 
-    const token = sign(user.toJSON(), jwtSecret, { expiresIn: '1h' });
-    const refresh_token = sign(user.toJSON(), jwtSecretRefresh, { expiresIn: '1d' });
+    const payload = { id: user.id, email: user.email };
+
+    const token = sign(payload, jwtSecret, { expiresIn: '1h' });
+    const refresh_token = sign(payload, jwtSecretRefresh, { expiresIn: '1d' });
 
     return { success: true, data: { token, refresh_token, user }, message: "Login Successful" };
   }

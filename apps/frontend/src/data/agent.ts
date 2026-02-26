@@ -15,14 +15,17 @@ export const traders: Partial<IuserWithBusiness>[] = [
         id: 'trader-1',
         first_name: 'Aunty Funke',
         image: 'https://picsum.photos/seed/401/150/150',
-        business: {
-            type: 'Textiles & Apparel',
-            address: '',
+        business: [{
+            street_address: '123 Balogun Market, Lagos',
+            phone: '08012345678',
             name: '',
-            phone: '',
-            user_id: ''
-
-        },
+            type: '',
+            city: '',
+            country: '',
+            state: '',
+            collection_id: '',
+            user_id: '',
+        }],
         trader: {
             last_activity: '',
             experience: '',
@@ -44,14 +47,17 @@ export const traders: Partial<IuserWithBusiness>[] = [
         id: 'trader-2',
         first_name: 'Idris Bello',
         image: 'https://picsum.photos/seed/402/150/150',
-        business: {
-            type: 'Textiles & Apparel',
-            address: '',
+        business: [{
+            street_address: '123 Balogun Market, Lagos',
+            phone: '08012345678',
             name: '',
-            phone: '',
-            user_id: ''
-
-        },
+            type: '',
+            city: '',
+            country: '',
+            state: '',
+            collection_id: '',
+            user_id: '',
+        }],
         trader: {
             last_activity: '',
             experience: '',
@@ -73,14 +79,17 @@ export const traders: Partial<IuserWithBusiness>[] = [
         id: 'trader-3',
         first_name: 'Mr. Ebuka',
         image: 'https://picsum.photos/seed/403/150/150',
-        business: {
-            type: 'Consumer Electronics',
-            address: '',
+        business: [{
+            street_address: '123 Balogun Market, Lagos',
+            phone: '08012345678',
             name: '',
-            phone: '',
-            user_id: ''
-
-        },
+            type: '',
+            city: '',
+            country: '',
+            state: '',
+            collection_id: '',
+            user_id: '',
+        }],
         trader: {
             last_activity: '',
             experience: '',
@@ -102,14 +111,17 @@ export const traders: Partial<IuserWithBusiness>[] = [
         id: 'trader-4',
         first_name: 'Chinaza Okoro',
         image: 'https://picsum.photos/seed/404/150/150',
-        business: {
-            type: 'Consumer Electronics',
-            address: '',
+        business: [{
+            street_address: '123 Balogun Market, Lagos',
+            phone: '08012345678',
             name: '',
-            phone: '',
-            user_id: ''
-
-        },
+            type: '',
+            city: '',
+            country: '',
+            state: '',
+            collection_id: '',
+            user_id: '',
+        }],
         trader: {
             last_activity: '',
             experience: '',
@@ -131,14 +143,17 @@ export const traders: Partial<IuserWithBusiness>[] = [
         id: 'trader-5',
         first_name: 'New Applicant',
         image: 'https://picsum.photos/seed/409/150/150',
-        business: {
+        business: [{
             type: 'Agriculture',
-            address: '',
-            name: '',
+            street_address: '',
             phone: '',
-            user_id: ''
-
-        },
+            name: '',
+            city: '',
+            country: '',
+            state: '',
+            collection_id: '',
+            user_id: '',
+        }],
         trader: {
             last_activity: '',
             experience: '',
@@ -162,20 +177,23 @@ export const traderDetailsData: { [key: string]: IuserWithBusinessWithTransactio
     'trader-1': {
         ...traders[0],
         createdAt: '2023-01-15',
-        business: {
-            address: '123 Balogun Market, Lagos',
+        business: [{
+            street_address: '123 Balogun Market, Lagos',
             phone: '08012345678',
             name: '',
             type: '',
+            city: '',
+            country: '',
+            state: '',
+            collection_id: '',
             user_id: '',
-        },
+        }],
         image: '',
         credit_score: 0,
         credit_score_status: '',
         email: '',
         first_name: '',
         is_email_verified: true,
-        is_verified: true,
         last_name: '',
         password: '',
         role: 'trader',
@@ -204,20 +222,23 @@ export const traderDetailsData: { [key: string]: IuserWithBusinessWithTransactio
      'trader-3': {
         ...traders[2],
         createdAt: '2022-11-01',
-        business: {
-            address: 'Shop 45, Alaba International Market, Lagos',
+        business: [{
+            street_address: 'Shop 45, Alaba International Market, Lagos',
             phone: '09087654321',
             name: '',
             type: '',
+            city: '',
+            country: '',
+            state: '',
+            collection_id: '',
             user_id: '',
-        },
+        }],
         image: '',
         credit_score: 0,
         credit_score_status: '',
         email: '',
         first_name: '',
         is_email_verified: true,
-        is_verified: true,
         last_name: '',
         password: '',
         role: 'trader',
@@ -258,20 +279,13 @@ traders.forEach(trader => {
             first_name: '',
             image: '',
             is_email_verified: true,
-            is_verified: true,
             password: '',
             role: 'trader',
             user_name: '',
             last_name: '',
 
             createdAt: '2023-05-10',
-            business: {
-                address: 'N/A',
-                name: '',
-                phone: '',
-                type: '',
-                user_id: ''
-            },
+            business: [],
             trader: {
                 experience: '',
                 last_activity: 'No recent activity',

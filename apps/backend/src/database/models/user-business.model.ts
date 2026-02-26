@@ -11,16 +11,18 @@ import {
   PrimaryKey,
   Default,
   AllowNull,
+  HasOne,
 } from 'sequelize-typescript';
 import { User } from './user.model';
+import { Collection } from './collection.model';
 import { IUserBusiness } from '@shared/shared/src/types/user-business';
 import { CreationOptional, DataTypes } from 'sequelize';
+import { BusinessVerification } from './business-verification.model';
 
 @Table({ tableName: 'user_business' })
 export class UserBusiness
   extends Model<IUserBusiness>
-  implements IUserBusiness
-{
+  implements IUserBusiness {
   @PrimaryKey
   @Default(DataTypes.UUIDV4)
   @Column(DataTypes.UUID)
@@ -32,19 +34,38 @@ export class UserBusiness
   declare user_id: string;
 
   @Column(DataType.STRING)
-  name: string;
+  declare name: string;
 
   @Column(DataType.STRING)
-  type: string;
+  declare type: string;
 
   @Column(DataType.INTEGER)
-  phone: string;
+  declare phone: string;
 
-  @Column(DataType.INTEGER)
-  address: string;
+  @Column(DataType.STRING)
+  declare street_address: string;
+
+  @Column(DataType.STRING)
+  declare city: string;
+
+  @Column(DataType.STRING)
+  declare state: string;
+
+  @Column(DataType.STRING)
+  declare country: string;
+
+  @ForeignKey(() => Collection)
+  @Column(DataTypes.UUID)
+  declare collection_id: string;
+
+  @BelongsTo(() => Collection)
+  declare collection: Collection;
 
   @BelongsTo(() => User, { foreignKey: 'user_id', as: 'user' })
   declare user?: User;
+
+  @HasOne(() => BusinessVerification)
+  declare verification: BusinessVerification;
 
   @CreatedAt
   declare createdAt: string;

@@ -1,0 +1,33 @@
+{
+  "cli": {
+    "version": ">= 16.27.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      
+      "distribution": "internal",
+      "env": {
+        "COREPACK_ENABLED": "true",
+        "YARN_VERSION": "4.12.0",
+        "YARN_ENABLE_IMMUTABLE_INSTALLS": "false"
+      }
+    },
+    "production": {
+      "autoIncrement": true
+    },
+    "ios-simulator": {
+        "extends": "development",
+        "ios": {
+          "simulator": true
+        }
+      }
+  },
+  "submit": {
+    "production": {}
+  }
+}

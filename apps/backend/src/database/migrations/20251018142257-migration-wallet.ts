@@ -23,7 +23,12 @@ module.exports = {
           onUpdate: 'CASCADE',
           onDelete: 'CASCADE',
         },
-        amount: {
+        available_balance: {
+          type: Sequelize.DECIMAL(15, 2),
+          allowNull: false,
+          defaultValue: 0.0,
+        },
+        active_investment_principal: {
           type: Sequelize.DECIMAL(15, 2),
           allowNull: false,
           defaultValue: 0.0,
