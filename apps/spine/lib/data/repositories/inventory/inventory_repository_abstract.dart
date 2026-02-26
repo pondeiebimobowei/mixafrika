@@ -3,6 +3,7 @@ import 'package:spine/ui/inventory/state/inventory_state.dart';
 
 abstract class InventoryRepositoryAbstract {
   Future<List<InventoryItemData>> getInventoryItems(String businessId);
+  Future<InventoryItemData?> getInventoryItemById(String productId);
   Future<void> addInventoryItem(ProductData product);
   Future<void> addStock({
     required String productId,

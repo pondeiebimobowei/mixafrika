@@ -54,6 +54,29 @@ class InventoryRepository implements InventoryRepositoryAbstract {
   }
 
   @override
+  Future<InventoryItemData?> getInventoryItemById(String productId) async {
+
+    final productQuery = _db.select(_db.product)
+      ..where((p) => p.id.equals(productId));
+    final product = await productQuery.getSingleOrNull();
+    if (product == null) return null;
+
+    final inventoryQuery = _db.select(_db.inventory)
+      ..where((i) => i.productId.equals(productId));
+    final inventoryRecords = await inventoryQuery.get();
+
+    final batchQuery = _db.select(_db.spineBatch)
+      ..where((b) => b.productId.equals(productId));
+    final batches = await batchQuery.get();
+
+    return InventoryItemData(
+      product: product,
+      stockEntries: inventoryRecords,
+      batches: batches,
+    );
+  }
+
+  @override
   Future<void> addInventoryItem(ProductData product) async {
     final InventoryData newInventoryRecord = InventoryData(
       id: const Uuid().v4(),

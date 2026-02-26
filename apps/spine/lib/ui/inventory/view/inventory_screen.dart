@@ -398,9 +398,9 @@ class InventoryView extends ConsumerWidget {
           const SizedBox(height: 24),
           Text(
             title,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 18,
-              fontWeight: .bold,
+              fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
             textAlign: TextAlign.center,
@@ -449,75 +449,78 @@ class InventoryView extends ConsumerWidget {
       statusColor = Colors.orangeAccent;
     }
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E293B),
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.orange[50], // Box color from image
-              borderRadius: BorderRadius.circular(16),
+    return GestureDetector(
+      onTap: () => context.push('${Routes.productDetails}/${item.product.id}'),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E293B),
+          borderRadius: BorderRadius.circular(24),
+        ),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.orange[50], // Box color from image
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Icon(
+                Icons.calendar_today_rounded,
+                color: Colors.orange[700],
+              ),
             ),
-            child: Icon(
-              Icons.calendar_today_rounded,
-              color: Colors.orange[700],
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.product.name,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Row(
+                    children: [
+                      _buildCountBadge(context, '12', 'Bunchs'),
+                      const SizedBox(width: 8),
+                      _buildCountBadge(
+                        context,
+                        '12',
+                        'Fingers',
+                        color: Colors.green.withValues(alpha: 0.1),
+                        textColor: Colors.greenAccent,
+                      ),
+                      if (statusBadge != null) ...[
+                        const SizedBox(width: 8),
+                        _buildStatusBadge(context, statusBadge, statusColor),
+                      ],
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  item.product.name,
+                  '₦${item.product.sellingPricePerPiece}',
                   style: TextStyle(
                     fontSize: 16,
-                    fontWeight: .bold,
-                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    color: statusColor,
                   ),
                 ),
                 const SizedBox(height: 8),
-                Row(
-                  children: [
-                    _buildCountBadge(context, '12', 'Bunchs'),
-                    const SizedBox(width: 8),
-                    _buildCountBadge(
-                      context,
-                      '12',
-                      'Fingers',
-                      color: Colors.green.withOpacity(0.1),
-                      textColor: Colors.greenAccent,
-                    ),
-                    if (statusBadge != null) ...[
-                      const SizedBox(width: 8),
-                      _buildStatusBadge(context, statusBadge, statusColor),
-                    ],
-                  ],
-                ),
+                const Icon(Icons.chevron_right, color: Colors.grey),
               ],
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                '₦${item.product.sellingPricePerPiece}',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: .bold,
-                  color: statusColor,
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Icon(Icons.chevron_right, color: Colors.grey),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -4,9 +4,10 @@ import 'package:spine/screens/signup_screen.dart';
 import 'package:spine/screens/splash_screen.dart';
 import 'package:spine/ui/auth/view/login_view.dart';
 import 'package:spine/ui/home/widget/home_screen.dart';
-import 'package:spine/ui/inventory/view/inventory_screen.dart';
 import 'package:spine/ui/inventory/view/add_product_view.dart';
 import 'package:spine/ui/inventory/view/add_stock_view.dart';
+import 'package:spine/ui/inventory/view/inventory_screen.dart';
+import 'package:spine/ui/inventory/view/product_details_view.dart';
 
 GoRouter router() => GoRouter(
   initialLocation: Routes.dashboard,
@@ -37,6 +38,13 @@ GoRouter router() => GoRouter(
     GoRoute(
       path: Routes.addStock,
       builder: (context, state) => const AddStockView(),
+    ),
+    GoRoute(
+      path: '${Routes.productDetails}/:id',
+      builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        return ProductDetailsView(productId: id);
+      },
     ),
   ],
 );

@@ -1,4 +1,4 @@
-import { SalesStatus } from "@shared/enums";
+import { SalesStatus } from "../enums";
 import { BaseModel, SyncableModel } from "./base-model-type";
 
 export interface ISales extends BaseModel, SyncableModel {
