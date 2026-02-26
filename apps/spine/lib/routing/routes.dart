@@ -8,4 +8,5 @@ class Routes {
   static const String addStock = '/add-stock';
   static const String productDetails = '/product-details';
   static const String editProduct = '/edit-product';
+  static const String calculator = '/calculator';
 }
