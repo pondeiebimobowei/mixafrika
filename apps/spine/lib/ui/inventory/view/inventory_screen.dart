@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:spine/ui/inventory/state/inventory_state.dart';
 import 'package:spine/ui/inventory/view_model/inventory_view_model.dart';
 import 'package:spine/widget/icon_widget.dart';
+import 'package:spine/routing/routes.dart';
 
 class InventoryView extends ConsumerWidget {
   const InventoryView({super.key});
@@ -23,7 +24,10 @@ class InventoryView extends ConsumerWidget {
               child: const IconWidget(icon: Icons.arrow_back),
             ),
             const SizedBox(width: 20),
-            Text('My Stock', style: TextStyle(fontSize: 20, color: colors.primaryForeground)),
+            Text(
+              'My Stock',
+              style: TextStyle(fontSize: 20, color: colors.primaryForeground),
+            ),
             const Spacer(),
             FButton(
               size: .xs,
@@ -51,7 +55,7 @@ class InventoryView extends ConsumerWidget {
                 size: .xs,
 
                 // variant: .secondary,
-                onPress: () => {},
+                onPress: () => context.go(Routes.addProduct),
                 child: Icon(Icons.add, color: Colors.white, size: 24),
               ),
             ),
@@ -71,8 +75,12 @@ class InventoryView extends ConsumerWidget {
         child: inventoryAsync.when(
           data: (state) => _buildContent(context, ref, state),
           loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stack) =>
-              Center(child: Text('Error: $error', style: TextStyle(color: colors.primaryForeground),)),
+          error: (error, stack) => Center(
+            child: Text(
+              'Error: $error',
+              style: TextStyle(color: colors.primaryForeground),
+            ),
+          ),
         ),
       ),
     );
@@ -151,7 +159,7 @@ class InventoryView extends ConsumerWidget {
             style: TextStyle(
               fontSize: 10,
               fontWeight: .bold,
-              color: Colors.grey[400]
+              color: Colors.grey[400],
             ),
           ),
           const SizedBox(height: 12),
@@ -271,8 +279,8 @@ class InventoryView extends ConsumerWidget {
                   Text(
                     count,
                     style: TextStyle(
-                    fontSize: 16,
-                    color: isSelected ? Colors.black : Colors.white,
+                      fontSize: 16,
+                      color: isSelected ? Colors.black : Colors.white,
                     ),
                   ),
                   Text(
@@ -280,7 +288,7 @@ class InventoryView extends ConsumerWidget {
                     style: TextStyle(
                       fontSize: 8,
                       fontWeight: .bold,
-                    color: isSelected ? Colors.black54 : Colors.grey[400],
+                      color: isSelected ? Colors.black54 : Colors.grey[400],
                     ),
                   ),
                 ],
@@ -319,17 +327,11 @@ class InventoryView extends ConsumerWidget {
       children: [
         Text(
           'INVENTORY LIST (${state.currentFilter.name.toUpperCase()})',
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey[400],
-          ),
+          style: TextStyle(fontSize: 12, color: Colors.grey[400]),
         ),
         Text(
           '${state.filteredItems.length} Results',
-          style: TextStyle(
-            fontSize: 12,
-            color: Colors.grey[500],
-          ),
+          style: TextStyle(fontSize: 12, color: Colors.grey[500]),
         ),
       ],
     );
@@ -406,10 +408,7 @@ class InventoryView extends ConsumerWidget {
           const SizedBox(height: 12),
           Text(
             message,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[500],
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.grey[500]),
             textAlign: TextAlign.center,
           ),
           if (state.searchQuery.isNotEmpty ||
@@ -540,11 +539,7 @@ class InventoryView extends ConsumerWidget {
         children: [
           Text(
             count,
-            style: TextStyle(
-              fontSize: 10,
-              fontWeight: .bold,
-              color: textColor,
-            ),
+            style: TextStyle(fontSize: 10, fontWeight: .bold, color: textColor),
           ),
           Text(
             label,

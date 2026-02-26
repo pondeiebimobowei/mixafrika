@@ -2,6 +2,7 @@ import 'package:spine/drift/database.dart';
 
 abstract class InventoryRepositoryAbstract {
   Future<List<InventoryItemData>> getInventoryItems(String businessId);
+  Future<void> addInventoryItem(ProductData product);
   Future<double> getStockWorth(String businessId);
   Future<double> getEstProfit(String businessId);
 }
@@ -23,6 +24,4 @@ class InventoryItemData {
       (sum, item) => sum + (double.tryParse(item.quantity) ?? 0.0),
     );
   }
-
-  // Add more helper getters if needed
 }

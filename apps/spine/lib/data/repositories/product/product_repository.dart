@@ -3,53 +3,26 @@ import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/data/services/models/product_model.dart';
 import 'package:spine/drift/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
 
 class ProductRepository implements ProductRepositoryAbstract {
-  ProductRepository({
-    required AppDatabase database,
-  }) : _database = database;
+  ProductRepository({required AppDatabase database}) : _database = database;
 
   final AppDatabase _database;
 
-  final prod = ProductData(
-            id: Uuid().v4(),
-            name: 'A product name',
-            description: '',
-            bulkUnitName: 'Bulk unit name',
-            pieceUnitName: 'Piece unit name',
-            unitsPerBulk: 'Units per bulk',
-            costPrice: 'Cost price per piece',
-            sellingPricePerPiece: 'Selling price per piece',
-            sellingPricePerBulk: 'Selling price per bulk',
-            category: 'Category',
-            serialNumber: 'Serial number',
-            imageUrl: 'Image URL',
-            businessId: '',
-
-            reviews: 'Reviews',
-
-
-            createdAt: DateTime.now(),
-            updatedAt: DateTime.now(),
-            deletedAt: DateTime.now(),
-            syncStatus: 'Sync status',
-            syncDate: DateTime.now(),
-          );
-
   @override
-  Future<ApiResponse<void>> createProduct() async {
-    await _database
-        .into(_database.product)
-        .insert(
-          prod,
-        );
+  Future<ApiResponse<void>> createProduct(ProductData product) async {
+    try{
 
-    return ApiResponse(
-      data: null,
-      message: 'Product created successfully',
-      success: true,
-    );
+      await _database.into(_database.product).insert(product);
+
+      return ApiResponse(
+        data: null,
+        message: 'Product created successfully',
+        success: true,
+      );
+    }catch (e){
+      return ApiResponse(success: false, message: 'Prouct creation failed', data: null);
+    }
   }
 
   @override
@@ -88,7 +61,5 @@ class ProductRepository implements ProductRepositoryAbstract {
 }
 
 final productRepositoryProvider = Provider(
-  (ref) => ProductRepository(
-    database: ref.watch(databaseProvider),
-  ),
+  (ref) => ProductRepository(database: ref.watch(databaseProvider)),
 );

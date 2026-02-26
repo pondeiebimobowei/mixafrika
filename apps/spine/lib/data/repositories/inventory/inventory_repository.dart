@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/repositories/inventory/inventory_repository_abstract.dart';
 import 'package:spine/data/repositories/product/product_repository.dart';
 import 'package:spine/drift/database.dart';
+import 'package:uuid/uuid.dart';
 
 class InventoryRepository implements InventoryRepositoryAbstract {
   final AppDatabase _db;
@@ -48,16 +49,23 @@ Future<List<InventoryItemData>> getInventoryItems(String businessId) async {
   return groupedItems.values.toList();
 }
 
-  // @override
-  // Future<List<ProductData>> getInventory() async {
-  //   // _database.select(_database.product)
-  //   List<ProductData> allItems = await _database
-  //       .select(_database.product)
-  //       .get();
+  @override
+  Future<void> addInventoryItem(ProductData product) async {
 
-  //   // final res = await _productsService.getProducts();
-  //   return allItems.map((e) => ProductData.fromJson(e.toJson())).toList();
-  // }
+    final InventoryData newInventoryRecord = InventoryData(
+      id: const Uuid().v4(),
+      productId: product.id,
+      businessId: product.businessId,
+      quantity: '0',
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      deletedAt: DateTime.now(),
+      syncStatus: 'pending',
+      syncDate: DateTime.now(),
+    );
+    await _db.into(_db.inventory).insert(newInventoryRecord);
+  }
+
   @override
   Future<double> getStockWorth(String businessId) async {
     final products = await getInventoryItems(businessId);
