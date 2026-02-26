@@ -1,27 +1,17 @@
 import 'package:spine/drift/database.dart';
+import 'package:spine/ui/inventory/state/inventory_state.dart';
 
 abstract class InventoryRepositoryAbstract {
   Future<List<InventoryItemData>> getInventoryItems(String businessId);
   Future<void> addInventoryItem(ProductData product);
+  Future<void> addStock({
+    required String productId,
+    required String businessId,
+    required String bulkQuantity,
+    required String pieceQuantity,
+    required String totalCost,
+    DateTime? expiryDate,
+  });
   Future<double> getStockWorth(String businessId);
   Future<double> getEstProfit(String businessId);
-}
-
-class InventoryItemData {
-  final ProductData product;
-  final List<InventoryData> stockEntries;
-  final List<SpineBatchData> batches;
-
-  InventoryItemData({
-    required this.product,
-    required this.stockEntries,
-    required this.batches,
-  });
-
-  double get totalQuantity {
-    return stockEntries.fold(
-      0.0,
-      (sum, item) => sum + (double.tryParse(item.quantity) ?? 0.0),
-    );
-  }
 }

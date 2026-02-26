@@ -1,4 +1,4 @@
-import 'package:spine/data/repositories/inventory/inventory_repository_abstract.dart';
+import 'package:spine/drift/database.dart';
 
 enum InventoryFilter { all, lowStock, expiring }
 
@@ -70,5 +70,24 @@ class InventoryState {
     }
 
     return filtered;
+  }
+}
+
+class InventoryItemData {
+  final ProductData product;
+  final List<InventoryData> stockEntries;
+  final List<SpineBatchData> batches;
+
+  InventoryItemData({
+    required this.product,
+    required this.stockEntries,
+    required this.batches,
+  });
+
+  double get totalQuantity {
+    return stockEntries.fold(
+      0.0,
+      (sum, item) => sum + (double.tryParse(item.quantity) ?? 0.0),
+    );
   }
 }

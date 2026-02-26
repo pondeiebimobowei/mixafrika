@@ -35,7 +35,7 @@ class InventoryView extends ConsumerWidget {
                 Icons.shopping_cart_outlined,
                 color: colors.primaryForeground,
               ),
-              onPress: () => {},
+              onPress: () => context.go(Routes.addStock),
               variant: .outline,
               child: Text(
                 'RESTOCK',

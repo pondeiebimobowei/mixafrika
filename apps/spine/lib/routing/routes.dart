@@ -5,4 +5,5 @@ class Routes {
   static const String dashboard = '/';
   static const String inventory = '/inventory';
   static const String addProduct = '/add-product';
+  static const String addStock = '/add-stock';
 }
