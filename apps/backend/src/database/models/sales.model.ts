@@ -15,7 +15,7 @@ import { CreationOptional, DataTypes } from 'sequelize';
 import { User } from './user.model';
 import { ISales } from '@shared/shared/src/types/sales';
 import { UserBusiness } from './user-business.model';
-import { syncStatus } from '@shared/shared/src/enums';
+import { SalesStatus, syncStatus } from '@shared/shared/src/enums';
 
 @Table({ tableName: 'sales' })
 export class Sales
@@ -40,7 +40,7 @@ export class Sales
     declare payment_method: string;
 
     @Column(DataType.STRING)
-    declare status: string;
+    declare status: SalesStatus;
 
     @ForeignKey(() => User)
     @Column(DataType.UUID)

@@ -1,12 +1,11 @@
 import { AlertTriangle, ArrowDownLeft, ArrowUpRight, LayoutGrid, MapPin } from "lucide-react";
 import InfoCard from "../card/info-card";
 import StatsCard from "../card/stat-card";
-import type { IUser } from "../../../../../../packages/shared/src/types/user";
 import type { IUserBusiness } from "../../../../../../packages/shared/src/types/user-business";
 import type { ITransaction } from "../../../../../../packages/shared/src/types/transaction";
 import type { IWallet } from "../../../../../../packages/shared/src/types/wallet";
 
-export default function TraderDetailView(user: IUser){
+export default function TraderDetailView(){
 
     const businesss: Partial<IUserBusiness> = {}
     const transactions: ITransaction[] = []

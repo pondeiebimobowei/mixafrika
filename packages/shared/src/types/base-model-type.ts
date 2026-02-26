@@ -1,4 +1,4 @@
-import { syncStatus } from "@shared/enums";
+import { syncStatus } from "../enums";
 
 export interface BaseModel {
     id?: string,
