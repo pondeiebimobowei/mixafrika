@@ -19,11 +19,12 @@ class SaleWithItems {
 
 class SaleItemWithProduct {
   final SalesItemData item;
-  final ProductData product;
+  final ProductData? product;
 
-  SaleItemWithProduct({required this.item, required this.product});
+  SaleItemWithProduct({required this.item, this.product});
 
   int get profit {
-    return (item.unitPrice - product.costPrice) * item.quantity;
+    if (product == null) return 0; // Manual charges have no defined profit yet
+    return (item.unitPrice - product!.costPrice) * item.quantity;
   }
 }

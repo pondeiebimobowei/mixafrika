@@ -38,7 +38,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
 
   void addToCart(ProductData product) {
     final existingIndex = state.cartItems.indexWhere(
-      (item) => item.product.id == product.id,
+      (item) => item.product?.id == product.id,
     );
     if (existingIndex != -1) {
       final existingItem = state.cartItems[existingIndex];
@@ -53,10 +53,19 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
     }
   }
 
+  void addManualCharge(int amount, String name) {
+    state = state.copyWith(
+      cartItems: [
+        ...state.cartItems,
+        CartItem(manualName: name, manualPrice: amount, quantity: 1),
+      ],
+    );
+  }
+
   void updateQuantity(String productId, int quantity) {
     state = state.copyWith(
       cartItems: state.cartItems.map((item) {
-        if (item.product.id == productId) {
+        if (item.product?.id == productId) {
           return item.copyWith(quantity: quantity);
         }
         return item;
@@ -67,7 +76,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
   void toggleUnit(String productId) {
     state = state.copyWith(
       cartItems: state.cartItems.map((item) {
-        if (item.product.id == productId) {
+        if (item.product?.id == productId) {
           return item.copyWith(
             unit: item.unit == SaleUnit.piece ? SaleUnit.bulk : SaleUnit.piece,
           );
@@ -80,7 +89,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
   void removeFromCart(String productId) {
     state = state.copyWith(
       cartItems: state.cartItems
-          .where((item) => item.product.id != productId)
+          .where((item) => item.product?.id != productId)
           .toList(),
     );
   }
@@ -118,7 +127,8 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
         return SalesItemData(
           id: const Uuid().v4(),
           saleId: saleId,
-          productId: item.product.id,
+          productId: item.product?.id ?? '',
+          // description: item.manualName,
           quantity: item.quantity,
           unitPrice: item.unitPrice,
           total: item.total,

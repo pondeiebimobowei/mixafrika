@@ -64,7 +64,9 @@ class CheckoutView extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  item.product.name,
+                                  item.product?.name ??
+                                      item.manualName ??
+                                      'Manual Charge',
                                   style: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
@@ -173,8 +175,7 @@ class CheckoutView extends ConsumerWidget {
                             print(success);
                             if (success) {
                               context.go(Routes.dashboard);
-                            } else {
-                            }
+                            } else {}
                           }
                         },
                   child: state.isLoading

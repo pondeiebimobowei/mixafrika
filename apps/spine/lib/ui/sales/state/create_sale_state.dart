@@ -5,27 +5,42 @@ enum SaleUnit { piece, bulk }
 enum PaymentMethod { cash, transfer, mixWallet, payLater, multiPay }
 
 class CartItem {
-  final ProductData product;
+  final ProductData? product;
+  final String? manualName;
+  final int? manualPrice;
   final int quantity;
   final SaleUnit unit;
 
   CartItem({
-    required this.product,
+    this.product,
+    this.manualName,
+    this.manualPrice,
     this.quantity = 1,
     this.unit = SaleUnit.piece,
-  });
+  }) : assert(product != null || (manualName != null && manualPrice != null));
 
   int get unitPrice {
-    return unit == SaleUnit.piece
-        ? product.sellingPricePerPiece
-        : product.sellingPricePerBulk;
+    if (product != null) {
+      return unit == SaleUnit.piece
+          ? product!.sellingPricePerPiece
+          : product!.sellingPricePerBulk;
+    }
+    return manualPrice ?? 0;
   }
 
   int get total => quantity * unitPrice;
 
-  CartItem copyWith({ProductData? product, int? quantity, SaleUnit? unit}) {
+  CartItem copyWith({
+    ProductData? product,
+    String? manualName,
+    int? manualPrice,
+    int? quantity,
+    SaleUnit? unit,
+  }) {
     return CartItem(
       product: product ?? this.product,
+      manualName: manualName ?? this.manualName,
+      manualPrice: manualPrice ?? this.manualPrice,
       quantity: quantity ?? this.quantity,
       unit: unit ?? this.unit,
     );

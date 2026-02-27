@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 class SaleCalculatorSheet extends StatefulWidget {
   final Function(int amount, String name) onAdd;
@@ -23,12 +24,24 @@ class _SaleCalculatorSheetState extends State<SaleCalculatorSheet> {
         _result = '0';
       } else if (value == '=') {
         _calculate();
+        _expression = _result;
       } else if (value == '⌫') {
         if (_expression.isNotEmpty) {
           _expression = _expression.substring(0, _expression.length - 1);
         }
+        _calculate();
       } else {
-        _expression += value;
+        // Prevent multiple operators in a row
+        final lastChar = _expression.isNotEmpty
+            ? _expression[_expression.length - 1]
+            : '';
+        final operators = ['+', '-', 'x', '÷'];
+        if (operators.contains(value) && operators.contains(lastChar)) {
+          _expression =
+              _expression.substring(0, _expression.length - 1) + value;
+        } else {
+          _expression += value;
+        }
         _calculate();
       }
     });
@@ -41,35 +54,44 @@ class _SaleCalculatorSheetState extends State<SaleCalculatorSheet> {
         return;
       }
 
-      final normalized = _expression.replaceAll('x', '*').replaceAll('÷', '/');
+      String expStr = _expression.replaceAll('x', '*').replaceAll('÷', '/');
 
-      // Basic calculation for expression like "100+200"
-      // Since we don't have a full parser, we'll support one operation for now
-      final regExp = RegExp(r'^(\d+)([\+\-\*\/])(\d+)$');
-      final match = regExp.firstMatch(normalized);
+      // Remove trailing operator for partial evaluation
+      final operators = ['+', '-', '*', '/'];
+      while (expStr.isNotEmpty &&
+          operators.contains(expStr[expStr.length - 1])) {
+        expStr = expStr.substring(0, expStr.length - 1);
+      }
 
-      if (match != null) {
-        double a = double.parse(match.group(1)!);
-        String op = match.group(2)!;
-        double b = double.parse(match.group(3)!);
+      if (expStr.isEmpty) {
+        _result = '0';
+        return;
+      }
 
-        double res = 0;
-        switch (op) {
-          case '+':
-            res = a + b;
-          case '-':
-            res = a - b;
-          case '*':
-            res = a * b;
-          case '/':
-            res = b != 0 ? a / b : 0;
+      Parser p = Parser();
+      Expression exp = p.parse(expStr);
+      ContextModel cm = ContextModel();
+      double eval = exp.evaluate(EvaluationType.REAL, cm);
+
+      // Handle very large or small numbers gracefully
+      if (eval.isInfinite || eval.isNaN) {
+        _result = '0';
+      } else {
+        // If it's a whole number, show as int, else show up to 2 decimals
+        if (eval == eval.toInt()) {
+          _result = eval.toInt().toString();
+        } else {
+          _result = eval.toStringAsFixed(2);
+          // Remove trailing zeros if any
+          if (_result.contains('.')) {
+            _result = _result
+                .replaceAll(RegExp(r'0+$'), '')
+                .replaceAll(RegExp(r'\.$'), '');
+          }
         }
-        _result = res.toInt().toString();
-      } else if (RegExp(r'^\d+$').hasMatch(normalized)) {
-        _result = normalized;
       }
     } catch (e) {
-      // Silent error
+      // Incomplete expressions are fine during typing
     }
   }
 

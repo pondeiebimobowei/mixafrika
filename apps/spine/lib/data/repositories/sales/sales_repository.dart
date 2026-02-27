@@ -10,7 +10,6 @@ class SalesRepository implements SalesRepositoryAbstract {
 
   @override
   Future<void> createSale(Sale sale, List<SalesItemData> items) async {
-    
     try {
       await _db.transaction(() async {
         await _db.into(_db.sales).insert(sale);
@@ -27,7 +26,10 @@ class SalesRepository implements SalesRepositoryAbstract {
   Future<List<SaleWithItems>> getSalesWithItems({String? businessId}) async {
     final query = _db.select(_db.sales).join([
       innerJoin(_db.salesItem, _db.salesItem.saleId.equalsExp(_db.sales.id)),
-      innerJoin(_db.product, _db.product.id.equalsExp(_db.salesItem.productId)),
+      leftOuterJoin(
+        _db.product,
+        _db.product.id.equalsExp(_db.salesItem.productId),
+      ),
     ]);
 
     if (businessId != null) {
@@ -44,7 +46,7 @@ class SalesRepository implements SalesRepositoryAbstract {
     for (final row in rows) {
       final sale = row.readTable(_db.sales);
       final item = row.readTable(_db.salesItem);
-      final product = row.readTable(_db.product);
+      final product = row.readTableOrNull(_db.product);
 
       if (!salesMap.containsKey(sale.id)) {
         salesMap[sale.id] = SaleWithItems(sale: sale, items: []);
@@ -62,7 +64,10 @@ class SalesRepository implements SalesRepositoryAbstract {
   Future<SaleWithItems?> getSaleById(String id) async {
     final query = _db.select(_db.sales).join([
       innerJoin(_db.salesItem, _db.salesItem.saleId.equalsExp(_db.sales.id)),
-      innerJoin(_db.product, _db.product.id.equalsExp(_db.salesItem.productId)),
+      leftOuterJoin(
+        _db.product,
+        _db.product.id.equalsExp(_db.salesItem.productId),
+      ),
     ])..where(_db.sales.id.equals(id));
 
     final rows = await query.get();
@@ -72,7 +77,7 @@ class SalesRepository implements SalesRepositoryAbstract {
     final items = rows.map((row) {
       return SaleItemWithProduct(
         item: row.readTable(_db.salesItem),
-        product: row.readTable(_db.product),
+        product: row.readTableOrNull(_db.product),
       );
     }).toList();
 
