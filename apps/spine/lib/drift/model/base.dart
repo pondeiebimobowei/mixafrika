@@ -5,10 +5,10 @@ mixin TableMixin on Table {
   late final id = text()();
 
   late final syncStatus = text()();
-  late final syncDate = dateTime().withDefault(currentDateAndTime)();
+  late final syncDate = dateTime().nullable()();
   
   // Column for created at timestamp
   late final createdAt = dateTime().withDefault(currentDateAndTime)();
   late final updatedAt = dateTime().withDefault(currentDateAndTime)();
-  late final deletedAt = dateTime().withDefault(currentDateAndTime)();
+  late final deletedAt = dateTime().nullable()();
 }

@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/data/repositories/sales/sales_repository_abstract.dart';
@@ -9,17 +10,73 @@ class SalesRepository implements SalesRepositoryAbstract {
 
   @override
   Future<void> createSale(Sale sale, List<SalesItemData> items) async {
-    await _db.transaction(() async {
-      await _db.into(_db.sales).insert(sale);
-      for (final item in items) {
-        await _db.into(_db.salesItem).insert(item);
-      }
-    });
+    
+    try {
+      await _db.transaction(() async {
+        await _db.into(_db.sales).insert(sale);
+        for (final item in items) {
+          await _db.into(_db.salesItem).insert(item);
+        }
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
-  Future<List<Sale>> getSales() async {
-    return await _db.select(_db.sales).get();
+  Future<List<SaleWithItems>> getSalesWithItems({String? businessId}) async {
+    final query = _db.select(_db.sales).join([
+      innerJoin(_db.salesItem, _db.salesItem.saleId.equalsExp(_db.sales.id)),
+      innerJoin(_db.product, _db.product.id.equalsExp(_db.salesItem.productId)),
+    ]);
+
+    if (businessId != null) {
+      query.where(_db.sales.businessId.equals(businessId));
+    }
+
+    query.orderBy([
+      OrderingTerm.desc(_db.sales.id),
+    ]); // Assuming ID or date is sortable
+
+    final rows = await query.get();
+    final Map<String, SaleWithItems> salesMap = {};
+
+    for (final row in rows) {
+      final sale = row.readTable(_db.sales);
+      final item = row.readTable(_db.salesItem);
+      final product = row.readTable(_db.product);
+
+      if (!salesMap.containsKey(sale.id)) {
+        salesMap[sale.id] = SaleWithItems(sale: sale, items: []);
+      }
+
+      salesMap[sale.id]!.items.add(
+        SaleItemWithProduct(item: item, product: product),
+      );
+    }
+
+    return salesMap.values.toList();
+  }
+
+  @override
+  Future<SaleWithItems?> getSaleById(String id) async {
+    final query = _db.select(_db.sales).join([
+      innerJoin(_db.salesItem, _db.salesItem.saleId.equalsExp(_db.sales.id)),
+      innerJoin(_db.product, _db.product.id.equalsExp(_db.salesItem.productId)),
+    ])..where(_db.sales.id.equals(id));
+
+    final rows = await query.get();
+    if (rows.isEmpty) return null;
+
+    final sale = rows.first.readTable(_db.sales);
+    final items = rows.map((row) {
+      return SaleItemWithProduct(
+        item: row.readTable(_db.salesItem),
+        product: row.readTable(_db.product),
+      );
+    }).toList();
+
+    return SaleWithItems(sale: sale, items: items);
   }
 }
 

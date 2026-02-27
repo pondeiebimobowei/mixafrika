@@ -13,6 +13,9 @@ import 'package:spine/ui/inventory/view/inventory_screen.dart';
 import 'package:spine/ui/inventory/view/product_details_view.dart';
 import 'package:spine/ui/sales/view/checkout_view.dart';
 
+import 'package:spine/ui/sales/view/sale_receipt_view.dart';
+import 'package:spine/ui/sales/view/sales_log_view.dart';
+
 GoRouter router() => GoRouter(
   initialLocation: Routes.dashboard,
   routes: [
@@ -68,6 +71,17 @@ GoRouter router() => GoRouter(
     GoRoute(
       path: Routes.checkout,
       builder: (context, state) => const CheckoutView(),
+    ),
+    GoRoute(
+      path: Routes.salesLog,
+      builder: (context, state) => const SalesLogView(),
+    ),
+    GoRoute(
+      path: '${Routes.saleReceipt}/:id',
+      builder: (context, state) {
+        final id = state.pathParameters['id']!;
+        return SaleReceiptView(saleId: id);
+      },
     ),
   ],
 );

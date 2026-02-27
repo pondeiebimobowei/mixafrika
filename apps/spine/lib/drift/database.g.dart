@@ -36,10 +36,9 @@ class $BusinessVerificationTable extends BusinessVerification
   late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
     'sync_date',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -72,10 +71,9 @@ class $BusinessVerificationTable extends BusinessVerification
   late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
     'deleted_at',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
   );
   static const VerificationMeta _businessIdMeta = const VerificationMeta(
     'businessId',
@@ -285,7 +283,7 @@ class $BusinessVerificationTable extends BusinessVerification
       syncDate: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}sync_date'],
-      )!,
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -297,7 +295,7 @@ class $BusinessVerificationTable extends BusinessVerification
       deletedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
-      )!,
+      ),
       businessId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}business_id'],
@@ -335,10 +333,10 @@ class BusinessVerificationData extends DataClass
     implements Insertable<BusinessVerificationData> {
   final String id;
   final String syncStatus;
-  final DateTime syncDate;
+  final DateTime? syncDate;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime deletedAt;
+  final DateTime? deletedAt;
   final String businessId;
   final String status;
   final String rejectionReason;
@@ -348,10 +346,10 @@ class BusinessVerificationData extends DataClass
   const BusinessVerificationData({
     required this.id,
     required this.syncStatus,
-    required this.syncDate,
+    this.syncDate,
     required this.createdAt,
     required this.updatedAt,
-    required this.deletedAt,
+    this.deletedAt,
     required this.businessId,
     required this.status,
     required this.rejectionReason,
@@ -364,10 +362,14 @@ class BusinessVerificationData extends DataClass
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['sync_status'] = Variable<String>(syncStatus);
-    map['sync_date'] = Variable<DateTime>(syncDate);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    map['deleted_at'] = Variable<DateTime>(deletedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
     map['business_id'] = Variable<String>(businessId);
     map['status'] = Variable<String>(status);
     map['rejection_reason'] = Variable<String>(rejectionReason);
@@ -381,10 +383,14 @@ class BusinessVerificationData extends DataClass
     return BusinessVerificationCompanion(
       id: Value(id),
       syncStatus: Value(syncStatus),
-      syncDate: Value(syncDate),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
-      deletedAt: Value(deletedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
       businessId: Value(businessId),
       status: Value(status),
       rejectionReason: Value(rejectionReason),
@@ -402,10 +408,10 @@ class BusinessVerificationData extends DataClass
     return BusinessVerificationData(
       id: serializer.fromJson<String>(json['id']),
       syncStatus: serializer.fromJson<String>(json['syncStatus']),
-      syncDate: serializer.fromJson<DateTime>(json['syncDate']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      deletedAt: serializer.fromJson<DateTime>(json['deletedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
       businessId: serializer.fromJson<String>(json['businessId']),
       status: serializer.fromJson<String>(json['status']),
       rejectionReason: serializer.fromJson<String>(json['rejectionReason']),
@@ -420,10 +426,10 @@ class BusinessVerificationData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'syncStatus': serializer.toJson<String>(syncStatus),
-      'syncDate': serializer.toJson<DateTime>(syncDate),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'deletedAt': serializer.toJson<DateTime>(deletedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
       'businessId': serializer.toJson<String>(businessId),
       'status': serializer.toJson<String>(status),
       'rejectionReason': serializer.toJson<String>(rejectionReason),
@@ -436,10 +442,10 @@ class BusinessVerificationData extends DataClass
   BusinessVerificationData copyWith({
     String? id,
     String? syncStatus,
-    DateTime? syncDate,
+    Value<DateTime?> syncDate = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
-    DateTime? deletedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
     String? businessId,
     String? status,
     String? rejectionReason,
@@ -449,10 +455,10 @@ class BusinessVerificationData extends DataClass
   }) => BusinessVerificationData(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
-    syncDate: syncDate ?? this.syncDate,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
-    deletedAt: deletedAt ?? this.deletedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
     businessId: businessId ?? this.businessId,
     status: status ?? this.status,
     rejectionReason: rejectionReason ?? this.rejectionReason,
@@ -547,10 +553,10 @@ class BusinessVerificationCompanion
     extends UpdateCompanion<BusinessVerificationData> {
   final Value<String> id;
   final Value<String> syncStatus;
-  final Value<DateTime> syncDate;
+  final Value<DateTime?> syncDate;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
-  final Value<DateTime> deletedAt;
+  final Value<DateTime?> deletedAt;
   final Value<String> businessId;
   final Value<String> status;
   final Value<String> rejectionReason;
@@ -630,10 +636,10 @@ class BusinessVerificationCompanion
   BusinessVerificationCompanion copyWith({
     Value<String>? id,
     Value<String>? syncStatus,
-    Value<DateTime>? syncDate,
+    Value<DateTime?>? syncDate,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
-    Value<DateTime>? deletedAt,
+    Value<DateTime?>? deletedAt,
     Value<String>? businessId,
     Value<String>? status,
     Value<String>? rejectionReason,
@@ -758,10 +764,9 @@ class $UserBusinessTable extends UserBusiness
   late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
     'sync_date',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -794,10 +799,9 @@ class $UserBusinessTable extends UserBusiness
   late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
     'deleted_at',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
   );
   static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
   @override
@@ -1077,7 +1081,7 @@ class $UserBusinessTable extends UserBusiness
       syncDate: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}sync_date'],
-      )!,
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -1089,7 +1093,7 @@ class $UserBusinessTable extends UserBusiness
       deletedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
-      )!,
+      ),
       userId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}user_id'],
@@ -1143,10 +1147,10 @@ class UserBusinessData extends DataClass
     implements Insertable<UserBusinessData> {
   final String id;
   final String syncStatus;
-  final DateTime syncDate;
+  final DateTime? syncDate;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime deletedAt;
+  final DateTime? deletedAt;
   final String userId;
   final String collectionId;
   final String name;
@@ -1160,10 +1164,10 @@ class UserBusinessData extends DataClass
   const UserBusinessData({
     required this.id,
     required this.syncStatus,
-    required this.syncDate,
+    this.syncDate,
     required this.createdAt,
     required this.updatedAt,
-    required this.deletedAt,
+    this.deletedAt,
     required this.userId,
     required this.collectionId,
     required this.name,
@@ -1180,10 +1184,14 @@ class UserBusinessData extends DataClass
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['sync_status'] = Variable<String>(syncStatus);
-    map['sync_date'] = Variable<DateTime>(syncDate);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    map['deleted_at'] = Variable<DateTime>(deletedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
     map['user_id'] = Variable<String>(userId);
     map['collection_id'] = Variable<String>(collectionId);
     map['name'] = Variable<String>(name);
@@ -1201,10 +1209,14 @@ class UserBusinessData extends DataClass
     return UserBusinessCompanion(
       id: Value(id),
       syncStatus: Value(syncStatus),
-      syncDate: Value(syncDate),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
-      deletedAt: Value(deletedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
       userId: Value(userId),
       collectionId: Value(collectionId),
       name: Value(name),
@@ -1226,10 +1238,10 @@ class UserBusinessData extends DataClass
     return UserBusinessData(
       id: serializer.fromJson<String>(json['id']),
       syncStatus: serializer.fromJson<String>(json['syncStatus']),
-      syncDate: serializer.fromJson<DateTime>(json['syncDate']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      deletedAt: serializer.fromJson<DateTime>(json['deletedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
       userId: serializer.fromJson<String>(json['userId']),
       collectionId: serializer.fromJson<String>(json['collectionId']),
       name: serializer.fromJson<String>(json['name']),
@@ -1248,10 +1260,10 @@ class UserBusinessData extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'syncStatus': serializer.toJson<String>(syncStatus),
-      'syncDate': serializer.toJson<DateTime>(syncDate),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'deletedAt': serializer.toJson<DateTime>(deletedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
       'userId': serializer.toJson<String>(userId),
       'collectionId': serializer.toJson<String>(collectionId),
       'name': serializer.toJson<String>(name),
@@ -1268,10 +1280,10 @@ class UserBusinessData extends DataClass
   UserBusinessData copyWith({
     String? id,
     String? syncStatus,
-    DateTime? syncDate,
+    Value<DateTime?> syncDate = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
-    DateTime? deletedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
     String? userId,
     String? collectionId,
     String? name,
@@ -1285,10 +1297,10 @@ class UserBusinessData extends DataClass
   }) => UserBusinessData(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
-    syncDate: syncDate ?? this.syncDate,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
-    deletedAt: deletedAt ?? this.deletedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
     userId: userId ?? this.userId,
     collectionId: collectionId ?? this.collectionId,
     name: name ?? this.name,
@@ -1396,10 +1408,10 @@ class UserBusinessData extends DataClass
 class UserBusinessCompanion extends UpdateCompanion<UserBusinessData> {
   final Value<String> id;
   final Value<String> syncStatus;
-  final Value<DateTime> syncDate;
+  final Value<DateTime?> syncDate;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
-  final Value<DateTime> deletedAt;
+  final Value<DateTime?> deletedAt;
   final Value<String> userId;
   final Value<String> collectionId;
   final Value<String> name;
@@ -1503,10 +1515,10 @@ class UserBusinessCompanion extends UpdateCompanion<UserBusinessData> {
   UserBusinessCompanion copyWith({
     Value<String>? id,
     Value<String>? syncStatus,
-    Value<DateTime>? syncDate,
+    Value<DateTime?>? syncDate,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
-    Value<DateTime>? deletedAt,
+    Value<DateTime?>? deletedAt,
     Value<String>? userId,
     Value<String>? collectionId,
     Value<String>? name,
@@ -1654,10 +1666,9 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
   late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
     'sync_date',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -1690,10 +1701,9 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
   late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
     'deleted_at',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
   );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
@@ -2053,7 +2063,7 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
       syncDate: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}sync_date'],
-      )!,
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -2065,7 +2075,7 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
       deletedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
-      )!,
+      ),
       name: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}name'],
@@ -2130,10 +2140,10 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
 class ProductData extends DataClass implements Insertable<ProductData> {
   final String id;
   final String syncStatus;
-  final DateTime syncDate;
+  final DateTime? syncDate;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime deletedAt;
+  final DateTime? deletedAt;
   final String name;
   final String description;
   final String bulkUnitName;
@@ -2150,10 +2160,10 @@ class ProductData extends DataClass implements Insertable<ProductData> {
   const ProductData({
     required this.id,
     required this.syncStatus,
-    required this.syncDate,
+    this.syncDate,
     required this.createdAt,
     required this.updatedAt,
-    required this.deletedAt,
+    this.deletedAt,
     required this.name,
     required this.description,
     required this.bulkUnitName,
@@ -2173,10 +2183,14 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['sync_status'] = Variable<String>(syncStatus);
-    map['sync_date'] = Variable<DateTime>(syncDate);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    map['deleted_at'] = Variable<DateTime>(deletedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
     map['name'] = Variable<String>(name);
     map['description'] = Variable<String>(description);
     map['bulk_unit_name'] = Variable<String>(bulkUnitName);
@@ -2197,10 +2211,14 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     return ProductCompanion(
       id: Value(id),
       syncStatus: Value(syncStatus),
-      syncDate: Value(syncDate),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
-      deletedAt: Value(deletedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
       name: Value(name),
       description: Value(description),
       bulkUnitName: Value(bulkUnitName),
@@ -2225,10 +2243,10 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     return ProductData(
       id: serializer.fromJson<String>(json['id']),
       syncStatus: serializer.fromJson<String>(json['syncStatus']),
-      syncDate: serializer.fromJson<DateTime>(json['syncDate']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      deletedAt: serializer.fromJson<DateTime>(json['deletedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
       name: serializer.fromJson<String>(json['name']),
       description: serializer.fromJson<String>(json['description']),
       bulkUnitName: serializer.fromJson<String>(json['bulkUnitName']),
@@ -2254,10 +2272,10 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'syncStatus': serializer.toJson<String>(syncStatus),
-      'syncDate': serializer.toJson<DateTime>(syncDate),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'deletedAt': serializer.toJson<DateTime>(deletedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
       'name': serializer.toJson<String>(name),
       'description': serializer.toJson<String>(description),
       'bulkUnitName': serializer.toJson<String>(bulkUnitName),
@@ -2277,10 +2295,10 @@ class ProductData extends DataClass implements Insertable<ProductData> {
   ProductData copyWith({
     String? id,
     String? syncStatus,
-    DateTime? syncDate,
+    Value<DateTime?> syncDate = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
-    DateTime? deletedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
     String? name,
     String? description,
     String? bulkUnitName,
@@ -2297,10 +2315,10 @@ class ProductData extends DataClass implements Insertable<ProductData> {
   }) => ProductData(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
-    syncDate: syncDate ?? this.syncDate,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
-    deletedAt: deletedAt ?? this.deletedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
     name: name ?? this.name,
     description: description ?? this.description,
     bulkUnitName: bulkUnitName ?? this.bulkUnitName,
@@ -2433,10 +2451,10 @@ class ProductData extends DataClass implements Insertable<ProductData> {
 class ProductCompanion extends UpdateCompanion<ProductData> {
   final Value<String> id;
   final Value<String> syncStatus;
-  final Value<DateTime> syncDate;
+  final Value<DateTime?> syncDate;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
-  final Value<DateTime> deletedAt;
+  final Value<DateTime?> deletedAt;
   final Value<String> name;
   final Value<String> description;
   final Value<String> bulkUnitName;
@@ -2560,10 +2578,10 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
   ProductCompanion copyWith({
     Value<String>? id,
     Value<String>? syncStatus,
-    Value<DateTime>? syncDate,
+    Value<DateTime?>? syncDate,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
-    Value<DateTime>? deletedAt,
+    Value<DateTime?>? deletedAt,
     Value<String>? name,
     Value<String>? description,
     Value<String>? bulkUnitName,
@@ -2732,10 +2750,9 @@ class $SpineBatchTable extends SpineBatch
   late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
     'sync_date',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -2768,10 +2785,9 @@ class $SpineBatchTable extends SpineBatch
   late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
     'deleted_at',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
   );
   static const VerificationMeta _expiryDateMeta = const VerificationMeta(
     'expiryDate',
@@ -2780,9 +2796,9 @@ class $SpineBatchTable extends SpineBatch
   late final GeneratedColumn<DateTime> expiryDate = GeneratedColumn<DateTime>(
     'expiry_date',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
   );
   static const VerificationMeta _quantityMeta = const VerificationMeta(
     'quantity',
@@ -2887,8 +2903,6 @@ class $SpineBatchTable extends SpineBatch
         _expiryDateMeta,
         expiryDate.isAcceptableOrUnknown(data['expiry_date']!, _expiryDateMeta),
       );
-    } else if (isInserting) {
-      context.missing(_expiryDateMeta);
     }
     if (data.containsKey('quantity')) {
       context.handle(
@@ -2937,7 +2951,7 @@ class $SpineBatchTable extends SpineBatch
       syncDate: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}sync_date'],
-      )!,
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -2949,11 +2963,11 @@ class $SpineBatchTable extends SpineBatch
       deletedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
-      )!,
+      ),
       expiryDate: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}expiry_date'],
-      )!,
+      ),
       quantity: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}quantity'],
@@ -2978,22 +2992,22 @@ class $SpineBatchTable extends SpineBatch
 class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
   final String id;
   final String syncStatus;
-  final DateTime syncDate;
+  final DateTime? syncDate;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime deletedAt;
-  final DateTime expiryDate;
+  final DateTime? deletedAt;
+  final DateTime? expiryDate;
   final int quantity;
   final String batchNumber;
   final String productId;
   const SpineBatchData({
     required this.id,
     required this.syncStatus,
-    required this.syncDate,
+    this.syncDate,
     required this.createdAt,
     required this.updatedAt,
-    required this.deletedAt,
-    required this.expiryDate,
+    this.deletedAt,
+    this.expiryDate,
     required this.quantity,
     required this.batchNumber,
     required this.productId,
@@ -3003,11 +3017,17 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['sync_status'] = Variable<String>(syncStatus);
-    map['sync_date'] = Variable<DateTime>(syncDate);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    map['deleted_at'] = Variable<DateTime>(deletedAt);
-    map['expiry_date'] = Variable<DateTime>(expiryDate);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    if (!nullToAbsent || expiryDate != null) {
+      map['expiry_date'] = Variable<DateTime>(expiryDate);
+    }
     map['quantity'] = Variable<int>(quantity);
     map['batch_number'] = Variable<String>(batchNumber);
     map['product_id'] = Variable<String>(productId);
@@ -3018,11 +3038,17 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     return SpineBatchCompanion(
       id: Value(id),
       syncStatus: Value(syncStatus),
-      syncDate: Value(syncDate),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
-      deletedAt: Value(deletedAt),
-      expiryDate: Value(expiryDate),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      expiryDate: expiryDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(expiryDate),
       quantity: Value(quantity),
       batchNumber: Value(batchNumber),
       productId: Value(productId),
@@ -3037,11 +3063,11 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     return SpineBatchData(
       id: serializer.fromJson<String>(json['id']),
       syncStatus: serializer.fromJson<String>(json['syncStatus']),
-      syncDate: serializer.fromJson<DateTime>(json['syncDate']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      deletedAt: serializer.fromJson<DateTime>(json['deletedAt']),
-      expiryDate: serializer.fromJson<DateTime>(json['expiryDate']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      expiryDate: serializer.fromJson<DateTime?>(json['expiryDate']),
       quantity: serializer.fromJson<int>(json['quantity']),
       batchNumber: serializer.fromJson<String>(json['batchNumber']),
       productId: serializer.fromJson<String>(json['productId']),
@@ -3053,11 +3079,11 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'syncStatus': serializer.toJson<String>(syncStatus),
-      'syncDate': serializer.toJson<DateTime>(syncDate),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'deletedAt': serializer.toJson<DateTime>(deletedAt),
-      'expiryDate': serializer.toJson<DateTime>(expiryDate),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'expiryDate': serializer.toJson<DateTime?>(expiryDate),
       'quantity': serializer.toJson<int>(quantity),
       'batchNumber': serializer.toJson<String>(batchNumber),
       'productId': serializer.toJson<String>(productId),
@@ -3067,22 +3093,22 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
   SpineBatchData copyWith({
     String? id,
     String? syncStatus,
-    DateTime? syncDate,
+    Value<DateTime?> syncDate = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
-    DateTime? deletedAt,
-    DateTime? expiryDate,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    Value<DateTime?> expiryDate = const Value.absent(),
     int? quantity,
     String? batchNumber,
     String? productId,
   }) => SpineBatchData(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
-    syncDate: syncDate ?? this.syncDate,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
-    deletedAt: deletedAt ?? this.deletedAt,
-    expiryDate: expiryDate ?? this.expiryDate,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    expiryDate: expiryDate.present ? expiryDate.value : this.expiryDate,
     quantity: quantity ?? this.quantity,
     batchNumber: batchNumber ?? this.batchNumber,
     productId: productId ?? this.productId,
@@ -3157,11 +3183,11 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
 class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
   final Value<String> id;
   final Value<String> syncStatus;
-  final Value<DateTime> syncDate;
+  final Value<DateTime?> syncDate;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
-  final Value<DateTime> deletedAt;
-  final Value<DateTime> expiryDate;
+  final Value<DateTime?> deletedAt;
+  final Value<DateTime?> expiryDate;
   final Value<int> quantity;
   final Value<String> batchNumber;
   final Value<String> productId;
@@ -3186,14 +3212,13 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
-    required DateTime expiryDate,
+    this.expiryDate = const Value.absent(),
     required int quantity,
     required String batchNumber,
     required String productId,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        syncStatus = Value(syncStatus),
-       expiryDate = Value(expiryDate),
        quantity = Value(quantity),
        batchNumber = Value(batchNumber),
        productId = Value(productId);
@@ -3228,11 +3253,11 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
   SpineBatchCompanion copyWith({
     Value<String>? id,
     Value<String>? syncStatus,
-    Value<DateTime>? syncDate,
+    Value<DateTime?>? syncDate,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
-    Value<DateTime>? deletedAt,
-    Value<DateTime>? expiryDate,
+    Value<DateTime?>? deletedAt,
+    Value<DateTime?>? expiryDate,
     Value<int>? quantity,
     Value<String>? batchNumber,
     Value<String>? productId,
@@ -3344,10 +3369,9 @@ class $InventoryTable extends Inventory
   late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
     'sync_date',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -3380,10 +3404,9 @@ class $InventoryTable extends Inventory
   late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
     'deleted_at',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
   );
   static const VerificationMeta _quantityMeta = const VerificationMeta(
     'quantity',
@@ -3550,7 +3573,7 @@ class $InventoryTable extends Inventory
       syncDate: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}sync_date'],
-      )!,
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -3562,7 +3585,7 @@ class $InventoryTable extends Inventory
       deletedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
-      )!,
+      ),
       quantity: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}quantity'],
@@ -3591,10 +3614,10 @@ class $InventoryTable extends Inventory
 class InventoryData extends DataClass implements Insertable<InventoryData> {
   final String id;
   final String syncStatus;
-  final DateTime syncDate;
+  final DateTime? syncDate;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime deletedAt;
+  final DateTime? deletedAt;
   final int quantity;
   final String productId;
   final String businessId;
@@ -3602,10 +3625,10 @@ class InventoryData extends DataClass implements Insertable<InventoryData> {
   const InventoryData({
     required this.id,
     required this.syncStatus,
-    required this.syncDate,
+    this.syncDate,
     required this.createdAt,
     required this.updatedAt,
-    required this.deletedAt,
+    this.deletedAt,
     required this.quantity,
     required this.productId,
     required this.businessId,
@@ -3616,10 +3639,14 @@ class InventoryData extends DataClass implements Insertable<InventoryData> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['sync_status'] = Variable<String>(syncStatus);
-    map['sync_date'] = Variable<DateTime>(syncDate);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    map['deleted_at'] = Variable<DateTime>(deletedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
     map['quantity'] = Variable<int>(quantity);
     map['product_id'] = Variable<String>(productId);
     map['business_id'] = Variable<String>(businessId);
@@ -3633,10 +3660,14 @@ class InventoryData extends DataClass implements Insertable<InventoryData> {
     return InventoryCompanion(
       id: Value(id),
       syncStatus: Value(syncStatus),
-      syncDate: Value(syncDate),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
-      deletedAt: Value(deletedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
       quantity: Value(quantity),
       productId: Value(productId),
       businessId: Value(businessId),
@@ -3654,10 +3685,10 @@ class InventoryData extends DataClass implements Insertable<InventoryData> {
     return InventoryData(
       id: serializer.fromJson<String>(json['id']),
       syncStatus: serializer.fromJson<String>(json['syncStatus']),
-      syncDate: serializer.fromJson<DateTime>(json['syncDate']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      deletedAt: serializer.fromJson<DateTime>(json['deletedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
       quantity: serializer.fromJson<int>(json['quantity']),
       productId: serializer.fromJson<String>(json['productId']),
       businessId: serializer.fromJson<String>(json['businessId']),
@@ -3670,10 +3701,10 @@ class InventoryData extends DataClass implements Insertable<InventoryData> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'syncStatus': serializer.toJson<String>(syncStatus),
-      'syncDate': serializer.toJson<DateTime>(syncDate),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'deletedAt': serializer.toJson<DateTime>(deletedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
       'quantity': serializer.toJson<int>(quantity),
       'productId': serializer.toJson<String>(productId),
       'businessId': serializer.toJson<String>(businessId),
@@ -3684,10 +3715,10 @@ class InventoryData extends DataClass implements Insertable<InventoryData> {
   InventoryData copyWith({
     String? id,
     String? syncStatus,
-    DateTime? syncDate,
+    Value<DateTime?> syncDate = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
-    DateTime? deletedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
     int? quantity,
     String? productId,
     String? businessId,
@@ -3695,10 +3726,10 @@ class InventoryData extends DataClass implements Insertable<InventoryData> {
   }) => InventoryData(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
-    syncDate: syncDate ?? this.syncDate,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
-    deletedAt: deletedAt ?? this.deletedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
     quantity: quantity ?? this.quantity,
     productId: productId ?? this.productId,
     businessId: businessId ?? this.businessId,
@@ -3772,10 +3803,10 @@ class InventoryData extends DataClass implements Insertable<InventoryData> {
 class InventoryCompanion extends UpdateCompanion<InventoryData> {
   final Value<String> id;
   final Value<String> syncStatus;
-  final Value<DateTime> syncDate;
+  final Value<DateTime?> syncDate;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
-  final Value<DateTime> deletedAt;
+  final Value<DateTime?> deletedAt;
   final Value<int> quantity;
   final Value<String> productId;
   final Value<String> businessId;
@@ -3842,10 +3873,10 @@ class InventoryCompanion extends UpdateCompanion<InventoryData> {
   InventoryCompanion copyWith({
     Value<String>? id,
     Value<String>? syncStatus,
-    Value<DateTime>? syncDate,
+    Value<DateTime?>? syncDate,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
-    Value<DateTime>? deletedAt,
+    Value<DateTime?>? deletedAt,
     Value<int>? quantity,
     Value<String>? productId,
     Value<String>? businessId,
@@ -3957,10 +3988,9 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
   late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
     'sync_date',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -3993,10 +4023,9 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
   late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
     'deleted_at',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
   );
   static const VerificationMeta _firstNameMeta = const VerificationMeta(
     'firstName',
@@ -4245,7 +4274,7 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
       syncDate: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}sync_date'],
-      )!,
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -4257,7 +4286,7 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
       deletedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
-      )!,
+      ),
       firstName: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}first_name'],
@@ -4302,10 +4331,10 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
 class UserData extends DataClass implements Insertable<UserData> {
   final String id;
   final String syncStatus;
-  final DateTime syncDate;
+  final DateTime? syncDate;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime deletedAt;
+  final DateTime? deletedAt;
   final String firstName;
   final String lastName;
   final String email;
@@ -4317,10 +4346,10 @@ class UserData extends DataClass implements Insertable<UserData> {
   const UserData({
     required this.id,
     required this.syncStatus,
-    required this.syncDate,
+    this.syncDate,
     required this.createdAt,
     required this.updatedAt,
-    required this.deletedAt,
+    this.deletedAt,
     required this.firstName,
     required this.lastName,
     required this.email,
@@ -4335,10 +4364,14 @@ class UserData extends DataClass implements Insertable<UserData> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['sync_status'] = Variable<String>(syncStatus);
-    map['sync_date'] = Variable<DateTime>(syncDate);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    map['deleted_at'] = Variable<DateTime>(deletedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
     map['first_name'] = Variable<String>(firstName);
     map['last_name'] = Variable<String>(lastName);
     map['email'] = Variable<String>(email);
@@ -4354,10 +4387,14 @@ class UserData extends DataClass implements Insertable<UserData> {
     return UserCompanion(
       id: Value(id),
       syncStatus: Value(syncStatus),
-      syncDate: Value(syncDate),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
-      deletedAt: Value(deletedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
       firstName: Value(firstName),
       lastName: Value(lastName),
       email: Value(email),
@@ -4377,10 +4414,10 @@ class UserData extends DataClass implements Insertable<UserData> {
     return UserData(
       id: serializer.fromJson<String>(json['id']),
       syncStatus: serializer.fromJson<String>(json['syncStatus']),
-      syncDate: serializer.fromJson<DateTime>(json['syncDate']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      deletedAt: serializer.fromJson<DateTime>(json['deletedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
       firstName: serializer.fromJson<String>(json['firstName']),
       lastName: serializer.fromJson<String>(json['lastName']),
       email: serializer.fromJson<String>(json['email']),
@@ -4397,10 +4434,10 @@ class UserData extends DataClass implements Insertable<UserData> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'syncStatus': serializer.toJson<String>(syncStatus),
-      'syncDate': serializer.toJson<DateTime>(syncDate),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'deletedAt': serializer.toJson<DateTime>(deletedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
       'firstName': serializer.toJson<String>(firstName),
       'lastName': serializer.toJson<String>(lastName),
       'email': serializer.toJson<String>(email),
@@ -4415,10 +4452,10 @@ class UserData extends DataClass implements Insertable<UserData> {
   UserData copyWith({
     String? id,
     String? syncStatus,
-    DateTime? syncDate,
+    Value<DateTime?> syncDate = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
-    DateTime? deletedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
     String? firstName,
     String? lastName,
     String? email,
@@ -4430,10 +4467,10 @@ class UserData extends DataClass implements Insertable<UserData> {
   }) => UserData(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
-    syncDate: syncDate ?? this.syncDate,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
-    deletedAt: deletedAt ?? this.deletedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
     firstName: firstName ?? this.firstName,
     lastName: lastName ?? this.lastName,
     email: email ?? this.email,
@@ -4531,10 +4568,10 @@ class UserData extends DataClass implements Insertable<UserData> {
 class UserCompanion extends UpdateCompanion<UserData> {
   final Value<String> id;
   final Value<String> syncStatus;
-  final Value<DateTime> syncDate;
+  final Value<DateTime?> syncDate;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
-  final Value<DateTime> deletedAt;
+  final Value<DateTime?> deletedAt;
   final Value<String> firstName;
   final Value<String> lastName;
   final Value<String> email;
@@ -4626,10 +4663,10 @@ class UserCompanion extends UpdateCompanion<UserData> {
   UserCompanion copyWith({
     Value<String>? id,
     Value<String>? syncStatus,
-    Value<DateTime>? syncDate,
+    Value<DateTime?>? syncDate,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
-    Value<DateTime>? deletedAt,
+    Value<DateTime?>? deletedAt,
     Value<String>? firstName,
     Value<String>? lastName,
     Value<String>? email,
@@ -4765,10 +4802,9 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
   late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
     'sync_date',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -4801,21 +4837,9 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
   late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
     'deleted_at',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
-  );
-  static const VerificationMeta _branchIdMeta = const VerificationMeta(
-    'branchId',
-  );
-  @override
-  late final GeneratedColumn<String> branchId = GeneratedColumn<String>(
-    'branch_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
   );
   static const VerificationMeta _totalAmountMeta = const VerificationMeta(
     'totalAmount',
@@ -4893,9 +4917,9 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
   late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
     'created_by',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.string,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'REFERENCES user (id)',
     ),
@@ -4908,7 +4932,6 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
     createdAt,
     updatedAt,
     deletedAt,
-    branchId,
     totalAmount,
     amountPaid,
     balance,
@@ -4966,14 +4989,6 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
         deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
       );
     }
-    if (data.containsKey('branch_id')) {
-      context.handle(
-        _branchIdMeta,
-        branchId.isAcceptableOrUnknown(data['branch_id']!, _branchIdMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_branchIdMeta);
-    }
     if (data.containsKey('total_amount')) {
       context.handle(
         _totalAmountMeta,
@@ -5029,8 +5044,6 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
         _createdByMeta,
         createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
       );
-    } else if (isInserting) {
-      context.missing(_createdByMeta);
     }
     return context;
   }
@@ -5052,7 +5065,7 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
       syncDate: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}sync_date'],
-      )!,
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -5064,11 +5077,7 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
       deletedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
-      )!,
-      branchId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}branch_id'],
-      )!,
+      ),
       totalAmount: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}total_amount'],
@@ -5096,7 +5105,7 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
       createdBy: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}created_by'],
-      )!,
+      ),
     );
   }
 
@@ -5109,51 +5118,54 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
 class Sale extends DataClass implements Insertable<Sale> {
   final String id;
   final String syncStatus;
-  final DateTime syncDate;
+  final DateTime? syncDate;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime deletedAt;
-  final String branchId;
+  final DateTime? deletedAt;
   final int totalAmount;
   final int amountPaid;
   final int balance;
   final String paymentMethod;
   final String status;
   final String businessId;
-  final String createdBy;
+  final String? createdBy;
   const Sale({
     required this.id,
     required this.syncStatus,
-    required this.syncDate,
+    this.syncDate,
     required this.createdAt,
     required this.updatedAt,
-    required this.deletedAt,
-    required this.branchId,
+    this.deletedAt,
     required this.totalAmount,
     required this.amountPaid,
     required this.balance,
     required this.paymentMethod,
     required this.status,
     required this.businessId,
-    required this.createdBy,
+    this.createdBy,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['sync_status'] = Variable<String>(syncStatus);
-    map['sync_date'] = Variable<DateTime>(syncDate);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    map['deleted_at'] = Variable<DateTime>(deletedAt);
-    map['branch_id'] = Variable<String>(branchId);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
     map['total_amount'] = Variable<int>(totalAmount);
     map['amount_paid'] = Variable<int>(amountPaid);
     map['balance'] = Variable<int>(balance);
     map['payment_method'] = Variable<String>(paymentMethod);
     map['status'] = Variable<String>(status);
     map['business_id'] = Variable<String>(businessId);
-    map['created_by'] = Variable<String>(createdBy);
+    if (!nullToAbsent || createdBy != null) {
+      map['created_by'] = Variable<String>(createdBy);
+    }
     return map;
   }
 
@@ -5161,18 +5173,23 @@ class Sale extends DataClass implements Insertable<Sale> {
     return SalesCompanion(
       id: Value(id),
       syncStatus: Value(syncStatus),
-      syncDate: Value(syncDate),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
-      deletedAt: Value(deletedAt),
-      branchId: Value(branchId),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
       totalAmount: Value(totalAmount),
       amountPaid: Value(amountPaid),
       balance: Value(balance),
       paymentMethod: Value(paymentMethod),
       status: Value(status),
       businessId: Value(businessId),
-      createdBy: Value(createdBy),
+      createdBy: createdBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdBy),
     );
   }
 
@@ -5184,18 +5201,17 @@ class Sale extends DataClass implements Insertable<Sale> {
     return Sale(
       id: serializer.fromJson<String>(json['id']),
       syncStatus: serializer.fromJson<String>(json['syncStatus']),
-      syncDate: serializer.fromJson<DateTime>(json['syncDate']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      deletedAt: serializer.fromJson<DateTime>(json['deletedAt']),
-      branchId: serializer.fromJson<String>(json['branchId']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
       totalAmount: serializer.fromJson<int>(json['totalAmount']),
       amountPaid: serializer.fromJson<int>(json['amountPaid']),
       balance: serializer.fromJson<int>(json['balance']),
       paymentMethod: serializer.fromJson<String>(json['paymentMethod']),
       status: serializer.fromJson<String>(json['status']),
       businessId: serializer.fromJson<String>(json['businessId']),
-      createdBy: serializer.fromJson<String>(json['createdBy']),
+      createdBy: serializer.fromJson<String?>(json['createdBy']),
     );
   }
   @override
@@ -5204,51 +5220,48 @@ class Sale extends DataClass implements Insertable<Sale> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'syncStatus': serializer.toJson<String>(syncStatus),
-      'syncDate': serializer.toJson<DateTime>(syncDate),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'deletedAt': serializer.toJson<DateTime>(deletedAt),
-      'branchId': serializer.toJson<String>(branchId),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
       'totalAmount': serializer.toJson<int>(totalAmount),
       'amountPaid': serializer.toJson<int>(amountPaid),
       'balance': serializer.toJson<int>(balance),
       'paymentMethod': serializer.toJson<String>(paymentMethod),
       'status': serializer.toJson<String>(status),
       'businessId': serializer.toJson<String>(businessId),
-      'createdBy': serializer.toJson<String>(createdBy),
+      'createdBy': serializer.toJson<String?>(createdBy),
     };
   }
 
   Sale copyWith({
     String? id,
     String? syncStatus,
-    DateTime? syncDate,
+    Value<DateTime?> syncDate = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
-    DateTime? deletedAt,
-    String? branchId,
+    Value<DateTime?> deletedAt = const Value.absent(),
     int? totalAmount,
     int? amountPaid,
     int? balance,
     String? paymentMethod,
     String? status,
     String? businessId,
-    String? createdBy,
+    Value<String?> createdBy = const Value.absent(),
   }) => Sale(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
-    syncDate: syncDate ?? this.syncDate,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
-    deletedAt: deletedAt ?? this.deletedAt,
-    branchId: branchId ?? this.branchId,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
     totalAmount: totalAmount ?? this.totalAmount,
     amountPaid: amountPaid ?? this.amountPaid,
     balance: balance ?? this.balance,
     paymentMethod: paymentMethod ?? this.paymentMethod,
     status: status ?? this.status,
     businessId: businessId ?? this.businessId,
-    createdBy: createdBy ?? this.createdBy,
+    createdBy: createdBy.present ? createdBy.value : this.createdBy,
   );
   Sale copyWithCompanion(SalesCompanion data) {
     return Sale(
@@ -5260,7 +5273,6 @@ class Sale extends DataClass implements Insertable<Sale> {
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
-      branchId: data.branchId.present ? data.branchId.value : this.branchId,
       totalAmount: data.totalAmount.present
           ? data.totalAmount.value
           : this.totalAmount,
@@ -5288,7 +5300,6 @@ class Sale extends DataClass implements Insertable<Sale> {
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
-          ..write('branchId: $branchId, ')
           ..write('totalAmount: $totalAmount, ')
           ..write('amountPaid: $amountPaid, ')
           ..write('balance: $balance, ')
@@ -5308,7 +5319,6 @@ class Sale extends DataClass implements Insertable<Sale> {
     createdAt,
     updatedAt,
     deletedAt,
-    branchId,
     totalAmount,
     amountPaid,
     balance,
@@ -5327,7 +5337,6 @@ class Sale extends DataClass implements Insertable<Sale> {
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
           other.deletedAt == this.deletedAt &&
-          other.branchId == this.branchId &&
           other.totalAmount == this.totalAmount &&
           other.amountPaid == this.amountPaid &&
           other.balance == this.balance &&
@@ -5340,18 +5349,17 @@ class Sale extends DataClass implements Insertable<Sale> {
 class SalesCompanion extends UpdateCompanion<Sale> {
   final Value<String> id;
   final Value<String> syncStatus;
-  final Value<DateTime> syncDate;
+  final Value<DateTime?> syncDate;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
-  final Value<DateTime> deletedAt;
-  final Value<String> branchId;
+  final Value<DateTime?> deletedAt;
   final Value<int> totalAmount;
   final Value<int> amountPaid;
   final Value<int> balance;
   final Value<String> paymentMethod;
   final Value<String> status;
   final Value<String> businessId;
-  final Value<String> createdBy;
+  final Value<String?> createdBy;
   final Value<int> rowid;
   const SalesCompanion({
     this.id = const Value.absent(),
@@ -5360,7 +5368,6 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
-    this.branchId = const Value.absent(),
     this.totalAmount = const Value.absent(),
     this.amountPaid = const Value.absent(),
     this.balance = const Value.absent(),
@@ -5377,23 +5384,20 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
-    required String branchId,
     required int totalAmount,
     this.amountPaid = const Value.absent(),
     this.balance = const Value.absent(),
     required String paymentMethod,
     required String status,
     required String businessId,
-    required String createdBy,
+    this.createdBy = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        syncStatus = Value(syncStatus),
-       branchId = Value(branchId),
        totalAmount = Value(totalAmount),
        paymentMethod = Value(paymentMethod),
        status = Value(status),
-       businessId = Value(businessId),
-       createdBy = Value(createdBy);
+       businessId = Value(businessId);
   static Insertable<Sale> custom({
     Expression<String>? id,
     Expression<String>? syncStatus,
@@ -5401,7 +5405,6 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<DateTime>? deletedAt,
-    Expression<String>? branchId,
     Expression<int>? totalAmount,
     Expression<int>? amountPaid,
     Expression<int>? balance,
@@ -5418,7 +5421,6 @@ class SalesCompanion extends UpdateCompanion<Sale> {
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (deletedAt != null) 'deleted_at': deletedAt,
-      if (branchId != null) 'branch_id': branchId,
       if (totalAmount != null) 'total_amount': totalAmount,
       if (amountPaid != null) 'amount_paid': amountPaid,
       if (balance != null) 'balance': balance,
@@ -5433,18 +5435,17 @@ class SalesCompanion extends UpdateCompanion<Sale> {
   SalesCompanion copyWith({
     Value<String>? id,
     Value<String>? syncStatus,
-    Value<DateTime>? syncDate,
+    Value<DateTime?>? syncDate,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
-    Value<DateTime>? deletedAt,
-    Value<String>? branchId,
+    Value<DateTime?>? deletedAt,
     Value<int>? totalAmount,
     Value<int>? amountPaid,
     Value<int>? balance,
     Value<String>? paymentMethod,
     Value<String>? status,
     Value<String>? businessId,
-    Value<String>? createdBy,
+    Value<String?>? createdBy,
     Value<int>? rowid,
   }) {
     return SalesCompanion(
@@ -5454,7 +5455,6 @@ class SalesCompanion extends UpdateCompanion<Sale> {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
-      branchId: branchId ?? this.branchId,
       totalAmount: totalAmount ?? this.totalAmount,
       amountPaid: amountPaid ?? this.amountPaid,
       balance: balance ?? this.balance,
@@ -5486,9 +5486,6 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     }
     if (deletedAt.present) {
       map['deleted_at'] = Variable<DateTime>(deletedAt.value);
-    }
-    if (branchId.present) {
-      map['branch_id'] = Variable<String>(branchId.value);
     }
     if (totalAmount.present) {
       map['total_amount'] = Variable<int>(totalAmount.value);
@@ -5526,7 +5523,6 @@ class SalesCompanion extends UpdateCompanion<Sale> {
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
-          ..write('branchId: $branchId, ')
           ..write('totalAmount: $totalAmount, ')
           ..write('amountPaid: $amountPaid, ')
           ..write('balance: $balance, ')
@@ -5573,10 +5569,9 @@ class $SalesItemTable extends SalesItem
   late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
     'sync_date',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -5609,10 +5604,9 @@ class $SalesItemTable extends SalesItem
   late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
     'deleted_at',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
   );
   static const VerificationMeta _quantityMeta = const VerificationMeta(
     'quantity',
@@ -5794,7 +5788,7 @@ class $SalesItemTable extends SalesItem
       syncDate: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}sync_date'],
-      )!,
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -5806,7 +5800,7 @@ class $SalesItemTable extends SalesItem
       deletedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
-      )!,
+      ),
       quantity: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}quantity'],
@@ -5839,10 +5833,10 @@ class $SalesItemTable extends SalesItem
 class SalesItemData extends DataClass implements Insertable<SalesItemData> {
   final String id;
   final String syncStatus;
-  final DateTime syncDate;
+  final DateTime? syncDate;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime deletedAt;
+  final DateTime? deletedAt;
   final int quantity;
   final int unitPrice;
   final int total;
@@ -5851,10 +5845,10 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
   const SalesItemData({
     required this.id,
     required this.syncStatus,
-    required this.syncDate,
+    this.syncDate,
     required this.createdAt,
     required this.updatedAt,
-    required this.deletedAt,
+    this.deletedAt,
     required this.quantity,
     required this.unitPrice,
     required this.total,
@@ -5866,10 +5860,14 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['sync_status'] = Variable<String>(syncStatus);
-    map['sync_date'] = Variable<DateTime>(syncDate);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    map['deleted_at'] = Variable<DateTime>(deletedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
     map['quantity'] = Variable<int>(quantity);
     map['unit_price'] = Variable<int>(unitPrice);
     map['total'] = Variable<int>(total);
@@ -5882,10 +5880,14 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
     return SalesItemCompanion(
       id: Value(id),
       syncStatus: Value(syncStatus),
-      syncDate: Value(syncDate),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
-      deletedAt: Value(deletedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
       quantity: Value(quantity),
       unitPrice: Value(unitPrice),
       total: Value(total),
@@ -5902,10 +5904,10 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
     return SalesItemData(
       id: serializer.fromJson<String>(json['id']),
       syncStatus: serializer.fromJson<String>(json['syncStatus']),
-      syncDate: serializer.fromJson<DateTime>(json['syncDate']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      deletedAt: serializer.fromJson<DateTime>(json['deletedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
       quantity: serializer.fromJson<int>(json['quantity']),
       unitPrice: serializer.fromJson<int>(json['unitPrice']),
       total: serializer.fromJson<int>(json['total']),
@@ -5919,10 +5921,10 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'syncStatus': serializer.toJson<String>(syncStatus),
-      'syncDate': serializer.toJson<DateTime>(syncDate),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'deletedAt': serializer.toJson<DateTime>(deletedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
       'quantity': serializer.toJson<int>(quantity),
       'unitPrice': serializer.toJson<int>(unitPrice),
       'total': serializer.toJson<int>(total),
@@ -5934,10 +5936,10 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
   SalesItemData copyWith({
     String? id,
     String? syncStatus,
-    DateTime? syncDate,
+    Value<DateTime?> syncDate = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
-    DateTime? deletedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
     int? quantity,
     int? unitPrice,
     int? total,
@@ -5946,10 +5948,10 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
   }) => SalesItemData(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
-    syncDate: syncDate ?? this.syncDate,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
-    deletedAt: deletedAt ?? this.deletedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
     quantity: quantity ?? this.quantity,
     unitPrice: unitPrice ?? this.unitPrice,
     total: total ?? this.total,
@@ -6026,10 +6028,10 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
 class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
   final Value<String> id;
   final Value<String> syncStatus;
-  final Value<DateTime> syncDate;
+  final Value<DateTime?> syncDate;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
-  final Value<DateTime> deletedAt;
+  final Value<DateTime?> deletedAt;
   final Value<int> quantity;
   final Value<int> unitPrice;
   final Value<int> total;
@@ -6103,10 +6105,10 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
   SalesItemCompanion copyWith({
     Value<String>? id,
     Value<String>? syncStatus,
-    Value<DateTime>? syncDate,
+    Value<DateTime?>? syncDate,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
-    Value<DateTime>? deletedAt,
+    Value<DateTime?>? deletedAt,
     Value<int>? quantity,
     Value<int>? unitPrice,
     Value<int>? total,
@@ -6224,10 +6226,9 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
   late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
     'sync_date',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
   );
   static const VerificationMeta _createdAtMeta = const VerificationMeta(
     'createdAt',
@@ -6260,10 +6261,9 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
   late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
     'deleted_at',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
   );
   static const VerificationMeta _saleIdMeta = const VerificationMeta('saleId');
   @override
@@ -6441,7 +6441,7 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
       syncDate: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}sync_date'],
-      )!,
+      ),
       createdAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}created_at'],
@@ -6453,7 +6453,7 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
       deletedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
-      )!,
+      ),
       saleId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}sale_id'],
@@ -6486,10 +6486,10 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
 class Payment extends DataClass implements Insertable<Payment> {
   final String id;
   final String syncStatus;
-  final DateTime syncDate;
+  final DateTime? syncDate;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime deletedAt;
+  final DateTime? deletedAt;
   final String saleId;
   final int amount;
   final String? reference;
@@ -6498,10 +6498,10 @@ class Payment extends DataClass implements Insertable<Payment> {
   const Payment({
     required this.id,
     required this.syncStatus,
-    required this.syncDate,
+    this.syncDate,
     required this.createdAt,
     required this.updatedAt,
-    required this.deletedAt,
+    this.deletedAt,
     required this.saleId,
     required this.amount,
     this.reference,
@@ -6513,10 +6513,14 @@ class Payment extends DataClass implements Insertable<Payment> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['sync_status'] = Variable<String>(syncStatus);
-    map['sync_date'] = Variable<DateTime>(syncDate);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
     map['created_at'] = Variable<DateTime>(createdAt);
     map['updated_at'] = Variable<DateTime>(updatedAt);
-    map['deleted_at'] = Variable<DateTime>(deletedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
     map['sale_id'] = Variable<String>(saleId);
     map['amount'] = Variable<int>(amount);
     if (!nullToAbsent || reference != null) {
@@ -6531,10 +6535,14 @@ class Payment extends DataClass implements Insertable<Payment> {
     return PaymentsCompanion(
       id: Value(id),
       syncStatus: Value(syncStatus),
-      syncDate: Value(syncDate),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
       createdAt: Value(createdAt),
       updatedAt: Value(updatedAt),
-      deletedAt: Value(deletedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
       saleId: Value(saleId),
       amount: Value(amount),
       reference: reference == null && nullToAbsent
@@ -6553,10 +6561,10 @@ class Payment extends DataClass implements Insertable<Payment> {
     return Payment(
       id: serializer.fromJson<String>(json['id']),
       syncStatus: serializer.fromJson<String>(json['syncStatus']),
-      syncDate: serializer.fromJson<DateTime>(json['syncDate']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      deletedAt: serializer.fromJson<DateTime>(json['deletedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
       saleId: serializer.fromJson<String>(json['saleId']),
       amount: serializer.fromJson<int>(json['amount']),
       reference: serializer.fromJson<String?>(json['reference']),
@@ -6570,10 +6578,10 @@ class Payment extends DataClass implements Insertable<Payment> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'syncStatus': serializer.toJson<String>(syncStatus),
-      'syncDate': serializer.toJson<DateTime>(syncDate),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'deletedAt': serializer.toJson<DateTime>(deletedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
       'saleId': serializer.toJson<String>(saleId),
       'amount': serializer.toJson<int>(amount),
       'reference': serializer.toJson<String?>(reference),
@@ -6585,10 +6593,10 @@ class Payment extends DataClass implements Insertable<Payment> {
   Payment copyWith({
     String? id,
     String? syncStatus,
-    DateTime? syncDate,
+    Value<DateTime?> syncDate = const Value.absent(),
     DateTime? createdAt,
     DateTime? updatedAt,
-    DateTime? deletedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
     String? saleId,
     int? amount,
     Value<String?> reference = const Value.absent(),
@@ -6597,10 +6605,10 @@ class Payment extends DataClass implements Insertable<Payment> {
   }) => Payment(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
-    syncDate: syncDate ?? this.syncDate,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
-    deletedAt: deletedAt ?? this.deletedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
     saleId: saleId ?? this.saleId,
     amount: amount ?? this.amount,
     reference: reference.present ? reference.value : this.reference,
@@ -6679,10 +6687,10 @@ class Payment extends DataClass implements Insertable<Payment> {
 class PaymentsCompanion extends UpdateCompanion<Payment> {
   final Value<String> id;
   final Value<String> syncStatus;
-  final Value<DateTime> syncDate;
+  final Value<DateTime?> syncDate;
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
-  final Value<DateTime> deletedAt;
+  final Value<DateTime?> deletedAt;
   final Value<String> saleId;
   final Value<int> amount;
   final Value<String?> reference;
@@ -6755,10 +6763,10 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
   PaymentsCompanion copyWith({
     Value<String>? id,
     Value<String>? syncStatus,
-    Value<DateTime>? syncDate,
+    Value<DateTime?>? syncDate,
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
-    Value<DateTime>? deletedAt,
+    Value<DateTime?>? deletedAt,
     Value<String>? saleId,
     Value<int>? amount,
     Value<String?>? reference,
@@ -6878,10 +6886,10 @@ typedef $$BusinessVerificationTableCreateCompanionBuilder =
     BusinessVerificationCompanion Function({
       required String id,
       required String syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
+      Value<DateTime?> deletedAt,
       required String businessId,
       required String status,
       required String rejectionReason,
@@ -6894,10 +6902,10 @@ typedef $$BusinessVerificationTableUpdateCompanionBuilder =
     BusinessVerificationCompanion Function({
       Value<String> id,
       Value<String> syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
+      Value<DateTime?> deletedAt,
       Value<String> businessId,
       Value<String> status,
       Value<String> rejectionReason,
@@ -7228,10 +7236,10 @@ class $$BusinessVerificationTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
                 Value<String> businessId = const Value.absent(),
                 Value<String> status = const Value.absent(),
                 Value<String> rejectionReason = const Value.absent(),
@@ -7258,10 +7266,10 @@ class $$BusinessVerificationTableTableManager
               ({
                 required String id,
                 required String syncStatus,
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
                 required String businessId,
                 required String status,
                 required String rejectionReason,
@@ -7346,10 +7354,10 @@ typedef $$UserBusinessTableCreateCompanionBuilder =
     UserBusinessCompanion Function({
       required String id,
       required String syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
+      Value<DateTime?> deletedAt,
       required String userId,
       required String collectionId,
       required String name,
@@ -7366,10 +7374,10 @@ typedef $$UserBusinessTableUpdateCompanionBuilder =
     UserBusinessCompanion Function({
       Value<String> id,
       Value<String> syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
+      Value<DateTime?> deletedAt,
       Value<String> userId,
       Value<String> collectionId,
       Value<String> name,
@@ -7956,10 +7964,10 @@ class $$UserBusinessTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
                 Value<String> userId = const Value.absent(),
                 Value<String> collectionId = const Value.absent(),
                 Value<String> name = const Value.absent(),
@@ -7994,10 +8002,10 @@ class $$UserBusinessTableTableManager
               ({
                 required String id,
                 required String syncStatus,
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
                 required String userId,
                 required String collectionId,
                 required String name,
@@ -8180,10 +8188,10 @@ typedef $$ProductTableCreateCompanionBuilder =
     ProductCompanion Function({
       required String id,
       required String syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
+      Value<DateTime?> deletedAt,
       required String name,
       required String description,
       required String bulkUnitName,
@@ -8203,10 +8211,10 @@ typedef $$ProductTableUpdateCompanionBuilder =
     ProductCompanion Function({
       Value<String> id,
       Value<String> syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
+      Value<DateTime?> deletedAt,
       Value<String> name,
       Value<String> description,
       Value<String> bulkUnitName,
@@ -8835,10 +8843,10 @@ class $$ProductTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String> description = const Value.absent(),
                 Value<String> bulkUnitName = const Value.absent(),
@@ -8879,10 +8887,10 @@ class $$ProductTableTableManager
               ({
                 required String id,
                 required String syncStatus,
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
                 required String name,
                 required String description,
                 required String bulkUnitName,
@@ -9069,11 +9077,11 @@ typedef $$SpineBatchTableCreateCompanionBuilder =
     SpineBatchCompanion Function({
       required String id,
       required String syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
-      required DateTime expiryDate,
+      Value<DateTime?> deletedAt,
+      Value<DateTime?> expiryDate,
       required int quantity,
       required String batchNumber,
       required String productId,
@@ -9083,11 +9091,11 @@ typedef $$SpineBatchTableUpdateCompanionBuilder =
     SpineBatchCompanion Function({
       Value<String> id,
       Value<String> syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
-      Value<DateTime> expiryDate,
+      Value<DateTime?> deletedAt,
+      Value<DateTime?> expiryDate,
       Value<int> quantity,
       Value<String> batchNumber,
       Value<String> productId,
@@ -9438,11 +9446,11 @@ class $$SpineBatchTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
-                Value<DateTime> expiryDate = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<DateTime?> expiryDate = const Value.absent(),
                 Value<int> quantity = const Value.absent(),
                 Value<String> batchNumber = const Value.absent(),
                 Value<String> productId = const Value.absent(),
@@ -9464,11 +9472,11 @@ class $$SpineBatchTableTableManager
               ({
                 required String id,
                 required String syncStatus,
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
-                required DateTime expiryDate,
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<DateTime?> expiryDate = const Value.absent(),
                 required int quantity,
                 required String batchNumber,
                 required String productId,
@@ -9577,10 +9585,10 @@ typedef $$InventoryTableCreateCompanionBuilder =
     InventoryCompanion Function({
       required String id,
       required String syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
+      Value<DateTime?> deletedAt,
       required int quantity,
       required String productId,
       required String businessId,
@@ -9591,10 +9599,10 @@ typedef $$InventoryTableUpdateCompanionBuilder =
     InventoryCompanion Function({
       Value<String> id,
       Value<String> syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
+      Value<DateTime?> deletedAt,
       Value<int> quantity,
       Value<String> productId,
       Value<String> businessId,
@@ -10026,10 +10034,10 @@ class $$InventoryTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
                 Value<int> quantity = const Value.absent(),
                 Value<String> productId = const Value.absent(),
                 Value<String> businessId = const Value.absent(),
@@ -10052,10 +10060,10 @@ class $$InventoryTableTableManager
               ({
                 required String id,
                 required String syncStatus,
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
                 required int quantity,
                 required String productId,
                 required String businessId,
@@ -10172,10 +10180,10 @@ typedef $$UserTableCreateCompanionBuilder =
     UserCompanion Function({
       required String id,
       required String syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
+      Value<DateTime?> deletedAt,
       required String firstName,
       required String lastName,
       required String email,
@@ -10190,10 +10198,10 @@ typedef $$UserTableUpdateCompanionBuilder =
     UserCompanion Function({
       Value<String> id,
       Value<String> syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
+      Value<DateTime?> deletedAt,
       Value<String> firstName,
       Value<String> lastName,
       Value<String> email,
@@ -10527,10 +10535,10 @@ class $$UserTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
                 Value<String> firstName = const Value.absent(),
                 Value<String> lastName = const Value.absent(),
                 Value<String> email = const Value.absent(),
@@ -10561,10 +10569,10 @@ class $$UserTableTableManager
               ({
                 required String id,
                 required String syncStatus,
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
                 required String firstName,
                 required String lastName,
                 required String email,
@@ -10642,36 +10650,34 @@ typedef $$SalesTableCreateCompanionBuilder =
     SalesCompanion Function({
       required String id,
       required String syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
-      required String branchId,
+      Value<DateTime?> deletedAt,
       required int totalAmount,
       Value<int> amountPaid,
       Value<int> balance,
       required String paymentMethod,
       required String status,
       required String businessId,
-      required String createdBy,
+      Value<String?> createdBy,
       Value<int> rowid,
     });
 typedef $$SalesTableUpdateCompanionBuilder =
     SalesCompanion Function({
       Value<String> id,
       Value<String> syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
-      Value<String> branchId,
+      Value<DateTime?> deletedAt,
       Value<int> totalAmount,
       Value<int> amountPaid,
       Value<int> balance,
       Value<String> paymentMethod,
       Value<String> status,
       Value<String> businessId,
-      Value<String> createdBy,
+      Value<String?> createdBy,
       Value<int> rowid,
     });
 
@@ -10701,9 +10707,9 @@ final class $$SalesTableReferences
   static $UserTable _createdByTable(_$AppDatabase db) =>
       db.user.createAlias($_aliasNameGenerator(db.sales.createdBy, db.user.id));
 
-  $$UserTableProcessedTableManager get createdBy {
-    final $_column = $_itemColumn<String>('created_by')!;
-
+  $$UserTableProcessedTableManager? get createdBy {
+    final $_column = $_itemColumn<String>('created_by');
+    if ($_column == null) return null;
     final manager = $$UserTableTableManager(
       $_db,
       $_db.user,
@@ -10788,11 +10794,6 @@ class $$SalesTableFilterComposer extends Composer<_$AppDatabase, $SalesTable> {
 
   ColumnFilters<DateTime> get deletedAt => $composableBuilder(
     column: $table.deletedAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get branchId => $composableBuilder(
-    column: $table.branchId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -10957,11 +10958,6 @@ class $$SalesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get branchId => $composableBuilder(
-    column: $table.branchId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<int> get totalAmount => $composableBuilder(
     column: $table.totalAmount,
     builder: (column) => ColumnOrderings(column),
@@ -11062,9 +11058,6 @@ class $$SalesTableAnnotationComposer
 
   GeneratedColumn<DateTime> get deletedAt =>
       $composableBuilder(column: $table.deletedAt, builder: (column) => column);
-
-  GeneratedColumn<String> get branchId =>
-      $composableBuilder(column: $table.branchId, builder: (column) => column);
 
   GeneratedColumn<int> get totalAmount => $composableBuilder(
     column: $table.totalAmount,
@@ -11219,18 +11212,17 @@ class $$SalesTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
-                Value<String> branchId = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
                 Value<int> totalAmount = const Value.absent(),
                 Value<int> amountPaid = const Value.absent(),
                 Value<int> balance = const Value.absent(),
                 Value<String> paymentMethod = const Value.absent(),
                 Value<String> status = const Value.absent(),
                 Value<String> businessId = const Value.absent(),
-                Value<String> createdBy = const Value.absent(),
+                Value<String?> createdBy = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SalesCompanion(
                 id: id,
@@ -11239,7 +11231,6 @@ class $$SalesTableTableManager
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
-                branchId: branchId,
                 totalAmount: totalAmount,
                 amountPaid: amountPaid,
                 balance: balance,
@@ -11253,18 +11244,17 @@ class $$SalesTableTableManager
               ({
                 required String id,
                 required String syncStatus,
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
-                required String branchId,
+                Value<DateTime?> deletedAt = const Value.absent(),
                 required int totalAmount,
                 Value<int> amountPaid = const Value.absent(),
                 Value<int> balance = const Value.absent(),
                 required String paymentMethod,
                 required String status,
                 required String businessId,
-                required String createdBy,
+                Value<String?> createdBy = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SalesCompanion.insert(
                 id: id,
@@ -11273,7 +11263,6 @@ class $$SalesTableTableManager
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
-                branchId: branchId,
                 totalAmount: totalAmount,
                 amountPaid: amountPaid,
                 balance: balance,
@@ -11418,10 +11407,10 @@ typedef $$SalesItemTableCreateCompanionBuilder =
     SalesItemCompanion Function({
       required String id,
       required String syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
+      Value<DateTime?> deletedAt,
       required int quantity,
       required int unitPrice,
       required int total,
@@ -11433,10 +11422,10 @@ typedef $$SalesItemTableUpdateCompanionBuilder =
     SalesItemCompanion Function({
       Value<String> id,
       Value<String> syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
+      Value<DateTime?> deletedAt,
       Value<int> quantity,
       Value<int> unitPrice,
       Value<int> total,
@@ -11802,10 +11791,10 @@ class $$SalesItemTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
                 Value<int> quantity = const Value.absent(),
                 Value<int> unitPrice = const Value.absent(),
                 Value<int> total = const Value.absent(),
@@ -11830,10 +11819,10 @@ class $$SalesItemTableTableManager
               ({
                 required String id,
                 required String syncStatus,
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
                 required int quantity,
                 required int unitPrice,
                 required int total,
@@ -11938,10 +11927,10 @@ typedef $$PaymentsTableCreateCompanionBuilder =
     PaymentsCompanion Function({
       required String id,
       required String syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
+      Value<DateTime?> deletedAt,
       required String saleId,
       required int amount,
       Value<String?> reference,
@@ -11953,10 +11942,10 @@ typedef $$PaymentsTableUpdateCompanionBuilder =
     PaymentsCompanion Function({
       Value<String> id,
       Value<String> syncStatus,
-      Value<DateTime> syncDate,
+      Value<DateTime?> syncDate,
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
-      Value<DateTime> deletedAt,
+      Value<DateTime?> deletedAt,
       Value<String> saleId,
       Value<int> amount,
       Value<String?> reference,
@@ -12251,10 +12240,10 @@ class $$PaymentsTableTableManager
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> syncStatus = const Value.absent(),
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
                 Value<String> saleId = const Value.absent(),
                 Value<int> amount = const Value.absent(),
                 Value<String?> reference = const Value.absent(),
@@ -12279,10 +12268,10 @@ class $$PaymentsTableTableManager
               ({
                 required String id,
                 required String syncStatus,
-                Value<DateTime> syncDate = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime> deletedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
                 required String saleId,
                 required int amount,
                 Value<String?> reference = const Value.absent(),

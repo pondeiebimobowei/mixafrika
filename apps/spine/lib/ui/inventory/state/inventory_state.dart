@@ -57,7 +57,7 @@ class InventoryState {
             .where(
               (item) => item.batches.any((batch) {
                 final expiry = batch.expiryDate;
-                return expiry.isBefore(
+                return expiry!.isBefore(
                   DateTime.now().add(const Duration(days: 30)),
                 );
               }),

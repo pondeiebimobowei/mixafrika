@@ -11,4 +11,6 @@ class Routes {
   static const String calculator = '/calculator';
   static const String createSale = '/create-sale';
   static const String checkout = '/checkout';
+  static const String salesLog = '/sales-log';
+  static const String saleReceipt = '/sale-receipt';
 }

@@ -423,6 +423,7 @@ class HomeView extends ConsumerWidget {
           'Add Stock',
           FIcons.shoppingBag,
           colors.secondary,
+          onTap: () => context.push(Routes.addStock),
         ),
       ],
     );
@@ -497,7 +498,12 @@ class HomeView extends ConsumerWidget {
           FIcons.package,
           onTap: () => context.push(Routes.inventory),
         ),
-        _buildSmallMenuCard(context, 'SALES LOG', FIcons.list),
+        _buildSmallMenuCard(
+          context,
+          'SALES LOG',
+          FIcons.list,
+          onTap: () => context.push(Routes.salesLog),
+        ),
         _buildSmallMenuCard(context, 'CALC', FIcons.calculator),
         _buildSmallMenuCard(context, 'GROWTH', FIcons.trendingUp),
       ],

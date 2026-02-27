@@ -1,0 +1,33 @@
+targets:
+  drift:
+    auto_apply_builders: false
+    builders:
+      drift_dev:analyzer:
+        enabled: true
+        options: &options
+          # Drift build options, as per https://drift.simonbinder.eu/docs/advanced-features/builder_options/
+          store_date_time_values_as_text: true
+          named_parameters: true
+          sql:
+            dialect: sqlite
+            options:
+              version: "3.39"
+              modules: [fts5]
+      drift_dev:modular:
+        enabled: true
+        # We use yaml anchors to give the two builders the same options
+        options: *options
+
+  $default:
+    dependencies:
+      # run drift's builder first
+      - ":drift"
+    builders:
+      # This builder is enabled by default, but we're using the modular builder in
+      # its own target instead.
+      drift_dev:
+        # enabled: true
+        options:
+          databases:
+            # Required: A name for the database and its path
+            spine: /lib/drift/database.dart

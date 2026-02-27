@@ -169,22 +169,11 @@ class CheckoutView extends ConsumerWidget {
                       : () async {
                           final success = await viewModel.checkout();
                           if (context.mounted) {
+                            print('success');
+                            print(success);
                             if (success) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Sale completed successfully!'),
-                                ),
-                              );
                               context.go(Routes.dashboard);
                             } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    state.errorMessage ??
-                                        'Failed to complete sale',
-                                  ),
-                                ),
-                              );
                             }
                           }
                         },

@@ -3,17 +3,21 @@ import 'package:spine/data/repositories/product/product_repository.dart';
 import 'package:spine/data/repositories/sales/sales_repository.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/sales/state/create_sale_state.dart';
+import 'package:spine/ui/user_business/active_user_business_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
   final ProductRepository _productRepository;
   final SalesRepository _salesRepository;
+  final UserBusinessData? _businessId;
 
   CreateSaleViewModel({
     required ProductRepository productRepository,
     required SalesRepository salesRepository,
+    required UserBusinessData? businessId,
   }) : _productRepository = productRepository,
        _salesRepository = salesRepository,
+       _businessId = businessId,
        super(CreateSaleState()) {
     _loadInitialData();
   }
@@ -91,23 +95,23 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
     }
 
     state = state.copyWith(isLoading: true);
+    print(_businessId?.id);
     try {
       final saleId = const Uuid().v4();
       final sale = Sale(
         id: saleId,
-        branchId: 'main', // Placeholder
         totalAmount: state.subtotal,
         paymentMethod: state.selectedPaymentMethod!.name,
         status: 'completed',
         amountPaid: state.subtotal, // Defaulting to full payment for now
         balance: 0,
-        businessId: 'main-biz', // Placeholder
-        createdBy: '1', // Placeholder
+        businessId: _businessId?.id ?? '',
+        // createdBy: '1', // Placeholder
         syncStatus: 'pending',
-        syncDate: DateTime.now(),
+        // syncDate: DateTime.now(),
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-        deletedAt: DateTime.now(),
+        // deletedAt: DateTime.now(),
       );
 
       final items = state.cartItems.map((item) {
@@ -119,10 +123,10 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
           unitPrice: item.unitPrice,
           total: item.total,
           syncStatus: 'pending',
-          syncDate: DateTime.now(),
+          // syncDate: DateTime.now(),
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
-          deletedAt: DateTime.now(),
+          // deletedAt: DateTime.now(),
         );
       }).toList();
 
@@ -141,5 +145,6 @@ final createSaleViewModelProvider =
       return CreateSaleViewModel(
         productRepository: ref.watch(productRepositoryProvider),
         salesRepository: ref.watch(salesRepositoryProvider),
+        businessId: ref.read(activeUserBusinessProvider),
       );
     });
