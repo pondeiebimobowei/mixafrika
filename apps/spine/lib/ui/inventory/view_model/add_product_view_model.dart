@@ -54,12 +54,10 @@ class AddProductViewModel extends StateNotifier<AddProductState> {
         description: '', // Optional in UI
         bulkUnitName: state.bulkUnit.isEmpty ? 'Bulk' : state.bulkUnit,
         pieceUnitName: state.retailUnit.isEmpty ? 'Piece' : state.retailUnit,
-        unitsPerBulk: state.conversionFactor.isEmpty
-            ? '1'
-            : state.conversionFactor,
-        costPrice: '0', // Optional or not in UI
-        sellingPricePerPiece: state.sellPricePerRetail,
-        sellingPricePerBulk: state.sellPricePerBulk,
+        unitsPerBulk: int.tryParse(state.conversionFactor) ?? 1,
+        costPrice: 0, // Optional or not in UI
+        sellingPricePerPiece: int.tryParse(state.sellPricePerRetail) ?? 0,
+        sellingPricePerBulk: int.tryParse(state.sellPricePerBulk) ?? 0,
         category: '',
         serialNumber: state.barcode,
         imageUrl: '',
@@ -75,7 +73,6 @@ class AddProductViewModel extends StateNotifier<AddProductState> {
       final inventoryRepository = ref.read(inventoryRepositoryProvider);
       final response = await repository.createProduct(newProduct);
       await inventoryRepository.addInventoryItem(newProduct);
-      
 
       if (response.success) {
         state = state.copyWith(isLoading: false, isSuccess: true);

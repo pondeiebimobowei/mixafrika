@@ -37,13 +37,12 @@ class AddStockViewModel extends StateNotifier<AddStockState> {
       state = state.copyWith(bulkQuantity: qty);
       return;
     }
-    final bulk = double.tryParse(qty) ?? 0;
-    final unitsPerBulk =
-        double.tryParse(state.selectedProduct!.unitsPerBulk) ?? 1;
+    final bulk = int.tryParse(qty) ?? 0;
+    final unitsPerBulk = state.selectedProduct!.unitsPerBulk;
     final pieces = bulk * unitsPerBulk;
     state = state.copyWith(
       bulkQuantity: qty,
-      pieceQuantity: pieces == 0 ? '' : pieces.toStringAsFixed(0),
+      pieceQuantity: pieces == 0 ? '' : pieces.toString(),
     );
   }
 
@@ -52,13 +51,12 @@ class AddStockViewModel extends StateNotifier<AddStockState> {
       state = state.copyWith(pieceQuantity: qty);
       return;
     }
-    final pieces = double.tryParse(qty) ?? 0;
-    final unitsPerBulk =
-        double.tryParse(state.selectedProduct!.unitsPerBulk) ?? 1;
-    final bulk = pieces / unitsPerBulk;
+    final pieces = int.tryParse(qty) ?? 0;
+    final unitsPerBulk = state.selectedProduct!.unitsPerBulk;
+    final bulk = pieces ~/ (unitsPerBulk != 0 ? unitsPerBulk : 1);
     state = state.copyWith(
       pieceQuantity: qty,
-      bulkQuantity: bulk == 0 ? '' : bulk.toStringAsFixed(2),
+      bulkQuantity: bulk == 0 ? '' : bulk.toString(),
     );
   }
 
@@ -89,8 +87,8 @@ class AddStockViewModel extends StateNotifier<AddStockState> {
       await repository.addStock(
         productId: state.selectedProduct!.id,
         businessId: business.id,
-        bulkQuantity: state.bulkQuantity,
-        pieceQuantity: state.pieceQuantity,
+        bulkQuantity: int.tryParse(state.bulkQuantity) ?? 0,
+        pieceQuantity: int.tryParse(state.pieceQuantity) ?? 0,
         totalCost: state.totalCost,
         expiryDate: state.expiryDate,
       );

@@ -17,7 +17,6 @@ class EditProductViewModel extends StateNotifier<EditProductState> {
   Future<void> _loadProduct() async {
     final response = await _productRepository.getProduct(productId);
     if (response.success && response.data != null) {
-      
       final product = await _productRepository.getProductById(productId);
 
       state = state.copyWith(
@@ -28,9 +27,9 @@ class EditProductViewModel extends StateNotifier<EditProductState> {
         category: product.category,
         bulkUnit: product.bulkUnitName,
         pieceUnit: product.pieceUnitName,
-        unitsPerBulk: product.unitsPerBulk,
-        bulkCostPrice: product.costPrice,
-        pieceSellingPrice: product.sellingPricePerPiece,
+        unitsPerBulk: product.unitsPerBulk.toString(),
+        bulkCostPrice: product.costPrice.toString(),
+        pieceSellingPrice: product.sellingPricePerPiece.toString(),
         serialNumber: product.serialNumber,
       );
     } else {
@@ -65,9 +64,9 @@ class EditProductViewModel extends StateNotifier<EditProductState> {
       category: state.category,
       bulkUnitName: state.bulkUnit,
       pieceUnitName: state.pieceUnit,
-      unitsPerBulk: state.unitsPerBulk,
-      costPrice: state.bulkCostPrice,
-      sellingPricePerPiece: state.pieceSellingPrice,
+      unitsPerBulk: int.tryParse(state.unitsPerBulk) ?? 1,
+      costPrice: int.tryParse(state.bulkCostPrice) ?? 0,
+      sellingPricePerPiece: int.tryParse(state.pieceSellingPrice) ?? 0,
       serialNumber: state.serialNumber,
       updatedAt: DateTime.now(),
     );

@@ -8,8 +8,8 @@ abstract class InventoryRepositoryAbstract {
   Future<void> addStock({
     required String productId,
     required String businessId,
-    required String bulkQuantity,
-    required String pieceQuantity,
+    required int bulkQuantity,
+    required int pieceQuantity,
     required String totalCost,
     DateTime? expiryDate,
   });

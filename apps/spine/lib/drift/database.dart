@@ -11,6 +11,7 @@ import 'package:spine/drift/model/user_business.dart';
 import 'package:spine/drift/model/business_verification.model.dart';
 import 'package:spine/drift/model/sales.model.dart';
 import 'package:spine/drift/model/sales_item.dart';
+import 'package:spine/drift/model/payments.model.dart';
 import 'package:uuid/uuid.dart';
 
 part 'database.g.dart';
@@ -24,13 +25,14 @@ part 'database.g.dart';
     BusinessVerification,
     Sales,
     SalesItem,
+    Payments,
   ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   static QueryExecutor _openConnection() {
     return driftDatabase(
@@ -64,13 +66,17 @@ class AppDatabase extends _$AppDatabase {
         await m.createAll();
 
         // 2. Insert seed data
-        await into(product).insert(product1);
-        await into(product).insert(product2);
-        await into(userBusiness).insert(userBiz1);
-        await into(userBusiness).insert(userBiz2);
-        await into(spineBatch).insert(batch1);
-        await into(inventory).insert(inventory1);
-        await into(inventory).insert(inventory2);
+        await _insertSeedData(this);
+      },
+      onUpgrade: (Migrator m, int from, int to) async {
+        if (from < 2) {
+          // For development, we just recreate everything if there's an old schema
+          for (final table in allTables) {
+            await m.deleteTable(table.actualTableName);
+          }
+          await m.createAll();
+          await _insertSeedData(this);
+        }
       },
       beforeOpen: (details) async {
         // Optional: Enable foreign keys or perform checks every time the app opens
@@ -79,6 +85,16 @@ class AppDatabase extends _$AppDatabase {
         }
       },
     );
+  }
+
+  Future<void> _insertSeedData(AppDatabase db) async {
+    await db.into(db.product).insert(product1);
+    await db.into(db.product).insert(product2);
+    await db.into(db.userBusiness).insert(userBiz1);
+    await db.into(db.userBusiness).insert(userBiz2);
+    await db.into(db.spineBatch).insert(batch1);
+    await db.into(db.inventory).insert(inventory1);
+    await db.into(db.inventory).insert(inventory2);
   }
 }
 
@@ -94,10 +110,10 @@ final product1 = ProductData(
   description: 'Clean surface',
   bulkUnitName: 'Carton',
   pieceUnitName: 'Pack',
-  unitsPerBulk: '10',
-  costPrice: '3000',
-  sellingPricePerPiece: '4000',
-  sellingPricePerBulk: '20000',
+  unitsPerBulk: 10,
+  costPrice: 3000,
+  sellingPricePerPiece: 4000,
+  sellingPricePerBulk: 20000,
   category: 'Food',
   serialNumber: '345567567',
   imageUrl: 'avatar.png',
@@ -117,10 +133,10 @@ final product2 = ProductData(
   description: '',
   bulkUnitName: 'Bunch',
   pieceUnitName: 'Finger',
-  unitsPerBulk: '5',
-  costPrice: '1500',
-  sellingPricePerPiece: '2000',
-  sellingPricePerBulk: '10000',
+  unitsPerBulk: 5,
+  costPrice: 1500,
+  sellingPricePerPiece: 2000,
+  sellingPricePerBulk: 10000,
   category: 'Food',
   serialNumber: '123450987',
   imageUrl: 'image.png',
@@ -138,8 +154,8 @@ final product2 = ProductData(
 final batch1 = SpineBatchData(
   id: Uuid().v4(),
   batchNumber: '123456789',
-  quantity: '30',
-  expiryDate: DateTime.now().toString(),
+  quantity: 30,
+  expiryDate: DateTime.now(),
   productId: product1.id,
 
   createdAt: DateTime.now(),
@@ -151,7 +167,7 @@ final batch1 = SpineBatchData(
 
 final inventory1 = InventoryData(
   id: Uuid().v4(),
-  quantity: '50',
+  quantity: 50,
   productId: product1.id,
   businessId: userBiz1.id,
   batchId: batch1.id,
@@ -164,7 +180,7 @@ final inventory1 = InventoryData(
 
 final inventory2 = InventoryData(
   id: Uuid().v4(),
-  quantity: '30',
+  quantity: 30,
   productId: product2.id,
   businessId: userBiz1.id,
   batchId: batch1.id,

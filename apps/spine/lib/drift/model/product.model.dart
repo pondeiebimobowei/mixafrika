@@ -7,10 +7,10 @@ class Product extends Table with TableMixin {
     late final description = text()();
     late final bulkUnitName = text()();
     late final pieceUnitName = text()();
-    late final unitsPerBulk = text()();
-    late final costPrice = text()();
-    late final sellingPricePerPiece = text()();
-    late final sellingPricePerBulk = text()();
+    late final unitsPerBulk = integer()();
+    late final costPrice = integer()();
+    late final sellingPricePerPiece = integer()();
+    late final sellingPricePerBulk = integer()();
     late final category = text()();
     late final serialNumber = text()();
     late final imageUrl = text()();

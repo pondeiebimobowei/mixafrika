@@ -37,7 +37,7 @@ class AddStockState {
     final total = double.tryParse(totalCost) ?? 0.0;
     final bulk = double.tryParse(bulkQuantity) ?? 0.0;
     final pieces = double.tryParse(pieceQuantity) ?? 0.0;
-    final unitsPerBulk = double.tryParse(selectedProduct!.unitsPerBulk) ?? 1.0;
+    final unitsPerBulk = double.tryParse(selectedProduct!.unitsPerBulk.toString()) ?? 1.0;
 
     final totalPieces = (bulk * unitsPerBulk) + pieces;
     if (totalPieces == 0) return 0.0;

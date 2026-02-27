@@ -34,17 +34,17 @@ export class Product
   @Column(DataType.STRING)
   declare piece_unit_name: string;
 
-  @Column(DataType.STRING)
-  declare units_per_bulk: string;
+  @Column(DataType.INTEGER)
+  declare units_per_bulk: number;
 
-  @Column(DataType.STRING)
-  declare cost_price: string;
+  @Column(DataType.INTEGER)
+  declare cost_price: number;
 
-  @Column(DataType.STRING)
-  declare selling_price_per_piece: string;
+  @Column(DataType.INTEGER)
+  declare selling_price_per_piece: number;
 
-  @Column(DataType.STRING)
-  declare selling_price_per_bulk: string;
+  @Column(DataType.INTEGER)
+  declare selling_price_per_bulk: number;
 
   @Column(DataType.STRING)
   declare category: string;

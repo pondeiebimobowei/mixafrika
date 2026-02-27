@@ -6,7 +6,7 @@ enum PaymentMethod { cash, transfer, mixWallet, payLater, multiPay }
 
 class CartItem {
   final ProductData product;
-  final double quantity;
+  final int quantity;
   final SaleUnit unit;
 
   CartItem({
@@ -15,15 +15,15 @@ class CartItem {
     this.unit = SaleUnit.piece,
   });
 
-  double get unitPrice {
+  int get unitPrice {
     return unit == SaleUnit.piece
-        ? double.tryParse(product.sellingPricePerPiece) ?? 0
-        : double.tryParse(product.sellingPricePerBulk) ?? 0;
+        ? product.sellingPricePerPiece
+        : product.sellingPricePerBulk;
   }
 
-  double get total => quantity * unitPrice;
+  int get total => quantity * unitPrice;
 
-  CartItem copyWith({ProductData? product, double? quantity, SaleUnit? unit}) {
+  CartItem copyWith({ProductData? product, int? quantity, SaleUnit? unit}) {
     return CartItem(
       product: product ?? this.product,
       quantity: quantity ?? this.quantity,
@@ -47,7 +47,7 @@ class CreateSaleState {
     this.selectedPaymentMethod,
   });
 
-  double get subtotal => cartItems.fold(0, (sum, item) => sum + item.total);
+  int get subtotal => cartItems.fold(0, (sum, item) => sum + item.total);
 
   CreateSaleState copyWith({
     List<CartItem>? cartItems,

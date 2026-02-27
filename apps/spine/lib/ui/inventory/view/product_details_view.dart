@@ -75,9 +75,9 @@ class ProductDetailsView extends ConsumerWidget {
 
     // Calculate quantities
     final totalUnits = item.totalQuantity;
-    final unitsPerBulk = double.tryParse(product.unitsPerBulk) ?? 1.0;
+    final unitsPerBulk = product.unitsPerBulk.toDouble();
     final bulkQty = (totalUnits / unitsPerBulk).floor();
-    final remainingUnits = (totalUnits % unitsPerBulk).floor();
+    final remainingUnits = (totalUnits % unitsPerBulk).toInt();
 
     return Stack(
       children: [
@@ -243,10 +243,10 @@ class ProductDetailsView extends ConsumerWidget {
 
   Widget _buildProfitCard(BuildContext context, dynamic product) {
     // Basic calculation for demo
-    final cost = double.tryParse(product.costPrice) ?? 0;
+    final cost = product.costPrice.toDouble();
     final selling =
-        (double.tryParse(product.sellingPricePerPiece) ?? 0) *
-        (double.tryParse(product.unitsPerBulk) ?? 1);
+        product.sellingPricePerPiece.toDouble() *
+        product.unitsPerBulk.toDouble();
     final profit = selling - cost;
     final margin = cost > 0 ? (profit / cost * 100).round() : 0;
 
@@ -276,7 +276,7 @@ class ProductDetailsView extends ConsumerWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  '₦${(profit / (double.tryParse(product.unitsPerBulk) ?? 1)).toStringAsFixed(0)}',
+                  '₦${(profit / product.unitsPerBulk).toStringAsFixed(0)}',
                   style: const TextStyle(
                     color: Color(0xFF1DB978),
                     fontSize: 32,
@@ -353,13 +353,11 @@ class ProductDetailsView extends ConsumerWidget {
     dynamic batch,
     double unitsPerBulk,
   ) {
-    final qty = double.tryParse(batch.quantity) ?? 0;
+    final qty = batch.quantity;
     final bulk = (qty / unitsPerBulk).floor();
-    final pieces = (qty % unitsPerBulk).floor();
-    final expiry = DateTime.tryParse(batch.expiryDate);
-    final formattedExpiry = expiry != null
-        ? DateFormat('dd MMM yyyy').format(expiry)
-        : 'N/A';
+    final pieces = (qty % unitsPerBulk).toInt();
+    final expiry = batch.expiryDate;
+    final formattedExpiry = DateFormat('dd MMM yyyy').format(expiry);
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -476,7 +474,7 @@ class ProductDetailsView extends ConsumerWidget {
     double totalUnits,
   ) {
     // Calculate total stock value
-    final piecePrice = double.tryParse(product.sellingPricePerPiece) ?? 0;
+    final piecePrice = product.sellingPricePerPiece.toDouble();
     final totalValue = piecePrice * totalUnits;
 
     return Column(

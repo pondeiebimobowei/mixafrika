@@ -56,8 +56,7 @@ class InventoryState {
         filtered = filtered
             .where(
               (item) => item.batches.any((batch) {
-                final expiry = DateTime.tryParse(batch.expiryDate);
-                if (expiry == null) return false;
+                final expiry = batch.expiryDate;
                 return expiry.isBefore(
                   DateTime.now().add(const Duration(days: 30)),
                 );
@@ -84,10 +83,7 @@ class InventoryItemData {
     required this.batches,
   });
 
-  double get totalQuantity {
-    return stockEntries.fold(
-      0.0,
-      (sum, item) => sum + (double.tryParse(item.quantity) ?? 0.0),
-    );
+  int get totalQuantity {
+    return stockEntries.fold(0, (sum, item) => sum + item.quantity);
   }
 }

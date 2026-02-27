@@ -48,8 +48,8 @@ export class Inventory
     declare batch: Batch;
 
 
-    @Column(DataType.STRING)
-    declare quantity: string;
+    @Column(DataType.INTEGER)
+    declare quantity: number;
 
     @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
     declare syncStatus: syncStatus;

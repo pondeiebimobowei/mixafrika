@@ -1,21 +1,20 @@
-
 import 'package:spine/data/services/models/base_model.dart';
 
-class Product extends BaseModel{
+class Product extends BaseModel {
   final String id;
   final String name;
   final String description;
   final String bulkUnitName;
   final String pieceUnitName;
-  final String unitsPerBulk;
-  final String costPrice;
-  final String sellingPricePerPiece;
-  final String sellingPricePerBulk;
+  final int unitsPerBulk;
+  final int costPrice;
+  final int sellingPricePerPiece;
+  final int sellingPricePerBulk;
   final String category;
   final String serialNumber;
   final String imageUrl;
   final String reviews;
-  
+
   final String syncDate;
   final String syncStatus;
 
@@ -44,7 +43,14 @@ class Product extends BaseModel{
     required this.createdAt,
     required this.updatedAt,
     required this.deletedAt,
-  }): super(id: id, createdAt: createdAt, deletedAt: deletedAt, syncDate: syncDate, syncStatus: syncStatus, updatedAt: updatedAt);
+  }) : super(
+         id: id,
+         createdAt: createdAt,
+         deletedAt: deletedAt,
+         syncDate: syncDate,
+         syncStatus: syncStatus,
+         updatedAt: updatedAt,
+       );
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -53,10 +59,19 @@ class Product extends BaseModel{
       description: json['description'] ?? '',
       bulkUnitName: json['bulk_unit_name'] ?? '',
       pieceUnitName: json['piece_unit_name'] ?? '',
-      unitsPerBulk: json['units_per_bulk'] ?? '',
-      costPrice: json['cost_price'] ?? '',
-      sellingPricePerPiece: json['selling_price_per_piece'] ?? '',
-      sellingPricePerBulk: json['selling_price_per_bulk'] ?? '',
+      unitsPerBulk: json['units_per_bulk'] is int
+          ? json['units_per_bulk']
+          : int.tryParse(json['units_per_bulk']?.toString() ?? '') ?? 0,
+      costPrice: json['cost_price'] is int
+          ? json['cost_price']
+          : int.tryParse(json['cost_price']?.toString() ?? '') ?? 0,
+      sellingPricePerPiece: json['selling_price_per_piece'] is int
+          ? json['selling_price_per_piece']
+          : int.tryParse(json['selling_price_per_piece']?.toString() ?? '') ??
+                0,
+      sellingPricePerBulk: json['selling_price_per_bulk'] is int
+          ? json['selling_price_per_bulk']
+          : int.tryParse(json['selling_price_per_bulk']?.toString() ?? '') ?? 0,
       category: json['category'] ?? '',
       serialNumber: json['serial_number'] ?? '',
       imageUrl: json['image_url'] ?? '',

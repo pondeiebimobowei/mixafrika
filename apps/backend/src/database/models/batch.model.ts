@@ -34,8 +34,8 @@ export class Batch
     @Column(DataType.STRING)
     declare expiry_date: string;
 
-    @Column(DataType.STRING)
-    declare quantity: string;
+    @Column(DataType.INTEGER)
+    declare quantity: number;
 
     @Column(DataType.STRING)
     declare batch_number: string;

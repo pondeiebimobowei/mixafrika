@@ -55,7 +55,6 @@ class InventoryRepository implements InventoryRepositoryAbstract {
 
   @override
   Future<InventoryItemData?> getInventoryItemById(String productId) async {
-
     final productQuery = _db.select(_db.product)
       ..where((p) => p.id.equals(productId));
     final product = await productQuery.getSingleOrNull();
@@ -82,7 +81,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
       id: const Uuid().v4(),
       productId: product.id,
       businessId: product.businessId,
-      quantity: '0',
+      quantity: 0,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
       deletedAt: DateTime.now(),
@@ -96,8 +95,8 @@ class InventoryRepository implements InventoryRepositoryAbstract {
   Future<void> addStock({
     required String productId,
     required String businessId,
-    required String bulkQuantity,
-    required String pieceQuantity,
+    required int bulkQuantity,
+    required int pieceQuantity,
     required String totalCost,
     DateTime? expiryDate,
   }) async {
@@ -108,8 +107,8 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     final newBatch = SpineBatchData(
       id: batchId,
       productId: productId,
-      expiryDate: expiryDate?.toIso8601String() ?? '',
-      quantity: bulkQuantity.isEmpty ? '0' : bulkQuantity,
+      expiryDate: expiryDate?.toUtc() ?? DateTime.now().toUtc(),
+      quantity: bulkQuantity,
       batchNumber: 'BATCH-${now.millisecondsSinceEpoch}',
       createdAt: now,
       updatedAt: now,
@@ -127,9 +126,9 @@ class InventoryRepository implements InventoryRepositoryAbstract {
       ..where((p) => p.id.equals(productId));
     final product = await prodQuery.getSingle();
 
-    final bulk = double.tryParse(bulkQuantity) ?? 0.0;
-    final pieces = double.tryParse(pieceQuantity) ?? 0.0;
-    final unitsPerBulk = double.tryParse(product.unitsPerBulk) ?? 1.0;
+    final bulk = bulkQuantity;
+    final pieces = pieceQuantity;
+    final unitsPerBulk = product.unitsPerBulk;
     final totalUnits = (bulk * unitsPerBulk) + pieces;
 
     final newInventory = InventoryData(
@@ -137,7 +136,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
       productId: productId,
       businessId: businessId,
       batchId: batchId,
-      quantity: totalUnits.toString(),
+      quantity: totalUnits,
       createdAt: now,
       updatedAt: now,
       deletedAt: now,
@@ -153,8 +152,8 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     final products = await getInventoryItems(businessId);
     double total = 0.0;
     for (final item in products) {
-      final costPrice = double.tryParse(item.product.costPrice) ?? 0.0;
-      total += (costPrice * item.totalQuantity);
+      final costPrice = item.product.costPrice.toDouble();
+      total += (costPrice * item.totalQuantity.toDouble());
     }
     return total;
   }
@@ -164,10 +163,9 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     final products = await getInventoryItems(businessId);
     double total = 0.0;
     for (final item in products) {
-      final costPrice = double.tryParse(item.product.costPrice) ?? 0.0;
-      final sellingPrice =
-          double.tryParse(item.product.sellingPricePerPiece) ?? 0.0;
-      total += ((sellingPrice - costPrice) * item.totalQuantity);
+      final costPrice = item.product.costPrice.toDouble();
+      final sellingPrice = item.product.sellingPricePerPiece.toDouble();
+      total += ((sellingPrice - costPrice) * item.totalQuantity.toDouble());
     }
     return total;
   }

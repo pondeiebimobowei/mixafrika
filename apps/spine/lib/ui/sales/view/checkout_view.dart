@@ -71,7 +71,7 @@ class CheckoutView extends ConsumerWidget {
                                   ),
                                 ),
                                 Text(
-                                  '${item.quantity.toInt()} x ₦${item.unitPrice}',
+                                  '${item.quantity} x ₦${item.unitPrice}',
                                   style: TextStyle(
                                     color: colors.mutedForeground,
                                     fontSize: 12,

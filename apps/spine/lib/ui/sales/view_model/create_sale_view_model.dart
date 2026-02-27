@@ -49,7 +49,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
     }
   }
 
-  void updateQuantity(String productId, double quantity) {
+  void updateQuantity(String productId, int quantity) {
     state = state.copyWith(
       cartItems: state.cartItems.map((item) {
         if (item.product.id == productId) {
@@ -96,9 +96,12 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
       final sale = Sale(
         id: saleId,
         branchId: 'main', // Placeholder
-        totalAmount: state.subtotal.toString(),
+        totalAmount: state.subtotal,
         paymentMethod: state.selectedPaymentMethod!.name,
         status: 'completed',
+        amountPaid: state.subtotal, // Defaulting to full payment for now
+        balance: 0,
+        businessId: 'main-biz', // Placeholder
         createdBy: '1', // Placeholder
         syncStatus: 'pending',
         syncDate: DateTime.now(),
@@ -112,9 +115,9 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
           id: const Uuid().v4(),
           saleId: saleId,
           productId: item.product.id,
-          quantity: item.quantity.toString(),
-          unitPrice: item.unitPrice.toString(),
-          total: item.total.toString(),
+          quantity: item.quantity,
+          unitPrice: item.unitPrice,
+          total: item.total,
           syncStatus: 'pending',
           syncDate: DateTime.now(),
           createdAt: DateTime.now(),

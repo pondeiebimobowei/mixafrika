@@ -3,8 +3,8 @@ import 'package:spine/drift/model/base.dart';
 import 'package:spine/drift/model/product.model.dart';
 
 class SpineBatch extends Table with TableMixin {
-    late final expiryDate = text()();
-    late final quantity = text()();
+    late final expiryDate = dateTime().nullable()();
+    late final quantity = integer()();
     late final batchNumber = text()();
     
     

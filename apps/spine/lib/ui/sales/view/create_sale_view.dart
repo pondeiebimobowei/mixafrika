@@ -244,7 +244,7 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
                       Text(
-                        '₦${state.subtotal.toStringAsFixed(2)}',
+                        '₦${state.subtotal}',
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 24,
@@ -465,7 +465,7 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
             onPressed: () {
               final val = double.tryParse(controller.text);
               if (val != null && val > 0) {
-                viewModel.updateQuantity(item.product.id, val);
+                viewModel.updateQuantity(item.product.id, val.toInt());
               }
               Navigator.pop(context);
             },

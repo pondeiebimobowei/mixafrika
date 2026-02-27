@@ -10,7 +10,7 @@ class User extends Table with TableMixin {
     late final password = text()();
     late final role = text()();
     late final isEmailVerified = boolean()();
-    late final creditScore = text()();
+    late final creditScore = integer()();
     late final creditScoreStatus = text()();
     late final verification = text().nullable();
     late final businessVerification = text().nullable();

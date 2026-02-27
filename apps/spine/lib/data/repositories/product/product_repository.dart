@@ -60,11 +60,7 @@ class ProductRepository implements ProductRepositoryAbstract {
         data: null,
       );
     } catch (e) {
-      return ApiResponse(
-        success: false,
-        message: 'Update failed',
-        data: null,
-      );
+      return ApiResponse(success: false, message: 'Update failed', data: null);
     }
   }
 
@@ -76,22 +72,25 @@ class ProductRepository implements ProductRepositoryAbstract {
         .get();
 
     // final res = await _productsService.getProducts();
-    return allItems.map((e) => ProductData.fromJson(e.toJson())).toList();
+    return allItems;
   }
 
   @override
   Future<ProductData> getProductById(String id) async {
-    List<ProductData> allItems = await (_database.select(_database.product)
-    ..where((t) => t.id.equals(id))).get();
+    List<ProductData> allItems = await (_database.select(
+      _database.product,
+    )..where((t) => t.id.equals(id))).get();
 
-    return ProductData.fromJson(allItems.first.toJson());
+    return allItems.first;
   }
 
   @override
   Future<List<ProductData>> getProductsByBusinessId(String businessId) async {
-    List<ProductData> products = await (_database.select(_database.product)..where((t) => t.businessId.equals(businessId))).get();
+    List<ProductData> products = await (_database.select(
+      _database.product,
+    )..where((t) => t.businessId.equals(businessId))).get();
 
-    return products.map((e) => ProductData.fromJson(e.toJson())).toList();
+    return products;
   }
 
   @override

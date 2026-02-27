@@ -1,6 +1,5 @@
 import 'package:drift/drift.dart';
 import 'package:spine/drift/model/base.dart';
-import 'package:spine/drift/model/batch.model.dart';
 import 'package:spine/drift/model/business_verification.model.dart';
 
 

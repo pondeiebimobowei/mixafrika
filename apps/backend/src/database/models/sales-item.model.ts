@@ -29,14 +29,14 @@ export class SalesItem
     @Column(DataType.STRING)
     declare product_id: string;
 
-    @Column(DataType.STRING)
-    declare quantity: string;
+    @Column(DataType.INTEGER)
+    declare quantity: number;
 
-    @Column(DataType.STRING)
-    declare unit_price: string;
+    @Column(DataType.INTEGER)
+    declare unit_price: number;
 
-    @Column(DataType.STRING)
-    declare total: string;
+    @Column(DataType.INTEGER)
+    declare total: number;
 
     @ForeignKey(() => Sales)
     @Column(DataType.STRING)
