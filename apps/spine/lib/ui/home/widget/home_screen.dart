@@ -80,14 +80,10 @@ class HomeView extends ConsumerWidget {
                             searchQuery = value;
                           });
                         },
-                        style: TextStyle(
-                          color: colors.foreground,
-                        ),
+                        style: TextStyle(color: colors.foreground),
                         decoration: InputDecoration(
                           hintText: 'Search shops...',
-                          hintStyle: TextStyle(
-                            color: colors.mutedForeground,
-                          ),
+                          hintStyle: TextStyle(color: colors.mutedForeground),
                           prefixIcon: Icon(
                             Icons.search,
                             color: colors.mutedForeground,
@@ -129,9 +125,7 @@ class HomeView extends ConsumerWidget {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 tileColor: isSelected
-                                    ? colors.primary.withValues(
-                                        alpha: 0.1,
-                                      )
+                                    ? colors.primary.withValues(alpha: 0.1)
                                     : Colors.transparent,
                                 contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 16,
@@ -140,11 +134,11 @@ class HomeView extends ConsumerWidget {
                                 title: Text(
                                   shop.name,
                                   style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: isSelected ? .bold : .normal,
-                                  color: isSelected
-                                      ? colors.primary
-                                      : colors.primaryForeground,
+                                    fontSize: 14,
+                                    fontWeight: isSelected ? .bold : .normal,
+                                    color: isSelected
+                                        ? colors.primary
+                                        : colors.primaryForeground,
                                   ),
                                 ),
                                 trailing: isSelected
@@ -193,7 +187,7 @@ class HomeView extends ConsumerWidget {
             GestureDetector(
               onTap: () => themeNotifier.toggleTheme(),
               child: IconWidget(icon: Icons.wb_sunny_outlined),
-            )
+            ),
           ],
         ),
       ),
@@ -296,17 +290,27 @@ class HomeView extends ConsumerWidget {
             children: [
               Text(
                 "TODAY'S ACTIVITY (NET REVENUE)",
-                style: typography.xs.copyWith(fontWeight: FontWeight.bold, color: colors.primaryForeground.withValues(alpha: .6)),
+                style: typography.xs.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: colors.primaryForeground.withValues(alpha: .6),
+                ),
               ),
               Icon(Icons.refresh, size: 16, color: colors.primaryForeground),
             ],
           ),
           const SizedBox(height: 24),
-          Text('₦23,500', style: typography.xl4.copyWith(fontWeight: FontWeight.w800 )),
+          Text(
+            '₦23,500',
+            style: typography.xl4.copyWith(fontWeight: FontWeight.w800),
+          ),
           const SizedBox(height: 8),
           Row(
             children: [
-              _buildStatusIndicator(context, '₦23,500 REALIZED', colors.primary),
+              _buildStatusIndicator(
+                context,
+                '₦23,500 REALIZED',
+                colors.primary,
+              ),
               const SizedBox(width: 12),
               _buildStatusIndicator(context, 'NO PENDING', colors.destructive),
             ],
@@ -365,12 +369,17 @@ class HomeView extends ConsumerWidget {
 
     return Expanded(
       child: FCard(
-        style: FCardStyle(decoration: BoxDecoration(
-          color: colors.primaryForeground.withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(16),
+        style: FCardStyle(
+          decoration: BoxDecoration(
+            color: colors.primaryForeground.withValues(alpha: 0.05),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          contentStyle: FCardContentStyle(
+            titleTextStyle: TextStyle(),
+            subtitleTextStyle: TextStyle(),
+          ),
+        ),
 
-        ), contentStyle: FCardContentStyle(titleTextStyle: TextStyle(), subtitleTextStyle: TextStyle())),
-        
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -406,9 +415,15 @@ class HomeView extends ConsumerWidget {
           'Sell Item',
           FIcons.shoppingCart,
           colors.primary,
+          onTap: () => context.push(Routes.createSale),
         ),
         const SizedBox(width: 12),
-        _buildActionCard(context, 'Add Stock', FIcons.shoppingBag, colors.secondary),
+        _buildActionCard(
+          context,
+          'Add Stock',
+          FIcons.shoppingBag,
+          colors.secondary,
+        ),
       ],
     );
   }
@@ -417,47 +432,51 @@ class HomeView extends ConsumerWidget {
     BuildContext context,
     String title,
     IconData icon,
-    Color color,
-  ) {
+    Color color, {
+    VoidCallback? onTap,
+  }) {
     return Expanded(
-      child: Container(
-        height: 140,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [color.withValues(alpha: .8), color],
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          height: 140,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [color.withValues(alpha: .8), color],
+            ),
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: color.withValues(alpha: .3),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: [
-            BoxShadow(
-              color: color.withValues(alpha: .3),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: .2),
-                shape: BoxShape.circle,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: .2),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, color: Colors.white, size: 28),
               ),
-              child: Icon(icon, color: Colors.white, size: 28),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
+              const SizedBox(height: 12),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -509,7 +528,11 @@ class HomeView extends ConsumerWidget {
                 color: colors.primaryForeground.withValues(alpha: .05),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Icon(icon, size: 20, color: colors.primaryForeground.withValues(alpha: .7)),
+              child: Icon(
+                icon,
+                size: 20,
+                color: colors.primaryForeground.withValues(alpha: .7),
+              ),
             ),
             const SizedBox(width: 12),
             Text(
@@ -547,7 +570,10 @@ class HomeView extends ConsumerWidget {
                 ),
               ],
             ),
-            FBadge(child: Text('15 Issues'), variant: FBadgeVariant.destructive),
+            FBadge(
+              child: Text('15 Issues'),
+              variant: FBadgeVariant.destructive,
+            ),
           ],
         ),
         const SizedBox(height: 16),
@@ -677,7 +703,10 @@ class HomeView extends ConsumerWidget {
             child: SizedBox(
               width: 80,
               height: 30,
-              child: FBadge(child: Text(actionText, style: TextStyle(fontSize: 14),), variant: .android),
+              child: FBadge(
+                child: Text(actionText, style: TextStyle(fontSize: 14)),
+                variant: .android,
+              ),
             ),
           ),
         ],
@@ -741,18 +770,27 @@ class HomeView extends ConsumerWidget {
             width: 150,
             height: 40,
             child: FButton(
-            onPress: () {},
-            style: FButtonStyleDelta.delta(
-              decoration: FVariants.from(BoxDecoration(
-                color: Colors.white.withValues(alpha: .05),
-                borderRadius: BorderRadius.circular(16)), variants: {})),
-            variant: .ghost,
-            child: const Text(
-              'VIEW FULL ANALYSIS',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white),
+              onPress: () {},
+              style: FButtonStyleDelta.delta(
+                decoration: FVariants.from(
+                  BoxDecoration(
+                    color: Colors.white.withValues(alpha: .05),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  variants: {},
+                ),
+              ),
+              variant: .ghost,
+              child: const Text(
+                'VIEW FULL ANALYSIS',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
-          )
         ],
       ),
     );

@@ -9,4 +9,6 @@ class Routes {
   static const String productDetails = '/product-details';
   static const String editProduct = '/edit-product';
   static const String calculator = '/calculator';
+  static const String createSale = '/create-sale';
+  static const String checkout = '/checkout';
 }

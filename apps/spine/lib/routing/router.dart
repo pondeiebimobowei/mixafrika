@@ -7,9 +7,11 @@ import 'package:spine/ui/home/widget/home_screen.dart';
 import 'package:spine/ui/inventory/view/add_product_view.dart';
 import 'package:spine/ui/inventory/view/add_stock_view.dart';
 import 'package:spine/ui/calculator/view/calculator_view.dart';
+import 'package:spine/ui/sales/view/create_sale_view.dart';
 import 'package:spine/ui/inventory/view/edit_product_view.dart';
 import 'package:spine/ui/inventory/view/inventory_screen.dart';
 import 'package:spine/ui/inventory/view/product_details_view.dart';
+import 'package:spine/ui/sales/view/checkout_view.dart';
 
 GoRouter router() => GoRouter(
   initialLocation: Routes.dashboard,
@@ -58,6 +60,14 @@ GoRouter router() => GoRouter(
     GoRoute(
       path: Routes.calculator,
       builder: (context, state) => const CalculatorView(),
+    ),
+    GoRoute(
+      path: Routes.createSale,
+      builder: (context, state) => const CreateSaleView(),
+    ),
+    GoRoute(
+      path: Routes.checkout,
+      builder: (context, state) => const CheckoutView(),
     ),
   ],
 );
