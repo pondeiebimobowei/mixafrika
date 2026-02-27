@@ -79,7 +79,6 @@ class SaleReceiptView extends ConsumerWidget {
   }
 
   Widget _buildHeaderCard(BuildContext context, dynamic item) {
-    final colors = context.theme.colors;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(32),
@@ -97,7 +96,7 @@ class SaleReceiptView extends ConsumerWidget {
       child: Column(
         children: [
           Text(
-            'TODAY, 2:45 PM', // Mock
+            DateFormat('h:mm a').format(item.sale.createdAt.toLocal()),
             style: TextStyle(
               color: Colors.grey.shade400,
               fontSize: 12,

@@ -33,7 +33,7 @@ FThemeData get greenLight {
     secondaryForeground: Color.fromARGB(255, 255, 255, 255),
     muted: Color(0xFFF4F4F5),
     mutedForeground: Color(0xFF71717A),
-    destructive: Color.fromARGB(255, 255, 0, 0),
+    destructive: Color.fromARGB(255, 242, 92 , 77),
     destructiveForeground: Color(0xFFFAFAFA),
     error: Color(0xFFEF4444),
     errorForeground: Color(0xFFFAFAFA),

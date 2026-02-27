@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:spine/data/repositories/sales/sales_repository_abstract.dart';
 import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/sales/state/sales_log_state.dart';
 import 'package:spine/ui/sales/view_model/sales_log_view_model.dart';
@@ -223,9 +224,9 @@ class SalesLogView extends ConsumerWidget {
     );
   }
 
-  Widget _buildSaleTile(BuildContext context, dynamic item) {
+
+  Widget _buildSaleTile(BuildContext context, SaleWithItems item) {
     final colors = context.theme.colors;
-    final primaryItem = item.items.first;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -283,7 +284,7 @@ class SalesLogView extends ConsumerWidget {
                       const SizedBox(width: 8),
                       Expanded(
                         child: Text(
-                          primaryItem.product.name,
+                          "${item.items.length.toString()} Items",
                           style: const TextStyle(
                             color: Colors.grey,
                             fontSize: 12,
@@ -300,8 +301,8 @@ class SalesLogView extends ConsumerWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                const Text(
-                  '2:45 PM', // Mock time for now
+                Text(
+                  DateFormat('h:mm a').format(item.sale.createdAt.toLocal()),
                   style: TextStyle(
                     color: Colors.grey,
                     fontSize: 11,

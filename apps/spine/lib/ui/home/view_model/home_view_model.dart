@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:spine/data/repositories/product/product_repository.dart';
 import 'package:spine/drift/database.dart';
+import 'package:spine/ui/inventory/state/inventory_state.dart';
+import 'package:spine/ui/inventory/view_model/inventory_view_model.dart';
 import 'package:spine/ui/products/view_model/products_view_model.dart';
 import 'package:spine/ui/user_business/active_user_business_provider.dart';
 import 'package:spine/ui/user_business/view_model/user_business_view_model.dart';
@@ -8,11 +9,13 @@ import 'package:spine/ui/user_business/view_model/user_business_view_model.dart'
 class HomeState {
   final AsyncValue<List<UserBusinessData>> userBusiness;
   final AsyncValue<List<ProductData>> product;
+  final AsyncValue<InventoryState> inventory;
   final UserBusinessData? activeUserBusiness;
 
   HomeState({
     required this.userBusiness,
     required this.product,
+    required this.inventory,
     required this.activeUserBusiness,
   });
 }
@@ -37,6 +40,7 @@ class HomeState {
 final homeViewModelProvider = Provider<AsyncValue<HomeState>>((ref) {
   final businessesAsync = ref.watch(userBusinessViewModelProvider);
   final productsAsync = ref.watch(productsViewModelProvider);
+  final inventoryAsync = ref.watch(inventoryViewModelProvider);
   final activeBusiness = ref.watch(activeUserBusinessProvider);
 
   // If we have businesses and an active business, we can show the UI.
@@ -46,6 +50,7 @@ final homeViewModelProvider = Provider<AsyncValue<HomeState>>((ref) {
       HomeState(
         userBusiness: businessesAsync,
         product: productsAsync,
+        inventory: inventoryAsync,
         activeUserBusiness: activeBusiness,
       ),
     );
@@ -67,6 +72,7 @@ final homeViewModelProvider = Provider<AsyncValue<HomeState>>((ref) {
     HomeState(
       userBusiness: businessesAsync,
       product: productsAsync,
+      inventory: inventoryAsync,
       activeUserBusiness: activeBusiness,
     ),
   );

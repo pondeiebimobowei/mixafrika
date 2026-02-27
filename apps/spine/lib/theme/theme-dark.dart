@@ -33,7 +33,7 @@ FThemeData get greenDark {
     secondaryForeground: Color.fromARGB(255, 24, 32, 46),
     muted: Color(0xFF27272A),
     mutedForeground: Color(0xFFA1A1AA),
-    destructive: Color.fromARGB(255, 255, 0, 0),
+    destructive: Color.fromARGB(255, 242, 92 , 77),
     destructiveForeground: Color(0xFFFAFAFA),
     error: Color(0xFF7F1D1D),
     errorForeground: Color(0xFFFAFAFA),
