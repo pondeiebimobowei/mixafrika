@@ -74,20 +74,23 @@ class AddProductView extends ConsumerWidget {
                   _buildActionButtons(),
                   const SizedBox(height: 32),
 
-                  _buildLabel('ITEM NAME'),
                   const SizedBox(height: 8),
-                  _buildTextField(
+                  FTextField(
+                    control: .managed(
+                      onChange: (value) => viewModel.updateName(value.text),
+                    ),
+                    label: const Text('Item Name'),
                     hint: 'e.g. Bananas',
-                    onChanged: viewModel.updateName,
                   ),
                   const SizedBox(height: 24),
 
-                  _buildLabel('BARCODE / SERIAL NUMBER'),
                   const SizedBox(height: 8),
-                  _buildTextField(
+                  FTextField(
+                    control: .managed(
+                      onChange: (value) => viewModel.updateBarcode(value.text),
+                    ),
+                    label: const Text('Barcode / Serial Number'),
                     hint: 'Optional Barcode',
-                    prefixIcon: Icons.qr_code_scanner,
-                    onChanged: viewModel.updateBarcode,
                   ),
                   const SizedBox(height: 24),
 
@@ -100,12 +103,12 @@ class AddProductView extends ConsumerWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildLabel('SELL PRICE / FINGER'),
-                            const SizedBox(height: 8),
-                            _buildTextField(
+                            FTextFormField(
+                              control: .managed(
+                                onChange: (value) => viewModel.updateSellPricePerRetail(value.text),
+                              ),
+                              label: const Text('Unit Sell Price'),
                               hint: '₦',
-                              onChanged: viewModel.updateSellPricePerRetail,
-                              keyboardType: TextInputType.number,
                             ),
                           ],
                         ),
@@ -115,13 +118,12 @@ class AddProductView extends ConsumerWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildLabel('SELL PRICE / BUNCH'),
-                            const SizedBox(height: 8),
-                            _buildTextField(
-                              hint: '₦  Optional',
-                              onChanged: viewModel.updateSellPricePerBulk,
-                              keyboardType: TextInputType.number,
-                              hintColor: Colors.teal,
+                            FTextFormField(
+                              control: .managed(
+                                onChange: (value) => viewModel.updateSellPricePerBulk(value.text),
+                              ),
+                              label: const Text('Bulk Sell Price (Optional)'),
+                              hint: '₦',
                             ),
                           ],
                         ),
@@ -176,47 +178,62 @@ class AddProductView extends ConsumerWidget {
   }
 
   Widget _buildCircularButton(IconData icon, String label) {
-    return Column(
-      children: [
-        Container(
-          width: 80,
-          height: 80,
-          decoration: BoxDecoration(
-            color: const Color(0xFF1E293B),
-            shape: BoxShape.circle,
-          ),
-          child: Icon(icon, color: Colors.grey[500], size: 32),
+
+    return FCard(
+      
+      style: FCardStyleDelta.delta(
+
+        contentStyle: FCardContentStyleDelta.delta(
+        imageSpacing: 10,
+          padding: const .all(24),
+          
+
         ),
-        const SizedBox(height: 12),
-        Text(
-          label,
-          style: TextStyle(
+        decoration: BoxDecorationDelta.delta(
+          borderRadius: BorderRadius.all(.circular(80)),
+
+          
+          
+        )
+      ),
+      image: Icon(icon, size: 32, ),
+      // title: Text(label),
+      child: Text(label, style: TextStyle(
             fontSize: 10,
-            color: Colors.grey[500],
             fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
+          ),),
+
+
     );
+    // return Column(
+    //   children: [
+    //     Container(
+    //       width: 80,
+    //       height: 80,
+    //       decoration: BoxDecoration(
+    //         color: const Color(0xFF1E293B),
+    //         shape: BoxShape.circle,
+    //       ),
+    //       child: Icon(icon, color: Colors.grey[500], size: 32),
+    //     ),
+    //     const SizedBox(height: 12),
+    //     Text(
+    //       label,
+    //       style: TextStyle(
+    //         fontSize: 10,
+    //         color: Colors.grey[500],
+    //         fontWeight: FontWeight.bold,
+    //       ),
+    //     ),
+    //   ],
+    // );
   }
 
-  Widget _buildLabel(String text) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontSize: 10,
-        fontWeight: FontWeight.bold,
-        color: Colors.grey[400],
-        letterSpacing: 1.0,
-      ),
-    );
-  }
 
   Widget _buildTextField({
     required String hint,
     IconData? prefixIcon,
     required Function(String) onChanged,
-    TextInputType keyboardType = TextInputType.text,
     Color? hintColor,
   }) {
     return Container(
@@ -226,7 +243,7 @@ class AddProductView extends ConsumerWidget {
       ),
       child: TextField(
         onChanged: onChanged,
-        keyboardType: keyboardType,
+        keyboardType: .text,
         style: const TextStyle(color: Colors.white, fontSize: 16),
         decoration: InputDecoration(
           prefixIcon: prefixIcon != null
@@ -239,10 +256,6 @@ class AddProductView extends ConsumerWidget {
             fontWeight: FontWeight.bold,
           ),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 16,
-          ),
         ),
       ),
     );
@@ -253,10 +266,11 @@ class AddProductView extends ConsumerWidget {
     AddProductViewModel viewModel,
     state,
   ) {
+    final FColors colors = context.theme.colors;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFF0F172A),
+        color: colors.secondaryForeground.withValues(alpha: .4),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
       ),
@@ -274,7 +288,15 @@ class AddProductView extends ConsumerWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              _buildLabel('UNIT CONVERSION SETUP'),
+              Text(
+                'Unit Conversion Setup',
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey[400],
+                  letterSpacing: 1.0,
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 24),
@@ -282,15 +304,20 @@ class AddProductView extends ConsumerWidget {
             children: [
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildLabel('BULK UNIT'),
-                    const SizedBox(height: 8),
-                    _buildDropdownField('Bunch', [
+                    // const SizedBox(height: 8),
+                    _buildDropdownField(
                       'Bunch',
-                      'Carton',
-                      'Box',
-                    ], viewModel.updateBulkUnit),
+                      ['Bunch', 'Carton', 'Box'],
+                      viewModel.updateBulkUnit,
+                      label: Text('Bulk Unit', style: TextStyle(
+                        color: colors.primaryForeground,
+                        
+                      ),),
+                      value: state.bulkUnit.isEmpty ? null : state.bulkUnit,
+                    ),
                   ],
                 ),
               ),
@@ -299,13 +326,17 @@ class AddProductView extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildLabel('RETAIL UNIT'),
-                    const SizedBox(height: 8),
-                    _buildDropdownField('Finger', [
-                      'Finger',
-                      'Piece',
-                      'Item',
-                    ], viewModel.updateRetailUnit),
+                    // const SizedBox(height: 8),
+                    _buildDropdownField(
+                      state.retailUnit.isEmpty ? 'Finger' : state.retailUnit,
+                      ['Finger', 'Piece', 'Item'],
+                      viewModel.updateRetailUnit,
+                      label: Text('Retail Unit', style: TextStyle(
+                        color: colors.primaryForeground,
+                        
+                      ),),
+                      value: state.retailUnit.isEmpty ? null : state.retailUnit,
+                    ),
                   ],
                 ),
               ),
@@ -315,14 +346,15 @@ class AddProductView extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
             decoration: BoxDecoration(
-              color: const Color(0xFF1E293B),
+              color: colors.secondaryForeground,
               borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: colors.secondaryForeground),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  '1 BUNCH',
+                  '1 ${state.bulkUnit.isEmpty ? 'BUNCH' : state.bulkUnit.toUpperCase()}',
                   style: TextStyle(
                     color: Colors.grey[400],
                     fontSize: 12,
@@ -374,7 +406,9 @@ class AddProductView extends ConsumerWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'FINGER',
+                      state.retailUnit.isEmpty
+                          ? 'FINGER'
+                          : state.retailUnit.toUpperCase(),
                       style: TextStyle(
                         color: Colors.grey[400],
                         fontSize: 10,
@@ -394,41 +428,32 @@ class AddProductView extends ConsumerWidget {
   Widget _buildDropdownField(
     String hint,
     List<String> items,
-    Function(String) onChanged,
-  ) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E293B),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: null,
-          hint: Text(
-            hint,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          icon: Icon(Icons.keyboard_arrow_down, color: Colors.grey[400]),
-          isExpanded: true,
-          dropdownColor: const Color(0xFF1E293B),
-          items: items.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value, style: const TextStyle(color: Colors.white)),
-            );
-          }).toList(),
-          onChanged: (val) {
-            if (val != null) {
-              onChanged(val);
-            }
-          },
+    Function(String) onChanged, {
+    Widget? label,
+    String? value,
+  }) {
+    return FSelect<String>.rich(
+        format: (value) => value,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        // validator: (v) => v.,
+        validator: (v){
+          if(v == 'Carton'){
+            return 'Please select a unit';
+          }
+          return null;
+        },
+         
+        label: label,
+        control: FSelectControl.managed(
+          onChange: (val) => onChanged(val.toString()),
         ),
-      ),
+        children: [
+          for (final item in items)
+            FSelectItem(
+              value: item,
+              title: Text(item),
+            ),
+        ],
     );
   }
 }

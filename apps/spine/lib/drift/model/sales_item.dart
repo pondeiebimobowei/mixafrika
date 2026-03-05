@@ -4,7 +4,8 @@ import 'package:spine/drift/model/product.model.dart';
 import 'package:spine/drift/model/sales.model.dart';
 
 class SalesItem extends Table with TableMixin {
-  late final quantity = integer()();
+  late final quantity = integer().withDefault(const Constant(1))();
+  late final type = text()();// product, charge
   late final unitPrice = integer()();
   late final total = integer()();
 

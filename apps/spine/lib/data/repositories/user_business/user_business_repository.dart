@@ -23,12 +23,13 @@ class UserBusinessRepository implements UserBusinessRepositoryAbstract {
     state: 'Abuja',
     country: 'Nigeria',
     verification: '',
+
     syncStatus: '',
+    syncDate: DateTime.now(),
+
 
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
-    deletedAt: DateTime.now(),
-    syncDate: DateTime.now(),
   );
 
   final userBiz2 = UserBusinessData(
@@ -43,12 +44,13 @@ class UserBusinessRepository implements UserBusinessRepositoryAbstract {
     state: 'Abuja',
     country: 'Nigeria',
     verification: '',
+
     syncStatus: '',
+    syncDate: DateTime.now(),
+
 
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
-    deletedAt: DateTime.now(),
-    syncDate: DateTime.now(),
   );
 
   @override

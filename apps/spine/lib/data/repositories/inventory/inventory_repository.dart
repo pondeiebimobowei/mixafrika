@@ -82,11 +82,13 @@ class InventoryRepository implements InventoryRepositoryAbstract {
       productId: product.id,
       businessId: product.businessId,
       quantity: 0,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-      deletedAt: DateTime.now(),
+
       syncStatus: 'pending',
       syncDate: DateTime.now(),
+
+
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
     );
     await _db.into(_db.inventory).insert(newInventoryRecord);
   }
@@ -98,6 +100,8 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     required int bulkQuantity,
     required int pieceQuantity,
     required String totalCost,
+    required int piecePrice,
+    required int bulkPrice,
     DateTime? expiryDate,
   }) async {
     final batchId = const Uuid().v4();
@@ -108,7 +112,10 @@ class InventoryRepository implements InventoryRepositoryAbstract {
       id: batchId,
       productId: productId,
       expiryDate: expiryDate?.toUtc() ?? DateTime.now().toUtc(),
-      quantity: bulkQuantity,
+      costPricePerBulk: bulkPrice,
+      costPricePerPiece: piecePrice,
+      remainingQuantity: pieceQuantity,
+      initialQuantity: pieceQuantity,
       batchNumber: 'BATCH-${now.millisecondsSinceEpoch}',
       createdAt: now,
       updatedAt: now,
@@ -152,7 +159,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     final products = await getInventoryItems(businessId);
     double total = 0.0;
     for (final item in products) {
-      final costPrice = item.product.costPrice.toDouble();
+      final costPrice = item.product.costPricePerUnit.toDouble();
       total += (costPrice * item.totalQuantity.toDouble());
     }
     return total;
@@ -163,7 +170,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     final products = await getInventoryItems(businessId);
     double total = 0.0;
     for (final item in products) {
-      final costPrice = item.product.costPrice.toDouble();
+      final costPrice = item.product.costPricePerUnit.toDouble();
       final sellingPrice = item.product.sellingPricePerPiece.toDouble();
       total += ((sellingPrice - costPrice) * item.totalQuantity.toDouble());
     }

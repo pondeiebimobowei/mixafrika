@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/repositories/inventory/inventory_repository.dart';
+import 'package:spine/ui/inventory/state/inventory_state.dart';
 import 'package:spine/ui/inventory/state/product_details_state.dart';
 
 class ProductDetailsViewModel extends StateNotifier<ProductDetailsState> {
@@ -15,7 +16,7 @@ class ProductDetailsViewModel extends StateNotifier<ProductDetailsState> {
     state = state.copyWith(isLoading: true, errorMessage: null);
     try {
       final repository = ref.read(inventoryRepositoryProvider);
-      final item = await repository.getInventoryItemById(productId);
+      final InventoryItemData? item = await repository.getInventoryItemById(productId);
 
       if (item != null) {
         state = state.copyWith(item: item, isLoading: false);

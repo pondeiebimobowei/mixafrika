@@ -1756,14 +1756,15 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
     aliasedName,
     false,
     type: DriftSqlType.int,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(0),
   );
-  static const VerificationMeta _costPriceMeta = const VerificationMeta(
-    'costPrice',
+  static const VerificationMeta _costPricePerUnitMeta = const VerificationMeta(
+    'costPricePerUnit',
   );
   @override
-  late final GeneratedColumn<int> costPrice = GeneratedColumn<int>(
-    'cost_price',
+  late final GeneratedColumn<int> costPricePerUnit = GeneratedColumn<int>(
+    'cost_price_per_unit',
     aliasedName,
     false,
     type: DriftSqlType.int,
@@ -1860,7 +1861,7 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
     bulkUnitName,
     pieceUnitName,
     unitsPerBulk,
-    costPrice,
+    costPricePerUnit,
     sellingPricePerPiece,
     sellingPricePerBulk,
     category,
@@ -1967,16 +1968,17 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
           _unitsPerBulkMeta,
         ),
       );
-    } else if (isInserting) {
-      context.missing(_unitsPerBulkMeta);
     }
-    if (data.containsKey('cost_price')) {
+    if (data.containsKey('cost_price_per_unit')) {
       context.handle(
-        _costPriceMeta,
-        costPrice.isAcceptableOrUnknown(data['cost_price']!, _costPriceMeta),
+        _costPricePerUnitMeta,
+        costPricePerUnit.isAcceptableOrUnknown(
+          data['cost_price_per_unit']!,
+          _costPricePerUnitMeta,
+        ),
       );
     } else if (isInserting) {
-      context.missing(_costPriceMeta);
+      context.missing(_costPricePerUnitMeta);
     }
     if (data.containsKey('selling_price_per_piece')) {
       context.handle(
@@ -2096,9 +2098,9 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
         DriftSqlType.int,
         data['${effectivePrefix}units_per_bulk'],
       )!,
-      costPrice: attachedDatabase.typeMapping.read(
+      costPricePerUnit: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}cost_price'],
+        data['${effectivePrefix}cost_price_per_unit'],
       )!,
       sellingPricePerPiece: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
@@ -2149,7 +2151,7 @@ class ProductData extends DataClass implements Insertable<ProductData> {
   final String bulkUnitName;
   final String pieceUnitName;
   final int unitsPerBulk;
-  final int costPrice;
+  final int costPricePerUnit;
   final int sellingPricePerPiece;
   final int sellingPricePerBulk;
   final String category;
@@ -2169,7 +2171,7 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     required this.bulkUnitName,
     required this.pieceUnitName,
     required this.unitsPerBulk,
-    required this.costPrice,
+    required this.costPricePerUnit,
     required this.sellingPricePerPiece,
     required this.sellingPricePerBulk,
     required this.category,
@@ -2196,7 +2198,7 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     map['bulk_unit_name'] = Variable<String>(bulkUnitName);
     map['piece_unit_name'] = Variable<String>(pieceUnitName);
     map['units_per_bulk'] = Variable<int>(unitsPerBulk);
-    map['cost_price'] = Variable<int>(costPrice);
+    map['cost_price_per_unit'] = Variable<int>(costPricePerUnit);
     map['selling_price_per_piece'] = Variable<int>(sellingPricePerPiece);
     map['selling_price_per_bulk'] = Variable<int>(sellingPricePerBulk);
     map['category'] = Variable<String>(category);
@@ -2224,7 +2226,7 @@ class ProductData extends DataClass implements Insertable<ProductData> {
       bulkUnitName: Value(bulkUnitName),
       pieceUnitName: Value(pieceUnitName),
       unitsPerBulk: Value(unitsPerBulk),
-      costPrice: Value(costPrice),
+      costPricePerUnit: Value(costPricePerUnit),
       sellingPricePerPiece: Value(sellingPricePerPiece),
       sellingPricePerBulk: Value(sellingPricePerBulk),
       category: Value(category),
@@ -2252,7 +2254,7 @@ class ProductData extends DataClass implements Insertable<ProductData> {
       bulkUnitName: serializer.fromJson<String>(json['bulkUnitName']),
       pieceUnitName: serializer.fromJson<String>(json['pieceUnitName']),
       unitsPerBulk: serializer.fromJson<int>(json['unitsPerBulk']),
-      costPrice: serializer.fromJson<int>(json['costPrice']),
+      costPricePerUnit: serializer.fromJson<int>(json['costPricePerUnit']),
       sellingPricePerPiece: serializer.fromJson<int>(
         json['sellingPricePerPiece'],
       ),
@@ -2281,7 +2283,7 @@ class ProductData extends DataClass implements Insertable<ProductData> {
       'bulkUnitName': serializer.toJson<String>(bulkUnitName),
       'pieceUnitName': serializer.toJson<String>(pieceUnitName),
       'unitsPerBulk': serializer.toJson<int>(unitsPerBulk),
-      'costPrice': serializer.toJson<int>(costPrice),
+      'costPricePerUnit': serializer.toJson<int>(costPricePerUnit),
       'sellingPricePerPiece': serializer.toJson<int>(sellingPricePerPiece),
       'sellingPricePerBulk': serializer.toJson<int>(sellingPricePerBulk),
       'category': serializer.toJson<String>(category),
@@ -2304,7 +2306,7 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     String? bulkUnitName,
     String? pieceUnitName,
     int? unitsPerBulk,
-    int? costPrice,
+    int? costPricePerUnit,
     int? sellingPricePerPiece,
     int? sellingPricePerBulk,
     String? category,
@@ -2324,7 +2326,7 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     bulkUnitName: bulkUnitName ?? this.bulkUnitName,
     pieceUnitName: pieceUnitName ?? this.pieceUnitName,
     unitsPerBulk: unitsPerBulk ?? this.unitsPerBulk,
-    costPrice: costPrice ?? this.costPrice,
+    costPricePerUnit: costPricePerUnit ?? this.costPricePerUnit,
     sellingPricePerPiece: sellingPricePerPiece ?? this.sellingPricePerPiece,
     sellingPricePerBulk: sellingPricePerBulk ?? this.sellingPricePerBulk,
     category: category ?? this.category,
@@ -2356,7 +2358,9 @@ class ProductData extends DataClass implements Insertable<ProductData> {
       unitsPerBulk: data.unitsPerBulk.present
           ? data.unitsPerBulk.value
           : this.unitsPerBulk,
-      costPrice: data.costPrice.present ? data.costPrice.value : this.costPrice,
+      costPricePerUnit: data.costPricePerUnit.present
+          ? data.costPricePerUnit.value
+          : this.costPricePerUnit,
       sellingPricePerPiece: data.sellingPricePerPiece.present
           ? data.sellingPricePerPiece.value
           : this.sellingPricePerPiece,
@@ -2389,7 +2393,7 @@ class ProductData extends DataClass implements Insertable<ProductData> {
           ..write('bulkUnitName: $bulkUnitName, ')
           ..write('pieceUnitName: $pieceUnitName, ')
           ..write('unitsPerBulk: $unitsPerBulk, ')
-          ..write('costPrice: $costPrice, ')
+          ..write('costPricePerUnit: $costPricePerUnit, ')
           ..write('sellingPricePerPiece: $sellingPricePerPiece, ')
           ..write('sellingPricePerBulk: $sellingPricePerBulk, ')
           ..write('category: $category, ')
@@ -2414,7 +2418,7 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     bulkUnitName,
     pieceUnitName,
     unitsPerBulk,
-    costPrice,
+    costPricePerUnit,
     sellingPricePerPiece,
     sellingPricePerBulk,
     category,
@@ -2438,7 +2442,7 @@ class ProductData extends DataClass implements Insertable<ProductData> {
           other.bulkUnitName == this.bulkUnitName &&
           other.pieceUnitName == this.pieceUnitName &&
           other.unitsPerBulk == this.unitsPerBulk &&
-          other.costPrice == this.costPrice &&
+          other.costPricePerUnit == this.costPricePerUnit &&
           other.sellingPricePerPiece == this.sellingPricePerPiece &&
           other.sellingPricePerBulk == this.sellingPricePerBulk &&
           other.category == this.category &&
@@ -2460,7 +2464,7 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
   final Value<String> bulkUnitName;
   final Value<String> pieceUnitName;
   final Value<int> unitsPerBulk;
-  final Value<int> costPrice;
+  final Value<int> costPricePerUnit;
   final Value<int> sellingPricePerPiece;
   final Value<int> sellingPricePerBulk;
   final Value<String> category;
@@ -2481,7 +2485,7 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
     this.bulkUnitName = const Value.absent(),
     this.pieceUnitName = const Value.absent(),
     this.unitsPerBulk = const Value.absent(),
-    this.costPrice = const Value.absent(),
+    this.costPricePerUnit = const Value.absent(),
     this.sellingPricePerPiece = const Value.absent(),
     this.sellingPricePerBulk = const Value.absent(),
     this.category = const Value.absent(),
@@ -2502,8 +2506,8 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
     required String description,
     required String bulkUnitName,
     required String pieceUnitName,
-    required int unitsPerBulk,
-    required int costPrice,
+    this.unitsPerBulk = const Value.absent(),
+    required int costPricePerUnit,
     required int sellingPricePerPiece,
     required int sellingPricePerBulk,
     required String category,
@@ -2518,8 +2522,7 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
        description = Value(description),
        bulkUnitName = Value(bulkUnitName),
        pieceUnitName = Value(pieceUnitName),
-       unitsPerBulk = Value(unitsPerBulk),
-       costPrice = Value(costPrice),
+       costPricePerUnit = Value(costPricePerUnit),
        sellingPricePerPiece = Value(sellingPricePerPiece),
        sellingPricePerBulk = Value(sellingPricePerBulk),
        category = Value(category),
@@ -2539,7 +2542,7 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
     Expression<String>? bulkUnitName,
     Expression<String>? pieceUnitName,
     Expression<int>? unitsPerBulk,
-    Expression<int>? costPrice,
+    Expression<int>? costPricePerUnit,
     Expression<int>? sellingPricePerPiece,
     Expression<int>? sellingPricePerBulk,
     Expression<String>? category,
@@ -2561,7 +2564,7 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
       if (bulkUnitName != null) 'bulk_unit_name': bulkUnitName,
       if (pieceUnitName != null) 'piece_unit_name': pieceUnitName,
       if (unitsPerBulk != null) 'units_per_bulk': unitsPerBulk,
-      if (costPrice != null) 'cost_price': costPrice,
+      if (costPricePerUnit != null) 'cost_price_per_unit': costPricePerUnit,
       if (sellingPricePerPiece != null)
         'selling_price_per_piece': sellingPricePerPiece,
       if (sellingPricePerBulk != null)
@@ -2587,7 +2590,7 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
     Value<String>? bulkUnitName,
     Value<String>? pieceUnitName,
     Value<int>? unitsPerBulk,
-    Value<int>? costPrice,
+    Value<int>? costPricePerUnit,
     Value<int>? sellingPricePerPiece,
     Value<int>? sellingPricePerBulk,
     Value<String>? category,
@@ -2609,7 +2612,7 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
       bulkUnitName: bulkUnitName ?? this.bulkUnitName,
       pieceUnitName: pieceUnitName ?? this.pieceUnitName,
       unitsPerBulk: unitsPerBulk ?? this.unitsPerBulk,
-      costPrice: costPrice ?? this.costPrice,
+      costPricePerUnit: costPricePerUnit ?? this.costPricePerUnit,
       sellingPricePerPiece: sellingPricePerPiece ?? this.sellingPricePerPiece,
       sellingPricePerBulk: sellingPricePerBulk ?? this.sellingPricePerBulk,
       category: category ?? this.category,
@@ -2657,8 +2660,8 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
     if (unitsPerBulk.present) {
       map['units_per_bulk'] = Variable<int>(unitsPerBulk.value);
     }
-    if (costPrice.present) {
-      map['cost_price'] = Variable<int>(costPrice.value);
+    if (costPricePerUnit.present) {
+      map['cost_price_per_unit'] = Variable<int>(costPricePerUnit.value);
     }
     if (sellingPricePerPiece.present) {
       map['selling_price_per_piece'] = Variable<int>(
@@ -2703,7 +2706,7 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
           ..write('bulkUnitName: $bulkUnitName, ')
           ..write('pieceUnitName: $pieceUnitName, ')
           ..write('unitsPerBulk: $unitsPerBulk, ')
-          ..write('costPrice: $costPrice, ')
+          ..write('costPricePerUnit: $costPricePerUnit, ')
           ..write('sellingPricePerPiece: $sellingPricePerPiece, ')
           ..write('sellingPricePerBulk: $sellingPricePerBulk, ')
           ..write('category: $category, ')
@@ -2800,17 +2803,6 @@ class $SpineBatchTable extends SpineBatch
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _quantityMeta = const VerificationMeta(
-    'quantity',
-  );
-  @override
-  late final GeneratedColumn<int> quantity = GeneratedColumn<int>(
-    'quantity',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
   static const VerificationMeta _batchNumberMeta = const VerificationMeta(
     'batchNumber',
   );
@@ -2820,6 +2812,50 @@ class $SpineBatchTable extends SpineBatch
     aliasedName,
     false,
     type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _costPricePerPieceMeta = const VerificationMeta(
+    'costPricePerPiece',
+  );
+  @override
+  late final GeneratedColumn<int> costPricePerPiece = GeneratedColumn<int>(
+    'cost_price_per_piece',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _costPricePerBulkMeta = const VerificationMeta(
+    'costPricePerBulk',
+  );
+  @override
+  late final GeneratedColumn<int> costPricePerBulk = GeneratedColumn<int>(
+    'cost_price_per_bulk',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _initialQuantityMeta = const VerificationMeta(
+    'initialQuantity',
+  );
+  @override
+  late final GeneratedColumn<int> initialQuantity = GeneratedColumn<int>(
+    'initial_quantity',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _remainingQuantityMeta = const VerificationMeta(
+    'remainingQuantity',
+  );
+  @override
+  late final GeneratedColumn<int> remainingQuantity = GeneratedColumn<int>(
+    'remaining_quantity',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
   static const VerificationMeta _productIdMeta = const VerificationMeta(
@@ -2845,8 +2881,11 @@ class $SpineBatchTable extends SpineBatch
     updatedAt,
     deletedAt,
     expiryDate,
-    quantity,
     batchNumber,
+    costPricePerPiece,
+    costPricePerBulk,
+    initialQuantity,
+    remainingQuantity,
     productId,
   ];
   @override
@@ -2904,14 +2943,6 @@ class $SpineBatchTable extends SpineBatch
         expiryDate.isAcceptableOrUnknown(data['expiry_date']!, _expiryDateMeta),
       );
     }
-    if (data.containsKey('quantity')) {
-      context.handle(
-        _quantityMeta,
-        quantity.isAcceptableOrUnknown(data['quantity']!, _quantityMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_quantityMeta);
-    }
     if (data.containsKey('batch_number')) {
       context.handle(
         _batchNumberMeta,
@@ -2922,6 +2953,50 @@ class $SpineBatchTable extends SpineBatch
       );
     } else if (isInserting) {
       context.missing(_batchNumberMeta);
+    }
+    if (data.containsKey('cost_price_per_piece')) {
+      context.handle(
+        _costPricePerPieceMeta,
+        costPricePerPiece.isAcceptableOrUnknown(
+          data['cost_price_per_piece']!,
+          _costPricePerPieceMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_costPricePerPieceMeta);
+    }
+    if (data.containsKey('cost_price_per_bulk')) {
+      context.handle(
+        _costPricePerBulkMeta,
+        costPricePerBulk.isAcceptableOrUnknown(
+          data['cost_price_per_bulk']!,
+          _costPricePerBulkMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_costPricePerBulkMeta);
+    }
+    if (data.containsKey('initial_quantity')) {
+      context.handle(
+        _initialQuantityMeta,
+        initialQuantity.isAcceptableOrUnknown(
+          data['initial_quantity']!,
+          _initialQuantityMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_initialQuantityMeta);
+    }
+    if (data.containsKey('remaining_quantity')) {
+      context.handle(
+        _remainingQuantityMeta,
+        remainingQuantity.isAcceptableOrUnknown(
+          data['remaining_quantity']!,
+          _remainingQuantityMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_remainingQuantityMeta);
     }
     if (data.containsKey('product_id')) {
       context.handle(
@@ -2968,13 +3043,25 @@ class $SpineBatchTable extends SpineBatch
         DriftSqlType.dateTime,
         data['${effectivePrefix}expiry_date'],
       ),
-      quantity: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}quantity'],
-      )!,
       batchNumber: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}batch_number'],
+      )!,
+      costPricePerPiece: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}cost_price_per_piece'],
+      )!,
+      costPricePerBulk: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}cost_price_per_bulk'],
+      )!,
+      initialQuantity: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}initial_quantity'],
+      )!,
+      remainingQuantity: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}remaining_quantity'],
       )!,
       productId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -2997,8 +3084,11 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
   final DateTime updatedAt;
   final DateTime? deletedAt;
   final DateTime? expiryDate;
-  final int quantity;
   final String batchNumber;
+  final int costPricePerPiece;
+  final int costPricePerBulk;
+  final int initialQuantity;
+  final int remainingQuantity;
   final String productId;
   const SpineBatchData({
     required this.id,
@@ -3008,8 +3098,11 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     required this.updatedAt,
     this.deletedAt,
     this.expiryDate,
-    required this.quantity,
     required this.batchNumber,
+    required this.costPricePerPiece,
+    required this.costPricePerBulk,
+    required this.initialQuantity,
+    required this.remainingQuantity,
     required this.productId,
   });
   @override
@@ -3028,8 +3121,11 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     if (!nullToAbsent || expiryDate != null) {
       map['expiry_date'] = Variable<DateTime>(expiryDate);
     }
-    map['quantity'] = Variable<int>(quantity);
     map['batch_number'] = Variable<String>(batchNumber);
+    map['cost_price_per_piece'] = Variable<int>(costPricePerPiece);
+    map['cost_price_per_bulk'] = Variable<int>(costPricePerBulk);
+    map['initial_quantity'] = Variable<int>(initialQuantity);
+    map['remaining_quantity'] = Variable<int>(remainingQuantity);
     map['product_id'] = Variable<String>(productId);
     return map;
   }
@@ -3049,8 +3145,11 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
       expiryDate: expiryDate == null && nullToAbsent
           ? const Value.absent()
           : Value(expiryDate),
-      quantity: Value(quantity),
       batchNumber: Value(batchNumber),
+      costPricePerPiece: Value(costPricePerPiece),
+      costPricePerBulk: Value(costPricePerBulk),
+      initialQuantity: Value(initialQuantity),
+      remainingQuantity: Value(remainingQuantity),
       productId: Value(productId),
     );
   }
@@ -3068,8 +3167,11 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
       expiryDate: serializer.fromJson<DateTime?>(json['expiryDate']),
-      quantity: serializer.fromJson<int>(json['quantity']),
       batchNumber: serializer.fromJson<String>(json['batchNumber']),
+      costPricePerPiece: serializer.fromJson<int>(json['costPricePerPiece']),
+      costPricePerBulk: serializer.fromJson<int>(json['costPricePerBulk']),
+      initialQuantity: serializer.fromJson<int>(json['initialQuantity']),
+      remainingQuantity: serializer.fromJson<int>(json['remainingQuantity']),
       productId: serializer.fromJson<String>(json['productId']),
     );
   }
@@ -3084,8 +3186,11 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
       'expiryDate': serializer.toJson<DateTime?>(expiryDate),
-      'quantity': serializer.toJson<int>(quantity),
       'batchNumber': serializer.toJson<String>(batchNumber),
+      'costPricePerPiece': serializer.toJson<int>(costPricePerPiece),
+      'costPricePerBulk': serializer.toJson<int>(costPricePerBulk),
+      'initialQuantity': serializer.toJson<int>(initialQuantity),
+      'remainingQuantity': serializer.toJson<int>(remainingQuantity),
       'productId': serializer.toJson<String>(productId),
     };
   }
@@ -3098,8 +3203,11 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     DateTime? updatedAt,
     Value<DateTime?> deletedAt = const Value.absent(),
     Value<DateTime?> expiryDate = const Value.absent(),
-    int? quantity,
     String? batchNumber,
+    int? costPricePerPiece,
+    int? costPricePerBulk,
+    int? initialQuantity,
+    int? remainingQuantity,
     String? productId,
   }) => SpineBatchData(
     id: id ?? this.id,
@@ -3109,8 +3217,11 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     updatedAt: updatedAt ?? this.updatedAt,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
     expiryDate: expiryDate.present ? expiryDate.value : this.expiryDate,
-    quantity: quantity ?? this.quantity,
     batchNumber: batchNumber ?? this.batchNumber,
+    costPricePerPiece: costPricePerPiece ?? this.costPricePerPiece,
+    costPricePerBulk: costPricePerBulk ?? this.costPricePerBulk,
+    initialQuantity: initialQuantity ?? this.initialQuantity,
+    remainingQuantity: remainingQuantity ?? this.remainingQuantity,
     productId: productId ?? this.productId,
   );
   SpineBatchData copyWithCompanion(SpineBatchCompanion data) {
@@ -3126,10 +3237,21 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
       expiryDate: data.expiryDate.present
           ? data.expiryDate.value
           : this.expiryDate,
-      quantity: data.quantity.present ? data.quantity.value : this.quantity,
       batchNumber: data.batchNumber.present
           ? data.batchNumber.value
           : this.batchNumber,
+      costPricePerPiece: data.costPricePerPiece.present
+          ? data.costPricePerPiece.value
+          : this.costPricePerPiece,
+      costPricePerBulk: data.costPricePerBulk.present
+          ? data.costPricePerBulk.value
+          : this.costPricePerBulk,
+      initialQuantity: data.initialQuantity.present
+          ? data.initialQuantity.value
+          : this.initialQuantity,
+      remainingQuantity: data.remainingQuantity.present
+          ? data.remainingQuantity.value
+          : this.remainingQuantity,
       productId: data.productId.present ? data.productId.value : this.productId,
     );
   }
@@ -3144,8 +3266,11 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
           ..write('expiryDate: $expiryDate, ')
-          ..write('quantity: $quantity, ')
           ..write('batchNumber: $batchNumber, ')
+          ..write('costPricePerPiece: $costPricePerPiece, ')
+          ..write('costPricePerBulk: $costPricePerBulk, ')
+          ..write('initialQuantity: $initialQuantity, ')
+          ..write('remainingQuantity: $remainingQuantity, ')
           ..write('productId: $productId')
           ..write(')'))
         .toString();
@@ -3160,8 +3285,11 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     updatedAt,
     deletedAt,
     expiryDate,
-    quantity,
     batchNumber,
+    costPricePerPiece,
+    costPricePerBulk,
+    initialQuantity,
+    remainingQuantity,
     productId,
   );
   @override
@@ -3175,8 +3303,11 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
           other.updatedAt == this.updatedAt &&
           other.deletedAt == this.deletedAt &&
           other.expiryDate == this.expiryDate &&
-          other.quantity == this.quantity &&
           other.batchNumber == this.batchNumber &&
+          other.costPricePerPiece == this.costPricePerPiece &&
+          other.costPricePerBulk == this.costPricePerBulk &&
+          other.initialQuantity == this.initialQuantity &&
+          other.remainingQuantity == this.remainingQuantity &&
           other.productId == this.productId);
 }
 
@@ -3188,8 +3319,11 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
   final Value<DateTime> updatedAt;
   final Value<DateTime?> deletedAt;
   final Value<DateTime?> expiryDate;
-  final Value<int> quantity;
   final Value<String> batchNumber;
+  final Value<int> costPricePerPiece;
+  final Value<int> costPricePerBulk;
+  final Value<int> initialQuantity;
+  final Value<int> remainingQuantity;
   final Value<String> productId;
   final Value<int> rowid;
   const SpineBatchCompanion({
@@ -3200,8 +3334,11 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
     this.expiryDate = const Value.absent(),
-    this.quantity = const Value.absent(),
     this.batchNumber = const Value.absent(),
+    this.costPricePerPiece = const Value.absent(),
+    this.costPricePerBulk = const Value.absent(),
+    this.initialQuantity = const Value.absent(),
+    this.remainingQuantity = const Value.absent(),
     this.productId = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -3213,14 +3350,20 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
     this.expiryDate = const Value.absent(),
-    required int quantity,
     required String batchNumber,
+    required int costPricePerPiece,
+    required int costPricePerBulk,
+    required int initialQuantity,
+    required int remainingQuantity,
     required String productId,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        syncStatus = Value(syncStatus),
-       quantity = Value(quantity),
        batchNumber = Value(batchNumber),
+       costPricePerPiece = Value(costPricePerPiece),
+       costPricePerBulk = Value(costPricePerBulk),
+       initialQuantity = Value(initialQuantity),
+       remainingQuantity = Value(remainingQuantity),
        productId = Value(productId);
   static Insertable<SpineBatchData> custom({
     Expression<String>? id,
@@ -3230,8 +3373,11 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
     Expression<DateTime>? updatedAt,
     Expression<DateTime>? deletedAt,
     Expression<DateTime>? expiryDate,
-    Expression<int>? quantity,
     Expression<String>? batchNumber,
+    Expression<int>? costPricePerPiece,
+    Expression<int>? costPricePerBulk,
+    Expression<int>? initialQuantity,
+    Expression<int>? remainingQuantity,
     Expression<String>? productId,
     Expression<int>? rowid,
   }) {
@@ -3243,8 +3389,11 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
       if (updatedAt != null) 'updated_at': updatedAt,
       if (deletedAt != null) 'deleted_at': deletedAt,
       if (expiryDate != null) 'expiry_date': expiryDate,
-      if (quantity != null) 'quantity': quantity,
       if (batchNumber != null) 'batch_number': batchNumber,
+      if (costPricePerPiece != null) 'cost_price_per_piece': costPricePerPiece,
+      if (costPricePerBulk != null) 'cost_price_per_bulk': costPricePerBulk,
+      if (initialQuantity != null) 'initial_quantity': initialQuantity,
+      if (remainingQuantity != null) 'remaining_quantity': remainingQuantity,
       if (productId != null) 'product_id': productId,
       if (rowid != null) 'rowid': rowid,
     });
@@ -3258,8 +3407,11 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
     Value<DateTime>? updatedAt,
     Value<DateTime?>? deletedAt,
     Value<DateTime?>? expiryDate,
-    Value<int>? quantity,
     Value<String>? batchNumber,
+    Value<int>? costPricePerPiece,
+    Value<int>? costPricePerBulk,
+    Value<int>? initialQuantity,
+    Value<int>? remainingQuantity,
     Value<String>? productId,
     Value<int>? rowid,
   }) {
@@ -3271,8 +3423,11 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
       expiryDate: expiryDate ?? this.expiryDate,
-      quantity: quantity ?? this.quantity,
       batchNumber: batchNumber ?? this.batchNumber,
+      costPricePerPiece: costPricePerPiece ?? this.costPricePerPiece,
+      costPricePerBulk: costPricePerBulk ?? this.costPricePerBulk,
+      initialQuantity: initialQuantity ?? this.initialQuantity,
+      remainingQuantity: remainingQuantity ?? this.remainingQuantity,
       productId: productId ?? this.productId,
       rowid: rowid ?? this.rowid,
     );
@@ -3302,11 +3457,20 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
     if (expiryDate.present) {
       map['expiry_date'] = Variable<DateTime>(expiryDate.value);
     }
-    if (quantity.present) {
-      map['quantity'] = Variable<int>(quantity.value);
-    }
     if (batchNumber.present) {
       map['batch_number'] = Variable<String>(batchNumber.value);
+    }
+    if (costPricePerPiece.present) {
+      map['cost_price_per_piece'] = Variable<int>(costPricePerPiece.value);
+    }
+    if (costPricePerBulk.present) {
+      map['cost_price_per_bulk'] = Variable<int>(costPricePerBulk.value);
+    }
+    if (initialQuantity.present) {
+      map['initial_quantity'] = Variable<int>(initialQuantity.value);
+    }
+    if (remainingQuantity.present) {
+      map['remaining_quantity'] = Variable<int>(remainingQuantity.value);
     }
     if (productId.present) {
       map['product_id'] = Variable<String>(productId.value);
@@ -3327,8 +3491,11 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
           ..write('expiryDate: $expiryDate, ')
-          ..write('quantity: $quantity, ')
           ..write('batchNumber: $batchNumber, ')
+          ..write('costPricePerPiece: $costPricePerPiece, ')
+          ..write('costPricePerBulk: $costPricePerBulk, ')
+          ..write('initialQuantity: $initialQuantity, ')
+          ..write('remainingQuantity: $remainingQuantity, ')
           ..write('productId: $productId, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -4027,6 +4194,26 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _imageMeta = const VerificationMeta('image');
+  @override
+  late final GeneratedColumn<String> image = GeneratedColumn<String>(
+    'image',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _userNameMeta = const VerificationMeta(
+    'userName',
+  );
+  @override
+  late final GeneratedColumn<String> userName = GeneratedColumn<String>(
+    'user_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _firstNameMeta = const VerificationMeta(
     'firstName',
   );
@@ -4115,6 +4302,37 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
         type: DriftSqlType.string,
         requiredDuringInsert: true,
       );
+  static const VerificationMeta _verificationMeta = const VerificationMeta(
+    'verification',
+  );
+  @override
+  late final GeneratedColumn<String> verification = GeneratedColumn<String>(
+    'verification',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _businessVerificationMeta =
+      const VerificationMeta('businessVerification');
+  @override
+  late final GeneratedColumn<String> businessVerification =
+      GeneratedColumn<String>(
+        'business_verification',
+        aliasedName,
+        true,
+        type: DriftSqlType.string,
+        requiredDuringInsert: false,
+      );
+  static const VerificationMeta _traderMeta = const VerificationMeta('trader');
+  @override
+  late final GeneratedColumn<String> trader = GeneratedColumn<String>(
+    'trader',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -4123,6 +4341,8 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
     createdAt,
     updatedAt,
     deletedAt,
+    image,
+    userName,
     firstName,
     lastName,
     email,
@@ -4131,6 +4351,9 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
     isEmailVerified,
     creditScore,
     creditScoreStatus,
+    verification,
+    businessVerification,
+    trader,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -4179,6 +4402,18 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
       context.handle(
         _deletedAtMeta,
         deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('image')) {
+      context.handle(
+        _imageMeta,
+        image.isAcceptableOrUnknown(data['image']!, _imageMeta),
+      );
+    }
+    if (data.containsKey('user_name')) {
+      context.handle(
+        _userNameMeta,
+        userName.isAcceptableOrUnknown(data['user_name']!, _userNameMeta),
       );
     }
     if (data.containsKey('first_name')) {
@@ -4254,6 +4489,30 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
     } else if (isInserting) {
       context.missing(_creditScoreStatusMeta);
     }
+    if (data.containsKey('verification')) {
+      context.handle(
+        _verificationMeta,
+        verification.isAcceptableOrUnknown(
+          data['verification']!,
+          _verificationMeta,
+        ),
+      );
+    }
+    if (data.containsKey('business_verification')) {
+      context.handle(
+        _businessVerificationMeta,
+        businessVerification.isAcceptableOrUnknown(
+          data['business_verification']!,
+          _businessVerificationMeta,
+        ),
+      );
+    }
+    if (data.containsKey('trader')) {
+      context.handle(
+        _traderMeta,
+        trader.isAcceptableOrUnknown(data['trader']!, _traderMeta),
+      );
+    }
     return context;
   }
 
@@ -4287,6 +4546,14 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
       ),
+      image: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}image'],
+      ),
+      userName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_name'],
+      ),
       firstName: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}first_name'],
@@ -4319,6 +4586,18 @@ class $UserTable extends User with TableInfo<$UserTable, UserData> {
         DriftSqlType.string,
         data['${effectivePrefix}credit_score_status'],
       )!,
+      verification: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}verification'],
+      ),
+      businessVerification: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}business_verification'],
+      ),
+      trader: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}trader'],
+      ),
     );
   }
 
@@ -4335,6 +4614,8 @@ class UserData extends DataClass implements Insertable<UserData> {
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
+  final String? image;
+  final String? userName;
   final String firstName;
   final String lastName;
   final String email;
@@ -4343,6 +4624,9 @@ class UserData extends DataClass implements Insertable<UserData> {
   final bool isEmailVerified;
   final int creditScore;
   final String creditScoreStatus;
+  final String? verification;
+  final String? businessVerification;
+  final String? trader;
   const UserData({
     required this.id,
     required this.syncStatus,
@@ -4350,6 +4634,8 @@ class UserData extends DataClass implements Insertable<UserData> {
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,
+    this.image,
+    this.userName,
     required this.firstName,
     required this.lastName,
     required this.email,
@@ -4358,6 +4644,9 @@ class UserData extends DataClass implements Insertable<UserData> {
     required this.isEmailVerified,
     required this.creditScore,
     required this.creditScoreStatus,
+    this.verification,
+    this.businessVerification,
+    this.trader,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -4372,6 +4661,12 @@ class UserData extends DataClass implements Insertable<UserData> {
     if (!nullToAbsent || deletedAt != null) {
       map['deleted_at'] = Variable<DateTime>(deletedAt);
     }
+    if (!nullToAbsent || image != null) {
+      map['image'] = Variable<String>(image);
+    }
+    if (!nullToAbsent || userName != null) {
+      map['user_name'] = Variable<String>(userName);
+    }
     map['first_name'] = Variable<String>(firstName);
     map['last_name'] = Variable<String>(lastName);
     map['email'] = Variable<String>(email);
@@ -4380,6 +4675,15 @@ class UserData extends DataClass implements Insertable<UserData> {
     map['is_email_verified'] = Variable<bool>(isEmailVerified);
     map['credit_score'] = Variable<int>(creditScore);
     map['credit_score_status'] = Variable<String>(creditScoreStatus);
+    if (!nullToAbsent || verification != null) {
+      map['verification'] = Variable<String>(verification);
+    }
+    if (!nullToAbsent || businessVerification != null) {
+      map['business_verification'] = Variable<String>(businessVerification);
+    }
+    if (!nullToAbsent || trader != null) {
+      map['trader'] = Variable<String>(trader);
+    }
     return map;
   }
 
@@ -4395,6 +4699,12 @@ class UserData extends DataClass implements Insertable<UserData> {
       deletedAt: deletedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(deletedAt),
+      image: image == null && nullToAbsent
+          ? const Value.absent()
+          : Value(image),
+      userName: userName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(userName),
       firstName: Value(firstName),
       lastName: Value(lastName),
       email: Value(email),
@@ -4403,6 +4713,15 @@ class UserData extends DataClass implements Insertable<UserData> {
       isEmailVerified: Value(isEmailVerified),
       creditScore: Value(creditScore),
       creditScoreStatus: Value(creditScoreStatus),
+      verification: verification == null && nullToAbsent
+          ? const Value.absent()
+          : Value(verification),
+      businessVerification: businessVerification == null && nullToAbsent
+          ? const Value.absent()
+          : Value(businessVerification),
+      trader: trader == null && nullToAbsent
+          ? const Value.absent()
+          : Value(trader),
     );
   }
 
@@ -4418,6 +4737,8 @@ class UserData extends DataClass implements Insertable<UserData> {
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      image: serializer.fromJson<String?>(json['image']),
+      userName: serializer.fromJson<String?>(json['userName']),
       firstName: serializer.fromJson<String>(json['firstName']),
       lastName: serializer.fromJson<String>(json['lastName']),
       email: serializer.fromJson<String>(json['email']),
@@ -4426,6 +4747,11 @@ class UserData extends DataClass implements Insertable<UserData> {
       isEmailVerified: serializer.fromJson<bool>(json['isEmailVerified']),
       creditScore: serializer.fromJson<int>(json['creditScore']),
       creditScoreStatus: serializer.fromJson<String>(json['creditScoreStatus']),
+      verification: serializer.fromJson<String?>(json['verification']),
+      businessVerification: serializer.fromJson<String?>(
+        json['businessVerification'],
+      ),
+      trader: serializer.fromJson<String?>(json['trader']),
     );
   }
   @override
@@ -4438,6 +4764,8 @@ class UserData extends DataClass implements Insertable<UserData> {
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'image': serializer.toJson<String?>(image),
+      'userName': serializer.toJson<String?>(userName),
       'firstName': serializer.toJson<String>(firstName),
       'lastName': serializer.toJson<String>(lastName),
       'email': serializer.toJson<String>(email),
@@ -4446,6 +4774,9 @@ class UserData extends DataClass implements Insertable<UserData> {
       'isEmailVerified': serializer.toJson<bool>(isEmailVerified),
       'creditScore': serializer.toJson<int>(creditScore),
       'creditScoreStatus': serializer.toJson<String>(creditScoreStatus),
+      'verification': serializer.toJson<String?>(verification),
+      'businessVerification': serializer.toJson<String?>(businessVerification),
+      'trader': serializer.toJson<String?>(trader),
     };
   }
 
@@ -4456,6 +4787,8 @@ class UserData extends DataClass implements Insertable<UserData> {
     DateTime? createdAt,
     DateTime? updatedAt,
     Value<DateTime?> deletedAt = const Value.absent(),
+    Value<String?> image = const Value.absent(),
+    Value<String?> userName = const Value.absent(),
     String? firstName,
     String? lastName,
     String? email,
@@ -4464,6 +4797,9 @@ class UserData extends DataClass implements Insertable<UserData> {
     bool? isEmailVerified,
     int? creditScore,
     String? creditScoreStatus,
+    Value<String?> verification = const Value.absent(),
+    Value<String?> businessVerification = const Value.absent(),
+    Value<String?> trader = const Value.absent(),
   }) => UserData(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
@@ -4471,6 +4807,8 @@ class UserData extends DataClass implements Insertable<UserData> {
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    image: image.present ? image.value : this.image,
+    userName: userName.present ? userName.value : this.userName,
     firstName: firstName ?? this.firstName,
     lastName: lastName ?? this.lastName,
     email: email ?? this.email,
@@ -4479,6 +4817,11 @@ class UserData extends DataClass implements Insertable<UserData> {
     isEmailVerified: isEmailVerified ?? this.isEmailVerified,
     creditScore: creditScore ?? this.creditScore,
     creditScoreStatus: creditScoreStatus ?? this.creditScoreStatus,
+    verification: verification.present ? verification.value : this.verification,
+    businessVerification: businessVerification.present
+        ? businessVerification.value
+        : this.businessVerification,
+    trader: trader.present ? trader.value : this.trader,
   );
   UserData copyWithCompanion(UserCompanion data) {
     return UserData(
@@ -4490,6 +4833,8 @@ class UserData extends DataClass implements Insertable<UserData> {
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      image: data.image.present ? data.image.value : this.image,
+      userName: data.userName.present ? data.userName.value : this.userName,
       firstName: data.firstName.present ? data.firstName.value : this.firstName,
       lastName: data.lastName.present ? data.lastName.value : this.lastName,
       email: data.email.present ? data.email.value : this.email,
@@ -4504,6 +4849,13 @@ class UserData extends DataClass implements Insertable<UserData> {
       creditScoreStatus: data.creditScoreStatus.present
           ? data.creditScoreStatus.value
           : this.creditScoreStatus,
+      verification: data.verification.present
+          ? data.verification.value
+          : this.verification,
+      businessVerification: data.businessVerification.present
+          ? data.businessVerification.value
+          : this.businessVerification,
+      trader: data.trader.present ? data.trader.value : this.trader,
     );
   }
 
@@ -4516,6 +4868,8 @@ class UserData extends DataClass implements Insertable<UserData> {
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
+          ..write('image: $image, ')
+          ..write('userName: $userName, ')
           ..write('firstName: $firstName, ')
           ..write('lastName: $lastName, ')
           ..write('email: $email, ')
@@ -4523,7 +4877,10 @@ class UserData extends DataClass implements Insertable<UserData> {
           ..write('role: $role, ')
           ..write('isEmailVerified: $isEmailVerified, ')
           ..write('creditScore: $creditScore, ')
-          ..write('creditScoreStatus: $creditScoreStatus')
+          ..write('creditScoreStatus: $creditScoreStatus, ')
+          ..write('verification: $verification, ')
+          ..write('businessVerification: $businessVerification, ')
+          ..write('trader: $trader')
           ..write(')'))
         .toString();
   }
@@ -4536,6 +4893,8 @@ class UserData extends DataClass implements Insertable<UserData> {
     createdAt,
     updatedAt,
     deletedAt,
+    image,
+    userName,
     firstName,
     lastName,
     email,
@@ -4544,6 +4903,9 @@ class UserData extends DataClass implements Insertable<UserData> {
     isEmailVerified,
     creditScore,
     creditScoreStatus,
+    verification,
+    businessVerification,
+    trader,
   );
   @override
   bool operator ==(Object other) =>
@@ -4555,6 +4917,8 @@ class UserData extends DataClass implements Insertable<UserData> {
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
           other.deletedAt == this.deletedAt &&
+          other.image == this.image &&
+          other.userName == this.userName &&
           other.firstName == this.firstName &&
           other.lastName == this.lastName &&
           other.email == this.email &&
@@ -4562,7 +4926,10 @@ class UserData extends DataClass implements Insertable<UserData> {
           other.role == this.role &&
           other.isEmailVerified == this.isEmailVerified &&
           other.creditScore == this.creditScore &&
-          other.creditScoreStatus == this.creditScoreStatus);
+          other.creditScoreStatus == this.creditScoreStatus &&
+          other.verification == this.verification &&
+          other.businessVerification == this.businessVerification &&
+          other.trader == this.trader);
 }
 
 class UserCompanion extends UpdateCompanion<UserData> {
@@ -4572,6 +4939,8 @@ class UserCompanion extends UpdateCompanion<UserData> {
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   final Value<DateTime?> deletedAt;
+  final Value<String?> image;
+  final Value<String?> userName;
   final Value<String> firstName;
   final Value<String> lastName;
   final Value<String> email;
@@ -4580,6 +4949,9 @@ class UserCompanion extends UpdateCompanion<UserData> {
   final Value<bool> isEmailVerified;
   final Value<int> creditScore;
   final Value<String> creditScoreStatus;
+  final Value<String?> verification;
+  final Value<String?> businessVerification;
+  final Value<String?> trader;
   final Value<int> rowid;
   const UserCompanion({
     this.id = const Value.absent(),
@@ -4588,6 +4960,8 @@ class UserCompanion extends UpdateCompanion<UserData> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
+    this.image = const Value.absent(),
+    this.userName = const Value.absent(),
     this.firstName = const Value.absent(),
     this.lastName = const Value.absent(),
     this.email = const Value.absent(),
@@ -4596,6 +4970,9 @@ class UserCompanion extends UpdateCompanion<UserData> {
     this.isEmailVerified = const Value.absent(),
     this.creditScore = const Value.absent(),
     this.creditScoreStatus = const Value.absent(),
+    this.verification = const Value.absent(),
+    this.businessVerification = const Value.absent(),
+    this.trader = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   UserCompanion.insert({
@@ -4605,6 +4982,8 @@ class UserCompanion extends UpdateCompanion<UserData> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
+    this.image = const Value.absent(),
+    this.userName = const Value.absent(),
     required String firstName,
     required String lastName,
     required String email,
@@ -4613,6 +4992,9 @@ class UserCompanion extends UpdateCompanion<UserData> {
     required bool isEmailVerified,
     required int creditScore,
     required String creditScoreStatus,
+    this.verification = const Value.absent(),
+    this.businessVerification = const Value.absent(),
+    this.trader = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        syncStatus = Value(syncStatus),
@@ -4631,6 +5013,8 @@ class UserCompanion extends UpdateCompanion<UserData> {
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<DateTime>? deletedAt,
+    Expression<String>? image,
+    Expression<String>? userName,
     Expression<String>? firstName,
     Expression<String>? lastName,
     Expression<String>? email,
@@ -4639,6 +5023,9 @@ class UserCompanion extends UpdateCompanion<UserData> {
     Expression<bool>? isEmailVerified,
     Expression<int>? creditScore,
     Expression<String>? creditScoreStatus,
+    Expression<String>? verification,
+    Expression<String>? businessVerification,
+    Expression<String>? trader,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -4648,6 +5035,8 @@ class UserCompanion extends UpdateCompanion<UserData> {
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (deletedAt != null) 'deleted_at': deletedAt,
+      if (image != null) 'image': image,
+      if (userName != null) 'user_name': userName,
       if (firstName != null) 'first_name': firstName,
       if (lastName != null) 'last_name': lastName,
       if (email != null) 'email': email,
@@ -4656,6 +5045,10 @@ class UserCompanion extends UpdateCompanion<UserData> {
       if (isEmailVerified != null) 'is_email_verified': isEmailVerified,
       if (creditScore != null) 'credit_score': creditScore,
       if (creditScoreStatus != null) 'credit_score_status': creditScoreStatus,
+      if (verification != null) 'verification': verification,
+      if (businessVerification != null)
+        'business_verification': businessVerification,
+      if (trader != null) 'trader': trader,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -4667,6 +5060,8 @@ class UserCompanion extends UpdateCompanion<UserData> {
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
     Value<DateTime?>? deletedAt,
+    Value<String?>? image,
+    Value<String?>? userName,
     Value<String>? firstName,
     Value<String>? lastName,
     Value<String>? email,
@@ -4675,6 +5070,9 @@ class UserCompanion extends UpdateCompanion<UserData> {
     Value<bool>? isEmailVerified,
     Value<int>? creditScore,
     Value<String>? creditScoreStatus,
+    Value<String?>? verification,
+    Value<String?>? businessVerification,
+    Value<String?>? trader,
     Value<int>? rowid,
   }) {
     return UserCompanion(
@@ -4684,6 +5082,8 @@ class UserCompanion extends UpdateCompanion<UserData> {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
+      image: image ?? this.image,
+      userName: userName ?? this.userName,
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       email: email ?? this.email,
@@ -4692,6 +5092,9 @@ class UserCompanion extends UpdateCompanion<UserData> {
       isEmailVerified: isEmailVerified ?? this.isEmailVerified,
       creditScore: creditScore ?? this.creditScore,
       creditScoreStatus: creditScoreStatus ?? this.creditScoreStatus,
+      verification: verification ?? this.verification,
+      businessVerification: businessVerification ?? this.businessVerification,
+      trader: trader ?? this.trader,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -4717,6 +5120,12 @@ class UserCompanion extends UpdateCompanion<UserData> {
     if (deletedAt.present) {
       map['deleted_at'] = Variable<DateTime>(deletedAt.value);
     }
+    if (image.present) {
+      map['image'] = Variable<String>(image.value);
+    }
+    if (userName.present) {
+      map['user_name'] = Variable<String>(userName.value);
+    }
     if (firstName.present) {
       map['first_name'] = Variable<String>(firstName.value);
     }
@@ -4741,6 +5150,17 @@ class UserCompanion extends UpdateCompanion<UserData> {
     if (creditScoreStatus.present) {
       map['credit_score_status'] = Variable<String>(creditScoreStatus.value);
     }
+    if (verification.present) {
+      map['verification'] = Variable<String>(verification.value);
+    }
+    if (businessVerification.present) {
+      map['business_verification'] = Variable<String>(
+        businessVerification.value,
+      );
+    }
+    if (trader.present) {
+      map['trader'] = Variable<String>(trader.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -4756,6 +5176,8 @@ class UserCompanion extends UpdateCompanion<UserData> {
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
+          ..write('image: $image, ')
+          ..write('userName: $userName, ')
           ..write('firstName: $firstName, ')
           ..write('lastName: $lastName, ')
           ..write('email: $email, ')
@@ -4764,6 +5186,9 @@ class UserCompanion extends UpdateCompanion<UserData> {
           ..write('isEmailVerified: $isEmailVerified, ')
           ..write('creditScore: $creditScore, ')
           ..write('creditScoreStatus: $creditScoreStatus, ')
+          ..write('verification: $verification, ')
+          ..write('businessVerification: $businessVerification, ')
+          ..write('trader: $trader, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -4839,6 +5264,17 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
     aliasedName,
     true,
     type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _customerIdMeta = const VerificationMeta(
+    'customerId',
+  );
+  @override
+  late final GeneratedColumn<String> customerId = GeneratedColumn<String>(
+    'customer_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
   static const VerificationMeta _totalAmountMeta = const VerificationMeta(
@@ -4932,6 +5368,7 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
     createdAt,
     updatedAt,
     deletedAt,
+    customerId,
     totalAmount,
     amountPaid,
     balance,
@@ -4987,6 +5424,12 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
       context.handle(
         _deletedAtMeta,
         deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('customer_id')) {
+      context.handle(
+        _customerIdMeta,
+        customerId.isAcceptableOrUnknown(data['customer_id']!, _customerIdMeta),
       );
     }
     if (data.containsKey('total_amount')) {
@@ -5078,6 +5521,10 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
       ),
+      customerId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}customer_id'],
+      ),
       totalAmount: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}total_amount'],
@@ -5122,6 +5569,7 @@ class Sale extends DataClass implements Insertable<Sale> {
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
+  final String? customerId;
   final int totalAmount;
   final int amountPaid;
   final int balance;
@@ -5136,6 +5584,7 @@ class Sale extends DataClass implements Insertable<Sale> {
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,
+    this.customerId,
     required this.totalAmount,
     required this.amountPaid,
     required this.balance,
@@ -5156,6 +5605,9 @@ class Sale extends DataClass implements Insertable<Sale> {
     map['updated_at'] = Variable<DateTime>(updatedAt);
     if (!nullToAbsent || deletedAt != null) {
       map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    if (!nullToAbsent || customerId != null) {
+      map['customer_id'] = Variable<String>(customerId);
     }
     map['total_amount'] = Variable<int>(totalAmount);
     map['amount_paid'] = Variable<int>(amountPaid);
@@ -5181,6 +5633,9 @@ class Sale extends DataClass implements Insertable<Sale> {
       deletedAt: deletedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(deletedAt),
+      customerId: customerId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(customerId),
       totalAmount: Value(totalAmount),
       amountPaid: Value(amountPaid),
       balance: Value(balance),
@@ -5205,6 +5660,7 @@ class Sale extends DataClass implements Insertable<Sale> {
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      customerId: serializer.fromJson<String?>(json['customerId']),
       totalAmount: serializer.fromJson<int>(json['totalAmount']),
       amountPaid: serializer.fromJson<int>(json['amountPaid']),
       balance: serializer.fromJson<int>(json['balance']),
@@ -5224,6 +5680,7 @@ class Sale extends DataClass implements Insertable<Sale> {
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'customerId': serializer.toJson<String?>(customerId),
       'totalAmount': serializer.toJson<int>(totalAmount),
       'amountPaid': serializer.toJson<int>(amountPaid),
       'balance': serializer.toJson<int>(balance),
@@ -5241,6 +5698,7 @@ class Sale extends DataClass implements Insertable<Sale> {
     DateTime? createdAt,
     DateTime? updatedAt,
     Value<DateTime?> deletedAt = const Value.absent(),
+    Value<String?> customerId = const Value.absent(),
     int? totalAmount,
     int? amountPaid,
     int? balance,
@@ -5255,6 +5713,7 @@ class Sale extends DataClass implements Insertable<Sale> {
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    customerId: customerId.present ? customerId.value : this.customerId,
     totalAmount: totalAmount ?? this.totalAmount,
     amountPaid: amountPaid ?? this.amountPaid,
     balance: balance ?? this.balance,
@@ -5273,6 +5732,9 @@ class Sale extends DataClass implements Insertable<Sale> {
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      customerId: data.customerId.present
+          ? data.customerId.value
+          : this.customerId,
       totalAmount: data.totalAmount.present
           ? data.totalAmount.value
           : this.totalAmount,
@@ -5300,6 +5762,7 @@ class Sale extends DataClass implements Insertable<Sale> {
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
+          ..write('customerId: $customerId, ')
           ..write('totalAmount: $totalAmount, ')
           ..write('amountPaid: $amountPaid, ')
           ..write('balance: $balance, ')
@@ -5319,6 +5782,7 @@ class Sale extends DataClass implements Insertable<Sale> {
     createdAt,
     updatedAt,
     deletedAt,
+    customerId,
     totalAmount,
     amountPaid,
     balance,
@@ -5337,6 +5801,7 @@ class Sale extends DataClass implements Insertable<Sale> {
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
           other.deletedAt == this.deletedAt &&
+          other.customerId == this.customerId &&
           other.totalAmount == this.totalAmount &&
           other.amountPaid == this.amountPaid &&
           other.balance == this.balance &&
@@ -5353,6 +5818,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   final Value<DateTime?> deletedAt;
+  final Value<String?> customerId;
   final Value<int> totalAmount;
   final Value<int> amountPaid;
   final Value<int> balance;
@@ -5368,6 +5834,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
+    this.customerId = const Value.absent(),
     this.totalAmount = const Value.absent(),
     this.amountPaid = const Value.absent(),
     this.balance = const Value.absent(),
@@ -5384,6 +5851,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
+    this.customerId = const Value.absent(),
     required int totalAmount,
     this.amountPaid = const Value.absent(),
     this.balance = const Value.absent(),
@@ -5405,6 +5873,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<DateTime>? deletedAt,
+    Expression<String>? customerId,
     Expression<int>? totalAmount,
     Expression<int>? amountPaid,
     Expression<int>? balance,
@@ -5421,6 +5890,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (deletedAt != null) 'deleted_at': deletedAt,
+      if (customerId != null) 'customer_id': customerId,
       if (totalAmount != null) 'total_amount': totalAmount,
       if (amountPaid != null) 'amount_paid': amountPaid,
       if (balance != null) 'balance': balance,
@@ -5439,6 +5909,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
     Value<DateTime?>? deletedAt,
+    Value<String?>? customerId,
     Value<int>? totalAmount,
     Value<int>? amountPaid,
     Value<int>? balance,
@@ -5455,6 +5926,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
+      customerId: customerId ?? this.customerId,
       totalAmount: totalAmount ?? this.totalAmount,
       amountPaid: amountPaid ?? this.amountPaid,
       balance: balance ?? this.balance,
@@ -5486,6 +5958,9 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     }
     if (deletedAt.present) {
       map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (customerId.present) {
+      map['customer_id'] = Variable<String>(customerId.value);
     }
     if (totalAmount.present) {
       map['total_amount'] = Variable<int>(totalAmount.value);
@@ -5523,6 +5998,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
+          ..write('customerId: $customerId, ')
           ..write('totalAmount: $totalAmount, ')
           ..write('amountPaid: $amountPaid, ')
           ..write('balance: $balance, ')
@@ -5617,6 +6093,16 @@ class $SalesItemTable extends SalesItem
     aliasedName,
     false,
     type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    defaultValue: const Constant(1),
+  );
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
   static const VerificationMeta _unitPriceMeta = const VerificationMeta(
@@ -5658,12 +6144,23 @@ class $SalesItemTable extends SalesItem
   late final GeneratedColumn<String> productId = GeneratedColumn<String>(
     'product_id',
     aliasedName,
-    false,
+    true,
     type: DriftSqlType.string,
-    requiredDuringInsert: true,
+    requiredDuringInsert: false,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
       'REFERENCES product (id)',
     ),
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
   );
   @override
   List<GeneratedColumn> get $columns => [
@@ -5674,10 +6171,12 @@ class $SalesItemTable extends SalesItem
     updatedAt,
     deletedAt,
     quantity,
+    type,
     unitPrice,
     total,
     saleId,
     productId,
+    description,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -5733,8 +6232,14 @@ class $SalesItemTable extends SalesItem
         _quantityMeta,
         quantity.isAcceptableOrUnknown(data['quantity']!, _quantityMeta),
       );
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
     } else if (isInserting) {
-      context.missing(_quantityMeta);
+      context.missing(_typeMeta);
     }
     if (data.containsKey('unit_price')) {
       context.handle(
@@ -5765,8 +6270,15 @@ class $SalesItemTable extends SalesItem
         _productIdMeta,
         productId.isAcceptableOrUnknown(data['product_id']!, _productIdMeta),
       );
-    } else if (isInserting) {
-      context.missing(_productIdMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
     }
     return context;
   }
@@ -5805,6 +6317,10 @@ class $SalesItemTable extends SalesItem
         DriftSqlType.int,
         data['${effectivePrefix}quantity'],
       )!,
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
       unitPrice: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}unit_price'],
@@ -5820,7 +6336,11 @@ class $SalesItemTable extends SalesItem
       productId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}product_id'],
-      )!,
+      ),
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
     );
   }
 
@@ -5838,10 +6358,12 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
   final DateTime updatedAt;
   final DateTime? deletedAt;
   final int quantity;
+  final String type;
   final int unitPrice;
   final int total;
   final String saleId;
-  final String productId;
+  final String? productId;
+  final String? description;
   const SalesItemData({
     required this.id,
     required this.syncStatus,
@@ -5850,10 +6372,12 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
     required this.updatedAt,
     this.deletedAt,
     required this.quantity,
+    required this.type,
     required this.unitPrice,
     required this.total,
     required this.saleId,
-    required this.productId,
+    this.productId,
+    this.description,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -5869,10 +6393,16 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
       map['deleted_at'] = Variable<DateTime>(deletedAt);
     }
     map['quantity'] = Variable<int>(quantity);
+    map['type'] = Variable<String>(type);
     map['unit_price'] = Variable<int>(unitPrice);
     map['total'] = Variable<int>(total);
     map['sale_id'] = Variable<String>(saleId);
-    map['product_id'] = Variable<String>(productId);
+    if (!nullToAbsent || productId != null) {
+      map['product_id'] = Variable<String>(productId);
+    }
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
     return map;
   }
 
@@ -5889,10 +6419,16 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
           ? const Value.absent()
           : Value(deletedAt),
       quantity: Value(quantity),
+      type: Value(type),
       unitPrice: Value(unitPrice),
       total: Value(total),
       saleId: Value(saleId),
-      productId: Value(productId),
+      productId: productId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(productId),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
     );
   }
 
@@ -5909,10 +6445,12 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
       quantity: serializer.fromJson<int>(json['quantity']),
+      type: serializer.fromJson<String>(json['type']),
       unitPrice: serializer.fromJson<int>(json['unitPrice']),
       total: serializer.fromJson<int>(json['total']),
       saleId: serializer.fromJson<String>(json['saleId']),
-      productId: serializer.fromJson<String>(json['productId']),
+      productId: serializer.fromJson<String?>(json['productId']),
+      description: serializer.fromJson<String?>(json['description']),
     );
   }
   @override
@@ -5926,10 +6464,12 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
       'quantity': serializer.toJson<int>(quantity),
+      'type': serializer.toJson<String>(type),
       'unitPrice': serializer.toJson<int>(unitPrice),
       'total': serializer.toJson<int>(total),
       'saleId': serializer.toJson<String>(saleId),
-      'productId': serializer.toJson<String>(productId),
+      'productId': serializer.toJson<String?>(productId),
+      'description': serializer.toJson<String?>(description),
     };
   }
 
@@ -5941,10 +6481,12 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
     DateTime? updatedAt,
     Value<DateTime?> deletedAt = const Value.absent(),
     int? quantity,
+    String? type,
     int? unitPrice,
     int? total,
     String? saleId,
-    String? productId,
+    Value<String?> productId = const Value.absent(),
+    Value<String?> description = const Value.absent(),
   }) => SalesItemData(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
@@ -5953,10 +6495,12 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
     updatedAt: updatedAt ?? this.updatedAt,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
     quantity: quantity ?? this.quantity,
+    type: type ?? this.type,
     unitPrice: unitPrice ?? this.unitPrice,
     total: total ?? this.total,
     saleId: saleId ?? this.saleId,
-    productId: productId ?? this.productId,
+    productId: productId.present ? productId.value : this.productId,
+    description: description.present ? description.value : this.description,
   );
   SalesItemData copyWithCompanion(SalesItemCompanion data) {
     return SalesItemData(
@@ -5969,10 +6513,14 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
       quantity: data.quantity.present ? data.quantity.value : this.quantity,
+      type: data.type.present ? data.type.value : this.type,
       unitPrice: data.unitPrice.present ? data.unitPrice.value : this.unitPrice,
       total: data.total.present ? data.total.value : this.total,
       saleId: data.saleId.present ? data.saleId.value : this.saleId,
       productId: data.productId.present ? data.productId.value : this.productId,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
     );
   }
 
@@ -5986,10 +6534,12 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
           ..write('quantity: $quantity, ')
+          ..write('type: $type, ')
           ..write('unitPrice: $unitPrice, ')
           ..write('total: $total, ')
           ..write('saleId: $saleId, ')
-          ..write('productId: $productId')
+          ..write('productId: $productId, ')
+          ..write('description: $description')
           ..write(')'))
         .toString();
   }
@@ -6003,10 +6553,12 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
     updatedAt,
     deletedAt,
     quantity,
+    type,
     unitPrice,
     total,
     saleId,
     productId,
+    description,
   );
   @override
   bool operator ==(Object other) =>
@@ -6019,10 +6571,12 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
           other.updatedAt == this.updatedAt &&
           other.deletedAt == this.deletedAt &&
           other.quantity == this.quantity &&
+          other.type == this.type &&
           other.unitPrice == this.unitPrice &&
           other.total == this.total &&
           other.saleId == this.saleId &&
-          other.productId == this.productId);
+          other.productId == this.productId &&
+          other.description == this.description);
 }
 
 class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
@@ -6033,10 +6587,12 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
   final Value<DateTime> updatedAt;
   final Value<DateTime?> deletedAt;
   final Value<int> quantity;
+  final Value<String> type;
   final Value<int> unitPrice;
   final Value<int> total;
   final Value<String> saleId;
-  final Value<String> productId;
+  final Value<String?> productId;
+  final Value<String?> description;
   final Value<int> rowid;
   const SalesItemCompanion({
     this.id = const Value.absent(),
@@ -6046,10 +6602,12 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
     this.quantity = const Value.absent(),
+    this.type = const Value.absent(),
     this.unitPrice = const Value.absent(),
     this.total = const Value.absent(),
     this.saleId = const Value.absent(),
     this.productId = const Value.absent(),
+    this.description = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   SalesItemCompanion.insert({
@@ -6059,19 +6617,20 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
-    required int quantity,
+    this.quantity = const Value.absent(),
+    required String type,
     required int unitPrice,
     required int total,
     required String saleId,
-    required String productId,
+    this.productId = const Value.absent(),
+    this.description = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        syncStatus = Value(syncStatus),
-       quantity = Value(quantity),
+       type = Value(type),
        unitPrice = Value(unitPrice),
        total = Value(total),
-       saleId = Value(saleId),
-       productId = Value(productId);
+       saleId = Value(saleId);
   static Insertable<SalesItemData> custom({
     Expression<String>? id,
     Expression<String>? syncStatus,
@@ -6080,10 +6639,12 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
     Expression<DateTime>? updatedAt,
     Expression<DateTime>? deletedAt,
     Expression<int>? quantity,
+    Expression<String>? type,
     Expression<int>? unitPrice,
     Expression<int>? total,
     Expression<String>? saleId,
     Expression<String>? productId,
+    Expression<String>? description,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -6094,10 +6655,12 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
       if (updatedAt != null) 'updated_at': updatedAt,
       if (deletedAt != null) 'deleted_at': deletedAt,
       if (quantity != null) 'quantity': quantity,
+      if (type != null) 'type': type,
       if (unitPrice != null) 'unit_price': unitPrice,
       if (total != null) 'total': total,
       if (saleId != null) 'sale_id': saleId,
       if (productId != null) 'product_id': productId,
+      if (description != null) 'description': description,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -6110,10 +6673,12 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
     Value<DateTime>? updatedAt,
     Value<DateTime?>? deletedAt,
     Value<int>? quantity,
+    Value<String>? type,
     Value<int>? unitPrice,
     Value<int>? total,
     Value<String>? saleId,
-    Value<String>? productId,
+    Value<String?>? productId,
+    Value<String?>? description,
     Value<int>? rowid,
   }) {
     return SalesItemCompanion(
@@ -6124,10 +6689,12 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
       quantity: quantity ?? this.quantity,
+      type: type ?? this.type,
       unitPrice: unitPrice ?? this.unitPrice,
       total: total ?? this.total,
       saleId: saleId ?? this.saleId,
       productId: productId ?? this.productId,
+      description: description ?? this.description,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -6156,6 +6723,9 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
     if (quantity.present) {
       map['quantity'] = Variable<int>(quantity.value);
     }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
     if (unitPrice.present) {
       map['unit_price'] = Variable<int>(unitPrice.value);
     }
@@ -6167,6 +6737,9 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
     }
     if (productId.present) {
       map['product_id'] = Variable<String>(productId.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -6184,10 +6757,12 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
           ..write('quantity: $quantity, ')
+          ..write('type: $type, ')
           ..write('unitPrice: $unitPrice, ')
           ..write('total: $total, ')
           ..write('saleId: $saleId, ')
           ..write('productId: $productId, ')
+          ..write('description: $description, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -6880,6 +7455,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     salesItem,
     payments,
   ];
+  @override
+  DriftDatabaseOptions get options =>
+      const DriftDatabaseOptions(storeDateTimeAsText: true);
 }
 
 typedef $$BusinessVerificationTableCreateCompanionBuilder =
@@ -8196,8 +8774,8 @@ typedef $$ProductTableCreateCompanionBuilder =
       required String description,
       required String bulkUnitName,
       required String pieceUnitName,
-      required int unitsPerBulk,
-      required int costPrice,
+      Value<int> unitsPerBulk,
+      required int costPricePerUnit,
       required int sellingPricePerPiece,
       required int sellingPricePerBulk,
       required String category,
@@ -8220,7 +8798,7 @@ typedef $$ProductTableUpdateCompanionBuilder =
       Value<String> bulkUnitName,
       Value<String> pieceUnitName,
       Value<int> unitsPerBulk,
-      Value<int> costPrice,
+      Value<int> costPricePerUnit,
       Value<int> sellingPricePerPiece,
       Value<int> sellingPricePerBulk,
       Value<String> category,
@@ -8373,8 +8951,8 @@ class $$ProductTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get costPrice => $composableBuilder(
-    column: $table.costPrice,
+  ColumnFilters<int> get costPricePerUnit => $composableBuilder(
+    column: $table.costPricePerUnit,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -8571,8 +9149,8 @@ class $$ProductTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get costPrice => $composableBuilder(
-    column: $table.costPrice,
+  ColumnOrderings<int> get costPricePerUnit => $composableBuilder(
+    column: $table.costPricePerUnit,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -8682,8 +9260,10 @@ class $$ProductTableAnnotationComposer
     builder: (column) => column,
   );
 
-  GeneratedColumn<int> get costPrice =>
-      $composableBuilder(column: $table.costPrice, builder: (column) => column);
+  GeneratedColumn<int> get costPricePerUnit => $composableBuilder(
+    column: $table.costPricePerUnit,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get sellingPricePerPiece => $composableBuilder(
     column: $table.sellingPricePerPiece,
@@ -8852,7 +9432,7 @@ class $$ProductTableTableManager
                 Value<String> bulkUnitName = const Value.absent(),
                 Value<String> pieceUnitName = const Value.absent(),
                 Value<int> unitsPerBulk = const Value.absent(),
-                Value<int> costPrice = const Value.absent(),
+                Value<int> costPricePerUnit = const Value.absent(),
                 Value<int> sellingPricePerPiece = const Value.absent(),
                 Value<int> sellingPricePerBulk = const Value.absent(),
                 Value<String> category = const Value.absent(),
@@ -8873,7 +9453,7 @@ class $$ProductTableTableManager
                 bulkUnitName: bulkUnitName,
                 pieceUnitName: pieceUnitName,
                 unitsPerBulk: unitsPerBulk,
-                costPrice: costPrice,
+                costPricePerUnit: costPricePerUnit,
                 sellingPricePerPiece: sellingPricePerPiece,
                 sellingPricePerBulk: sellingPricePerBulk,
                 category: category,
@@ -8895,8 +9475,8 @@ class $$ProductTableTableManager
                 required String description,
                 required String bulkUnitName,
                 required String pieceUnitName,
-                required int unitsPerBulk,
-                required int costPrice,
+                Value<int> unitsPerBulk = const Value.absent(),
+                required int costPricePerUnit,
                 required int sellingPricePerPiece,
                 required int sellingPricePerBulk,
                 required String category,
@@ -8917,7 +9497,7 @@ class $$ProductTableTableManager
                 bulkUnitName: bulkUnitName,
                 pieceUnitName: pieceUnitName,
                 unitsPerBulk: unitsPerBulk,
-                costPrice: costPrice,
+                costPricePerUnit: costPricePerUnit,
                 sellingPricePerPiece: sellingPricePerPiece,
                 sellingPricePerBulk: sellingPricePerBulk,
                 category: category,
@@ -9082,8 +9662,11 @@ typedef $$SpineBatchTableCreateCompanionBuilder =
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
       Value<DateTime?> expiryDate,
-      required int quantity,
       required String batchNumber,
+      required int costPricePerPiece,
+      required int costPricePerBulk,
+      required int initialQuantity,
+      required int remainingQuantity,
       required String productId,
       Value<int> rowid,
     });
@@ -9096,8 +9679,11 @@ typedef $$SpineBatchTableUpdateCompanionBuilder =
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
       Value<DateTime?> expiryDate,
-      Value<int> quantity,
       Value<String> batchNumber,
+      Value<int> costPricePerPiece,
+      Value<int> costPricePerBulk,
+      Value<int> initialQuantity,
+      Value<int> remainingQuantity,
       Value<String> productId,
       Value<int> rowid,
     });
@@ -9188,13 +9774,28 @@ class $$SpineBatchTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get quantity => $composableBuilder(
-    column: $table.quantity,
+  ColumnFilters<String> get batchNumber => $composableBuilder(
+    column: $table.batchNumber,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get batchNumber => $composableBuilder(
-    column: $table.batchNumber,
+  ColumnFilters<int> get costPricePerPiece => $composableBuilder(
+    column: $table.costPricePerPiece,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get costPricePerBulk => $composableBuilder(
+    column: $table.costPricePerBulk,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get initialQuantity => $composableBuilder(
+    column: $table.initialQuantity,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get remainingQuantity => $composableBuilder(
+    column: $table.remainingQuantity,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -9291,13 +9892,28 @@ class $$SpineBatchTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get quantity => $composableBuilder(
-    column: $table.quantity,
+  ColumnOrderings<String> get batchNumber => $composableBuilder(
+    column: $table.batchNumber,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get batchNumber => $composableBuilder(
-    column: $table.batchNumber,
+  ColumnOrderings<int> get costPricePerPiece => $composableBuilder(
+    column: $table.costPricePerPiece,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get costPricePerBulk => $composableBuilder(
+    column: $table.costPricePerBulk,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get initialQuantity => $composableBuilder(
+    column: $table.initialQuantity,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get remainingQuantity => $composableBuilder(
+    column: $table.remainingQuantity,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -9359,11 +9975,28 @@ class $$SpineBatchTableAnnotationComposer
     builder: (column) => column,
   );
 
-  GeneratedColumn<int> get quantity =>
-      $composableBuilder(column: $table.quantity, builder: (column) => column);
-
   GeneratedColumn<String> get batchNumber => $composableBuilder(
     column: $table.batchNumber,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get costPricePerPiece => $composableBuilder(
+    column: $table.costPricePerPiece,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get costPricePerBulk => $composableBuilder(
+    column: $table.costPricePerBulk,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get initialQuantity => $composableBuilder(
+    column: $table.initialQuantity,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get remainingQuantity => $composableBuilder(
+    column: $table.remainingQuantity,
     builder: (column) => column,
   );
 
@@ -9451,8 +10084,11 @@ class $$SpineBatchTableTableManager
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
                 Value<DateTime?> expiryDate = const Value.absent(),
-                Value<int> quantity = const Value.absent(),
                 Value<String> batchNumber = const Value.absent(),
+                Value<int> costPricePerPiece = const Value.absent(),
+                Value<int> costPricePerBulk = const Value.absent(),
+                Value<int> initialQuantity = const Value.absent(),
+                Value<int> remainingQuantity = const Value.absent(),
                 Value<String> productId = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SpineBatchCompanion(
@@ -9463,8 +10099,11 @@ class $$SpineBatchTableTableManager
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
                 expiryDate: expiryDate,
-                quantity: quantity,
                 batchNumber: batchNumber,
+                costPricePerPiece: costPricePerPiece,
+                costPricePerBulk: costPricePerBulk,
+                initialQuantity: initialQuantity,
+                remainingQuantity: remainingQuantity,
                 productId: productId,
                 rowid: rowid,
               ),
@@ -9477,8 +10116,11 @@ class $$SpineBatchTableTableManager
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
                 Value<DateTime?> expiryDate = const Value.absent(),
-                required int quantity,
                 required String batchNumber,
+                required int costPricePerPiece,
+                required int costPricePerBulk,
+                required int initialQuantity,
+                required int remainingQuantity,
                 required String productId,
                 Value<int> rowid = const Value.absent(),
               }) => SpineBatchCompanion.insert(
@@ -9489,8 +10131,11 @@ class $$SpineBatchTableTableManager
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
                 expiryDate: expiryDate,
-                quantity: quantity,
                 batchNumber: batchNumber,
+                costPricePerPiece: costPricePerPiece,
+                costPricePerBulk: costPricePerBulk,
+                initialQuantity: initialQuantity,
+                remainingQuantity: remainingQuantity,
                 productId: productId,
                 rowid: rowid,
               ),
@@ -10184,6 +10829,8 @@ typedef $$UserTableCreateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
+      Value<String?> image,
+      Value<String?> userName,
       required String firstName,
       required String lastName,
       required String email,
@@ -10192,6 +10839,9 @@ typedef $$UserTableCreateCompanionBuilder =
       required bool isEmailVerified,
       required int creditScore,
       required String creditScoreStatus,
+      Value<String?> verification,
+      Value<String?> businessVerification,
+      Value<String?> trader,
       Value<int> rowid,
     });
 typedef $$UserTableUpdateCompanionBuilder =
@@ -10202,6 +10852,8 @@ typedef $$UserTableUpdateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
+      Value<String?> image,
+      Value<String?> userName,
       Value<String> firstName,
       Value<String> lastName,
       Value<String> email,
@@ -10210,6 +10862,9 @@ typedef $$UserTableUpdateCompanionBuilder =
       Value<bool> isEmailVerified,
       Value<int> creditScore,
       Value<String> creditScoreStatus,
+      Value<String?> verification,
+      Value<String?> businessVerification,
+      Value<String?> trader,
       Value<int> rowid,
     });
 
@@ -10275,6 +10930,16 @@ class $$UserTableFilterComposer extends Composer<_$AppDatabase, $UserTable> {
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get image => $composableBuilder(
+    column: $table.image,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userName => $composableBuilder(
+    column: $table.userName,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get firstName => $composableBuilder(
     column: $table.firstName,
     builder: (column) => ColumnFilters(column),
@@ -10312,6 +10977,21 @@ class $$UserTableFilterComposer extends Composer<_$AppDatabase, $UserTable> {
 
   ColumnFilters<String> get creditScoreStatus => $composableBuilder(
     column: $table.creditScoreStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get verification => $composableBuilder(
+    column: $table.verification,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get businessVerification => $composableBuilder(
+    column: $table.businessVerification,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get trader => $composableBuilder(
+    column: $table.trader,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -10379,6 +11059,16 @@ class $$UserTableOrderingComposer extends Composer<_$AppDatabase, $UserTable> {
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get image => $composableBuilder(
+    column: $table.image,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userName => $composableBuilder(
+    column: $table.userName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get firstName => $composableBuilder(
     column: $table.firstName,
     builder: (column) => ColumnOrderings(column),
@@ -10418,6 +11108,21 @@ class $$UserTableOrderingComposer extends Composer<_$AppDatabase, $UserTable> {
     column: $table.creditScoreStatus,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get verification => $composableBuilder(
+    column: $table.verification,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get businessVerification => $composableBuilder(
+    column: $table.businessVerification,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get trader => $composableBuilder(
+    column: $table.trader,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$UserTableAnnotationComposer
@@ -10449,6 +11154,12 @@ class $$UserTableAnnotationComposer
   GeneratedColumn<DateTime> get deletedAt =>
       $composableBuilder(column: $table.deletedAt, builder: (column) => column);
 
+  GeneratedColumn<String> get image =>
+      $composableBuilder(column: $table.image, builder: (column) => column);
+
+  GeneratedColumn<String> get userName =>
+      $composableBuilder(column: $table.userName, builder: (column) => column);
+
   GeneratedColumn<String> get firstName =>
       $composableBuilder(column: $table.firstName, builder: (column) => column);
 
@@ -10478,6 +11189,19 @@ class $$UserTableAnnotationComposer
     column: $table.creditScoreStatus,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get verification => $composableBuilder(
+    column: $table.verification,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get businessVerification => $composableBuilder(
+    column: $table.businessVerification,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get trader =>
+      $composableBuilder(column: $table.trader, builder: (column) => column);
 
   Expression<T> salesRefs<T extends Object>(
     Expression<T> Function($$SalesTableAnnotationComposer a) f,
@@ -10539,6 +11263,8 @@ class $$UserTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String?> image = const Value.absent(),
+                Value<String?> userName = const Value.absent(),
                 Value<String> firstName = const Value.absent(),
                 Value<String> lastName = const Value.absent(),
                 Value<String> email = const Value.absent(),
@@ -10547,6 +11273,9 @@ class $$UserTableTableManager
                 Value<bool> isEmailVerified = const Value.absent(),
                 Value<int> creditScore = const Value.absent(),
                 Value<String> creditScoreStatus = const Value.absent(),
+                Value<String?> verification = const Value.absent(),
+                Value<String?> businessVerification = const Value.absent(),
+                Value<String?> trader = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => UserCompanion(
                 id: id,
@@ -10555,6 +11284,8 @@ class $$UserTableTableManager
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
+                image: image,
+                userName: userName,
                 firstName: firstName,
                 lastName: lastName,
                 email: email,
@@ -10563,6 +11294,9 @@ class $$UserTableTableManager
                 isEmailVerified: isEmailVerified,
                 creditScore: creditScore,
                 creditScoreStatus: creditScoreStatus,
+                verification: verification,
+                businessVerification: businessVerification,
+                trader: trader,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -10573,6 +11307,8 @@ class $$UserTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String?> image = const Value.absent(),
+                Value<String?> userName = const Value.absent(),
                 required String firstName,
                 required String lastName,
                 required String email,
@@ -10581,6 +11317,9 @@ class $$UserTableTableManager
                 required bool isEmailVerified,
                 required int creditScore,
                 required String creditScoreStatus,
+                Value<String?> verification = const Value.absent(),
+                Value<String?> businessVerification = const Value.absent(),
+                Value<String?> trader = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => UserCompanion.insert(
                 id: id,
@@ -10589,6 +11328,8 @@ class $$UserTableTableManager
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
+                image: image,
+                userName: userName,
                 firstName: firstName,
                 lastName: lastName,
                 email: email,
@@ -10597,6 +11338,9 @@ class $$UserTableTableManager
                 isEmailVerified: isEmailVerified,
                 creditScore: creditScore,
                 creditScoreStatus: creditScoreStatus,
+                verification: verification,
+                businessVerification: businessVerification,
+                trader: trader,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -10654,6 +11398,7 @@ typedef $$SalesTableCreateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
+      Value<String?> customerId,
       required int totalAmount,
       Value<int> amountPaid,
       Value<int> balance,
@@ -10671,6 +11416,7 @@ typedef $$SalesTableUpdateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
+      Value<String?> customerId,
       Value<int> totalAmount,
       Value<int> amountPaid,
       Value<int> balance,
@@ -10794,6 +11540,11 @@ class $$SalesTableFilterComposer extends Composer<_$AppDatabase, $SalesTable> {
 
   ColumnFilters<DateTime> get deletedAt => $composableBuilder(
     column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get customerId => $composableBuilder(
+    column: $table.customerId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -10958,6 +11709,11 @@ class $$SalesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get customerId => $composableBuilder(
+    column: $table.customerId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get totalAmount => $composableBuilder(
     column: $table.totalAmount,
     builder: (column) => ColumnOrderings(column),
@@ -11058,6 +11814,11 @@ class $$SalesTableAnnotationComposer
 
   GeneratedColumn<DateTime> get deletedAt =>
       $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get customerId => $composableBuilder(
+    column: $table.customerId,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<int> get totalAmount => $composableBuilder(
     column: $table.totalAmount,
@@ -11216,6 +11977,7 @@ class $$SalesTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String?> customerId = const Value.absent(),
                 Value<int> totalAmount = const Value.absent(),
                 Value<int> amountPaid = const Value.absent(),
                 Value<int> balance = const Value.absent(),
@@ -11231,6 +11993,7 @@ class $$SalesTableTableManager
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
+                customerId: customerId,
                 totalAmount: totalAmount,
                 amountPaid: amountPaid,
                 balance: balance,
@@ -11248,6 +12011,7 @@ class $$SalesTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String?> customerId = const Value.absent(),
                 required int totalAmount,
                 Value<int> amountPaid = const Value.absent(),
                 Value<int> balance = const Value.absent(),
@@ -11263,6 +12027,7 @@ class $$SalesTableTableManager
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
+                customerId: customerId,
                 totalAmount: totalAmount,
                 amountPaid: amountPaid,
                 balance: balance,
@@ -11411,11 +12176,13 @@ typedef $$SalesItemTableCreateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
-      required int quantity,
+      Value<int> quantity,
+      required String type,
       required int unitPrice,
       required int total,
       required String saleId,
-      required String productId,
+      Value<String?> productId,
+      Value<String?> description,
       Value<int> rowid,
     });
 typedef $$SalesItemTableUpdateCompanionBuilder =
@@ -11427,10 +12194,12 @@ typedef $$SalesItemTableUpdateCompanionBuilder =
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
       Value<int> quantity,
+      Value<String> type,
       Value<int> unitPrice,
       Value<int> total,
       Value<String> saleId,
-      Value<String> productId,
+      Value<String?> productId,
+      Value<String?> description,
       Value<int> rowid,
     });
 
@@ -11459,9 +12228,9 @@ final class $$SalesItemTableReferences
   static $ProductTable _productIdTable(_$AppDatabase db) => db.product
       .createAlias($_aliasNameGenerator(db.salesItem.productId, db.product.id));
 
-  $$ProductTableProcessedTableManager get productId {
-    final $_column = $_itemColumn<String>('product_id')!;
-
+  $$ProductTableProcessedTableManager? get productId {
+    final $_column = $_itemColumn<String>('product_id');
+    if ($_column == null) return null;
     final manager = $$ProductTableTableManager(
       $_db,
       $_db.product,
@@ -11518,6 +12287,11 @@ class $$SalesItemTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<int> get unitPrice => $composableBuilder(
     column: $table.unitPrice,
     builder: (column) => ColumnFilters(column),
@@ -11525,6 +12299,11 @@ class $$SalesItemTableFilterComposer
 
   ColumnFilters<int> get total => $composableBuilder(
     column: $table.total,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -11619,6 +12398,11 @@ class $$SalesItemTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get unitPrice => $composableBuilder(
     column: $table.unitPrice,
     builder: (column) => ColumnOrderings(column),
@@ -11626,6 +12410,11 @@ class $$SalesItemTableOrderingComposer
 
   ColumnOrderings<int> get total => $composableBuilder(
     column: $table.total,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -11708,11 +12497,19 @@ class $$SalesItemTableAnnotationComposer
   GeneratedColumn<int> get quantity =>
       $composableBuilder(column: $table.quantity, builder: (column) => column);
 
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
   GeneratedColumn<int> get unitPrice =>
       $composableBuilder(column: $table.unitPrice, builder: (column) => column);
 
   GeneratedColumn<int> get total =>
       $composableBuilder(column: $table.total, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
 
   $$SalesTableAnnotationComposer get saleId {
     final $$SalesTableAnnotationComposer composer = $composerBuilder(
@@ -11796,10 +12593,12 @@ class $$SalesItemTableTableManager
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
                 Value<int> quantity = const Value.absent(),
+                Value<String> type = const Value.absent(),
                 Value<int> unitPrice = const Value.absent(),
                 Value<int> total = const Value.absent(),
                 Value<String> saleId = const Value.absent(),
-                Value<String> productId = const Value.absent(),
+                Value<String?> productId = const Value.absent(),
+                Value<String?> description = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SalesItemCompanion(
                 id: id,
@@ -11809,10 +12608,12 @@ class $$SalesItemTableTableManager
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
                 quantity: quantity,
+                type: type,
                 unitPrice: unitPrice,
                 total: total,
                 saleId: saleId,
                 productId: productId,
+                description: description,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -11823,11 +12624,13 @@ class $$SalesItemTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
-                required int quantity,
+                Value<int> quantity = const Value.absent(),
+                required String type,
                 required int unitPrice,
                 required int total,
                 required String saleId,
-                required String productId,
+                Value<String?> productId = const Value.absent(),
+                Value<String?> description = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SalesItemCompanion.insert(
                 id: id,
@@ -11837,10 +12640,12 @@ class $$SalesItemTableTableManager
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
                 quantity: quantity,
+                type: type,
                 unitPrice: unitPrice,
                 total: total,
                 saleId: saleId,
                 productId: productId,
+                description: description,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

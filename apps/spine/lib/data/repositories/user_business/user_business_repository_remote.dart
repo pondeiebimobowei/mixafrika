@@ -35,9 +35,9 @@ class UserBusinessRepositoryRemote implements UserBusinessRepositoryAbstract {
       syncStatus: '',
       syncDate: DateTime.now(),
 
+
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
-      deletedAt: DateTime.now(),
     );
 
     final res = await _apiService.createUserBusiness(userBusiness);

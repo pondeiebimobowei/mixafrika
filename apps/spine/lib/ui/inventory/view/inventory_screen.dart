@@ -53,8 +53,6 @@ class InventoryView extends ConsumerWidget {
               ),
               child: FButton(
                 size: .xs,
-
-                // variant: .secondary,
                 onPress: () => context.go(Routes.addProduct),
                 child: Icon(Icons.add, color: Colors.white, size: 24),
               ),

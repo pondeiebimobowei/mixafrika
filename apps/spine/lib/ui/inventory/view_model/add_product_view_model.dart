@@ -32,14 +32,6 @@ class AddProductViewModel extends StateNotifier<AddProductState> {
   }
 
   Future<ApiResponse<void>> submitProduct() async {
-    if (state.name.isEmpty) {
-      state = state.copyWith(errorMessage: 'Product name is required');
-      return ApiResponse(
-        data: null,
-        success: false,
-        message: 'Product name is required',
-      );
-    }
 
     state = state.copyWith(isLoading: true, errorMessage: null);
 
@@ -51,22 +43,24 @@ class AddProductViewModel extends StateNotifier<AddProductState> {
         id: const Uuid().v4(),
         businessId: businessId,
         name: state.name,
-        description: '', // Optional in UI
-        bulkUnitName: state.bulkUnit.isEmpty ? 'Bulk' : state.bulkUnit,
-        pieceUnitName: state.retailUnit.isEmpty ? 'Piece' : state.retailUnit,
-        unitsPerBulk: int.tryParse(state.conversionFactor) ?? 1,
-        costPrice: 0, // Optional or not in UI
-        sellingPricePerPiece: int.tryParse(state.sellPricePerRetail) ?? 0,
-        sellingPricePerBulk: int.tryParse(state.sellPricePerBulk) ?? 0,
+        description: '',
+        bulkUnitName: state.bulkUnit,
+        pieceUnitName: state.retailUnit,
+        unitsPerBulk: int.parse(state.conversionFactor),
+        costPricePerUnit: 0,
+        sellingPricePerPiece: int.parse(state.sellPricePerRetail),
+        sellingPricePerBulk: int.parse(state.sellPricePerBulk),
         category: '',
         serialNumber: state.barcode,
         imageUrl: '',
-        reviews: '[]',
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        deletedAt: DateTime.now(),
+        reviews: '',
+
         syncStatus: 'pending',
         syncDate: DateTime.now(),
+
+
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
       );
 
       final repository = ref.read(productRepositoryProvider);
@@ -76,6 +70,7 @@ class AddProductViewModel extends StateNotifier<AddProductState> {
 
       if (response.success) {
         state = state.copyWith(isLoading: false, isSuccess: true);
+
       } else {
         state = state.copyWith(
           isLoading: false,

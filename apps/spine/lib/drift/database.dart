@@ -111,21 +111,21 @@ final product1 = ProductData(
   bulkUnitName: 'Carton',
   pieceUnitName: 'Pack',
   unitsPerBulk: 10,
-  costPrice: 3000,
+  costPricePerUnit: 3000,
   sellingPricePerPiece: 4000,
   sellingPricePerBulk: 20000,
   category: 'Food',
   serialNumber: '345567567',
   imageUrl: 'avatar.png',
   businessId: userBiz1.id,
-
   reviews: 'Reviews',
+
+  syncStatus: 'Sync status',
+  syncDate: DateTime.now(),
+
 
   createdAt: DateTime.now(),
   updatedAt: DateTime.now(),
-  deletedAt: DateTime.now(),
-  syncStatus: 'Sync status',
-  syncDate: DateTime.now(),
 );
 final product2 = ProductData(
   id: Uuid().v4(),
@@ -134,35 +134,39 @@ final product2 = ProductData(
   bulkUnitName: 'Bunch',
   pieceUnitName: 'Finger',
   unitsPerBulk: 5,
-  costPrice: 1500,
+  costPricePerUnit: 1500,
   sellingPricePerPiece: 2000,
   sellingPricePerBulk: 10000,
   category: 'Food',
   serialNumber: '123450987',
   imageUrl: 'image.png',
   businessId: userBiz1.id,
-
   reviews: 'no review',
+
+  syncStatus: 'pending',
+  syncDate: DateTime.now(),
+
 
   createdAt: DateTime.now(),
   updatedAt: DateTime.now(),
-  deletedAt: DateTime.now(),
-  syncStatus: 'pending',
-  syncDate: DateTime.now(),
 );
 
 final batch1 = SpineBatchData(
   id: Uuid().v4(),
   batchNumber: '123456789',
-  quantity: 30,
+  costPricePerBulk: 1500,
+  costPricePerPiece: 1800,
+  initialQuantity: 10,
+  remainingQuantity: 10,
   expiryDate: DateTime.now(),
   productId: product1.id,
 
-  createdAt: DateTime.now(),
-  updatedAt: DateTime.now(),
-  deletedAt: DateTime.now(),
   syncStatus: 'Sync status',
   syncDate: DateTime.now(),
+
+
+  createdAt: DateTime.now(),
+  updatedAt: DateTime.now(),
 );
 
 final inventory1 = InventoryData(
@@ -171,11 +175,13 @@ final inventory1 = InventoryData(
   productId: product1.id,
   businessId: userBiz1.id,
   batchId: batch1.id,
-  createdAt: DateTime.now(),
-  updatedAt: DateTime.now(),
-  deletedAt: DateTime.now(),
+  
   syncStatus: 'pending',
   syncDate: DateTime.now(),
+
+
+  createdAt: DateTime.now(),
+  updatedAt: DateTime.now(),
 );
 
 final inventory2 = InventoryData(
@@ -184,11 +190,13 @@ final inventory2 = InventoryData(
   productId: product2.id,
   businessId: userBiz1.id,
   batchId: batch1.id,
-  createdAt: DateTime.now(),
-  updatedAt: DateTime.now(),
-  deletedAt: DateTime.now(),
+
   syncStatus: 'pending',
   syncDate: DateTime.now(),
+  
+  
+  createdAt: DateTime.now(),
+  updatedAt: DateTime.now(),
 );
 
 final userBiz1 = UserBusinessData(
@@ -203,12 +211,13 @@ final userBiz1 = UserBusinessData(
   state: 'Abuja',
   country: 'Nigeria',
   verification: 'not verified',
+
   syncStatus: 'pending',
+  syncDate: DateTime.now(),
+
 
   createdAt: DateTime.now(),
   updatedAt: DateTime.now(),
-  deletedAt: DateTime.now(),
-  syncDate: DateTime.now(),
 );
 
 final userBiz2 = UserBusinessData(
@@ -223,10 +232,11 @@ final userBiz2 = UserBusinessData(
   state: 'Abuja',
   country: 'Nigeria',
   verification: 'not verified',
+
   syncStatus: 'pending',
+  syncDate: DateTime.now(),
+
 
   createdAt: DateTime.now(),
   updatedAt: DateTime.now(),
-  deletedAt: DateTime.now(),
-  syncDate: DateTime.now(),
 );

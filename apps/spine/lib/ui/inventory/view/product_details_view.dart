@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:spine/drift/database.dart';
 import 'package:spine/routing/routes.dart';
+import 'package:spine/ui/inventory/state/product_details_state.dart';
 import 'package:spine/ui/inventory/view_model/product_details_view_model.dart';
 import 'package:spine/widget/icon_widget.dart';
 import 'package:intl/intl.dart';
@@ -13,7 +15,7 @@ class ProductDetailsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(productDetailsViewModelProvider(productId));
+    final ProductDetailsState state = ref.watch(productDetailsViewModelProvider(productId));
     final colors = context.theme.colors;
 
     return FScaffold(
@@ -69,7 +71,7 @@ class ProductDetailsView extends ConsumerWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, dynamic state) {
+  Widget _buildContent(BuildContext context, ProductDetailsState state) {
     final item = state.item!;
     final product = item.product;
 
@@ -187,13 +189,13 @@ class ProductDetailsView extends ConsumerWidget {
     );
   }
 
-  Widget _buildPricingSection(BuildContext context, dynamic product) {
+  Widget _buildPricingSection(BuildContext context, ProductData product) {
     return Row(
       children: [
         Expanded(
           child: _buildPriceCard(
             'COST PRICE',
-            '₦${product.costPrice}',
+            '₦${product.costPricePerUnit}',
             Colors.white,
           ),
         ),
@@ -241,9 +243,8 @@ class ProductDetailsView extends ConsumerWidget {
     );
   }
 
-  Widget _buildProfitCard(BuildContext context, dynamic product) {
-    // Basic calculation for demo
-    final cost = product.costPrice.toDouble();
+  Widget _buildProfitCard(BuildContext context, ProductData product) {
+    final cost = product.costPricePerUnit.toDouble();
     final selling =
         product.sellingPricePerPiece.toDouble() *
         product.unitsPerBulk.toDouble();
@@ -470,8 +471,8 @@ class ProductDetailsView extends ConsumerWidget {
 
   Widget _buildProductDetailsTable(
     BuildContext context,
-    dynamic product,
-    double totalUnits,
+    ProductData product,
+    int totalUnits,
   ) {
     // Calculate total stock value
     final piecePrice = product.sellingPricePerPiece.toDouble();

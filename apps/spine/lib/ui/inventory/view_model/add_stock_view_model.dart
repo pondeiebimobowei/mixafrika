@@ -90,6 +90,8 @@ class AddStockViewModel extends StateNotifier<AddStockState> {
         bulkQuantity: int.tryParse(state.bulkQuantity) ?? 0,
         pieceQuantity: int.tryParse(state.pieceQuantity) ?? 0,
         totalCost: state.totalCost,
+        bulkPrice: int.tryParse(state.bulkPrice) ?? 0,
+        piecePrice: int.tryParse(state.piecePrice) ?? 0,
         expiryDate: state.expiryDate,
       );
 

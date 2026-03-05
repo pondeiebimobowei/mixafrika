@@ -25,6 +25,6 @@ class SaleItemWithProduct {
 
   int get profit {
     if (product == null) return 0; // Manual charges have no defined profit yet
-    return (item.unitPrice - product!.costPrice) * item.quantity;
+    return (item.unitPrice - product!.costPricePerUnit) * item.quantity;
   }
 }

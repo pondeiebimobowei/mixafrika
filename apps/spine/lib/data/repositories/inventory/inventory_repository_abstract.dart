@@ -11,6 +11,8 @@ abstract class InventoryRepositoryAbstract {
     required int bulkQuantity,
     required int pieceQuantity,
     required String totalCost,
+    required int bulkPrice,
+    required int piecePrice,
     DateTime? expiryDate,
   });
   Future<double> getStockWorth(String businessId);

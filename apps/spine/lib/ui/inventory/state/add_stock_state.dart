@@ -6,6 +6,8 @@ class AddStockState {
   final String bulkQuantity;
   final String pieceQuantity;
   final String totalCost;
+  final String bulkPrice;
+  final String piecePrice;
   final String searchQuery;
   final DateTime? expiryDate;
   final bool isLoading;
@@ -18,6 +20,8 @@ class AddStockState {
     this.bulkQuantity = '',
     this.pieceQuantity = '',
     this.totalCost = '',
+    this.bulkPrice = '',
+    this.piecePrice = '',
     this.searchQuery = '',
     this.expiryDate,
     this.isLoading = false,

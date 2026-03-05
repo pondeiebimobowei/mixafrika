@@ -112,15 +112,12 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
         totalAmount: state.subtotal,
         paymentMethod: state.selectedPaymentMethod!.name,
         status: 'completed',
-        amountPaid: state.subtotal, // Defaulting to full payment for now
+        amountPaid: state.subtotal,
         balance: 0,
         businessId: _businessId?.id ?? '',
-        // createdBy: '1', // Placeholder
         syncStatus: 'pending',
-        // syncDate: DateTime.now(),
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-        // deletedAt: DateTime.now(),
       );
 
       final items = state.cartItems.map((item) {
@@ -128,15 +125,14 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
           id: const Uuid().v4(),
           saleId: saleId,
           productId: item.product?.id ?? '',
-          // description: item.manualName,
           quantity: item.quantity,
+          type: '',
+          description: '',
           unitPrice: item.unitPrice,
           total: item.total,
           syncStatus: 'pending',
-          // syncDate: DateTime.now(),
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
-          // deletedAt: DateTime.now(),
         );
       }).toList();
 

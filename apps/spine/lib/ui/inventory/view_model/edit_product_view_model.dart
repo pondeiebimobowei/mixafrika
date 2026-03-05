@@ -28,7 +28,7 @@ class EditProductViewModel extends StateNotifier<EditProductState> {
         bulkUnit: product.bulkUnitName,
         pieceUnit: product.pieceUnitName,
         unitsPerBulk: product.unitsPerBulk.toString(),
-        bulkCostPrice: product.costPrice.toString(),
+        bulkCostPrice: product.costPricePerUnit.toString(),
         pieceSellingPrice: product.sellingPricePerPiece.toString(),
         serialNumber: product.serialNumber,
       );
@@ -65,7 +65,7 @@ class EditProductViewModel extends StateNotifier<EditProductState> {
       bulkUnitName: state.bulkUnit,
       pieceUnitName: state.pieceUnit,
       unitsPerBulk: int.tryParse(state.unitsPerBulk) ?? 1,
-      costPrice: int.tryParse(state.bulkCostPrice) ?? 0,
+      costPricePerUnit: int.tryParse(state.bulkCostPrice) ?? 0,
       sellingPricePerPiece: int.tryParse(state.pieceSellingPrice) ?? 0,
       serialNumber: state.serialNumber,
       updatedAt: DateTime.now(),

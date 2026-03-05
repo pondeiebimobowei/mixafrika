@@ -2,6 +2,7 @@ import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/data/repositories/sales/sales_repository_abstract.dart';
+import 'package:uuid/uuid.dart';
 
 class SalesRepository implements SalesRepositoryAbstract {
   final AppDatabase _db;
@@ -10,12 +11,25 @@ class SalesRepository implements SalesRepositoryAbstract {
 
   @override
   Future<void> createSale(Sale sale, List<SalesItemData> items) async {
+
+    final pay = Payment(
+      id: Uuid().v4(), 
+      syncStatus: 'pending', 
+      createdAt: DateTime.now(), 
+      updatedAt: DateTime.now(), 
+      saleId: sale.id, 
+      amount: sale.totalAmount, 
+      paymentMethod: 'cash', 
+      status: 'completed',
+    );
+    
     try {
       await _db.transaction(() async {
         await _db.into(_db.sales).insert(sale);
         for (final item in items) {
           await _db.into(_db.salesItem).insert(item);
         }
+        await _db.into(_db.payments).insert(pay);
       });
     } catch (e) {
       print(e);
