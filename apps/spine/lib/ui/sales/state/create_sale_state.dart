@@ -2,9 +2,54 @@ import 'package:spine/drift/database.dart';
 
 enum SaleUnit { piece, bulk }
 
-enum PaymentMethod { cash, transfer, mixWallet, payLater, multiPay }
+enum PaymentMethodType { cash, transfer, mixWallet, payLater, multiPay }
+
+class Payments {
+  final PaymentMethodType method;
+  final int amount;
+  final String? reference;
+
+  Payments({
+    required this.method,
+    required this.amount,
+    this.reference,
+  });
+
+  Payments copyWith({
+    PaymentMethodType? method,
+    int? amount,
+    String? reference,
+  }) {
+    return Payments(
+      method: method ?? this.method,
+      amount: amount ?? this.amount,
+      reference: reference ?? this.reference,
+    );
+  }
+}
+
+class PaymentMethod {
+  final PaymentMethodType type;
+  final List<Payments> payments;
+
+  PaymentMethod({
+    required this.type, 
+    required this.payments
+  });
+
+  PaymentMethod copyWith({
+    PaymentMethodType? type,
+    List<Payments>? payments,
+  }) {
+    return PaymentMethod(
+      type: type ?? this.type,
+      payments: payments ?? this.payments,
+    );
+  }
+}
 
 class CartItem {
+  final String id;
   final ProductData? product;
   final String? manualName;
   final int? manualPrice;
@@ -12,6 +57,7 @@ class CartItem {
   final SaleUnit unit;
 
   CartItem({
+    required this.id,
     this.product,
     this.manualName,
     this.manualPrice,
@@ -38,6 +84,7 @@ class CartItem {
     SaleUnit? unit,
   }) {
     return CartItem(
+      id: id,
       product: product ?? this.product,
       manualName: manualName ?? this.manualName,
       manualPrice: manualPrice ?? this.manualPrice,
@@ -62,20 +109,29 @@ class CreateSaleState {
     this.selectedPaymentMethod,
   });
 
-  int get subtotal => cartItems.fold(0, (sum, item) => sum + item.total);
+  int get grandTotal => cartItems.fold(0, (sum, item) => sum + item.total);
+  int get totalPaid {
+    if (selectedPaymentMethod == null) return 0;
+
+    return selectedPaymentMethod!.payments
+        .fold(0, (sum, payment) => sum + payment.amount);
+  }
+
+  int get balance => grandTotal - totalPaid;
 
   CreateSaleState copyWith({
     List<CartItem>? cartItems,
     List<ProductData>? quickPicks,
     bool? isLoading,
     String? errorMessage,
+    bool clearError = false,
     PaymentMethod? selectedPaymentMethod,
   }) {
     return CreateSaleState(
       cartItems: cartItems ?? this.cartItems,
       quickPicks: quickPicks ?? this.quickPicks,
       isLoading: isLoading ?? this.isLoading,
-      errorMessage: errorMessage ?? this.errorMessage,
+      errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
       selectedPaymentMethod:
           selectedPaymentMethod ?? this.selectedPaymentMethod,
     );

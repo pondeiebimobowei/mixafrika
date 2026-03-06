@@ -223,9 +223,7 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
                                   ),
                                 ),
                                 onDismissed: (_) {
-                                  if (item.product != null) {
-                                    viewModel.removeFromCart(item.product!.id);
-                                  }
+                                  viewModel.removeFromCart(item.id);
                                 },
                                 child: _buildCartItem(item, viewModel, colors),
                               );
@@ -259,7 +257,7 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
                               ),
                             ),
                             Text(
-                              '₦${state.subtotal}',
+                              '₦${state.grandTotal}',
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 24,

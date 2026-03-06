@@ -2,7 +2,6 @@ import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/data/repositories/sales/sales_repository_abstract.dart';
-import 'package:uuid/uuid.dart';
 
 class SalesRepository implements SalesRepositoryAbstract {
   final AppDatabase _db;
@@ -10,26 +9,20 @@ class SalesRepository implements SalesRepositoryAbstract {
   SalesRepository(this._db);
 
   @override
-  Future<void> createSale(Sale sale, List<SalesItemData> items) async {
-
-    final pay = Payment(
-      id: Uuid().v4(), 
-      syncStatus: 'pending', 
-      createdAt: DateTime.now(), 
-      updatedAt: DateTime.now(), 
-      saleId: sale.id, 
-      amount: sale.totalAmount, 
-      paymentMethod: 'cash', 
-      status: 'completed',
-    );
-    
+  Future<void> createSale(
+    Sale sale,
+    List<SalesItemData> items,
+    List<Payment> payments,
+  ) async {
     try {
       await _db.transaction(() async {
         await _db.into(_db.sales).insert(sale);
         for (final item in items) {
           await _db.into(_db.salesItem).insert(item);
         }
-        await _db.into(_db.payments).insert(pay);
+        for (final payment in payments) {
+          await _db.into(_db.payments).insert(payment);
+        }
       });
     } catch (e) {
       print(e);
@@ -63,12 +56,23 @@ class SalesRepository implements SalesRepositoryAbstract {
       final product = row.readTableOrNull(_db.product);
 
       if (!salesMap.containsKey(sale.id)) {
-        salesMap[sale.id] = SaleWithItems(sale: sale, items: []);
+        salesMap[sale.id] = SaleWithItems(sale: sale, items: [], payments: []);
       }
 
       salesMap[sale.id]!.items.add(
         SaleItemWithProduct(item: item, product: product),
       );
+    }
+
+    if (salesMap.isNotEmpty) {
+      final paymentsQuery = _db.select(_db.payments)
+        ..where((p) => p.saleId.isIn(salesMap.keys));
+      final payments = await paymentsQuery.get();
+      for (final payment in payments) {
+        if (salesMap.containsKey(payment.saleId)) {
+          salesMap[payment.saleId]!.payments.add(payment);
+        }
+      }
     }
 
     return salesMap.values.toList();
@@ -95,7 +99,11 @@ class SalesRepository implements SalesRepositoryAbstract {
       );
     }).toList();
 
-    return SaleWithItems(sale: sale, items: items);
+    final payments = await (_db.select(
+      _db.payments,
+    )..where((p) => p.saleId.equals(id))).get();
+
+    return SaleWithItems(sale: sale, items: items, payments: payments);
   }
 }
 

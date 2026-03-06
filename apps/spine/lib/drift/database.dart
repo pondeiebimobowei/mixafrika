@@ -3,6 +3,7 @@ import 'package:drift_flutter/drift_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:path_provider/path_provider.dart';
+import 'package:spine/drift/database.steps.dart';
 import 'package:spine/drift/model/product.model.dart';
 import 'package:spine/drift/model/inventory.model.dart';
 import 'package:spine/drift/model/batch.model.dart';
@@ -26,6 +27,7 @@ part 'database.g.dart';
     Sales,
     SalesItem,
     Payments,
+    User
   ],
 )
 class AppDatabase extends _$AppDatabase {
@@ -38,8 +40,6 @@ class AppDatabase extends _$AppDatabase {
     return driftDatabase(
       name: 'spine',
       native: const DriftNativeOptions(
-        // By default, `driftDatabase` from `package:drift_flutter` stores the
-        // database files in `getApplicationDocumentsDirectory()`.
         databaseDirectory: getApplicationSupportDirectory,
       ),
       web: DriftWebOptions(
@@ -68,16 +68,11 @@ class AppDatabase extends _$AppDatabase {
         // 2. Insert seed data
         await _insertSeedData(this);
       },
-      onUpgrade: (Migrator m, int from, int to) async {
-        if (from < 2) {
-          // For development, we just recreate everything if there's an old schema
-          for (final table in allTables) {
-            await m.deleteTable(table.actualTableName);
-          }
-          await m.createAll();
-          await _insertSeedData(this);
-        }
-      },
+      onUpgrade: stepByStep(
+        from1To2: (m, schema) async {
+          await m.addColumn(schema.sales, schema.sales.note);
+        },
+      ),
       beforeOpen: (details) async {
         // Optional: Enable foreign keys or perform checks every time the app opens
         if (details.wasCreated) {
@@ -97,6 +92,17 @@ class AppDatabase extends _$AppDatabase {
     await db.into(db.inventory).insert(inventory2);
   }
 }
+
+// extension Migrations on GeneratedDatabase {
+//   // Extracting the `stepByStep` call into a static field or method ensures that you're not
+//   // accidentally referring to the current database schema (via a getter on the database class).
+//   // This ensures that each step brings the database into the correct snapshot.
+//   OnUpgrade get _schemaUpgrade => stepByStep(
+//     from2To3: (m, schema) async {
+//       await m.createTable(schema.groups);
+//     },
+//   );
+// }
 
 final databaseProvider = Provider<AppDatabase>((ref) {
   final db = AppDatabase();

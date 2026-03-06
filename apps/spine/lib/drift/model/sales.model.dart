@@ -10,6 +10,7 @@ class Sales extends Table with TableMixin {
     late final balance = integer().withDefault(const Constant(0))();
     late final paymentMethod = text()();
     late final status = text()();
+    late final note = text().nullable()();
 
     late final businessId = text().references(UserBusiness, #id)();
 

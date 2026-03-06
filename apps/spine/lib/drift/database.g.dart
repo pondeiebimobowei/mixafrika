@@ -5332,6 +5332,15 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
+  @override
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _businessIdMeta = const VerificationMeta(
     'businessId',
   );
@@ -5374,6 +5383,7 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
     balance,
     paymentMethod,
     status,
+    note,
     businessId,
     createdBy,
   ];
@@ -5474,6 +5484,12 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
     } else if (isInserting) {
       context.missing(_statusMeta);
     }
+    if (data.containsKey('note')) {
+      context.handle(
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
+      );
+    }
     if (data.containsKey('business_id')) {
       context.handle(
         _businessIdMeta,
@@ -5545,6 +5561,10 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
         DriftSqlType.string,
         data['${effectivePrefix}status'],
       )!,
+      note: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}note'],
+      ),
       businessId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}business_id'],
@@ -5575,6 +5595,7 @@ class Sale extends DataClass implements Insertable<Sale> {
   final int balance;
   final String paymentMethod;
   final String status;
+  final String? note;
   final String businessId;
   final String? createdBy;
   const Sale({
@@ -5590,6 +5611,7 @@ class Sale extends DataClass implements Insertable<Sale> {
     required this.balance,
     required this.paymentMethod,
     required this.status,
+    this.note,
     required this.businessId,
     this.createdBy,
   });
@@ -5614,6 +5636,9 @@ class Sale extends DataClass implements Insertable<Sale> {
     map['balance'] = Variable<int>(balance);
     map['payment_method'] = Variable<String>(paymentMethod);
     map['status'] = Variable<String>(status);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
+    }
     map['business_id'] = Variable<String>(businessId);
     if (!nullToAbsent || createdBy != null) {
       map['created_by'] = Variable<String>(createdBy);
@@ -5641,6 +5666,7 @@ class Sale extends DataClass implements Insertable<Sale> {
       balance: Value(balance),
       paymentMethod: Value(paymentMethod),
       status: Value(status),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
       businessId: Value(businessId),
       createdBy: createdBy == null && nullToAbsent
           ? const Value.absent()
@@ -5666,6 +5692,7 @@ class Sale extends DataClass implements Insertable<Sale> {
       balance: serializer.fromJson<int>(json['balance']),
       paymentMethod: serializer.fromJson<String>(json['paymentMethod']),
       status: serializer.fromJson<String>(json['status']),
+      note: serializer.fromJson<String?>(json['note']),
       businessId: serializer.fromJson<String>(json['businessId']),
       createdBy: serializer.fromJson<String?>(json['createdBy']),
     );
@@ -5686,6 +5713,7 @@ class Sale extends DataClass implements Insertable<Sale> {
       'balance': serializer.toJson<int>(balance),
       'paymentMethod': serializer.toJson<String>(paymentMethod),
       'status': serializer.toJson<String>(status),
+      'note': serializer.toJson<String?>(note),
       'businessId': serializer.toJson<String>(businessId),
       'createdBy': serializer.toJson<String?>(createdBy),
     };
@@ -5704,6 +5732,7 @@ class Sale extends DataClass implements Insertable<Sale> {
     int? balance,
     String? paymentMethod,
     String? status,
+    Value<String?> note = const Value.absent(),
     String? businessId,
     Value<String?> createdBy = const Value.absent(),
   }) => Sale(
@@ -5719,6 +5748,7 @@ class Sale extends DataClass implements Insertable<Sale> {
     balance: balance ?? this.balance,
     paymentMethod: paymentMethod ?? this.paymentMethod,
     status: status ?? this.status,
+    note: note.present ? note.value : this.note,
     businessId: businessId ?? this.businessId,
     createdBy: createdBy.present ? createdBy.value : this.createdBy,
   );
@@ -5746,6 +5776,7 @@ class Sale extends DataClass implements Insertable<Sale> {
           ? data.paymentMethod.value
           : this.paymentMethod,
       status: data.status.present ? data.status.value : this.status,
+      note: data.note.present ? data.note.value : this.note,
       businessId: data.businessId.present
           ? data.businessId.value
           : this.businessId,
@@ -5768,6 +5799,7 @@ class Sale extends DataClass implements Insertable<Sale> {
           ..write('balance: $balance, ')
           ..write('paymentMethod: $paymentMethod, ')
           ..write('status: $status, ')
+          ..write('note: $note, ')
           ..write('businessId: $businessId, ')
           ..write('createdBy: $createdBy')
           ..write(')'))
@@ -5788,6 +5820,7 @@ class Sale extends DataClass implements Insertable<Sale> {
     balance,
     paymentMethod,
     status,
+    note,
     businessId,
     createdBy,
   );
@@ -5807,6 +5840,7 @@ class Sale extends DataClass implements Insertable<Sale> {
           other.balance == this.balance &&
           other.paymentMethod == this.paymentMethod &&
           other.status == this.status &&
+          other.note == this.note &&
           other.businessId == this.businessId &&
           other.createdBy == this.createdBy);
 }
@@ -5824,6 +5858,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
   final Value<int> balance;
   final Value<String> paymentMethod;
   final Value<String> status;
+  final Value<String?> note;
   final Value<String> businessId;
   final Value<String?> createdBy;
   final Value<int> rowid;
@@ -5840,6 +5875,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     this.balance = const Value.absent(),
     this.paymentMethod = const Value.absent(),
     this.status = const Value.absent(),
+    this.note = const Value.absent(),
     this.businessId = const Value.absent(),
     this.createdBy = const Value.absent(),
     this.rowid = const Value.absent(),
@@ -5857,6 +5893,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     this.balance = const Value.absent(),
     required String paymentMethod,
     required String status,
+    this.note = const Value.absent(),
     required String businessId,
     this.createdBy = const Value.absent(),
     this.rowid = const Value.absent(),
@@ -5879,6 +5916,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     Expression<int>? balance,
     Expression<String>? paymentMethod,
     Expression<String>? status,
+    Expression<String>? note,
     Expression<String>? businessId,
     Expression<String>? createdBy,
     Expression<int>? rowid,
@@ -5896,6 +5934,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
       if (balance != null) 'balance': balance,
       if (paymentMethod != null) 'payment_method': paymentMethod,
       if (status != null) 'status': status,
+      if (note != null) 'note': note,
       if (businessId != null) 'business_id': businessId,
       if (createdBy != null) 'created_by': createdBy,
       if (rowid != null) 'rowid': rowid,
@@ -5915,6 +5954,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     Value<int>? balance,
     Value<String>? paymentMethod,
     Value<String>? status,
+    Value<String?>? note,
     Value<String>? businessId,
     Value<String?>? createdBy,
     Value<int>? rowid,
@@ -5932,6 +5972,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
       balance: balance ?? this.balance,
       paymentMethod: paymentMethod ?? this.paymentMethod,
       status: status ?? this.status,
+      note: note ?? this.note,
       businessId: businessId ?? this.businessId,
       createdBy: createdBy ?? this.createdBy,
       rowid: rowid ?? this.rowid,
@@ -5977,6 +6018,9 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     if (status.present) {
       map['status'] = Variable<String>(status.value);
     }
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
+    }
     if (businessId.present) {
       map['business_id'] = Variable<String>(businessId.value);
     }
@@ -6004,6 +6048,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
           ..write('balance: $balance, ')
           ..write('paymentMethod: $paymentMethod, ')
           ..write('status: $status, ')
+          ..write('note: $note, ')
           ..write('businessId: $businessId, ')
           ..write('createdBy: $createdBy, ')
           ..write('rowid: $rowid')
@@ -6083,6 +6128,15 @@ class $SalesItemTable extends SalesItem
     true,
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
   );
   static const VerificationMeta _quantityMeta = const VerificationMeta(
     'quantity',
@@ -6170,6 +6224,7 @@ class $SalesItemTable extends SalesItem
     createdAt,
     updatedAt,
     deletedAt,
+    name,
     quantity,
     type,
     unitPrice,
@@ -6226,6 +6281,14 @@ class $SalesItemTable extends SalesItem
         _deletedAtMeta,
         deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
       );
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
     }
     if (data.containsKey('quantity')) {
       context.handle(
@@ -6313,6 +6376,10 @@ class $SalesItemTable extends SalesItem
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
       ),
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
       quantity: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}quantity'],
@@ -6357,6 +6424,7 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
+  final String name;
   final int quantity;
   final String type;
   final int unitPrice;
@@ -6371,6 +6439,7 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,
+    required this.name,
     required this.quantity,
     required this.type,
     required this.unitPrice,
@@ -6392,6 +6461,7 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
     if (!nullToAbsent || deletedAt != null) {
       map['deleted_at'] = Variable<DateTime>(deletedAt);
     }
+    map['name'] = Variable<String>(name);
     map['quantity'] = Variable<int>(quantity);
     map['type'] = Variable<String>(type);
     map['unit_price'] = Variable<int>(unitPrice);
@@ -6418,6 +6488,7 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
       deletedAt: deletedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(deletedAt),
+      name: Value(name),
       quantity: Value(quantity),
       type: Value(type),
       unitPrice: Value(unitPrice),
@@ -6444,6 +6515,7 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      name: serializer.fromJson<String>(json['name']),
       quantity: serializer.fromJson<int>(json['quantity']),
       type: serializer.fromJson<String>(json['type']),
       unitPrice: serializer.fromJson<int>(json['unitPrice']),
@@ -6463,6 +6535,7 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'name': serializer.toJson<String>(name),
       'quantity': serializer.toJson<int>(quantity),
       'type': serializer.toJson<String>(type),
       'unitPrice': serializer.toJson<int>(unitPrice),
@@ -6480,6 +6553,7 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
     DateTime? createdAt,
     DateTime? updatedAt,
     Value<DateTime?> deletedAt = const Value.absent(),
+    String? name,
     int? quantity,
     String? type,
     int? unitPrice,
@@ -6494,6 +6568,7 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    name: name ?? this.name,
     quantity: quantity ?? this.quantity,
     type: type ?? this.type,
     unitPrice: unitPrice ?? this.unitPrice,
@@ -6512,6 +6587,7 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      name: data.name.present ? data.name.value : this.name,
       quantity: data.quantity.present ? data.quantity.value : this.quantity,
       type: data.type.present ? data.type.value : this.type,
       unitPrice: data.unitPrice.present ? data.unitPrice.value : this.unitPrice,
@@ -6533,6 +6609,7 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
+          ..write('name: $name, ')
           ..write('quantity: $quantity, ')
           ..write('type: $type, ')
           ..write('unitPrice: $unitPrice, ')
@@ -6552,6 +6629,7 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
     createdAt,
     updatedAt,
     deletedAt,
+    name,
     quantity,
     type,
     unitPrice,
@@ -6570,6 +6648,7 @@ class SalesItemData extends DataClass implements Insertable<SalesItemData> {
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
           other.deletedAt == this.deletedAt &&
+          other.name == this.name &&
           other.quantity == this.quantity &&
           other.type == this.type &&
           other.unitPrice == this.unitPrice &&
@@ -6586,6 +6665,7 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   final Value<DateTime?> deletedAt;
+  final Value<String> name;
   final Value<int> quantity;
   final Value<String> type;
   final Value<int> unitPrice;
@@ -6601,6 +6681,7 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
+    this.name = const Value.absent(),
     this.quantity = const Value.absent(),
     this.type = const Value.absent(),
     this.unitPrice = const Value.absent(),
@@ -6617,6 +6698,7 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
+    required String name,
     this.quantity = const Value.absent(),
     required String type,
     required int unitPrice,
@@ -6627,6 +6709,7 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        syncStatus = Value(syncStatus),
+       name = Value(name),
        type = Value(type),
        unitPrice = Value(unitPrice),
        total = Value(total),
@@ -6638,6 +6721,7 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<DateTime>? deletedAt,
+    Expression<String>? name,
     Expression<int>? quantity,
     Expression<String>? type,
     Expression<int>? unitPrice,
@@ -6654,6 +6738,7 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (deletedAt != null) 'deleted_at': deletedAt,
+      if (name != null) 'name': name,
       if (quantity != null) 'quantity': quantity,
       if (type != null) 'type': type,
       if (unitPrice != null) 'unit_price': unitPrice,
@@ -6672,6 +6757,7 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
     Value<DateTime?>? deletedAt,
+    Value<String>? name,
     Value<int>? quantity,
     Value<String>? type,
     Value<int>? unitPrice,
@@ -6688,6 +6774,7 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
+      name: name ?? this.name,
       quantity: quantity ?? this.quantity,
       type: type ?? this.type,
       unitPrice: unitPrice ?? this.unitPrice,
@@ -6719,6 +6806,9 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
     }
     if (deletedAt.present) {
       map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
     }
     if (quantity.present) {
       map['quantity'] = Variable<int>(quantity.value);
@@ -6756,6 +6846,7 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
+          ..write('name: $name, ')
           ..write('quantity: $quantity, ')
           ..write('type: $type, ')
           ..write('unitPrice: $unitPrice, ')
@@ -6883,15 +6974,6 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _statusMeta = const VerificationMeta('status');
-  @override
-  late final GeneratedColumn<String> status = GeneratedColumn<String>(
-    'status',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -6904,7 +6986,6 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
     amount,
     reference,
     paymentMethod,
-    status,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -6988,14 +7069,6 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
     } else if (isInserting) {
       context.missing(_paymentMethodMeta);
     }
-    if (data.containsKey('status')) {
-      context.handle(
-        _statusMeta,
-        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_statusMeta);
-    }
     return context;
   }
 
@@ -7045,10 +7118,6 @@ class $PaymentsTable extends Payments with TableInfo<$PaymentsTable, Payment> {
         DriftSqlType.string,
         data['${effectivePrefix}payment_method'],
       )!,
-      status: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}status'],
-      )!,
     );
   }
 
@@ -7069,7 +7138,6 @@ class Payment extends DataClass implements Insertable<Payment> {
   final int amount;
   final String? reference;
   final String paymentMethod;
-  final String status;
   const Payment({
     required this.id,
     required this.syncStatus,
@@ -7081,7 +7149,6 @@ class Payment extends DataClass implements Insertable<Payment> {
     required this.amount,
     this.reference,
     required this.paymentMethod,
-    required this.status,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -7102,7 +7169,6 @@ class Payment extends DataClass implements Insertable<Payment> {
       map['reference'] = Variable<String>(reference);
     }
     map['payment_method'] = Variable<String>(paymentMethod);
-    map['status'] = Variable<String>(status);
     return map;
   }
 
@@ -7124,7 +7190,6 @@ class Payment extends DataClass implements Insertable<Payment> {
           ? const Value.absent()
           : Value(reference),
       paymentMethod: Value(paymentMethod),
-      status: Value(status),
     );
   }
 
@@ -7144,7 +7209,6 @@ class Payment extends DataClass implements Insertable<Payment> {
       amount: serializer.fromJson<int>(json['amount']),
       reference: serializer.fromJson<String?>(json['reference']),
       paymentMethod: serializer.fromJson<String>(json['paymentMethod']),
-      status: serializer.fromJson<String>(json['status']),
     );
   }
   @override
@@ -7161,7 +7225,6 @@ class Payment extends DataClass implements Insertable<Payment> {
       'amount': serializer.toJson<int>(amount),
       'reference': serializer.toJson<String?>(reference),
       'paymentMethod': serializer.toJson<String>(paymentMethod),
-      'status': serializer.toJson<String>(status),
     };
   }
 
@@ -7176,7 +7239,6 @@ class Payment extends DataClass implements Insertable<Payment> {
     int? amount,
     Value<String?> reference = const Value.absent(),
     String? paymentMethod,
-    String? status,
   }) => Payment(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
@@ -7188,7 +7250,6 @@ class Payment extends DataClass implements Insertable<Payment> {
     amount: amount ?? this.amount,
     reference: reference.present ? reference.value : this.reference,
     paymentMethod: paymentMethod ?? this.paymentMethod,
-    status: status ?? this.status,
   );
   Payment copyWithCompanion(PaymentsCompanion data) {
     return Payment(
@@ -7206,7 +7267,6 @@ class Payment extends DataClass implements Insertable<Payment> {
       paymentMethod: data.paymentMethod.present
           ? data.paymentMethod.value
           : this.paymentMethod,
-      status: data.status.present ? data.status.value : this.status,
     );
   }
 
@@ -7222,8 +7282,7 @@ class Payment extends DataClass implements Insertable<Payment> {
           ..write('saleId: $saleId, ')
           ..write('amount: $amount, ')
           ..write('reference: $reference, ')
-          ..write('paymentMethod: $paymentMethod, ')
-          ..write('status: $status')
+          ..write('paymentMethod: $paymentMethod')
           ..write(')'))
         .toString();
   }
@@ -7240,7 +7299,6 @@ class Payment extends DataClass implements Insertable<Payment> {
     amount,
     reference,
     paymentMethod,
-    status,
   );
   @override
   bool operator ==(Object other) =>
@@ -7255,8 +7313,7 @@ class Payment extends DataClass implements Insertable<Payment> {
           other.saleId == this.saleId &&
           other.amount == this.amount &&
           other.reference == this.reference &&
-          other.paymentMethod == this.paymentMethod &&
-          other.status == this.status);
+          other.paymentMethod == this.paymentMethod);
 }
 
 class PaymentsCompanion extends UpdateCompanion<Payment> {
@@ -7270,7 +7327,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
   final Value<int> amount;
   final Value<String?> reference;
   final Value<String> paymentMethod;
-  final Value<String> status;
   final Value<int> rowid;
   const PaymentsCompanion({
     this.id = const Value.absent(),
@@ -7283,7 +7339,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
     this.amount = const Value.absent(),
     this.reference = const Value.absent(),
     this.paymentMethod = const Value.absent(),
-    this.status = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   PaymentsCompanion.insert({
@@ -7297,14 +7352,12 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
     required int amount,
     this.reference = const Value.absent(),
     required String paymentMethod,
-    required String status,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        syncStatus = Value(syncStatus),
        saleId = Value(saleId),
        amount = Value(amount),
-       paymentMethod = Value(paymentMethod),
-       status = Value(status);
+       paymentMethod = Value(paymentMethod);
   static Insertable<Payment> custom({
     Expression<String>? id,
     Expression<String>? syncStatus,
@@ -7316,7 +7369,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
     Expression<int>? amount,
     Expression<String>? reference,
     Expression<String>? paymentMethod,
-    Expression<String>? status,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -7330,7 +7382,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
       if (amount != null) 'amount': amount,
       if (reference != null) 'reference': reference,
       if (paymentMethod != null) 'payment_method': paymentMethod,
-      if (status != null) 'status': status,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -7346,7 +7397,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
     Value<int>? amount,
     Value<String?>? reference,
     Value<String>? paymentMethod,
-    Value<String>? status,
     Value<int>? rowid,
   }) {
     return PaymentsCompanion(
@@ -7360,7 +7410,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
       amount: amount ?? this.amount,
       reference: reference ?? this.reference,
       paymentMethod: paymentMethod ?? this.paymentMethod,
-      status: status ?? this.status,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -7398,9 +7447,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
     if (paymentMethod.present) {
       map['payment_method'] = Variable<String>(paymentMethod.value);
     }
-    if (status.present) {
-      map['status'] = Variable<String>(status.value);
-    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -7420,7 +7466,6 @@ class PaymentsCompanion extends UpdateCompanion<Payment> {
           ..write('amount: $amount, ')
           ..write('reference: $reference, ')
           ..write('paymentMethod: $paymentMethod, ')
-          ..write('status: $status, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -11404,6 +11449,7 @@ typedef $$SalesTableCreateCompanionBuilder =
       Value<int> balance,
       required String paymentMethod,
       required String status,
+      Value<String?> note,
       required String businessId,
       Value<String?> createdBy,
       Value<int> rowid,
@@ -11422,6 +11468,7 @@ typedef $$SalesTableUpdateCompanionBuilder =
       Value<int> balance,
       Value<String> paymentMethod,
       Value<String> status,
+      Value<String?> note,
       Value<String> businessId,
       Value<String?> createdBy,
       Value<int> rowid,
@@ -11570,6 +11617,11 @@ class $$SalesTableFilterComposer extends Composer<_$AppDatabase, $SalesTable> {
 
   ColumnFilters<String> get status => $composableBuilder(
     column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -11739,6 +11791,11 @@ class $$SalesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   $$UserBusinessTableOrderingComposer get businessId {
     final $$UserBusinessTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -11840,6 +11897,9 @@ class $$SalesTableAnnotationComposer
 
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
 
   $$UserBusinessTableAnnotationComposer get businessId {
     final $$UserBusinessTableAnnotationComposer composer = $composerBuilder(
@@ -11983,6 +12043,7 @@ class $$SalesTableTableManager
                 Value<int> balance = const Value.absent(),
                 Value<String> paymentMethod = const Value.absent(),
                 Value<String> status = const Value.absent(),
+                Value<String?> note = const Value.absent(),
                 Value<String> businessId = const Value.absent(),
                 Value<String?> createdBy = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
@@ -11999,6 +12060,7 @@ class $$SalesTableTableManager
                 balance: balance,
                 paymentMethod: paymentMethod,
                 status: status,
+                note: note,
                 businessId: businessId,
                 createdBy: createdBy,
                 rowid: rowid,
@@ -12017,6 +12079,7 @@ class $$SalesTableTableManager
                 Value<int> balance = const Value.absent(),
                 required String paymentMethod,
                 required String status,
+                Value<String?> note = const Value.absent(),
                 required String businessId,
                 Value<String?> createdBy = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
@@ -12033,6 +12096,7 @@ class $$SalesTableTableManager
                 balance: balance,
                 paymentMethod: paymentMethod,
                 status: status,
+                note: note,
                 businessId: businessId,
                 createdBy: createdBy,
                 rowid: rowid,
@@ -12176,6 +12240,7 @@ typedef $$SalesItemTableCreateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
+      required String name,
       Value<int> quantity,
       required String type,
       required int unitPrice,
@@ -12193,6 +12258,7 @@ typedef $$SalesItemTableUpdateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
+      Value<String> name,
       Value<int> quantity,
       Value<String> type,
       Value<int> unitPrice,
@@ -12279,6 +12345,11 @@ class $$SalesItemTableFilterComposer
 
   ColumnFilters<DateTime> get deletedAt => $composableBuilder(
     column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -12393,6 +12464,11 @@ class $$SalesItemTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get quantity => $composableBuilder(
     column: $table.quantity,
     builder: (column) => ColumnOrderings(column),
@@ -12494,6 +12570,9 @@ class $$SalesItemTableAnnotationComposer
   GeneratedColumn<DateTime> get deletedAt =>
       $composableBuilder(column: $table.deletedAt, builder: (column) => column);
 
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
   GeneratedColumn<int> get quantity =>
       $composableBuilder(column: $table.quantity, builder: (column) => column);
 
@@ -12592,6 +12671,7 @@ class $$SalesItemTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> name = const Value.absent(),
                 Value<int> quantity = const Value.absent(),
                 Value<String> type = const Value.absent(),
                 Value<int> unitPrice = const Value.absent(),
@@ -12607,6 +12687,7 @@ class $$SalesItemTableTableManager
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
+                name: name,
                 quantity: quantity,
                 type: type,
                 unitPrice: unitPrice,
@@ -12624,6 +12705,7 @@ class $$SalesItemTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
+                required String name,
                 Value<int> quantity = const Value.absent(),
                 required String type,
                 required int unitPrice,
@@ -12639,6 +12721,7 @@ class $$SalesItemTableTableManager
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
+                name: name,
                 quantity: quantity,
                 type: type,
                 unitPrice: unitPrice,
@@ -12740,7 +12823,6 @@ typedef $$PaymentsTableCreateCompanionBuilder =
       required int amount,
       Value<String?> reference,
       required String paymentMethod,
-      required String status,
       Value<int> rowid,
     });
 typedef $$PaymentsTableUpdateCompanionBuilder =
@@ -12755,7 +12837,6 @@ typedef $$PaymentsTableUpdateCompanionBuilder =
       Value<int> amount,
       Value<String?> reference,
       Value<String> paymentMethod,
-      Value<String> status,
       Value<int> rowid,
     });
 
@@ -12833,11 +12914,6 @@ class $$PaymentsTableFilterComposer
 
   ColumnFilters<String> get paymentMethod => $composableBuilder(
     column: $table.paymentMethod,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get status => $composableBuilder(
-    column: $table.status,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -12919,11 +12995,6 @@ class $$PaymentsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get status => $composableBuilder(
-    column: $table.status,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   $$SalesTableOrderingComposer get saleId {
     final $$SalesTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -12988,9 +13059,6 @@ class $$PaymentsTableAnnotationComposer
     builder: (column) => column,
   );
 
-  GeneratedColumn<String> get status =>
-      $composableBuilder(column: $table.status, builder: (column) => column);
-
   $$SalesTableAnnotationComposer get saleId {
     final $$SalesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
@@ -13053,7 +13121,6 @@ class $$PaymentsTableTableManager
                 Value<int> amount = const Value.absent(),
                 Value<String?> reference = const Value.absent(),
                 Value<String> paymentMethod = const Value.absent(),
-                Value<String> status = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => PaymentsCompanion(
                 id: id,
@@ -13066,7 +13133,6 @@ class $$PaymentsTableTableManager
                 amount: amount,
                 reference: reference,
                 paymentMethod: paymentMethod,
-                status: status,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -13081,7 +13147,6 @@ class $$PaymentsTableTableManager
                 required int amount,
                 Value<String?> reference = const Value.absent(),
                 required String paymentMethod,
-                required String status,
                 Value<int> rowid = const Value.absent(),
               }) => PaymentsCompanion.insert(
                 id: id,
@@ -13094,7 +13159,6 @@ class $$PaymentsTableTableManager
                 amount: amount,
                 reference: reference,
                 paymentMethod: paymentMethod,
-                status: status,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0

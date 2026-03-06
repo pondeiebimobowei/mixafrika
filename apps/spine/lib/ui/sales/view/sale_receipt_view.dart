@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:spine/data/repositories/sales/sales_repository_abstract.dart';
 import 'package:spine/ui/sales/view_model/sale_receipt_view_model.dart';
 
 class SaleReceiptView extends ConsumerWidget {
@@ -42,7 +43,7 @@ class SaleReceiptView extends ConsumerWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, dynamic item) {
+  Widget _buildContent(BuildContext context, SaleWithItems item) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -78,7 +79,7 @@ class SaleReceiptView extends ConsumerWidget {
     );
   }
 
-  Widget _buildHeaderCard(BuildContext context, dynamic item) {
+  Widget _buildHeaderCard(BuildContext context, SaleWithItems item) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(32),
@@ -114,14 +115,15 @@ class SaleReceiptView extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 12,
+            runSpacing: 12,
             children: [
               _buildBadge(
                 'PAID VIA ${item.sale.paymentMethod.toUpperCase()}',
                 const Color(0xFF1DB978),
               ),
-              const SizedBox(width: 12),
               _buildBadge(
                 'PROFIT: ₦${NumberFormat('#,###').format(item.totalProfit)}',
                 const Color(0xFF3B82F6),
@@ -152,7 +154,7 @@ class SaleReceiptView extends ConsumerWidget {
     );
   }
 
-  Widget _buildItemTile(BuildContext context, dynamic item) {
+  Widget _buildItemTile(BuildContext context, SaleItemWithProduct item) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
@@ -180,7 +182,7 @@ class SaleReceiptView extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  item.product.name,
+                  item.item.name,
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -226,6 +228,14 @@ class SaleReceiptView extends ConsumerWidget {
             '₦${NumberFormat('#,###').format(item.sale.amountPaid)}',
             const Color(0xFF1DB978),
           ),
+          if (item.payments.isNotEmpty)
+            ...item.payments.map<Widget>(
+              (p) => _buildLogEntry(
+                '  ↳ ${p.paymentMethod.toUpperCase()}',
+                '₦${NumberFormat('#,###').format(p.amount)}',
+                const Color(0xFF1DB978).withValues(alpha: 0.8),
+              ),
+            ),
           _buildLogEntry(
             'RECEIVABLE BALANCE',
             '₦${NumberFormat('#,###').format(item.sale.balance)}',
