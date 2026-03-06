@@ -36972,7 +36972,7 @@ _.c=a2
 _.d=a3
 _.e=a4
 _.f=a5},
-bws(){return A.bLV("spine",B.QY,new A.ayA(A.dB("sqlite3.wasm",0,null),A.dB("drift_worker.js",0,null),new A.asY()))},
+bws(){return A.bLV("spinedb",B.QY,new A.ayA(A.dB("sqlite3.wasm",0,null),A.dB("drift_worker.js",0,null),new A.asY()))},
 brW(a,b){return new A.rU(a,b,null,$,$,$,$,$,$)},
 bs4(a,b){return new A.pi(a,b,null,$,$,$,$,$,$)},
 PB(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p){return new A.eh(f,l,k,d,n,e,o,b,g,m,h,j,a,i,c,p)},
@@ -57944,7 +57944,7 @@ var $async$kw=A.y(function(b,c){if(b===1)return A.u(c,r)
 for(;;)switch(s){case 0:n=p.a
 n.r=a
 o=p.d
-q=o==null?p.d=n.a.JJ(new A.tw(2,p.b),t.hU).bW(new A.b4C(),t.y):o
+q=o==null?p.d=n.a.JJ(new A.tw(1,p.b),t.hU).bW(new A.b4C(),t.y):o
 s=1
 break
 case 1:return A.v(q,r)}})
@@ -59003,7 +59003,7 @@ n=o.y
 n===$&&A.a()
 s=n instanceof A.aK5?2:4
 break
-case 2:p=2
+case 2:p=1
 s=3
 break
 case 4:s=n instanceof A.U1?5:7
@@ -59016,10 +59016,10 @@ break
 case 7:throw A.f(A.e4("Invalid delegate: "+o.k(0)+". The versionDelegate getter must not subclass DBVersionDelegate directly"))
 case 6:case 3:if(p===0)p=null
 s=9
-return A.p(a.a6k(new A.adH(q,new A.xF()),new A.y2(p,2)),$async$w9)
-case 9:s=n instanceof A.U1&&p!==2?10:11
+return A.p(a.a6k(new A.adH(q,new A.xF()),new A.y2(p,1)),$async$w9)
+case 9:s=n instanceof A.U1&&p!==1?10:11
 break
-case 10:n.a.a8x("PRAGMA user_version = 2;")
+case 10:n.a.a8x("PRAGMA user_version = 1;")
 s=12
 return A.p(A.cW(null,t.H),$async$w9)
 case 12:case 11:return A.v(null,r)}})
