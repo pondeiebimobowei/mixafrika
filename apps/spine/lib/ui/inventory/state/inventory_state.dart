@@ -49,7 +49,7 @@ class InventoryState {
     switch (currentFilter) {
       case InventoryFilter.lowStock:
         // Logic for low stock, e.g., totalQuantity < 5
-        filtered = filtered.where((item) => item.totalQuantity < 5).toList();
+        filtered = filtered.where((item) => item.totalRemainingQuantity < 5).toList();
         break;
       case InventoryFilter.expiring:
         // Logic for expiring, e.g., some batch expires soon
@@ -74,7 +74,7 @@ class InventoryState {
 
 class InventoryItemData {
   final ProductData product;
-  final List<InventoryData> stockEntries;
+  final InventoryData stockEntries;
   final List<SpineBatchData> batches;
 
   InventoryItemData({
@@ -83,7 +83,7 @@ class InventoryItemData {
     required this.batches,
   });
 
-  int get totalQuantity {
-    return stockEntries.fold(0, (sum, item) => sum + item.quantity);
+  int get totalRemainingQuantity {
+    return batches.fold(0, (sum, item) => sum + item.remainingQuantity);
   }
 }

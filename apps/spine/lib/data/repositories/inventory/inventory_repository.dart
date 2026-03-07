@@ -36,14 +36,10 @@ class InventoryRepository implements InventoryRepositoryAbstract {
       if (!groupedItems.containsKey(prod.id)) {
         groupedItems[prod.id] = InventoryItemData(
           product: prod,
-          stockEntries: [inv],
+          stockEntries: inv,
           batches: batch != null ? [batch] : [],
         );
       } else {
-        // Add unique inventory/batch entries to the existing product object
-        if (!groupedItems[prod.id]!.stockEntries.contains(inv)) {
-          groupedItems[prod.id]!.stockEntries.add(inv);
-        }
         if (batch != null && !groupedItems[prod.id]!.batches.contains(batch)) {
           groupedItems[prod.id]!.batches.add(batch);
         }
@@ -62,7 +58,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
 
     final inventoryQuery = _db.select(_db.inventory)
       ..where((i) => i.productId.equals(productId));
-    final inventoryRecords = await inventoryQuery.get();
+    final inventoryRecords = await inventoryQuery.getSingle();
 
     final batchQuery = _db.select(_db.spineBatch)
       ..where((b) => b.productId.equals(productId));
@@ -126,32 +122,11 @@ class InventoryRepository implements InventoryRepositoryAbstract {
 
     await _db.into(_db.spineBatch).insert(newBatch);
 
-    // 2. Create Inventory Record
-    // We calculate the total units in terms of "pieces"
-    // Fetch product to get unitsPerBulk
-    final prodQuery = _db.select(_db.product)
-      ..where((p) => p.id.equals(productId));
-    final product = await prodQuery.getSingle();
-
-    final bulk = bulkQuantity;
-    final pieces = pieceQuantity;
-    final unitsPerBulk = product.unitsPerBulk;
-    final totalUnits = (bulk * unitsPerBulk) + pieces;
-
-    final newInventory = InventoryData(
-      id: const Uuid().v4(),
-      productId: productId,
-      businessId: businessId,
-      batchId: batchId,
-      quantity: totalUnits,
-      createdAt: now,
-      updatedAt: now,
-      deletedAt: now,
-      syncStatus: 'pending',
-      syncDate: now,
+    await _db.customUpdate(
+      'UPDATE inventory SET quantity = quantity + ? WHERE product_id = ?',
+      variables: [Variable.withInt(pieceQuantity), Variable.withString(productId)],
+      updates: {_db.inventory}, // This tells Drift which table changed so watchers/streams update
     );
-
-    await _db.into(_db.inventory).insert(newInventory);
   }
 
   @override
@@ -160,7 +135,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     double total = 0.0;
     for (final item in products) {
       final costPrice = item.product.costPricePerUnit.toDouble();
-      total += (costPrice * item.totalQuantity.toDouble());
+      total += (costPrice * item.totalRemainingQuantity.toDouble());
     }
     return total;
   }
@@ -172,7 +147,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     for (final item in products) {
       final costPrice = item.product.costPricePerUnit.toDouble();
       final sellingPrice = item.product.sellingPricePerPiece.toDouble();
-      total += ((sellingPrice - costPrice) * item.totalQuantity.toDouble());
+      total += ((sellingPrice - costPrice) * item.totalRemainingQuantity.toDouble());
     }
     return total;
   }

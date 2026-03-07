@@ -83,6 +83,14 @@ class AddStockViewModel extends StateNotifier<AddStockState> {
 
       if (business == null) throw Exception('Active business not found');
 
+      print(state.selectedProduct!.id);
+      print('bulk ${state.bulkQuantity}');
+      print('piece ${state.pieceQuantity}');
+      print('totalcost ${state.totalCost}');
+      print('bulk price ${state.bulkPrice}');
+      print('piece price ${state.piecePrice}');
+      print('exp ${state.expiryDate}');
+
       // Note: We'll implement recordPurchase in InventoryRepository
       await repository.addStock(
         productId: state.selectedProduct!.id,

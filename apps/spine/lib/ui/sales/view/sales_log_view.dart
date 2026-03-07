@@ -21,7 +21,11 @@ class SalesLogView extends ConsumerWidget {
       header: FHeader(
         title: Row(
           children: [
-            const Text('Sales Log'),
+            Text('Sales Log', style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: colors.primaryForeground
+            ),),
             const Spacer(),
             IconButton(
               onPressed: () {},
@@ -54,7 +58,7 @@ class SalesLogView extends ConsumerWidget {
     SalesLogViewModel viewModel,
   ) {
     return Container(
-      margin: const EdgeInsets.all(20),
+      margin: const EdgeInsets.symmetric(vertical: 20),
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: const Color(0xFF0F172A),
@@ -194,7 +198,7 @@ class SalesLogView extends ConsumerWidget {
     // For simplicity, we just show "TODAY" for all items right now
     // In a full implementation, we'd group by date
     return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      // padding: const EdgeInsets.symmetric(horizontal: 20),
       children: [
         Row(
           children: [

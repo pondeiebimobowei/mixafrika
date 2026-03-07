@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:spine/data/repositories/sales/sales_repository_abstract.dart';
 import 'package:spine/ui/sales/view_model/sale_receipt_view_model.dart';
+import 'package:spine/utils/helper.dart';
 
 class SaleReceiptView extends ConsumerWidget {
   final String saleId;
@@ -45,7 +46,6 @@ class SaleReceiptView extends ConsumerWidget {
 
   Widget _buildContent(BuildContext context, SaleWithItems item) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -97,7 +97,7 @@ class SaleReceiptView extends ConsumerWidget {
       child: Column(
         children: [
           Text(
-            DateFormat('h:mm a').format(item.sale.createdAt.toLocal()),
+            DateFormat('h:mm a').format(item.sale.createdAt),
             style: TextStyle(
               color: Colors.grey.shade400,
               fontSize: 12,
@@ -210,7 +210,7 @@ class SaleReceiptView extends ConsumerWidget {
     );
   }
 
-  Widget _buildFinancialLog(BuildContext context, dynamic item) {
+  Widget _buildFinancialLog(BuildContext context, SaleWithItems item) {
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xFF1E2433).withValues(alpha: 0.5),
@@ -247,7 +247,7 @@ class SaleReceiptView extends ConsumerWidget {
           ),
           _buildLogEntry(
             'TRANSACTION ID',
-            'S-TODAY-1',
+            toEllipsis(item.sale.id),
             Colors.grey,
             isLast: true,
           ),

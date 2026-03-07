@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spine/drift/database.dart';
@@ -202,12 +201,10 @@ class HomeView extends ConsumerWidget {
           ],
         ),
       ),
-      child: homeState.when(
-        data: (homeState) {
-          return Material(
-            color: colors.background,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(8),
+      child: Material(
+        child: homeState.when(
+          data: (homeState) {
+            return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -225,11 +222,11 @@ class HomeView extends ConsumerWidget {
                   const SizedBox(height: 40),
                 ],
               ),
-            ),
-          );
-        },
-        loading: () => const CircularProgressIndicator(),
-        error: (error, stack) => RegularText(title: 'Error: $error'),
+            );
+          },
+          loading: () => const CircularProgressIndicator(),
+          error: (error, stack) => RegularText(title: 'Error: $error'),
+        ),
       ),
     );
   }
@@ -639,11 +636,17 @@ class HomeView extends ConsumerWidget {
         final items = inventory.items;
 
         // 1. SOLD OUT
-        final soldOut = items.where((item) => item.totalQuantity == 0).toList();
+        final soldOut = items
+            .where((item) => item.totalRemainingQuantity == 0)
+            .toList();
 
         // 2. LOW STOCK
         final lowStock = items
-            .where((item) => item.totalQuantity > 0 && item.totalQuantity < 10)
+            .where(
+              (item) =>
+                  item.totalRemainingQuantity > 0 &&
+                  item.totalRemainingQuantity < 10,
+            )
             .toList();
 
         // 3. EXPIRY
@@ -780,11 +783,11 @@ class HomeView extends ConsumerWidget {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
+                  variant: FBadgeVariant.destructive,
                   child: Text(
                     '${allAlerts.length} Issues',
                     style: TextStyle(fontSize: 8),
                   ),
-                  variant: FBadgeVariant.destructive,
                 ),
               ],
             ),
@@ -909,11 +912,17 @@ class HomeView extends ConsumerWidget {
               width: 80,
               height: 24,
               child: FBadge(
-                child: Text(actionText, style: TextStyle(fontSize: 10, color: context.theme.colors.destructive)),
                 style: FBadgeStyleDelta.delta(
                   decoration: BoxDecorationDelta.delta(
                     color: context.theme.colors.destructive.withValues(alpha: .2),
                     borderRadius: BorderRadius.circular(24),
+                  ),
+                ),
+                child: Text(
+                  actionText,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: context.theme.colors.destructive,
                   ),
                 ),
               ),
