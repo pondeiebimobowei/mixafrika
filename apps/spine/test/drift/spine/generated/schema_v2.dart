@@ -2263,7 +2263,7 @@ class SpineBatch extends Table with TableInfo<SpineBatch, SpineBatchData> {
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
-    $customConstraints: 'NOT NULL',
+    $customConstraints: 'NOT NULL UNIQUE',
   );
   late final GeneratedColumn<int> costPricePerPiece = GeneratedColumn<int>(
     'cost_price_per_piece',
@@ -2305,6 +2305,14 @@ class SpineBatch extends Table with TableInfo<SpineBatch, SpineBatchData> {
     requiredDuringInsert: true,
     $customConstraints: 'NOT NULL REFERENCES product(id)',
   );
+  late final GeneratedColumn<String> businessId = GeneratedColumn<String>(
+    'business_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES user_business(id)',
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -2320,6 +2328,7 @@ class SpineBatch extends Table with TableInfo<SpineBatch, SpineBatchData> {
     initialQuantity,
     remainingQuantity,
     productId,
+    businessId,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -2384,6 +2393,10 @@ class SpineBatch extends Table with TableInfo<SpineBatch, SpineBatchData> {
         DriftSqlType.string,
         data['${effectivePrefix}product_id'],
       )!,
+      businessId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}business_id'],
+      )!,
     );
   }
 
@@ -2410,6 +2423,7 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
   final int initialQuantity;
   final int remainingQuantity;
   final String productId;
+  final String businessId;
   const SpineBatchData({
     required this.id,
     required this.syncStatus,
@@ -2424,6 +2438,7 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     required this.initialQuantity,
     required this.remainingQuantity,
     required this.productId,
+    required this.businessId,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -2447,6 +2462,7 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     map['initial_quantity'] = Variable<int>(initialQuantity);
     map['remaining_quantity'] = Variable<int>(remainingQuantity);
     map['product_id'] = Variable<String>(productId);
+    map['business_id'] = Variable<String>(businessId);
     return map;
   }
 
@@ -2471,6 +2487,7 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
       initialQuantity: Value(initialQuantity),
       remainingQuantity: Value(remainingQuantity),
       productId: Value(productId),
+      businessId: Value(businessId),
     );
   }
 
@@ -2493,6 +2510,7 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
       initialQuantity: serializer.fromJson<int>(json['initialQuantity']),
       remainingQuantity: serializer.fromJson<int>(json['remainingQuantity']),
       productId: serializer.fromJson<String>(json['productId']),
+      businessId: serializer.fromJson<String>(json['businessId']),
     );
   }
   @override
@@ -2512,6 +2530,7 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
       'initialQuantity': serializer.toJson<int>(initialQuantity),
       'remainingQuantity': serializer.toJson<int>(remainingQuantity),
       'productId': serializer.toJson<String>(productId),
+      'businessId': serializer.toJson<String>(businessId),
     };
   }
 
@@ -2529,6 +2548,7 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     int? initialQuantity,
     int? remainingQuantity,
     String? productId,
+    String? businessId,
   }) => SpineBatchData(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
@@ -2543,6 +2563,7 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     initialQuantity: initialQuantity ?? this.initialQuantity,
     remainingQuantity: remainingQuantity ?? this.remainingQuantity,
     productId: productId ?? this.productId,
+    businessId: businessId ?? this.businessId,
   );
   SpineBatchData copyWithCompanion(SpineBatchCompanion data) {
     return SpineBatchData(
@@ -2573,6 +2594,9 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
           ? data.remainingQuantity.value
           : this.remainingQuantity,
       productId: data.productId.present ? data.productId.value : this.productId,
+      businessId: data.businessId.present
+          ? data.businessId.value
+          : this.businessId,
     );
   }
 
@@ -2591,7 +2615,8 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
           ..write('costPricePerBulk: $costPricePerBulk, ')
           ..write('initialQuantity: $initialQuantity, ')
           ..write('remainingQuantity: $remainingQuantity, ')
-          ..write('productId: $productId')
+          ..write('productId: $productId, ')
+          ..write('businessId: $businessId')
           ..write(')'))
         .toString();
   }
@@ -2611,6 +2636,7 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     initialQuantity,
     remainingQuantity,
     productId,
+    businessId,
   );
   @override
   bool operator ==(Object other) =>
@@ -2628,7 +2654,8 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
           other.costPricePerBulk == this.costPricePerBulk &&
           other.initialQuantity == this.initialQuantity &&
           other.remainingQuantity == this.remainingQuantity &&
-          other.productId == this.productId);
+          other.productId == this.productId &&
+          other.businessId == this.businessId);
 }
 
 class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
@@ -2645,6 +2672,7 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
   final Value<int> initialQuantity;
   final Value<int> remainingQuantity;
   final Value<String> productId;
+  final Value<String> businessId;
   final Value<int> rowid;
   const SpineBatchCompanion({
     this.id = const Value.absent(),
@@ -2660,6 +2688,7 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
     this.initialQuantity = const Value.absent(),
     this.remainingQuantity = const Value.absent(),
     this.productId = const Value.absent(),
+    this.businessId = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   SpineBatchCompanion.insert({
@@ -2676,6 +2705,7 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
     required int initialQuantity,
     required int remainingQuantity,
     required String productId,
+    required String businessId,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        syncStatus = Value(syncStatus),
@@ -2684,7 +2714,8 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
        costPricePerBulk = Value(costPricePerBulk),
        initialQuantity = Value(initialQuantity),
        remainingQuantity = Value(remainingQuantity),
-       productId = Value(productId);
+       productId = Value(productId),
+       businessId = Value(businessId);
   static Insertable<SpineBatchData> custom({
     Expression<String>? id,
     Expression<String>? syncStatus,
@@ -2699,6 +2730,7 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
     Expression<int>? initialQuantity,
     Expression<int>? remainingQuantity,
     Expression<String>? productId,
+    Expression<String>? businessId,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -2715,6 +2747,7 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
       if (initialQuantity != null) 'initial_quantity': initialQuantity,
       if (remainingQuantity != null) 'remaining_quantity': remainingQuantity,
       if (productId != null) 'product_id': productId,
+      if (businessId != null) 'business_id': businessId,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -2733,6 +2766,7 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
     Value<int>? initialQuantity,
     Value<int>? remainingQuantity,
     Value<String>? productId,
+    Value<String>? businessId,
     Value<int>? rowid,
   }) {
     return SpineBatchCompanion(
@@ -2749,6 +2783,7 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
       initialQuantity: initialQuantity ?? this.initialQuantity,
       remainingQuantity: remainingQuantity ?? this.remainingQuantity,
       productId: productId ?? this.productId,
+      businessId: businessId ?? this.businessId,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -2795,6 +2830,9 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
     if (productId.present) {
       map['product_id'] = Variable<String>(productId.value);
     }
+    if (businessId.present) {
+      map['business_id'] = Variable<String>(businessId.value);
+    }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
     }
@@ -2817,6 +2855,7 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
           ..write('initialQuantity: $initialQuantity, ')
           ..write('remainingQuantity: $remainingQuantity, ')
           ..write('productId: $productId, ')
+          ..write('businessId: $businessId, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -4906,665 +4945,6 @@ class SalesCompanion extends UpdateCompanion<SalesData> {
   }
 }
 
-class SalesItem extends Table with TableInfo<SalesItem, SalesItemData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  SalesItem(this.attachedDatabase, [this._alias]);
-  late final GeneratedColumn<String> id = GeneratedColumn<String>(
-    'id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints: 'NOT NULL',
-  );
-  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
-    'sync_status',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints: 'NOT NULL',
-  );
-  late final GeneratedColumn<String> syncDate = GeneratedColumn<String>(
-    'sync_date',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-    $customConstraints: 'NULL',
-  );
-  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
-    'created_at',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
-    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
-  );
-  late final GeneratedColumn<String> updatedAt = GeneratedColumn<String>(
-    'updated_at',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
-    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
-  );
-  late final GeneratedColumn<String> deletedAt = GeneratedColumn<String>(
-    'deleted_at',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-    $customConstraints: 'NULL',
-  );
-  late final GeneratedColumn<String> name = GeneratedColumn<String>(
-    'name',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints: 'NOT NULL',
-  );
-  late final GeneratedColumn<int> quantity = GeneratedColumn<int>(
-    'quantity',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-    $customConstraints: 'NOT NULL DEFAULT 1',
-    defaultValue: const CustomExpression('1'),
-  );
-  late final GeneratedColumn<String> type = GeneratedColumn<String>(
-    'type',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints: 'NOT NULL',
-  );
-  late final GeneratedColumn<int> unitPrice = GeneratedColumn<int>(
-    'unit_price',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-    $customConstraints: 'NOT NULL',
-  );
-  late final GeneratedColumn<int> total = GeneratedColumn<int>(
-    'total',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-    $customConstraints: 'NOT NULL',
-  );
-  late final GeneratedColumn<String> saleId = GeneratedColumn<String>(
-    'sale_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    $customConstraints: 'NOT NULL REFERENCES sales(id)',
-  );
-  late final GeneratedColumn<String> productId = GeneratedColumn<String>(
-    'product_id',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-    $customConstraints: 'NULL REFERENCES product(id)',
-  );
-  late final GeneratedColumn<String> description = GeneratedColumn<String>(
-    'description',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-    $customConstraints: 'NULL',
-  );
-  @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    syncStatus,
-    syncDate,
-    createdAt,
-    updatedAt,
-    deletedAt,
-    name,
-    quantity,
-    type,
-    unitPrice,
-    total,
-    saleId,
-    productId,
-    description,
-  ];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'sales_item';
-  @override
-  Set<GeneratedColumn> get $primaryKey => const {};
-  @override
-  SalesItemData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return SalesItemData(
-      id: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}id'],
-      )!,
-      syncStatus: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}sync_status'],
-      )!,
-      syncDate: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}sync_date'],
-      ),
-      createdAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}created_at'],
-      )!,
-      updatedAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}updated_at'],
-      )!,
-      deletedAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}deleted_at'],
-      ),
-      name: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}name'],
-      )!,
-      quantity: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}quantity'],
-      )!,
-      type: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}type'],
-      )!,
-      unitPrice: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}unit_price'],
-      )!,
-      total: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}total'],
-      )!,
-      saleId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}sale_id'],
-      )!,
-      productId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}product_id'],
-      ),
-      description: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}description'],
-      ),
-    );
-  }
-
-  @override
-  SalesItem createAlias(String alias) {
-    return SalesItem(attachedDatabase, alias);
-  }
-
-  @override
-  bool get dontWriteConstraints => true;
-}
-
-class SalesItemData extends DataClass implements Insertable<SalesItemData> {
-  final String id;
-  final String syncStatus;
-  final String? syncDate;
-  final String createdAt;
-  final String updatedAt;
-  final String? deletedAt;
-  final String name;
-  final int quantity;
-  final String type;
-  final int unitPrice;
-  final int total;
-  final String saleId;
-  final String? productId;
-  final String? description;
-  const SalesItemData({
-    required this.id,
-    required this.syncStatus,
-    this.syncDate,
-    required this.createdAt,
-    required this.updatedAt,
-    this.deletedAt,
-    required this.name,
-    required this.quantity,
-    required this.type,
-    required this.unitPrice,
-    required this.total,
-    required this.saleId,
-    this.productId,
-    this.description,
-  });
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<String>(id);
-    map['sync_status'] = Variable<String>(syncStatus);
-    if (!nullToAbsent || syncDate != null) {
-      map['sync_date'] = Variable<String>(syncDate);
-    }
-    map['created_at'] = Variable<String>(createdAt);
-    map['updated_at'] = Variable<String>(updatedAt);
-    if (!nullToAbsent || deletedAt != null) {
-      map['deleted_at'] = Variable<String>(deletedAt);
-    }
-    map['name'] = Variable<String>(name);
-    map['quantity'] = Variable<int>(quantity);
-    map['type'] = Variable<String>(type);
-    map['unit_price'] = Variable<int>(unitPrice);
-    map['total'] = Variable<int>(total);
-    map['sale_id'] = Variable<String>(saleId);
-    if (!nullToAbsent || productId != null) {
-      map['product_id'] = Variable<String>(productId);
-    }
-    if (!nullToAbsent || description != null) {
-      map['description'] = Variable<String>(description);
-    }
-    return map;
-  }
-
-  SalesItemCompanion toCompanion(bool nullToAbsent) {
-    return SalesItemCompanion(
-      id: Value(id),
-      syncStatus: Value(syncStatus),
-      syncDate: syncDate == null && nullToAbsent
-          ? const Value.absent()
-          : Value(syncDate),
-      createdAt: Value(createdAt),
-      updatedAt: Value(updatedAt),
-      deletedAt: deletedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(deletedAt),
-      name: Value(name),
-      quantity: Value(quantity),
-      type: Value(type),
-      unitPrice: Value(unitPrice),
-      total: Value(total),
-      saleId: Value(saleId),
-      productId: productId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(productId),
-      description: description == null && nullToAbsent
-          ? const Value.absent()
-          : Value(description),
-    );
-  }
-
-  factory SalesItemData.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return SalesItemData(
-      id: serializer.fromJson<String>(json['id']),
-      syncStatus: serializer.fromJson<String>(json['syncStatus']),
-      syncDate: serializer.fromJson<String?>(json['syncDate']),
-      createdAt: serializer.fromJson<String>(json['createdAt']),
-      updatedAt: serializer.fromJson<String>(json['updatedAt']),
-      deletedAt: serializer.fromJson<String?>(json['deletedAt']),
-      name: serializer.fromJson<String>(json['name']),
-      quantity: serializer.fromJson<int>(json['quantity']),
-      type: serializer.fromJson<String>(json['type']),
-      unitPrice: serializer.fromJson<int>(json['unitPrice']),
-      total: serializer.fromJson<int>(json['total']),
-      saleId: serializer.fromJson<String>(json['saleId']),
-      productId: serializer.fromJson<String?>(json['productId']),
-      description: serializer.fromJson<String?>(json['description']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<String>(id),
-      'syncStatus': serializer.toJson<String>(syncStatus),
-      'syncDate': serializer.toJson<String?>(syncDate),
-      'createdAt': serializer.toJson<String>(createdAt),
-      'updatedAt': serializer.toJson<String>(updatedAt),
-      'deletedAt': serializer.toJson<String?>(deletedAt),
-      'name': serializer.toJson<String>(name),
-      'quantity': serializer.toJson<int>(quantity),
-      'type': serializer.toJson<String>(type),
-      'unitPrice': serializer.toJson<int>(unitPrice),
-      'total': serializer.toJson<int>(total),
-      'saleId': serializer.toJson<String>(saleId),
-      'productId': serializer.toJson<String?>(productId),
-      'description': serializer.toJson<String?>(description),
-    };
-  }
-
-  SalesItemData copyWith({
-    String? id,
-    String? syncStatus,
-    Value<String?> syncDate = const Value.absent(),
-    String? createdAt,
-    String? updatedAt,
-    Value<String?> deletedAt = const Value.absent(),
-    String? name,
-    int? quantity,
-    String? type,
-    int? unitPrice,
-    int? total,
-    String? saleId,
-    Value<String?> productId = const Value.absent(),
-    Value<String?> description = const Value.absent(),
-  }) => SalesItemData(
-    id: id ?? this.id,
-    syncStatus: syncStatus ?? this.syncStatus,
-    syncDate: syncDate.present ? syncDate.value : this.syncDate,
-    createdAt: createdAt ?? this.createdAt,
-    updatedAt: updatedAt ?? this.updatedAt,
-    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
-    name: name ?? this.name,
-    quantity: quantity ?? this.quantity,
-    type: type ?? this.type,
-    unitPrice: unitPrice ?? this.unitPrice,
-    total: total ?? this.total,
-    saleId: saleId ?? this.saleId,
-    productId: productId.present ? productId.value : this.productId,
-    description: description.present ? description.value : this.description,
-  );
-  SalesItemData copyWithCompanion(SalesItemCompanion data) {
-    return SalesItemData(
-      id: data.id.present ? data.id.value : this.id,
-      syncStatus: data.syncStatus.present
-          ? data.syncStatus.value
-          : this.syncStatus,
-      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
-      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
-      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
-      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
-      name: data.name.present ? data.name.value : this.name,
-      quantity: data.quantity.present ? data.quantity.value : this.quantity,
-      type: data.type.present ? data.type.value : this.type,
-      unitPrice: data.unitPrice.present ? data.unitPrice.value : this.unitPrice,
-      total: data.total.present ? data.total.value : this.total,
-      saleId: data.saleId.present ? data.saleId.value : this.saleId,
-      productId: data.productId.present ? data.productId.value : this.productId,
-      description: data.description.present
-          ? data.description.value
-          : this.description,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('SalesItemData(')
-          ..write('id: $id, ')
-          ..write('syncStatus: $syncStatus, ')
-          ..write('syncDate: $syncDate, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt, ')
-          ..write('deletedAt: $deletedAt, ')
-          ..write('name: $name, ')
-          ..write('quantity: $quantity, ')
-          ..write('type: $type, ')
-          ..write('unitPrice: $unitPrice, ')
-          ..write('total: $total, ')
-          ..write('saleId: $saleId, ')
-          ..write('productId: $productId, ')
-          ..write('description: $description')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(
-    id,
-    syncStatus,
-    syncDate,
-    createdAt,
-    updatedAt,
-    deletedAt,
-    name,
-    quantity,
-    type,
-    unitPrice,
-    total,
-    saleId,
-    productId,
-    description,
-  );
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is SalesItemData &&
-          other.id == this.id &&
-          other.syncStatus == this.syncStatus &&
-          other.syncDate == this.syncDate &&
-          other.createdAt == this.createdAt &&
-          other.updatedAt == this.updatedAt &&
-          other.deletedAt == this.deletedAt &&
-          other.name == this.name &&
-          other.quantity == this.quantity &&
-          other.type == this.type &&
-          other.unitPrice == this.unitPrice &&
-          other.total == this.total &&
-          other.saleId == this.saleId &&
-          other.productId == this.productId &&
-          other.description == this.description);
-}
-
-class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
-  final Value<String> id;
-  final Value<String> syncStatus;
-  final Value<String?> syncDate;
-  final Value<String> createdAt;
-  final Value<String> updatedAt;
-  final Value<String?> deletedAt;
-  final Value<String> name;
-  final Value<int> quantity;
-  final Value<String> type;
-  final Value<int> unitPrice;
-  final Value<int> total;
-  final Value<String> saleId;
-  final Value<String?> productId;
-  final Value<String?> description;
-  final Value<int> rowid;
-  const SalesItemCompanion({
-    this.id = const Value.absent(),
-    this.syncStatus = const Value.absent(),
-    this.syncDate = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.updatedAt = const Value.absent(),
-    this.deletedAt = const Value.absent(),
-    this.name = const Value.absent(),
-    this.quantity = const Value.absent(),
-    this.type = const Value.absent(),
-    this.unitPrice = const Value.absent(),
-    this.total = const Value.absent(),
-    this.saleId = const Value.absent(),
-    this.productId = const Value.absent(),
-    this.description = const Value.absent(),
-    this.rowid = const Value.absent(),
-  });
-  SalesItemCompanion.insert({
-    required String id,
-    required String syncStatus,
-    this.syncDate = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.updatedAt = const Value.absent(),
-    this.deletedAt = const Value.absent(),
-    required String name,
-    this.quantity = const Value.absent(),
-    required String type,
-    required int unitPrice,
-    required int total,
-    required String saleId,
-    this.productId = const Value.absent(),
-    this.description = const Value.absent(),
-    this.rowid = const Value.absent(),
-  }) : id = Value(id),
-       syncStatus = Value(syncStatus),
-       name = Value(name),
-       type = Value(type),
-       unitPrice = Value(unitPrice),
-       total = Value(total),
-       saleId = Value(saleId);
-  static Insertable<SalesItemData> custom({
-    Expression<String>? id,
-    Expression<String>? syncStatus,
-    Expression<String>? syncDate,
-    Expression<String>? createdAt,
-    Expression<String>? updatedAt,
-    Expression<String>? deletedAt,
-    Expression<String>? name,
-    Expression<int>? quantity,
-    Expression<String>? type,
-    Expression<int>? unitPrice,
-    Expression<int>? total,
-    Expression<String>? saleId,
-    Expression<String>? productId,
-    Expression<String>? description,
-    Expression<int>? rowid,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (syncStatus != null) 'sync_status': syncStatus,
-      if (syncDate != null) 'sync_date': syncDate,
-      if (createdAt != null) 'created_at': createdAt,
-      if (updatedAt != null) 'updated_at': updatedAt,
-      if (deletedAt != null) 'deleted_at': deletedAt,
-      if (name != null) 'name': name,
-      if (quantity != null) 'quantity': quantity,
-      if (type != null) 'type': type,
-      if (unitPrice != null) 'unit_price': unitPrice,
-      if (total != null) 'total': total,
-      if (saleId != null) 'sale_id': saleId,
-      if (productId != null) 'product_id': productId,
-      if (description != null) 'description': description,
-      if (rowid != null) 'rowid': rowid,
-    });
-  }
-
-  SalesItemCompanion copyWith({
-    Value<String>? id,
-    Value<String>? syncStatus,
-    Value<String?>? syncDate,
-    Value<String>? createdAt,
-    Value<String>? updatedAt,
-    Value<String?>? deletedAt,
-    Value<String>? name,
-    Value<int>? quantity,
-    Value<String>? type,
-    Value<int>? unitPrice,
-    Value<int>? total,
-    Value<String>? saleId,
-    Value<String?>? productId,
-    Value<String?>? description,
-    Value<int>? rowid,
-  }) {
-    return SalesItemCompanion(
-      id: id ?? this.id,
-      syncStatus: syncStatus ?? this.syncStatus,
-      syncDate: syncDate ?? this.syncDate,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      deletedAt: deletedAt ?? this.deletedAt,
-      name: name ?? this.name,
-      quantity: quantity ?? this.quantity,
-      type: type ?? this.type,
-      unitPrice: unitPrice ?? this.unitPrice,
-      total: total ?? this.total,
-      saleId: saleId ?? this.saleId,
-      productId: productId ?? this.productId,
-      description: description ?? this.description,
-      rowid: rowid ?? this.rowid,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<String>(id.value);
-    }
-    if (syncStatus.present) {
-      map['sync_status'] = Variable<String>(syncStatus.value);
-    }
-    if (syncDate.present) {
-      map['sync_date'] = Variable<String>(syncDate.value);
-    }
-    if (createdAt.present) {
-      map['created_at'] = Variable<String>(createdAt.value);
-    }
-    if (updatedAt.present) {
-      map['updated_at'] = Variable<String>(updatedAt.value);
-    }
-    if (deletedAt.present) {
-      map['deleted_at'] = Variable<String>(deletedAt.value);
-    }
-    if (name.present) {
-      map['name'] = Variable<String>(name.value);
-    }
-    if (quantity.present) {
-      map['quantity'] = Variable<int>(quantity.value);
-    }
-    if (type.present) {
-      map['type'] = Variable<String>(type.value);
-    }
-    if (unitPrice.present) {
-      map['unit_price'] = Variable<int>(unitPrice.value);
-    }
-    if (total.present) {
-      map['total'] = Variable<int>(total.value);
-    }
-    if (saleId.present) {
-      map['sale_id'] = Variable<String>(saleId.value);
-    }
-    if (productId.present) {
-      map['product_id'] = Variable<String>(productId.value);
-    }
-    if (description.present) {
-      map['description'] = Variable<String>(description.value);
-    }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('SalesItemCompanion(')
-          ..write('id: $id, ')
-          ..write('syncStatus: $syncStatus, ')
-          ..write('syncDate: $syncDate, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt, ')
-          ..write('deletedAt: $deletedAt, ')
-          ..write('name: $name, ')
-          ..write('quantity: $quantity, ')
-          ..write('type: $type, ')
-          ..write('unitPrice: $unitPrice, ')
-          ..write('total: $total, ')
-          ..write('saleId: $saleId, ')
-          ..write('productId: $productId, ')
-          ..write('description: $description, ')
-          ..write('rowid: $rowid')
-          ..write(')'))
-        .toString();
-  }
-}
-
 class Payments extends Table with TableInfo<Payments, PaymentsData> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -6073,6 +5453,3332 @@ class PaymentsCompanion extends UpdateCompanion<PaymentsData> {
   }
 }
 
+class ProductImage extends Table
+    with TableInfo<ProductImage, ProductImageData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  ProductImage(this.attachedDatabase, [this._alias]);
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> syncDate = GeneratedColumn<String>(
+    'sync_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  late final GeneratedColumn<String> updatedAt = GeneratedColumn<String>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  late final GeneratedColumn<String> deletedAt = GeneratedColumn<String>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> productId = GeneratedColumn<String>(
+    'product_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES product(id)',
+  );
+  late final GeneratedColumn<String> localPath = GeneratedColumn<String>(
+    'local_path',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> remoteUrl = GeneratedColumn<String>(
+    'remote_url',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    productId,
+    localPath,
+    remoteUrl,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'product_image';
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  ProductImageData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ProductImageData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      syncDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      productId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}product_id'],
+      )!,
+      localPath: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}local_path'],
+      ),
+      remoteUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}remote_url'],
+      ),
+    );
+  }
+
+  @override
+  ProductImage createAlias(String alias) {
+    return ProductImage(attachedDatabase, alias);
+  }
+
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class ProductImageData extends DataClass
+    implements Insertable<ProductImageData> {
+  final String id;
+  final String syncStatus;
+  final String? syncDate;
+  final String createdAt;
+  final String updatedAt;
+  final String? deletedAt;
+  final String productId;
+  final String? localPath;
+  final String? remoteUrl;
+  const ProductImageData({
+    required this.id,
+    required this.syncStatus,
+    this.syncDate,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.productId,
+    this.localPath,
+    this.remoteUrl,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<String>(syncDate);
+    }
+    map['created_at'] = Variable<String>(createdAt);
+    map['updated_at'] = Variable<String>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<String>(deletedAt);
+    }
+    map['product_id'] = Variable<String>(productId);
+    if (!nullToAbsent || localPath != null) {
+      map['local_path'] = Variable<String>(localPath);
+    }
+    if (!nullToAbsent || remoteUrl != null) {
+      map['remote_url'] = Variable<String>(remoteUrl);
+    }
+    return map;
+  }
+
+  ProductImageCompanion toCompanion(bool nullToAbsent) {
+    return ProductImageCompanion(
+      id: Value(id),
+      syncStatus: Value(syncStatus),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      productId: Value(productId),
+      localPath: localPath == null && nullToAbsent
+          ? const Value.absent()
+          : Value(localPath),
+      remoteUrl: remoteUrl == null && nullToAbsent
+          ? const Value.absent()
+          : Value(remoteUrl),
+    );
+  }
+
+  factory ProductImageData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ProductImageData(
+      id: serializer.fromJson<String>(json['id']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      syncDate: serializer.fromJson<String?>(json['syncDate']),
+      createdAt: serializer.fromJson<String>(json['createdAt']),
+      updatedAt: serializer.fromJson<String>(json['updatedAt']),
+      deletedAt: serializer.fromJson<String?>(json['deletedAt']),
+      productId: serializer.fromJson<String>(json['productId']),
+      localPath: serializer.fromJson<String?>(json['localPath']),
+      remoteUrl: serializer.fromJson<String?>(json['remoteUrl']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'syncDate': serializer.toJson<String?>(syncDate),
+      'createdAt': serializer.toJson<String>(createdAt),
+      'updatedAt': serializer.toJson<String>(updatedAt),
+      'deletedAt': serializer.toJson<String?>(deletedAt),
+      'productId': serializer.toJson<String>(productId),
+      'localPath': serializer.toJson<String?>(localPath),
+      'remoteUrl': serializer.toJson<String?>(remoteUrl),
+    };
+  }
+
+  ProductImageData copyWith({
+    String? id,
+    String? syncStatus,
+    Value<String?> syncDate = const Value.absent(),
+    String? createdAt,
+    String? updatedAt,
+    Value<String?> deletedAt = const Value.absent(),
+    String? productId,
+    Value<String?> localPath = const Value.absent(),
+    Value<String?> remoteUrl = const Value.absent(),
+  }) => ProductImageData(
+    id: id ?? this.id,
+    syncStatus: syncStatus ?? this.syncStatus,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    productId: productId ?? this.productId,
+    localPath: localPath.present ? localPath.value : this.localPath,
+    remoteUrl: remoteUrl.present ? remoteUrl.value : this.remoteUrl,
+  );
+  ProductImageData copyWithCompanion(ProductImageCompanion data) {
+    return ProductImageData(
+      id: data.id.present ? data.id.value : this.id,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      productId: data.productId.present ? data.productId.value : this.productId,
+      localPath: data.localPath.present ? data.localPath.value : this.localPath,
+      remoteUrl: data.remoteUrl.present ? data.remoteUrl.value : this.remoteUrl,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProductImageData(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('productId: $productId, ')
+          ..write('localPath: $localPath, ')
+          ..write('remoteUrl: $remoteUrl')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    productId,
+    localPath,
+    remoteUrl,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ProductImageData &&
+          other.id == this.id &&
+          other.syncStatus == this.syncStatus &&
+          other.syncDate == this.syncDate &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.productId == this.productId &&
+          other.localPath == this.localPath &&
+          other.remoteUrl == this.remoteUrl);
+}
+
+class ProductImageCompanion extends UpdateCompanion<ProductImageData> {
+  final Value<String> id;
+  final Value<String> syncStatus;
+  final Value<String?> syncDate;
+  final Value<String> createdAt;
+  final Value<String> updatedAt;
+  final Value<String?> deletedAt;
+  final Value<String> productId;
+  final Value<String?> localPath;
+  final Value<String?> remoteUrl;
+  final Value<int> rowid;
+  const ProductImageCompanion({
+    this.id = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.productId = const Value.absent(),
+    this.localPath = const Value.absent(),
+    this.remoteUrl = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ProductImageCompanion.insert({
+    required String id,
+    required String syncStatus,
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required String productId,
+    this.localPath = const Value.absent(),
+    this.remoteUrl = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       syncStatus = Value(syncStatus),
+       productId = Value(productId);
+  static Insertable<ProductImageData> custom({
+    Expression<String>? id,
+    Expression<String>? syncStatus,
+    Expression<String>? syncDate,
+    Expression<String>? createdAt,
+    Expression<String>? updatedAt,
+    Expression<String>? deletedAt,
+    Expression<String>? productId,
+    Expression<String>? localPath,
+    Expression<String>? remoteUrl,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (syncDate != null) 'sync_date': syncDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (productId != null) 'product_id': productId,
+      if (localPath != null) 'local_path': localPath,
+      if (remoteUrl != null) 'remote_url': remoteUrl,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ProductImageCompanion copyWith({
+    Value<String>? id,
+    Value<String>? syncStatus,
+    Value<String?>? syncDate,
+    Value<String>? createdAt,
+    Value<String>? updatedAt,
+    Value<String?>? deletedAt,
+    Value<String>? productId,
+    Value<String?>? localPath,
+    Value<String?>? remoteUrl,
+    Value<int>? rowid,
+  }) {
+    return ProductImageCompanion(
+      id: id ?? this.id,
+      syncStatus: syncStatus ?? this.syncStatus,
+      syncDate: syncDate ?? this.syncDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      productId: productId ?? this.productId,
+      localPath: localPath ?? this.localPath,
+      remoteUrl: remoteUrl ?? this.remoteUrl,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (syncDate.present) {
+      map['sync_date'] = Variable<String>(syncDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<String>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<String>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<String>(deletedAt.value);
+    }
+    if (productId.present) {
+      map['product_id'] = Variable<String>(productId.value);
+    }
+    if (localPath.present) {
+      map['local_path'] = Variable<String>(localPath.value);
+    }
+    if (remoteUrl.present) {
+      map['remote_url'] = Variable<String>(remoteUrl.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProductImageCompanion(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('productId: $productId, ')
+          ..write('localPath: $localPath, ')
+          ..write('remoteUrl: $remoteUrl, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class SalesItem extends Table with TableInfo<SalesItem, SalesItemData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  SalesItem(this.attachedDatabase, [this._alias]);
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> syncDate = GeneratedColumn<String>(
+    'sync_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  late final GeneratedColumn<String> updatedAt = GeneratedColumn<String>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  late final GeneratedColumn<String> deletedAt = GeneratedColumn<String>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<int> quantity = GeneratedColumn<int>(
+    'quantity',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT 1',
+    defaultValue: const CustomExpression('1'),
+  );
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<int> unitPrice = GeneratedColumn<int>(
+    'unit_price',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<int> costPrice = GeneratedColumn<int>(
+    'cost_price',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<int> total = GeneratedColumn<int>(
+    'total',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> saleId = GeneratedColumn<String>(
+    'sale_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES sales(id)',
+  );
+  late final GeneratedColumn<String> productId = GeneratedColumn<String>(
+    'product_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL REFERENCES product(id)',
+  );
+  late final GeneratedColumn<String> batchId = GeneratedColumn<String>(
+    'batch_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL REFERENCES spine_batch(id)',
+  );
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    name,
+    quantity,
+    type,
+    unitPrice,
+    costPrice,
+    total,
+    saleId,
+    productId,
+    batchId,
+    description,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'sales_item';
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  SalesItemData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return SalesItemData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      syncDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      quantity: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}quantity'],
+      )!,
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
+      unitPrice: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}unit_price'],
+      )!,
+      costPrice: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}cost_price'],
+      )!,
+      total: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}total'],
+      )!,
+      saleId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sale_id'],
+      )!,
+      productId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}product_id'],
+      ),
+      batchId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}batch_id'],
+      ),
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      ),
+    );
+  }
+
+  @override
+  SalesItem createAlias(String alias) {
+    return SalesItem(attachedDatabase, alias);
+  }
+
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class SalesItemData extends DataClass implements Insertable<SalesItemData> {
+  final String id;
+  final String syncStatus;
+  final String? syncDate;
+  final String createdAt;
+  final String updatedAt;
+  final String? deletedAt;
+  final String name;
+  final int quantity;
+  final String type;
+  final int unitPrice;
+  final int costPrice;
+  final int total;
+  final String saleId;
+  final String? productId;
+  final String? batchId;
+  final String? description;
+  const SalesItemData({
+    required this.id,
+    required this.syncStatus,
+    this.syncDate,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.name,
+    required this.quantity,
+    required this.type,
+    required this.unitPrice,
+    required this.costPrice,
+    required this.total,
+    required this.saleId,
+    this.productId,
+    this.batchId,
+    this.description,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<String>(syncDate);
+    }
+    map['created_at'] = Variable<String>(createdAt);
+    map['updated_at'] = Variable<String>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<String>(deletedAt);
+    }
+    map['name'] = Variable<String>(name);
+    map['quantity'] = Variable<int>(quantity);
+    map['type'] = Variable<String>(type);
+    map['unit_price'] = Variable<int>(unitPrice);
+    map['cost_price'] = Variable<int>(costPrice);
+    map['total'] = Variable<int>(total);
+    map['sale_id'] = Variable<String>(saleId);
+    if (!nullToAbsent || productId != null) {
+      map['product_id'] = Variable<String>(productId);
+    }
+    if (!nullToAbsent || batchId != null) {
+      map['batch_id'] = Variable<String>(batchId);
+    }
+    if (!nullToAbsent || description != null) {
+      map['description'] = Variable<String>(description);
+    }
+    return map;
+  }
+
+  SalesItemCompanion toCompanion(bool nullToAbsent) {
+    return SalesItemCompanion(
+      id: Value(id),
+      syncStatus: Value(syncStatus),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      name: Value(name),
+      quantity: Value(quantity),
+      type: Value(type),
+      unitPrice: Value(unitPrice),
+      costPrice: Value(costPrice),
+      total: Value(total),
+      saleId: Value(saleId),
+      productId: productId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(productId),
+      batchId: batchId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(batchId),
+      description: description == null && nullToAbsent
+          ? const Value.absent()
+          : Value(description),
+    );
+  }
+
+  factory SalesItemData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return SalesItemData(
+      id: serializer.fromJson<String>(json['id']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      syncDate: serializer.fromJson<String?>(json['syncDate']),
+      createdAt: serializer.fromJson<String>(json['createdAt']),
+      updatedAt: serializer.fromJson<String>(json['updatedAt']),
+      deletedAt: serializer.fromJson<String?>(json['deletedAt']),
+      name: serializer.fromJson<String>(json['name']),
+      quantity: serializer.fromJson<int>(json['quantity']),
+      type: serializer.fromJson<String>(json['type']),
+      unitPrice: serializer.fromJson<int>(json['unitPrice']),
+      costPrice: serializer.fromJson<int>(json['costPrice']),
+      total: serializer.fromJson<int>(json['total']),
+      saleId: serializer.fromJson<String>(json['saleId']),
+      productId: serializer.fromJson<String?>(json['productId']),
+      batchId: serializer.fromJson<String?>(json['batchId']),
+      description: serializer.fromJson<String?>(json['description']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'syncDate': serializer.toJson<String?>(syncDate),
+      'createdAt': serializer.toJson<String>(createdAt),
+      'updatedAt': serializer.toJson<String>(updatedAt),
+      'deletedAt': serializer.toJson<String?>(deletedAt),
+      'name': serializer.toJson<String>(name),
+      'quantity': serializer.toJson<int>(quantity),
+      'type': serializer.toJson<String>(type),
+      'unitPrice': serializer.toJson<int>(unitPrice),
+      'costPrice': serializer.toJson<int>(costPrice),
+      'total': serializer.toJson<int>(total),
+      'saleId': serializer.toJson<String>(saleId),
+      'productId': serializer.toJson<String?>(productId),
+      'batchId': serializer.toJson<String?>(batchId),
+      'description': serializer.toJson<String?>(description),
+    };
+  }
+
+  SalesItemData copyWith({
+    String? id,
+    String? syncStatus,
+    Value<String?> syncDate = const Value.absent(),
+    String? createdAt,
+    String? updatedAt,
+    Value<String?> deletedAt = const Value.absent(),
+    String? name,
+    int? quantity,
+    String? type,
+    int? unitPrice,
+    int? costPrice,
+    int? total,
+    String? saleId,
+    Value<String?> productId = const Value.absent(),
+    Value<String?> batchId = const Value.absent(),
+    Value<String?> description = const Value.absent(),
+  }) => SalesItemData(
+    id: id ?? this.id,
+    syncStatus: syncStatus ?? this.syncStatus,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    name: name ?? this.name,
+    quantity: quantity ?? this.quantity,
+    type: type ?? this.type,
+    unitPrice: unitPrice ?? this.unitPrice,
+    costPrice: costPrice ?? this.costPrice,
+    total: total ?? this.total,
+    saleId: saleId ?? this.saleId,
+    productId: productId.present ? productId.value : this.productId,
+    batchId: batchId.present ? batchId.value : this.batchId,
+    description: description.present ? description.value : this.description,
+  );
+  SalesItemData copyWithCompanion(SalesItemCompanion data) {
+    return SalesItemData(
+      id: data.id.present ? data.id.value : this.id,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      name: data.name.present ? data.name.value : this.name,
+      quantity: data.quantity.present ? data.quantity.value : this.quantity,
+      type: data.type.present ? data.type.value : this.type,
+      unitPrice: data.unitPrice.present ? data.unitPrice.value : this.unitPrice,
+      costPrice: data.costPrice.present ? data.costPrice.value : this.costPrice,
+      total: data.total.present ? data.total.value : this.total,
+      saleId: data.saleId.present ? data.saleId.value : this.saleId,
+      productId: data.productId.present ? data.productId.value : this.productId,
+      batchId: data.batchId.present ? data.batchId.value : this.batchId,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SalesItemData(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('name: $name, ')
+          ..write('quantity: $quantity, ')
+          ..write('type: $type, ')
+          ..write('unitPrice: $unitPrice, ')
+          ..write('costPrice: $costPrice, ')
+          ..write('total: $total, ')
+          ..write('saleId: $saleId, ')
+          ..write('productId: $productId, ')
+          ..write('batchId: $batchId, ')
+          ..write('description: $description')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    name,
+    quantity,
+    type,
+    unitPrice,
+    costPrice,
+    total,
+    saleId,
+    productId,
+    batchId,
+    description,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is SalesItemData &&
+          other.id == this.id &&
+          other.syncStatus == this.syncStatus &&
+          other.syncDate == this.syncDate &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.name == this.name &&
+          other.quantity == this.quantity &&
+          other.type == this.type &&
+          other.unitPrice == this.unitPrice &&
+          other.costPrice == this.costPrice &&
+          other.total == this.total &&
+          other.saleId == this.saleId &&
+          other.productId == this.productId &&
+          other.batchId == this.batchId &&
+          other.description == this.description);
+}
+
+class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
+  final Value<String> id;
+  final Value<String> syncStatus;
+  final Value<String?> syncDate;
+  final Value<String> createdAt;
+  final Value<String> updatedAt;
+  final Value<String?> deletedAt;
+  final Value<String> name;
+  final Value<int> quantity;
+  final Value<String> type;
+  final Value<int> unitPrice;
+  final Value<int> costPrice;
+  final Value<int> total;
+  final Value<String> saleId;
+  final Value<String?> productId;
+  final Value<String?> batchId;
+  final Value<String?> description;
+  final Value<int> rowid;
+  const SalesItemCompanion({
+    this.id = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.name = const Value.absent(),
+    this.quantity = const Value.absent(),
+    this.type = const Value.absent(),
+    this.unitPrice = const Value.absent(),
+    this.costPrice = const Value.absent(),
+    this.total = const Value.absent(),
+    this.saleId = const Value.absent(),
+    this.productId = const Value.absent(),
+    this.batchId = const Value.absent(),
+    this.description = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  SalesItemCompanion.insert({
+    required String id,
+    required String syncStatus,
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required String name,
+    this.quantity = const Value.absent(),
+    required String type,
+    required int unitPrice,
+    required int costPrice,
+    required int total,
+    required String saleId,
+    this.productId = const Value.absent(),
+    this.batchId = const Value.absent(),
+    this.description = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       syncStatus = Value(syncStatus),
+       name = Value(name),
+       type = Value(type),
+       unitPrice = Value(unitPrice),
+       costPrice = Value(costPrice),
+       total = Value(total),
+       saleId = Value(saleId);
+  static Insertable<SalesItemData> custom({
+    Expression<String>? id,
+    Expression<String>? syncStatus,
+    Expression<String>? syncDate,
+    Expression<String>? createdAt,
+    Expression<String>? updatedAt,
+    Expression<String>? deletedAt,
+    Expression<String>? name,
+    Expression<int>? quantity,
+    Expression<String>? type,
+    Expression<int>? unitPrice,
+    Expression<int>? costPrice,
+    Expression<int>? total,
+    Expression<String>? saleId,
+    Expression<String>? productId,
+    Expression<String>? batchId,
+    Expression<String>? description,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (syncDate != null) 'sync_date': syncDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (name != null) 'name': name,
+      if (quantity != null) 'quantity': quantity,
+      if (type != null) 'type': type,
+      if (unitPrice != null) 'unit_price': unitPrice,
+      if (costPrice != null) 'cost_price': costPrice,
+      if (total != null) 'total': total,
+      if (saleId != null) 'sale_id': saleId,
+      if (productId != null) 'product_id': productId,
+      if (batchId != null) 'batch_id': batchId,
+      if (description != null) 'description': description,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  SalesItemCompanion copyWith({
+    Value<String>? id,
+    Value<String>? syncStatus,
+    Value<String?>? syncDate,
+    Value<String>? createdAt,
+    Value<String>? updatedAt,
+    Value<String?>? deletedAt,
+    Value<String>? name,
+    Value<int>? quantity,
+    Value<String>? type,
+    Value<int>? unitPrice,
+    Value<int>? costPrice,
+    Value<int>? total,
+    Value<String>? saleId,
+    Value<String?>? productId,
+    Value<String?>? batchId,
+    Value<String?>? description,
+    Value<int>? rowid,
+  }) {
+    return SalesItemCompanion(
+      id: id ?? this.id,
+      syncStatus: syncStatus ?? this.syncStatus,
+      syncDate: syncDate ?? this.syncDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      name: name ?? this.name,
+      quantity: quantity ?? this.quantity,
+      type: type ?? this.type,
+      unitPrice: unitPrice ?? this.unitPrice,
+      costPrice: costPrice ?? this.costPrice,
+      total: total ?? this.total,
+      saleId: saleId ?? this.saleId,
+      productId: productId ?? this.productId,
+      batchId: batchId ?? this.batchId,
+      description: description ?? this.description,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (syncDate.present) {
+      map['sync_date'] = Variable<String>(syncDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<String>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<String>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<String>(deletedAt.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (quantity.present) {
+      map['quantity'] = Variable<int>(quantity.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (unitPrice.present) {
+      map['unit_price'] = Variable<int>(unitPrice.value);
+    }
+    if (costPrice.present) {
+      map['cost_price'] = Variable<int>(costPrice.value);
+    }
+    if (total.present) {
+      map['total'] = Variable<int>(total.value);
+    }
+    if (saleId.present) {
+      map['sale_id'] = Variable<String>(saleId.value);
+    }
+    if (productId.present) {
+      map['product_id'] = Variable<String>(productId.value);
+    }
+    if (batchId.present) {
+      map['batch_id'] = Variable<String>(batchId.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('SalesItemCompanion(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('name: $name, ')
+          ..write('quantity: $quantity, ')
+          ..write('type: $type, ')
+          ..write('unitPrice: $unitPrice, ')
+          ..write('costPrice: $costPrice, ')
+          ..write('total: $total, ')
+          ..write('saleId: $saleId, ')
+          ..write('productId: $productId, ')
+          ..write('batchId: $batchId, ')
+          ..write('description: $description, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class StockAdjustment extends Table
+    with TableInfo<StockAdjustment, StockAdjustmentData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  StockAdjustment(this.attachedDatabase, [this._alias]);
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> syncDate = GeneratedColumn<String>(
+    'sync_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  late final GeneratedColumn<String> updatedAt = GeneratedColumn<String>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  late final GeneratedColumn<String> deletedAt = GeneratedColumn<String>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> businessId = GeneratedColumn<String>(
+    'business_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES user_business(id)',
+  );
+  late final GeneratedColumn<String> reason = GeneratedColumn<String>(
+    'reason',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES user(id)',
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    businessId,
+    reason,
+    createdBy,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'stock_adjustment';
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  StockAdjustmentData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return StockAdjustmentData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      syncDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      businessId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}business_id'],
+      )!,
+      reason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reason'],
+      )!,
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      )!,
+    );
+  }
+
+  @override
+  StockAdjustment createAlias(String alias) {
+    return StockAdjustment(attachedDatabase, alias);
+  }
+
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class StockAdjustmentData extends DataClass
+    implements Insertable<StockAdjustmentData> {
+  final String id;
+  final String syncStatus;
+  final String? syncDate;
+  final String createdAt;
+  final String updatedAt;
+  final String? deletedAt;
+  final String businessId;
+  final String reason;
+  final String createdBy;
+  const StockAdjustmentData({
+    required this.id,
+    required this.syncStatus,
+    this.syncDate,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.businessId,
+    required this.reason,
+    required this.createdBy,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<String>(syncDate);
+    }
+    map['created_at'] = Variable<String>(createdAt);
+    map['updated_at'] = Variable<String>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<String>(deletedAt);
+    }
+    map['business_id'] = Variable<String>(businessId);
+    map['reason'] = Variable<String>(reason);
+    map['created_by'] = Variable<String>(createdBy);
+    return map;
+  }
+
+  StockAdjustmentCompanion toCompanion(bool nullToAbsent) {
+    return StockAdjustmentCompanion(
+      id: Value(id),
+      syncStatus: Value(syncStatus),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      businessId: Value(businessId),
+      reason: Value(reason),
+      createdBy: Value(createdBy),
+    );
+  }
+
+  factory StockAdjustmentData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return StockAdjustmentData(
+      id: serializer.fromJson<String>(json['id']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      syncDate: serializer.fromJson<String?>(json['syncDate']),
+      createdAt: serializer.fromJson<String>(json['createdAt']),
+      updatedAt: serializer.fromJson<String>(json['updatedAt']),
+      deletedAt: serializer.fromJson<String?>(json['deletedAt']),
+      businessId: serializer.fromJson<String>(json['businessId']),
+      reason: serializer.fromJson<String>(json['reason']),
+      createdBy: serializer.fromJson<String>(json['createdBy']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'syncDate': serializer.toJson<String?>(syncDate),
+      'createdAt': serializer.toJson<String>(createdAt),
+      'updatedAt': serializer.toJson<String>(updatedAt),
+      'deletedAt': serializer.toJson<String?>(deletedAt),
+      'businessId': serializer.toJson<String>(businessId),
+      'reason': serializer.toJson<String>(reason),
+      'createdBy': serializer.toJson<String>(createdBy),
+    };
+  }
+
+  StockAdjustmentData copyWith({
+    String? id,
+    String? syncStatus,
+    Value<String?> syncDate = const Value.absent(),
+    String? createdAt,
+    String? updatedAt,
+    Value<String?> deletedAt = const Value.absent(),
+    String? businessId,
+    String? reason,
+    String? createdBy,
+  }) => StockAdjustmentData(
+    id: id ?? this.id,
+    syncStatus: syncStatus ?? this.syncStatus,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    businessId: businessId ?? this.businessId,
+    reason: reason ?? this.reason,
+    createdBy: createdBy ?? this.createdBy,
+  );
+  StockAdjustmentData copyWithCompanion(StockAdjustmentCompanion data) {
+    return StockAdjustmentData(
+      id: data.id.present ? data.id.value : this.id,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      businessId: data.businessId.present
+          ? data.businessId.value
+          : this.businessId,
+      reason: data.reason.present ? data.reason.value : this.reason,
+      createdBy: data.createdBy.present ? data.createdBy.value : this.createdBy,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StockAdjustmentData(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('businessId: $businessId, ')
+          ..write('reason: $reason, ')
+          ..write('createdBy: $createdBy')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    businessId,
+    reason,
+    createdBy,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is StockAdjustmentData &&
+          other.id == this.id &&
+          other.syncStatus == this.syncStatus &&
+          other.syncDate == this.syncDate &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.businessId == this.businessId &&
+          other.reason == this.reason &&
+          other.createdBy == this.createdBy);
+}
+
+class StockAdjustmentCompanion extends UpdateCompanion<StockAdjustmentData> {
+  final Value<String> id;
+  final Value<String> syncStatus;
+  final Value<String?> syncDate;
+  final Value<String> createdAt;
+  final Value<String> updatedAt;
+  final Value<String?> deletedAt;
+  final Value<String> businessId;
+  final Value<String> reason;
+  final Value<String> createdBy;
+  final Value<int> rowid;
+  const StockAdjustmentCompanion({
+    this.id = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.businessId = const Value.absent(),
+    this.reason = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  StockAdjustmentCompanion.insert({
+    required String id,
+    required String syncStatus,
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required String businessId,
+    required String reason,
+    required String createdBy,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       syncStatus = Value(syncStatus),
+       businessId = Value(businessId),
+       reason = Value(reason),
+       createdBy = Value(createdBy);
+  static Insertable<StockAdjustmentData> custom({
+    Expression<String>? id,
+    Expression<String>? syncStatus,
+    Expression<String>? syncDate,
+    Expression<String>? createdAt,
+    Expression<String>? updatedAt,
+    Expression<String>? deletedAt,
+    Expression<String>? businessId,
+    Expression<String>? reason,
+    Expression<String>? createdBy,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (syncDate != null) 'sync_date': syncDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (businessId != null) 'business_id': businessId,
+      if (reason != null) 'reason': reason,
+      if (createdBy != null) 'created_by': createdBy,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  StockAdjustmentCompanion copyWith({
+    Value<String>? id,
+    Value<String>? syncStatus,
+    Value<String?>? syncDate,
+    Value<String>? createdAt,
+    Value<String>? updatedAt,
+    Value<String?>? deletedAt,
+    Value<String>? businessId,
+    Value<String>? reason,
+    Value<String>? createdBy,
+    Value<int>? rowid,
+  }) {
+    return StockAdjustmentCompanion(
+      id: id ?? this.id,
+      syncStatus: syncStatus ?? this.syncStatus,
+      syncDate: syncDate ?? this.syncDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      businessId: businessId ?? this.businessId,
+      reason: reason ?? this.reason,
+      createdBy: createdBy ?? this.createdBy,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (syncDate.present) {
+      map['sync_date'] = Variable<String>(syncDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<String>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<String>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<String>(deletedAt.value);
+    }
+    if (businessId.present) {
+      map['business_id'] = Variable<String>(businessId.value);
+    }
+    if (reason.present) {
+      map['reason'] = Variable<String>(reason.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StockAdjustmentCompanion(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('businessId: $businessId, ')
+          ..write('reason: $reason, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class StockMovement extends Table
+    with TableInfo<StockMovement, StockMovementData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  StockMovement(this.attachedDatabase, [this._alias]);
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> syncDate = GeneratedColumn<String>(
+    'sync_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  late final GeneratedColumn<String> updatedAt = GeneratedColumn<String>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  late final GeneratedColumn<String> deletedAt = GeneratedColumn<String>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> productId = GeneratedColumn<String>(
+    'product_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES product(id)',
+  );
+  late final GeneratedColumn<String> businessId = GeneratedColumn<String>(
+    'business_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES user_business(id)',
+  );
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<int> quantity = GeneratedColumn<int>(
+    'quantity',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> referenceId = GeneratedColumn<String>(
+    'reference_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
+    'notes',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL REFERENCES user(id)',
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    productId,
+    businessId,
+    type,
+    quantity,
+    referenceId,
+    notes,
+    createdBy,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'stock_movement';
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  StockMovementData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return StockMovementData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      syncDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      productId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}product_id'],
+      )!,
+      businessId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}business_id'],
+      )!,
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
+      quantity: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}quantity'],
+      )!,
+      referenceId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reference_id'],
+      ),
+      notes: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}notes'],
+      ),
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      ),
+    );
+  }
+
+  @override
+  StockMovement createAlias(String alias) {
+    return StockMovement(attachedDatabase, alias);
+  }
+
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class StockMovementData extends DataClass
+    implements Insertable<StockMovementData> {
+  final String id;
+  final String syncStatus;
+  final String? syncDate;
+  final String createdAt;
+  final String updatedAt;
+  final String? deletedAt;
+  final String productId;
+  final String businessId;
+  final String type;
+  final int quantity;
+  final String? referenceId;
+  final String? notes;
+  final String? createdBy;
+  const StockMovementData({
+    required this.id,
+    required this.syncStatus,
+    this.syncDate,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.productId,
+    required this.businessId,
+    required this.type,
+    required this.quantity,
+    this.referenceId,
+    this.notes,
+    this.createdBy,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<String>(syncDate);
+    }
+    map['created_at'] = Variable<String>(createdAt);
+    map['updated_at'] = Variable<String>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<String>(deletedAt);
+    }
+    map['product_id'] = Variable<String>(productId);
+    map['business_id'] = Variable<String>(businessId);
+    map['type'] = Variable<String>(type);
+    map['quantity'] = Variable<int>(quantity);
+    if (!nullToAbsent || referenceId != null) {
+      map['reference_id'] = Variable<String>(referenceId);
+    }
+    if (!nullToAbsent || notes != null) {
+      map['notes'] = Variable<String>(notes);
+    }
+    if (!nullToAbsent || createdBy != null) {
+      map['created_by'] = Variable<String>(createdBy);
+    }
+    return map;
+  }
+
+  StockMovementCompanion toCompanion(bool nullToAbsent) {
+    return StockMovementCompanion(
+      id: Value(id),
+      syncStatus: Value(syncStatus),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      productId: Value(productId),
+      businessId: Value(businessId),
+      type: Value(type),
+      quantity: Value(quantity),
+      referenceId: referenceId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(referenceId),
+      notes: notes == null && nullToAbsent
+          ? const Value.absent()
+          : Value(notes),
+      createdBy: createdBy == null && nullToAbsent
+          ? const Value.absent()
+          : Value(createdBy),
+    );
+  }
+
+  factory StockMovementData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return StockMovementData(
+      id: serializer.fromJson<String>(json['id']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      syncDate: serializer.fromJson<String?>(json['syncDate']),
+      createdAt: serializer.fromJson<String>(json['createdAt']),
+      updatedAt: serializer.fromJson<String>(json['updatedAt']),
+      deletedAt: serializer.fromJson<String?>(json['deletedAt']),
+      productId: serializer.fromJson<String>(json['productId']),
+      businessId: serializer.fromJson<String>(json['businessId']),
+      type: serializer.fromJson<String>(json['type']),
+      quantity: serializer.fromJson<int>(json['quantity']),
+      referenceId: serializer.fromJson<String?>(json['referenceId']),
+      notes: serializer.fromJson<String?>(json['notes']),
+      createdBy: serializer.fromJson<String?>(json['createdBy']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'syncDate': serializer.toJson<String?>(syncDate),
+      'createdAt': serializer.toJson<String>(createdAt),
+      'updatedAt': serializer.toJson<String>(updatedAt),
+      'deletedAt': serializer.toJson<String?>(deletedAt),
+      'productId': serializer.toJson<String>(productId),
+      'businessId': serializer.toJson<String>(businessId),
+      'type': serializer.toJson<String>(type),
+      'quantity': serializer.toJson<int>(quantity),
+      'referenceId': serializer.toJson<String?>(referenceId),
+      'notes': serializer.toJson<String?>(notes),
+      'createdBy': serializer.toJson<String?>(createdBy),
+    };
+  }
+
+  StockMovementData copyWith({
+    String? id,
+    String? syncStatus,
+    Value<String?> syncDate = const Value.absent(),
+    String? createdAt,
+    String? updatedAt,
+    Value<String?> deletedAt = const Value.absent(),
+    String? productId,
+    String? businessId,
+    String? type,
+    int? quantity,
+    Value<String?> referenceId = const Value.absent(),
+    Value<String?> notes = const Value.absent(),
+    Value<String?> createdBy = const Value.absent(),
+  }) => StockMovementData(
+    id: id ?? this.id,
+    syncStatus: syncStatus ?? this.syncStatus,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    productId: productId ?? this.productId,
+    businessId: businessId ?? this.businessId,
+    type: type ?? this.type,
+    quantity: quantity ?? this.quantity,
+    referenceId: referenceId.present ? referenceId.value : this.referenceId,
+    notes: notes.present ? notes.value : this.notes,
+    createdBy: createdBy.present ? createdBy.value : this.createdBy,
+  );
+  StockMovementData copyWithCompanion(StockMovementCompanion data) {
+    return StockMovementData(
+      id: data.id.present ? data.id.value : this.id,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      productId: data.productId.present ? data.productId.value : this.productId,
+      businessId: data.businessId.present
+          ? data.businessId.value
+          : this.businessId,
+      type: data.type.present ? data.type.value : this.type,
+      quantity: data.quantity.present ? data.quantity.value : this.quantity,
+      referenceId: data.referenceId.present
+          ? data.referenceId.value
+          : this.referenceId,
+      notes: data.notes.present ? data.notes.value : this.notes,
+      createdBy: data.createdBy.present ? data.createdBy.value : this.createdBy,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StockMovementData(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('productId: $productId, ')
+          ..write('businessId: $businessId, ')
+          ..write('type: $type, ')
+          ..write('quantity: $quantity, ')
+          ..write('referenceId: $referenceId, ')
+          ..write('notes: $notes, ')
+          ..write('createdBy: $createdBy')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    productId,
+    businessId,
+    type,
+    quantity,
+    referenceId,
+    notes,
+    createdBy,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is StockMovementData &&
+          other.id == this.id &&
+          other.syncStatus == this.syncStatus &&
+          other.syncDate == this.syncDate &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.productId == this.productId &&
+          other.businessId == this.businessId &&
+          other.type == this.type &&
+          other.quantity == this.quantity &&
+          other.referenceId == this.referenceId &&
+          other.notes == this.notes &&
+          other.createdBy == this.createdBy);
+}
+
+class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
+  final Value<String> id;
+  final Value<String> syncStatus;
+  final Value<String?> syncDate;
+  final Value<String> createdAt;
+  final Value<String> updatedAt;
+  final Value<String?> deletedAt;
+  final Value<String> productId;
+  final Value<String> businessId;
+  final Value<String> type;
+  final Value<int> quantity;
+  final Value<String?> referenceId;
+  final Value<String?> notes;
+  final Value<String?> createdBy;
+  final Value<int> rowid;
+  const StockMovementCompanion({
+    this.id = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.productId = const Value.absent(),
+    this.businessId = const Value.absent(),
+    this.type = const Value.absent(),
+    this.quantity = const Value.absent(),
+    this.referenceId = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  StockMovementCompanion.insert({
+    required String id,
+    required String syncStatus,
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required String productId,
+    required String businessId,
+    required String type,
+    required int quantity,
+    this.referenceId = const Value.absent(),
+    this.notes = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       syncStatus = Value(syncStatus),
+       productId = Value(productId),
+       businessId = Value(businessId),
+       type = Value(type),
+       quantity = Value(quantity);
+  static Insertable<StockMovementData> custom({
+    Expression<String>? id,
+    Expression<String>? syncStatus,
+    Expression<String>? syncDate,
+    Expression<String>? createdAt,
+    Expression<String>? updatedAt,
+    Expression<String>? deletedAt,
+    Expression<String>? productId,
+    Expression<String>? businessId,
+    Expression<String>? type,
+    Expression<int>? quantity,
+    Expression<String>? referenceId,
+    Expression<String>? notes,
+    Expression<String>? createdBy,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (syncDate != null) 'sync_date': syncDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (productId != null) 'product_id': productId,
+      if (businessId != null) 'business_id': businessId,
+      if (type != null) 'type': type,
+      if (quantity != null) 'quantity': quantity,
+      if (referenceId != null) 'reference_id': referenceId,
+      if (notes != null) 'notes': notes,
+      if (createdBy != null) 'created_by': createdBy,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  StockMovementCompanion copyWith({
+    Value<String>? id,
+    Value<String>? syncStatus,
+    Value<String?>? syncDate,
+    Value<String>? createdAt,
+    Value<String>? updatedAt,
+    Value<String?>? deletedAt,
+    Value<String>? productId,
+    Value<String>? businessId,
+    Value<String>? type,
+    Value<int>? quantity,
+    Value<String?>? referenceId,
+    Value<String?>? notes,
+    Value<String?>? createdBy,
+    Value<int>? rowid,
+  }) {
+    return StockMovementCompanion(
+      id: id ?? this.id,
+      syncStatus: syncStatus ?? this.syncStatus,
+      syncDate: syncDate ?? this.syncDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      productId: productId ?? this.productId,
+      businessId: businessId ?? this.businessId,
+      type: type ?? this.type,
+      quantity: quantity ?? this.quantity,
+      referenceId: referenceId ?? this.referenceId,
+      notes: notes ?? this.notes,
+      createdBy: createdBy ?? this.createdBy,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (syncDate.present) {
+      map['sync_date'] = Variable<String>(syncDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<String>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<String>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<String>(deletedAt.value);
+    }
+    if (productId.present) {
+      map['product_id'] = Variable<String>(productId.value);
+    }
+    if (businessId.present) {
+      map['business_id'] = Variable<String>(businessId.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (quantity.present) {
+      map['quantity'] = Variable<int>(quantity.value);
+    }
+    if (referenceId.present) {
+      map['reference_id'] = Variable<String>(referenceId.value);
+    }
+    if (notes.present) {
+      map['notes'] = Variable<String>(notes.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StockMovementCompanion(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('productId: $productId, ')
+          ..write('businessId: $businessId, ')
+          ..write('type: $type, ')
+          ..write('quantity: $quantity, ')
+          ..write('referenceId: $referenceId, ')
+          ..write('notes: $notes, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class StockTransfer extends Table
+    with TableInfo<StockTransfer, StockTransferData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  StockTransfer(this.attachedDatabase, [this._alias]);
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> syncDate = GeneratedColumn<String>(
+    'sync_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  late final GeneratedColumn<String> updatedAt = GeneratedColumn<String>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  late final GeneratedColumn<String> deletedAt = GeneratedColumn<String>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> fromBranchId = GeneratedColumn<String>(
+    'from_branch_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES user_business(id)',
+  );
+  late final GeneratedColumn<String> toBranchId = GeneratedColumn<String>(
+    'to_branch_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES user_business(id)',
+  );
+  late final GeneratedColumn<String> reason = GeneratedColumn<String>(
+    'reason',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
+    'created_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES user(id)',
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    fromBranchId,
+    toBranchId,
+    reason,
+    status,
+    createdBy,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'stock_transfer';
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  StockTransferData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return StockTransferData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      syncDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      fromBranchId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}from_branch_id'],
+      )!,
+      toBranchId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}to_branch_id'],
+      )!,
+      reason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reason'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      createdBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_by'],
+      )!,
+    );
+  }
+
+  @override
+  StockTransfer createAlias(String alias) {
+    return StockTransfer(attachedDatabase, alias);
+  }
+
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class StockTransferData extends DataClass
+    implements Insertable<StockTransferData> {
+  final String id;
+  final String syncStatus;
+  final String? syncDate;
+  final String createdAt;
+  final String updatedAt;
+  final String? deletedAt;
+  final String fromBranchId;
+  final String toBranchId;
+  final String reason;
+  final String status;
+  final String createdBy;
+  const StockTransferData({
+    required this.id,
+    required this.syncStatus,
+    this.syncDate,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.fromBranchId,
+    required this.toBranchId,
+    required this.reason,
+    required this.status,
+    required this.createdBy,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<String>(syncDate);
+    }
+    map['created_at'] = Variable<String>(createdAt);
+    map['updated_at'] = Variable<String>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<String>(deletedAt);
+    }
+    map['from_branch_id'] = Variable<String>(fromBranchId);
+    map['to_branch_id'] = Variable<String>(toBranchId);
+    map['reason'] = Variable<String>(reason);
+    map['status'] = Variable<String>(status);
+    map['created_by'] = Variable<String>(createdBy);
+    return map;
+  }
+
+  StockTransferCompanion toCompanion(bool nullToAbsent) {
+    return StockTransferCompanion(
+      id: Value(id),
+      syncStatus: Value(syncStatus),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      fromBranchId: Value(fromBranchId),
+      toBranchId: Value(toBranchId),
+      reason: Value(reason),
+      status: Value(status),
+      createdBy: Value(createdBy),
+    );
+  }
+
+  factory StockTransferData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return StockTransferData(
+      id: serializer.fromJson<String>(json['id']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      syncDate: serializer.fromJson<String?>(json['syncDate']),
+      createdAt: serializer.fromJson<String>(json['createdAt']),
+      updatedAt: serializer.fromJson<String>(json['updatedAt']),
+      deletedAt: serializer.fromJson<String?>(json['deletedAt']),
+      fromBranchId: serializer.fromJson<String>(json['fromBranchId']),
+      toBranchId: serializer.fromJson<String>(json['toBranchId']),
+      reason: serializer.fromJson<String>(json['reason']),
+      status: serializer.fromJson<String>(json['status']),
+      createdBy: serializer.fromJson<String>(json['createdBy']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'syncDate': serializer.toJson<String?>(syncDate),
+      'createdAt': serializer.toJson<String>(createdAt),
+      'updatedAt': serializer.toJson<String>(updatedAt),
+      'deletedAt': serializer.toJson<String?>(deletedAt),
+      'fromBranchId': serializer.toJson<String>(fromBranchId),
+      'toBranchId': serializer.toJson<String>(toBranchId),
+      'reason': serializer.toJson<String>(reason),
+      'status': serializer.toJson<String>(status),
+      'createdBy': serializer.toJson<String>(createdBy),
+    };
+  }
+
+  StockTransferData copyWith({
+    String? id,
+    String? syncStatus,
+    Value<String?> syncDate = const Value.absent(),
+    String? createdAt,
+    String? updatedAt,
+    Value<String?> deletedAt = const Value.absent(),
+    String? fromBranchId,
+    String? toBranchId,
+    String? reason,
+    String? status,
+    String? createdBy,
+  }) => StockTransferData(
+    id: id ?? this.id,
+    syncStatus: syncStatus ?? this.syncStatus,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    fromBranchId: fromBranchId ?? this.fromBranchId,
+    toBranchId: toBranchId ?? this.toBranchId,
+    reason: reason ?? this.reason,
+    status: status ?? this.status,
+    createdBy: createdBy ?? this.createdBy,
+  );
+  StockTransferData copyWithCompanion(StockTransferCompanion data) {
+    return StockTransferData(
+      id: data.id.present ? data.id.value : this.id,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      fromBranchId: data.fromBranchId.present
+          ? data.fromBranchId.value
+          : this.fromBranchId,
+      toBranchId: data.toBranchId.present
+          ? data.toBranchId.value
+          : this.toBranchId,
+      reason: data.reason.present ? data.reason.value : this.reason,
+      status: data.status.present ? data.status.value : this.status,
+      createdBy: data.createdBy.present ? data.createdBy.value : this.createdBy,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StockTransferData(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('fromBranchId: $fromBranchId, ')
+          ..write('toBranchId: $toBranchId, ')
+          ..write('reason: $reason, ')
+          ..write('status: $status, ')
+          ..write('createdBy: $createdBy')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    fromBranchId,
+    toBranchId,
+    reason,
+    status,
+    createdBy,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is StockTransferData &&
+          other.id == this.id &&
+          other.syncStatus == this.syncStatus &&
+          other.syncDate == this.syncDate &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.fromBranchId == this.fromBranchId &&
+          other.toBranchId == this.toBranchId &&
+          other.reason == this.reason &&
+          other.status == this.status &&
+          other.createdBy == this.createdBy);
+}
+
+class StockTransferCompanion extends UpdateCompanion<StockTransferData> {
+  final Value<String> id;
+  final Value<String> syncStatus;
+  final Value<String?> syncDate;
+  final Value<String> createdAt;
+  final Value<String> updatedAt;
+  final Value<String?> deletedAt;
+  final Value<String> fromBranchId;
+  final Value<String> toBranchId;
+  final Value<String> reason;
+  final Value<String> status;
+  final Value<String> createdBy;
+  final Value<int> rowid;
+  const StockTransferCompanion({
+    this.id = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.fromBranchId = const Value.absent(),
+    this.toBranchId = const Value.absent(),
+    this.reason = const Value.absent(),
+    this.status = const Value.absent(),
+    this.createdBy = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  StockTransferCompanion.insert({
+    required String id,
+    required String syncStatus,
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required String fromBranchId,
+    required String toBranchId,
+    required String reason,
+    required String status,
+    required String createdBy,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       syncStatus = Value(syncStatus),
+       fromBranchId = Value(fromBranchId),
+       toBranchId = Value(toBranchId),
+       reason = Value(reason),
+       status = Value(status),
+       createdBy = Value(createdBy);
+  static Insertable<StockTransferData> custom({
+    Expression<String>? id,
+    Expression<String>? syncStatus,
+    Expression<String>? syncDate,
+    Expression<String>? createdAt,
+    Expression<String>? updatedAt,
+    Expression<String>? deletedAt,
+    Expression<String>? fromBranchId,
+    Expression<String>? toBranchId,
+    Expression<String>? reason,
+    Expression<String>? status,
+    Expression<String>? createdBy,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (syncDate != null) 'sync_date': syncDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (fromBranchId != null) 'from_branch_id': fromBranchId,
+      if (toBranchId != null) 'to_branch_id': toBranchId,
+      if (reason != null) 'reason': reason,
+      if (status != null) 'status': status,
+      if (createdBy != null) 'created_by': createdBy,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  StockTransferCompanion copyWith({
+    Value<String>? id,
+    Value<String>? syncStatus,
+    Value<String?>? syncDate,
+    Value<String>? createdAt,
+    Value<String>? updatedAt,
+    Value<String?>? deletedAt,
+    Value<String>? fromBranchId,
+    Value<String>? toBranchId,
+    Value<String>? reason,
+    Value<String>? status,
+    Value<String>? createdBy,
+    Value<int>? rowid,
+  }) {
+    return StockTransferCompanion(
+      id: id ?? this.id,
+      syncStatus: syncStatus ?? this.syncStatus,
+      syncDate: syncDate ?? this.syncDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      fromBranchId: fromBranchId ?? this.fromBranchId,
+      toBranchId: toBranchId ?? this.toBranchId,
+      reason: reason ?? this.reason,
+      status: status ?? this.status,
+      createdBy: createdBy ?? this.createdBy,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (syncDate.present) {
+      map['sync_date'] = Variable<String>(syncDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<String>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<String>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<String>(deletedAt.value);
+    }
+    if (fromBranchId.present) {
+      map['from_branch_id'] = Variable<String>(fromBranchId.value);
+    }
+    if (toBranchId.present) {
+      map['to_branch_id'] = Variable<String>(toBranchId.value);
+    }
+    if (reason.present) {
+      map['reason'] = Variable<String>(reason.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (createdBy.present) {
+      map['created_by'] = Variable<String>(createdBy.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StockTransferCompanion(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('fromBranchId: $fromBranchId, ')
+          ..write('toBranchId: $toBranchId, ')
+          ..write('reason: $reason, ')
+          ..write('status: $status, ')
+          ..write('createdBy: $createdBy, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class StockTransferItem extends Table
+    with TableInfo<StockTransferItem, StockTransferItemData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  StockTransferItem(this.attachedDatabase, [this._alias]);
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  late final GeneratedColumn<String> syncDate = GeneratedColumn<String>(
+    'sync_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  late final GeneratedColumn<String> updatedAt = GeneratedColumn<String>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NOT NULL DEFAULT CURRENT_TIMESTAMP',
+    defaultValue: const CustomExpression('CURRENT_TIMESTAMP'),
+  );
+  late final GeneratedColumn<String> deletedAt = GeneratedColumn<String>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    $customConstraints: 'NULL',
+  );
+  late final GeneratedColumn<String> transferId = GeneratedColumn<String>(
+    'transfer_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES stock_transfer(id)',
+  );
+  late final GeneratedColumn<String> productId = GeneratedColumn<String>(
+    'product_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL REFERENCES product(id)',
+  );
+  late final GeneratedColumn<int> quantity = GeneratedColumn<int>(
+    'quantity',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+    $customConstraints: 'NOT NULL',
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    transferId,
+    productId,
+    quantity,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'stock_transfer_item';
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  StockTransferItemData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return StockTransferItemData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      syncDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      transferId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}transfer_id'],
+      )!,
+      productId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}product_id'],
+      )!,
+      quantity: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}quantity'],
+      )!,
+    );
+  }
+
+  @override
+  StockTransferItem createAlias(String alias) {
+    return StockTransferItem(attachedDatabase, alias);
+  }
+
+  @override
+  bool get dontWriteConstraints => true;
+}
+
+class StockTransferItemData extends DataClass
+    implements Insertable<StockTransferItemData> {
+  final String id;
+  final String syncStatus;
+  final String? syncDate;
+  final String createdAt;
+  final String updatedAt;
+  final String? deletedAt;
+  final String transferId;
+  final String productId;
+  final int quantity;
+  const StockTransferItemData({
+    required this.id,
+    required this.syncStatus,
+    this.syncDate,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.transferId,
+    required this.productId,
+    required this.quantity,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<String>(syncDate);
+    }
+    map['created_at'] = Variable<String>(createdAt);
+    map['updated_at'] = Variable<String>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<String>(deletedAt);
+    }
+    map['transfer_id'] = Variable<String>(transferId);
+    map['product_id'] = Variable<String>(productId);
+    map['quantity'] = Variable<int>(quantity);
+    return map;
+  }
+
+  StockTransferItemCompanion toCompanion(bool nullToAbsent) {
+    return StockTransferItemCompanion(
+      id: Value(id),
+      syncStatus: Value(syncStatus),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      transferId: Value(transferId),
+      productId: Value(productId),
+      quantity: Value(quantity),
+    );
+  }
+
+  factory StockTransferItemData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return StockTransferItemData(
+      id: serializer.fromJson<String>(json['id']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      syncDate: serializer.fromJson<String?>(json['syncDate']),
+      createdAt: serializer.fromJson<String>(json['createdAt']),
+      updatedAt: serializer.fromJson<String>(json['updatedAt']),
+      deletedAt: serializer.fromJson<String?>(json['deletedAt']),
+      transferId: serializer.fromJson<String>(json['transferId']),
+      productId: serializer.fromJson<String>(json['productId']),
+      quantity: serializer.fromJson<int>(json['quantity']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'syncDate': serializer.toJson<String?>(syncDate),
+      'createdAt': serializer.toJson<String>(createdAt),
+      'updatedAt': serializer.toJson<String>(updatedAt),
+      'deletedAt': serializer.toJson<String?>(deletedAt),
+      'transferId': serializer.toJson<String>(transferId),
+      'productId': serializer.toJson<String>(productId),
+      'quantity': serializer.toJson<int>(quantity),
+    };
+  }
+
+  StockTransferItemData copyWith({
+    String? id,
+    String? syncStatus,
+    Value<String?> syncDate = const Value.absent(),
+    String? createdAt,
+    String? updatedAt,
+    Value<String?> deletedAt = const Value.absent(),
+    String? transferId,
+    String? productId,
+    int? quantity,
+  }) => StockTransferItemData(
+    id: id ?? this.id,
+    syncStatus: syncStatus ?? this.syncStatus,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    transferId: transferId ?? this.transferId,
+    productId: productId ?? this.productId,
+    quantity: quantity ?? this.quantity,
+  );
+  StockTransferItemData copyWithCompanion(StockTransferItemCompanion data) {
+    return StockTransferItemData(
+      id: data.id.present ? data.id.value : this.id,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      transferId: data.transferId.present
+          ? data.transferId.value
+          : this.transferId,
+      productId: data.productId.present ? data.productId.value : this.productId,
+      quantity: data.quantity.present ? data.quantity.value : this.quantity,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StockTransferItemData(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('transferId: $transferId, ')
+          ..write('productId: $productId, ')
+          ..write('quantity: $quantity')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    transferId,
+    productId,
+    quantity,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is StockTransferItemData &&
+          other.id == this.id &&
+          other.syncStatus == this.syncStatus &&
+          other.syncDate == this.syncDate &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.transferId == this.transferId &&
+          other.productId == this.productId &&
+          other.quantity == this.quantity);
+}
+
+class StockTransferItemCompanion
+    extends UpdateCompanion<StockTransferItemData> {
+  final Value<String> id;
+  final Value<String> syncStatus;
+  final Value<String?> syncDate;
+  final Value<String> createdAt;
+  final Value<String> updatedAt;
+  final Value<String?> deletedAt;
+  final Value<String> transferId;
+  final Value<String> productId;
+  final Value<int> quantity;
+  final Value<int> rowid;
+  const StockTransferItemCompanion({
+    this.id = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.transferId = const Value.absent(),
+    this.productId = const Value.absent(),
+    this.quantity = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  StockTransferItemCompanion.insert({
+    required String id,
+    required String syncStatus,
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required String transferId,
+    required String productId,
+    required int quantity,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       syncStatus = Value(syncStatus),
+       transferId = Value(transferId),
+       productId = Value(productId),
+       quantity = Value(quantity);
+  static Insertable<StockTransferItemData> custom({
+    Expression<String>? id,
+    Expression<String>? syncStatus,
+    Expression<String>? syncDate,
+    Expression<String>? createdAt,
+    Expression<String>? updatedAt,
+    Expression<String>? deletedAt,
+    Expression<String>? transferId,
+    Expression<String>? productId,
+    Expression<int>? quantity,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (syncDate != null) 'sync_date': syncDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (transferId != null) 'transfer_id': transferId,
+      if (productId != null) 'product_id': productId,
+      if (quantity != null) 'quantity': quantity,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  StockTransferItemCompanion copyWith({
+    Value<String>? id,
+    Value<String>? syncStatus,
+    Value<String?>? syncDate,
+    Value<String>? createdAt,
+    Value<String>? updatedAt,
+    Value<String?>? deletedAt,
+    Value<String>? transferId,
+    Value<String>? productId,
+    Value<int>? quantity,
+    Value<int>? rowid,
+  }) {
+    return StockTransferItemCompanion(
+      id: id ?? this.id,
+      syncStatus: syncStatus ?? this.syncStatus,
+      syncDate: syncDate ?? this.syncDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      transferId: transferId ?? this.transferId,
+      productId: productId ?? this.productId,
+      quantity: quantity ?? this.quantity,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (syncDate.present) {
+      map['sync_date'] = Variable<String>(syncDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<String>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<String>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<String>(deletedAt.value);
+    }
+    if (transferId.present) {
+      map['transfer_id'] = Variable<String>(transferId.value);
+    }
+    if (productId.present) {
+      map['product_id'] = Variable<String>(productId.value);
+    }
+    if (quantity.present) {
+      map['quantity'] = Variable<int>(quantity.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('StockTransferItemCompanion(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('transferId: $transferId, ')
+          ..write('productId: $productId, ')
+          ..write('quantity: $quantity, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class DatabaseAtV2 extends GeneratedDatabase {
   DatabaseAtV2(QueryExecutor e) : super(e);
   late final BusinessVerification businessVerification = BusinessVerification(
@@ -6084,8 +8790,13 @@ class DatabaseAtV2 extends GeneratedDatabase {
   late final Inventory inventory = Inventory(this);
   late final User user = User(this);
   late final Sales sales = Sales(this);
-  late final SalesItem salesItem = SalesItem(this);
   late final Payments payments = Payments(this);
+  late final ProductImage productImage = ProductImage(this);
+  late final SalesItem salesItem = SalesItem(this);
+  late final StockAdjustment stockAdjustment = StockAdjustment(this);
+  late final StockMovement stockMovement = StockMovement(this);
+  late final StockTransfer stockTransfer = StockTransfer(this);
+  late final StockTransferItem stockTransferItem = StockTransferItem(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
@@ -6098,8 +8809,13 @@ class DatabaseAtV2 extends GeneratedDatabase {
     inventory,
     user,
     sales,
-    salesItem,
     payments,
+    productImage,
+    salesItem,
+    stockAdjustment,
+    stockMovement,
+    stockTransfer,
+    stockTransferItem,
   ];
   @override
   int get schemaVersion => 2;
