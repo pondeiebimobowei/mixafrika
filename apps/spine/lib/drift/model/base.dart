@@ -4,7 +4,7 @@ mixin TableMixin on Table {
   // Primary key column
   late final id = text()();
 
-  late final syncStatus = text()();
+  late final syncStatus = text()(); // 'pending','synced','conflict'
   late final syncDate = dateTime().nullable()();
   
   // Column for created at timestamp

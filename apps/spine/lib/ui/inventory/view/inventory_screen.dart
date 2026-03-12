@@ -21,7 +21,7 @@ class InventoryView extends ConsumerWidget {
         title: Row(
           children: [
             GestureDetector(
-              onTap: () => context.pop(),
+              onTap: () => context.go(Routes.dashboard),
               child: const IconWidget(icon: Icons.arrow_back),
             ),
             const SizedBox(width: 20),

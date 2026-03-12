@@ -5,6 +5,8 @@ import 'package:spine/data/repositories/product/product_repository.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/inventory/state/inventory_state.dart';
 import 'package:uuid/uuid.dart';
+import 'package:spine/data/services/api/config/api_response.dart';
+
 
 class InventoryRepository implements InventoryRepositoryAbstract {
   final AppDatabase _db;
@@ -72,46 +74,56 @@ class InventoryRepository implements InventoryRepositoryAbstract {
   }
 
   @override
-  Future<void> addInventoryItem(ProductData product) async {
-    final InventoryData newInventoryRecord = InventoryData(
+  Future<ApiResponse<void>> addInventoryItem(ProductData product) async {
+    try {
+      final InventoryData newInventoryRecord = InventoryData(
       id: const Uuid().v4(),
       productId: product.id,
       businessId: product.businessId,
       quantity: 0,
 
       syncStatus: 'pending',
-      syncDate: DateTime.now(),
-
 
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
     await _db.into(_db.inventory).insert(newInventoryRecord);
+    return ApiResponse(
+      success: true, 
+      message: 'Product added to inventory', 
+      data: null);
+    }catch (e) {
+      return ApiResponse(
+        success: false,
+        message: 'Failed to add product to inventory',
+        data: null,
+      );
+    }
   }
 
   @override
   Future<void> addStock({
     required String productId,
     required String businessId,
-    required int bulkQuantity,
+    // required int bulkQuantity,
     required int pieceQuantity,
-    required String totalCost,
+    // required String totalCost,
     required int piecePrice,
     required int bulkPrice,
     DateTime? expiryDate,
   }) async {
-    final batchId = const Uuid().v4();
     final now = DateTime.now();
 
     // 1. Create Batch
     final newBatch = SpineBatchData(
-      id: batchId,
+      id: Uuid().v4(),
       productId: productId,
       expiryDate: expiryDate?.toUtc() ?? DateTime.now().toUtc(),
       costPricePerBulk: bulkPrice,
       costPricePerPiece: piecePrice,
       remainingQuantity: pieceQuantity,
       initialQuantity: pieceQuantity,
+      businessId: businessId,
       batchNumber: 'BATCH-${now.millisecondsSinceEpoch}',
       createdAt: now,
       updatedAt: now,
@@ -120,7 +132,20 @@ class InventoryRepository implements InventoryRepositoryAbstract {
       syncDate: now,
     );
 
+    final stockMovement = StockMovementData(
+      id: Uuid().v4(), 
+      syncStatus: 'pending', 
+      createdAt: now, 
+      updatedAt: now, 
+      productId: productId, 
+      businessId: businessId, 
+
+      type: 'purchase', 
+      quantity: pieceQuantity
+    );
+    
     await _db.into(_db.spineBatch).insert(newBatch);
+    await _db.into(_db.stockMovement).insert(stockMovement);
 
     await _db.customUpdate(
       'UPDATE inventory SET quantity = quantity + ? WHERE product_id = ?',

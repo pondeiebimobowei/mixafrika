@@ -7,7 +7,7 @@ import 'package:spine/drift/model/user_business.dart';
 class StockMovement extends Table with TableMixin {
     late final productId = text().references(Product, #id)();
     late final businessId = text().references(UserBusiness, #id)();
-    late final type = text()();
+    late final type = text()(); //'purchase', 'sale', 'adjustment', 'transfer_in', 'transfer_out', 'return'
     late final quantity = integer()();
     late final referenceId = text().nullable()();
     late final notes = text().nullable()();

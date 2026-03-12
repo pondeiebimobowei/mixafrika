@@ -57,7 +57,8 @@ final batch1 = SpineBatchData(
   remainingQuantity: 10,
   expiryDate: DateTime.now(),
   productId: product1.id,
-
+  businessId: userBiz1.id,
+  
   syncStatus: 'Sync status',
   syncDate: DateTime.now(),
 

@@ -205,6 +205,8 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
         return SalesItemData(
           id: const Uuid().v4(),
           saleId: saleId,
+          batchId: item.product?.id ?? '',
+          costPrice: item.product?.costPricePerUnit ?? 0,
           name: item.product?.name ?? item.manualName ?? 'none',
           productId: item.product?.id ?? '',
           quantity: item.quantity,

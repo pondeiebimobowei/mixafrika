@@ -2,7 +2,7 @@ class AddProductState {
   final String name;
   final String barcode;
   final String bulkUnit;
-  final String retailUnit;
+  final String pieceUnit;
   final String conversionFactor;
   final String sellPricePerRetail;
   final String sellPricePerBulk;
@@ -14,7 +14,7 @@ class AddProductState {
     this.name = '',
     this.barcode = '',
     this.bulkUnit = '',
-    this.retailUnit = '',
+    this.pieceUnit = '',
     this.conversionFactor = '',
     this.sellPricePerRetail = '',
     this.sellPricePerBulk = '',
@@ -27,7 +27,7 @@ class AddProductState {
     String? name,
     String? barcode,
     String? bulkUnit,
-    String? retailUnit,
+    String? pieceUnit,
     String? conversionFactor,
     String? sellPricePerRetail,
     String? sellPricePerBulk,
@@ -39,7 +39,7 @@ class AddProductState {
       name: name ?? this.name,
       barcode: barcode ?? this.barcode,
       bulkUnit: bulkUnit ?? this.bulkUnit,
-      retailUnit: retailUnit ?? this.retailUnit,
+      pieceUnit: pieceUnit ?? this.pieceUnit,
       conversionFactor: conversionFactor ?? this.conversionFactor,
       sellPricePerRetail: sellPricePerRetail ?? this.sellPricePerRetail,
       sellPricePerBulk: sellPricePerBulk ?? this.sellPricePerBulk,

@@ -28,10 +28,19 @@ class AddStockViewModel extends StateNotifier<AddStockState> {
     }
   }
 
-  void selectProduct(ProductData? product) =>
-      state = state.copyWith(selectedProduct: product, errorMessage: null);
+  void selectProduct(ProductData? product) => state = state.copyWith(
+    selectedProduct: product,
+    errorMessage: null,
+    bulkQuantity: '',
+    pieceQuantity: '',
+  );
   void updateSearchQuery(String query) =>
       state = state.copyWith(searchQuery: query);
+  void toggleEntryMode(bool isBulk) {
+    if (state.isEnteringBulk == isBulk) return;
+    state = state.copyWith(isEnteringBulk: isBulk);
+  }
+
   void updateBulkQuantity(String qty) {
     if (state.selectedProduct == null) {
       state = state.copyWith(bulkQuantity: qty);
@@ -78,26 +87,19 @@ class AddStockViewModel extends StateNotifier<AddStockState> {
     state = state.copyWith(isLoading: true, errorMessage: null);
 
     try {
-      final repository = ref.read(inventoryRepositoryProvider);
-      final business = ref.read(activeUserBusinessProvider);
+      final inventoryRepository = ref.read(inventoryRepositoryProvider);
+      final businessProvider = ref.read(activeUserBusinessProvider);
 
-      if (business == null) throw Exception('Active business not found');
-
-      print(state.selectedProduct!.id);
-      print('bulk ${state.bulkQuantity}');
-      print('piece ${state.pieceQuantity}');
-      print('totalcost ${state.totalCost}');
-      print('bulk price ${state.bulkPrice}');
-      print('piece price ${state.piecePrice}');
-      print('exp ${state.expiryDate}');
+      if (businessProvider == null)
+        throw Exception('Active business not found');
 
       // Note: We'll implement recordPurchase in InventoryRepository
-      await repository.addStock(
+      await inventoryRepository.addStock(
         productId: state.selectedProduct!.id,
-        businessId: business.id,
-        bulkQuantity: int.tryParse(state.bulkQuantity) ?? 0,
+        businessId: businessProvider.id,
+        // bulkQuantity: int.tryParse(state.bulkQuantity) ?? 0,
         pieceQuantity: int.tryParse(state.pieceQuantity) ?? 0,
-        totalCost: state.totalCost,
+        // totalCost: state.totalCost,
         bulkPrice: int.tryParse(state.bulkPrice) ?? 0,
         piecePrice: int.tryParse(state.piecePrice) ?? 0,
         expiryDate: state.expiryDate,

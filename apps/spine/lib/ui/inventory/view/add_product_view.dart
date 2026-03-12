@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spine/routing/routes.dart';
+import 'package:spine/ui/inventory/state/add_product_state.dart';
 import 'package:spine/ui/inventory/view_model/add_product_view_model.dart';
 
 class AddProductView extends ConsumerWidget {
@@ -105,7 +106,7 @@ class AddProductView extends ConsumerWidget {
                           children: [
                             FTextFormField(
                               control: .managed(
-                                onChange: (value) => viewModel.updateSellPricePerRetail(value.text),
+                                onChange: (value) => viewModel.updateSellPricePerUnit(value.text),
                               ),
                               label: const Text('Unit Sell Price'),
                               hint: '₦',
@@ -229,42 +230,10 @@ class AddProductView extends ConsumerWidget {
     // );
   }
 
-
-  Widget _buildTextField({
-    required String hint,
-    IconData? prefixIcon,
-    required Function(String) onChanged,
-    Color? hintColor,
-  }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E293B),
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: TextField(
-        onChanged: onChanged,
-        keyboardType: .text,
-        style: const TextStyle(color: Colors.white, fontSize: 16),
-        decoration: InputDecoration(
-          prefixIcon: prefixIcon != null
-              ? Icon(prefixIcon, color: Colors.grey[500])
-              : null,
-          hintText: hint,
-          hintStyle: TextStyle(
-            color: hintColor ?? Colors.grey[500],
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-          ),
-          border: InputBorder.none,
-        ),
-      ),
-    );
-  }
-
   Widget _buildUnitConversionSetup(
     BuildContext context,
     AddProductViewModel viewModel,
-    state,
+    AddProductState state,
   ) {
     final FColors colors = context.theme.colors;
     return Container(
@@ -328,14 +297,14 @@ class AddProductView extends ConsumerWidget {
                   children: [
                     // const SizedBox(height: 8),
                     _buildDropdownField(
-                      state.retailUnit.isEmpty ? 'Finger' : state.retailUnit,
+                      state.pieceUnit.isEmpty ? 'Finger' : state.pieceUnit,
                       ['Finger', 'Piece', 'Item'],
-                      viewModel.updateRetailUnit,
+                      viewModel.updatePieceUnit,
                       label: Text('Retail Unit', style: TextStyle(
                         color: colors.primaryForeground,
                         
                       ),),
-                      value: state.retailUnit.isEmpty ? null : state.retailUnit,
+                      value: state.pieceUnit.isEmpty ? null : state.pieceUnit,
                     ),
                   ],
                 ),
@@ -406,9 +375,9 @@ class AddProductView extends ConsumerWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      state.retailUnit.isEmpty
+                      state.pieceUnit.isEmpty
                           ? 'FINGER'
-                          : state.retailUnit.toUpperCase(),
+                          : state.pieceUnit.toUpperCase(),
                       style: TextStyle(
                         color: Colors.grey[400],
                         fontSize: 10,
@@ -435,11 +404,8 @@ class AddProductView extends ConsumerWidget {
     return FSelect<String>.rich(
         format: (value) => value,
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        // validator: (v) => v.,
         validator: (v){
-          if(v == 'Carton'){
-            return 'Please select a unit';
-          }
+          
           return null;
         },
          

@@ -11,6 +11,11 @@ import 'package:spine/drift/model/user.model.dart';
 import 'package:spine/drift/model/user_business.dart';
 import 'package:spine/drift/model/business_verification.model.dart';
 import 'package:spine/drift/model/sales.model.dart';
+import 'package:spine/drift/model/product_image_model.dart';
+import 'package:spine/drift/model/stock_adjustment.dart';
+import 'package:spine/drift/model/stock_movement.model.dart';
+import 'package:spine/drift/model/stock_transfer_item_model.dart';
+import 'package:spine/drift/model/stock_transfer_model.dart';
 import 'package:spine/drift/model/sales_item.dart';
 import 'package:spine/drift/model/payments.model.dart';
 
@@ -20,14 +25,19 @@ part 'database.g.dart';
 
 @DriftDatabase(
   tables: [
-    Product,
-    Inventory,
     SpineBatch,
-    UserBusiness,
     BusinessVerification,
-    Sales,
-    SalesItem,
+    Inventory,
     Payments,
+    ProductImage,
+    Product,
+    SalesItem,
+    Sales,
+    StockAdjustment,
+    StockMovement,
+    StockTransferItem,
+    StockTransfer,
+    UserBusiness,
     User
   ],
 )
@@ -35,7 +45,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   static QueryExecutor _openConnection() {
     return driftDatabase(

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/drift/database.dart';
@@ -8,27 +10,72 @@ class SalesRepository implements SalesRepositoryAbstract {
 
   SalesRepository(this._db);
 
-  @override
-  Future<void> createSale(
-    Sale sale,
-    List<SalesItemData> items,
-    List<Payment> payments,
-  ) async {
-    try {
-      await _db.transaction(() async {
-        await _db.into(_db.sales).insert(sale);
-        for (final item in items) {
-          await _db.into(_db.salesItem).insert(item);
-        }
-        for (final payment in payments) {
-          await _db.into(_db.payments).insert(payment);
-        }
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
+@override
+Future<void> createSale(
+  Sale sale,
+  List<SalesItemData> items,
+  List<Payment> payments,
+) async {
+  try {
+    await _db.transaction(() async {
+      // 1. Insert the main sale record
+      await _db.into(_db.sales).insert(sale);
 
+      for (final item in items) {
+        var remainingToFulfill = item.quantity;
+
+        // 2. Fetch batches ONLY for the specific product in this loop
+        // Also: We usually want non-expired batches first!
+        final batchQuery = _db.select(_db.spineBatch)
+          ..where((tbl) => tbl.productId.equals(item.productId ?? '')) 
+          ..where((tbl) => tbl.remainingQuantity.isBiggerThanValue(0))
+          ..orderBy([
+            (t) => OrderingTerm(expression: t.expiryDate, mode: OrderingMode.asc),
+            (t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.asc),
+          ]);
+
+        final batches = await batchQuery.get();
+
+        for (final batch in batches) {
+          if (remainingToFulfill <= 0) break;
+
+          final take = min(batch.remainingQuantity, remainingToFulfill);
+
+          // 3. Insert the SalesItem linked to this specific batch
+          await _db.into(_db.salesItem).insert(item.copyWith(
+                quantity: take,
+                batchId: Value(batch.id), // Ensure your schema links salesItem to the batch
+              ));
+
+          // 4. Update the batch remaining quantity
+          await _db.customUpdate(
+      'UPDATE spine_batch SET remaining_quantity = remaining_quantity - ? WHERE product_id = ?',
+      variables: [Variable.withInt(take), Variable.withString(batch.productId)],
+      updates: {_db.spineBatch}, // This tells Drift which table changed so watchers/streams update
+    );
+    await _db.customUpdate(
+      'UPDATE inventory SET quantity = quantity - ? WHERE product_id = ?',
+      variables: [Variable.withInt(take), Variable.withString(batch.productId)],
+      updates: {_db.inventory}, // This tells Drift which table changed so watchers/streams update
+    );
+
+      remainingToFulfill -= take;
+    }
+        
+        // Optional: Check if remainingToFulfill > 0 here to throw an "Out of Stock" error
+      }
+
+      // 5. Record payments
+      for (final payment in payments) {
+        await _db.into(_db.payments).insert(payment);
+      }
+    });
+  } catch (e) {
+    // In a production app, you might want to rethrow or log to a service
+    print('Sale Transaction Failed: $e');
+    rethrow; 
+  }
+}
   @override
   Future<List<SaleWithItems>> getSalesWithItems({String? businessId}) async {
     final query = _db.select(_db.sales).join([

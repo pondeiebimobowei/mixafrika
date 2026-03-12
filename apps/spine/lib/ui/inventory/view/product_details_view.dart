@@ -250,9 +250,7 @@ class ProductDetailsView extends ConsumerWidget {
 
   Widget _buildProfitCard(BuildContext context, ProductData product) {
     final cost = product.costPricePerUnit.toDouble();
-    final selling =
-        product.sellingPricePerPiece.toDouble() *
-        product.unitsPerBulk.toDouble();
+    final selling = product.sellingPricePerPiece.toDouble();
     final profit = selling - cost;
     final margin = cost > 0 ? (profit / cost * 100).round() : 0;
 

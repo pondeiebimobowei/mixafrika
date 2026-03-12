@@ -17,6 +17,7 @@ class HomeView extends ConsumerWidget {
   void _showShopSelectionSheet(BuildContext context, WidgetRef ref) {
     final homeState = ref.read(homeViewModelProvider).value;
     final FColors colors = context.theme.colors;
+    
 
     showModalBottomSheet(
       context: context,
@@ -556,13 +557,13 @@ class HomeView extends ConsumerWidget {
           context,
           'INVENTORY',
           FIcons.package,
-          onTap: () => context.push(Routes.inventory),
+          onTap: () => context.go(Routes.inventory),
         ),
         _buildSmallMenuCard(
           context,
           'SALES LOG',
           FIcons.list,
-          onTap: () => context.push(Routes.salesLog),
+          onTap: () => context.go(Routes.salesLog),
         ),
         _buildSmallMenuCard(
           context,

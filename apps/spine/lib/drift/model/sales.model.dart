@@ -8,8 +8,8 @@ class Sales extends Table with TableMixin {
     late final totalAmount = integer()();
     late final amountPaid = integer().withDefault(const Constant(0))();
     late final balance = integer().withDefault(const Constant(0))();
-    late final paymentMethod = text()();
-    late final status = text()();
+    late final paymentMethod = text()(); //'cash','transfer','card','credit'
+    late final status = text()(); //'completed','cancelled','refunded', 'pending'
     late final note = text().nullable()();
 
     late final businessId = text().references(UserBusiness, #id)();
