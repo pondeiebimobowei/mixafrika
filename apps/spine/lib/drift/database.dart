@@ -3,7 +3,6 @@ import 'package:drift_flutter/drift_flutter.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:path_provider/path_provider.dart';
-import 'package:spine/drift/database.steps.dart';
 import 'package:spine/drift/model/product.model.dart';
 import 'package:spine/drift/model/inventory.model.dart';
 import 'package:spine/drift/model/batch.model.dart';
@@ -45,11 +44,11 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 1;
 
   static QueryExecutor _openConnection() {
     return driftDatabase(
-      name: 'spinedb',
+      name: 'spinedbb',
       
     
       
@@ -86,11 +85,9 @@ class AppDatabase extends _$AppDatabase {
         await _insertSeedData(this);
       },
 
-      onUpgrade: stepByStep(
-        from1To2: (m, schema) async {
-          await m.addColumn(schema.sales, schema.sales.note);
-        },
-      ),
+      // onUpgrade: stepByStep(
+        
+      // ),
 
       beforeOpen: (details) async {
         // Optional: Enable foreign keys or perform checks every time the app opens
