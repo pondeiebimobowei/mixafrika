@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/repositories/sales/sales_repository.dart';
 import 'package:spine/ui/sales/state/sales_log_state.dart';
-import 'package:spine/ui/user_business/active_user_business_provider.dart';
+import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
 
 class SalesLogViewModel extends StateNotifier<SalesLogState> {
   final Ref ref;

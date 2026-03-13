@@ -3,7 +3,7 @@ import 'package:spine/data/repositories/user_business/user_business_repository.d
 import 'package:spine/data/repositories/user_business/user_business_repository_remote.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/drift/database.dart';
-import 'package:spine/ui/user_business/active_user_business_provider.dart';
+import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
 
 class UserBusinessViewModel
     extends AutoDisposeAsyncNotifier<List<UserBusinessData>> {
