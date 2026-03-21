@@ -25,7 +25,7 @@ async function bootstrap() {
 
   const PORT = process.env.PORT
   app.useGlobalFilters(new SequelizeExceptionFilter(new LoggerService()));
-  await app.listen(PORT || 3003, "0.0.0.0", ()=> {
+  await app.listen(PORT || 3003, '0.0.0.0', ()=> {
     console.log(`server runningS ${process.env.PORT}`)
   });
 }
