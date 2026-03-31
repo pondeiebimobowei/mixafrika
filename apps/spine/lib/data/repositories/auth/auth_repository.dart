@@ -3,24 +3,21 @@ import 'package:spine/data/services/api/auth_api_services.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-
 class AuthRepository implements AuthRepositoryAbstract {
-  AuthRepository({ required AuthApiServices authApiServices}) 
-  : _authApiServices = authApiServices;
-  
+  AuthRepository({required AuthApiServices authApiServices})
+    : _authApiServices = authApiServices;
+
   final AuthApiServices _authApiServices;
 
   @override
   Future<ApiResponse<AuthResponse>> login(String email, String password) async {
-
-    final  res = await _authApiServices.login(email, password);
+    final res = await _authApiServices.login(email, password);
 
     return ApiResponse(
       data: res.data,
       message: res.message,
       success: res.success,
     );
-    
   }
 
   @override
@@ -36,4 +33,6 @@ class AuthRepository implements AuthRepositoryAbstract {
   }
 }
 
-final authRepositoryProvider = Provider((ref) => AuthRepository(authApiServices: AuthApiServices()));
+final authRepositoryProvider = Provider(
+  (ref) => AuthRepository(authApiServices: AuthApiServices()),
+);

@@ -35,7 +35,6 @@ class UserBusinessRepositoryRemote implements UserBusinessRepositoryAbstract {
       syncStatus: '',
       syncDate: DateTime.now(),
 
-
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
@@ -79,4 +78,3 @@ final userBusinessRepositoryRemoteProvider = Provider(
     apiService: ref.watch(userBusinessApiServiceProvider),
   ),
 );
-

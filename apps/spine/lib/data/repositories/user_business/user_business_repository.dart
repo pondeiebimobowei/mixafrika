@@ -27,7 +27,6 @@ class UserBusinessRepository implements UserBusinessRepositoryAbstract {
     syncStatus: '',
     syncDate: DateTime.now(),
 
-
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
   );
@@ -47,7 +46,6 @@ class UserBusinessRepository implements UserBusinessRepositoryAbstract {
 
     syncStatus: '',
     syncDate: DateTime.now(),
-
 
     createdAt: DateTime.now(),
     updatedAt: DateTime.now(),
@@ -74,11 +72,7 @@ class UserBusinessRepository implements UserBusinessRepositoryAbstract {
         .select(_database.userBusiness)
         .get();
 
-     
-
-    return allItems
-            .map((e) => UserBusinessData.fromJson(e.toJson()))
-            .toList();
+    return allItems.map((e) => UserBusinessData.fromJson(e.toJson())).toList();
   }
 
   @override
