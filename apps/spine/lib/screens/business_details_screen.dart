@@ -5,9 +5,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:go_router/go_router.dart';
 
 class BusinessDetailsScreen extends StatefulWidget {
-  final Map<String, dynamic> userData;
+  // final Map<String, dynamic> userData;
 
-  const BusinessDetailsScreen({super.key, required this.userData});
+  const BusinessDetailsScreen({super.key});
 
   @override
   State<BusinessDetailsScreen> createState() => _BusinessDetailsScreenState();

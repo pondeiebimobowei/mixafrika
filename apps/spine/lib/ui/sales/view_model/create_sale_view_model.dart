@@ -3,21 +3,21 @@ import 'package:spine/data/repositories/product/product_repository.dart';
 import 'package:spine/data/repositories/sales/sales_repository.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/sales/state/create_sale_state.dart';
-import 'package:spine/ui/user_business/active_user_business_provider.dart';
+import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
   final ProductRepository _productRepository;
   final SalesRepository _salesRepository;
-  final UserBusinessData? _businessId;
+  final UserBusinessData? _activeUserBusiness;
 
   CreateSaleViewModel({
     required ProductRepository productRepository,
     required SalesRepository salesRepository,
-    required UserBusinessData? businessId,
+    required UserBusinessData? activeUserBusiness
   }) : _productRepository = productRepository,
        _salesRepository = salesRepository,
-       _businessId = businessId,
+       _activeUserBusiness = activeUserBusiness,
        super(CreateSaleState()) {
     _loadInitialData();
   }
@@ -25,7 +25,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
   Future<void> _loadInitialData() async {
     state = state.copyWith(isLoading: true);
     try {
-      final products = await _productRepository.getProducts();
+      final products = await _productRepository.getProductsByBusinessId(_activeUserBusiness?.id ?? '');
       // For demo, take first 5 as quick picks
       state = state.copyWith(
         quickPicks: products.take(5).toList(),
@@ -195,7 +195,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
         status: state.balance > 0 ? 'partial' : 'completed',
         amountPaid: state.totalPaid,
         balance: state.balance,
-        businessId: _businessId?.id ?? '',
+        businessId: _activeUserBusiness?.id ?? '',
         syncStatus: 'pending',
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
@@ -244,10 +244,11 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
 }
 
 final createSaleViewModelProvider =
-    StateNotifierProvider<CreateSaleViewModel, CreateSaleState>((ref) {
-      return CreateSaleViewModel(
-        productRepository: ref.watch(productRepositoryProvider),
-        salesRepository: ref.watch(salesRepositoryProvider),
-        businessId: ref.read(activeUserBusinessProvider),
-      );
-    });
+  StateNotifierProvider<CreateSaleViewModel, CreateSaleState>((ref) {
+    return CreateSaleViewModel(
+      productRepository: ref.watch(productRepositoryProvider),
+      salesRepository: ref.watch(salesRepositoryProvider),
+      activeUserBusiness: ref.read(activeUserBusinessProvider),
+    );
+  }
+);

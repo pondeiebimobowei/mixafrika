@@ -21,6 +21,10 @@ class SalesLogView extends ConsumerWidget {
       header: FHeader(
         title: Row(
           children: [
+            GestureDetector(
+              onTap: () => context.pop(),
+              child: const Icon(Icons.close, size: 24, color: Colors.white),
+            ),
             Text('Sales Log', style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,

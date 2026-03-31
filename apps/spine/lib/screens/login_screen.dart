@@ -62,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         control: FTextFieldControl.managed(
                           controller: _passwordController,
                         ),
+                        
                         label: SmallText(title: 'Password', bold: true),
                         // style: (style) => style.,
                         autovalidateMode: AutovalidateMode.onUserInteraction,

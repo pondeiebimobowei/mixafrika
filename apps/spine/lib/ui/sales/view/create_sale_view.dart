@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:spine/data/repositories/inventory/inventory_repository.dart';
 import 'package:spine/routing/routes.dart';
-import 'package:spine/data/repositories/product/product_repository.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/sales/state/create_sale_state.dart';
 import 'package:spine/ui/sales/view_model/create_sale_view_model.dart';
 import 'package:spine/ui/sales/widget/sale_calculator_sheet.dart';
+import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
 
 class CreateSaleView extends ConsumerStatefulWidget {
   const CreateSaleView({super.key});
@@ -571,12 +572,16 @@ class _SearchSheetState extends ConsumerState<_SearchSheet> {
   }
 
   Future<void> _loadAllProducts() async {
-    final products = await ref.read(productRepositoryProvider).getProducts();
-    setState(() => _searchResults = products);
+    final activeBusiness = ref.read(activeUserBusinessProvider);
+    final inventoryProvider = await ref.read(inventoryRepositoryProvider).getInventoryItems(activeBusiness?.id ?? '');
+    setState(() => _searchResults = inventoryProvider.map((e) => e.product).toList());
   }
 
   void _onSearchChanged(String query) async {
-    final products = await ref.read(productRepositoryProvider).getProducts();
+    final activeBusinessProvider = ref.read(activeUserBusinessProvider);
+    final inventoryProvider = await ref.read(inventoryRepositoryProvider).getInventoryItems(activeBusinessProvider?.id ?? '');
+    final products = inventoryProvider.map((e) => e.product).toList();
+
     setState(() {
       _searchResults = products
           .where((p) => p.name.toLowerCase().contains(query.toLowerCase()))

@@ -1,8 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/ui/calculator/state/calculator_state.dart';
 
-class CalculatorViewModel extends StateNotifier<CalculatorState> {
-  CalculatorViewModel() : super(CalculatorState());
+class CalculatorViewModel extends Notifier<CalculatorState> {
+  @override
+  CalculatorState build() {
+    return CalculatorState();
+  }
 
   void onNumberPressed(String number) {
     if (state.shouldResetDisplay) {
@@ -91,6 +94,6 @@ class CalculatorViewModel extends StateNotifier<CalculatorState> {
 }
 
 final calculatorViewModelProvider =
-    StateNotifierProvider<CalculatorViewModel, CalculatorState>((ref) {
-      return CalculatorViewModel();
-    });
+    NotifierProvider<CalculatorViewModel, CalculatorState>(
+      CalculatorViewModel.new,
+    );

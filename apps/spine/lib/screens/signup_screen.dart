@@ -161,7 +161,7 @@ class _SignupScreenState extends State<SignupScreen> {
       controller: controller,
       obscureText: obscureText,
       keyboardType: keyboardType,
-      style: TextStyle(color: context.theme.colors.foreground),
+      style: TextStyle(color: context.theme.colors.primaryForeground),
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(color: context.theme.colors.mutedForeground),

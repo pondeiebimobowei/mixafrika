@@ -2,24 +2,34 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/repositories/product/product_repository.dart';
 import 'package:spine/ui/inventory/state/edit_product_state.dart';
 
-class EditProductViewModel extends StateNotifier<EditProductState> {
-  final ProductRepository _productRepository;
-  final String productId;
+class EditProductViewModel extends FamilyAsyncNotifier<EditProductState, String> {
+  // EditProductViewModel(this._productRepository);
+  
+  late final ProductRepository _productRepository;
 
-  EditProductViewModel({
-    required ProductRepository productRepository,
-    required this.productId,
-  }) : _productRepository = productRepository,
-       super(EditProductState(isLoading: true)) {
-    _loadProduct();
+  // EditProductViewModel({
+  //   required ProductRepository productRepository,
+  //   required this.productId,
+  // }) : _productRepository = productRepository;
+  //      super(EditProductState(isLoading: true)) {
+  //   _loadProduct();
+  // }
+
+  @override
+  Future<EditProductState> build(String productId) async {
+    _productRepository = ref.read(productRepositoryProvider);
+    _loadProduct(productId);
+    return EditProductState(isLoading: true);
   }
 
-  Future<void> _loadProduct() async {
+  Future<void> _loadProduct(String productId) async {
     final response = await _productRepository.getProduct(productId);
     if (response.success && response.data != null) {
       final product = await _productRepository.getProductById(productId);
+      print(response.data!.name);
+      print('object');
 
-      state = state.copyWith(
+      state = AsyncData(state.value!.copyWith(
         isLoading: false,
         initialProduct: product,
         name: product.name,
@@ -31,72 +41,68 @@ class EditProductViewModel extends StateNotifier<EditProductState> {
         bulkCostPrice: product.costPricePerUnit.toString(),
         pieceSellingPrice: product.sellingPricePerPiece.toString(),
         serialNumber: product.serialNumber,
-      );
+      ));
     } else {
-      state = state.copyWith(isLoading: false, errorMessage: response.message);
+      print('fail');
+      state = AsyncData(state.value!.copyWith(isLoading: false, errorMessage: response.message));
     }
   }
 
-  void updateName(String value) => state = state.copyWith(name: value);
+  void updateName(String value) => state = AsyncData(state.value!.copyWith(name: value));
   void updateDescription(String value) =>
-      state = state.copyWith(description: value);
-  void updateCategory(String value) => state = state.copyWith(category: value);
-  void updateBulkUnit(String value) => state = state.copyWith(bulkUnit: value);
+      state = AsyncData(state.value!.copyWith(description: value));
+  void updateCategory(String value) => state = AsyncData(state.value!.copyWith(category: value));
+  void updateBulkUnit(String value) => state = AsyncData(state.value!.copyWith(bulkUnit: value));
   void updatePieceUnit(String value) =>
-      state = state.copyWith(pieceUnit: value);
+      state = AsyncData(state.value!.copyWith(pieceUnit: value));
   void updateUnitsPerBulk(String value) =>
-      state = state.copyWith(unitsPerBulk: value);
+      state = AsyncData(state.value!.copyWith(unitsPerBulk: value));
   void updateBulkCostPrice(String value) =>
-      state = state.copyWith(bulkCostPrice: value);
+      state = AsyncData(state.value!.copyWith(bulkCostPrice: value));
   void updatePieceSellingPrice(String value) =>
-      state = state.copyWith(pieceSellingPrice: value);
+      state = AsyncData(state.value!.copyWith(pieceSellingPrice: value));
   void updateSerialNumber(String value) =>
-      state = state.copyWith(serialNumber: value);
+      state = AsyncData(state.value!.copyWith(serialNumber: value));
 
   Future<bool> submit() async {
-    if (state.initialProduct == null) return false;
+    if (state.value!.initialProduct == null) return false;
 
-    state = state.copyWith(isSubmitting: true, errorMessage: null);
+    state = AsyncData(state.value!.copyWith(isSubmitting: true, errorMessage: null));
 
-    final updatedProduct = state.initialProduct!.copyWith(
-      name: state.name,
-      description: state.description,
-      category: state.category,
-      bulkUnitName: state.bulkUnit,
-      pieceUnitName: state.pieceUnit,
-      unitsPerBulk: int.tryParse(state.unitsPerBulk) ?? 1,
-      costPricePerUnit: int.tryParse(state.bulkCostPrice) ?? 0,
-      sellingPricePerPiece: int.tryParse(state.pieceSellingPrice) ?? 0,
-      serialNumber: state.serialNumber,
+    final updatedProduct = AsyncData(state.value!.initialProduct!.copyWith(
+      name: state.value!.name,
+      description: state.value!.description,
+      category: state.value!.category,
+      bulkUnitName: state.value!.bulkUnit,
+      pieceUnitName: state.value!.pieceUnit,
+      unitsPerBulk: int.tryParse(state.value!.unitsPerBulk) ?? 1,
+      costPricePerUnit: int.tryParse(state.value!.bulkCostPrice) ?? 0,
+      sellingPricePerPiece: int.tryParse(state.value!.pieceSellingPrice) ?? 0,
+      serialNumber: state.value!.serialNumber,
       updatedAt: DateTime.now(),
-    );
+    ));
 
-    final response = await _productRepository.updateProduct(updatedProduct);
+    final response = await _productRepository.updateProduct(updatedProduct.value);
 
     if (response.success) {
-      state = state.copyWith(
+      state = AsyncData(state.value!.copyWith(
         isSubmitting: false,
         successMessage: 'Product updated successfully',
-      );
+      ));
       return true;
     } else {
-      state = state.copyWith(
+      state = AsyncData(state.value!.copyWith(
         isSubmitting: false,
         errorMessage: response.message,
-      );
+      ));
       return false;
     }
   }
 }
 
 final editProductViewModelProvider =
-    StateNotifierProvider.family<
+    AsyncNotifierProvider.family<
       EditProductViewModel,
       EditProductState,
       String
-    >((ref, productId) {
-      return EditProductViewModel(
-        productRepository: ref.watch(productRepositoryProvider),
-        productId: productId,
-      );
-    });
+    >(EditProductViewModel.new);

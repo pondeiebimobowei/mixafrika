@@ -5,12 +5,12 @@ import 'package:spine/drift/database.dart';
 import 'package:spine/ui/inventory/state/add_stock_state.dart';
 import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
 
-class AddStockViewModel extends StateNotifier<AddStockState> {
-  AddStockViewModel(this.ref) : super(const AddStockState()) {
+class AddStockViewModel extends AutoDisposeNotifier<AddStockState> {
+  @override
+  AddStockState build() {
     _init();
+    return const AddStockState();
   }
-
-  final Ref ref;
 
   Future<void> _init() async {
     state = state.copyWith(isLoading: true);
@@ -113,6 +113,6 @@ class AddStockViewModel extends StateNotifier<AddStockState> {
 }
 
 final addStockViewModelProvider =
-    StateNotifierProvider.autoDispose<AddStockViewModel, AddStockState>(
-      (ref) => AddStockViewModel(ref),
+    NotifierProvider.autoDispose<AddStockViewModel, AddStockState>(
+      AddStockViewModel.new,
     );

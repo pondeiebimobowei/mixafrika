@@ -48,14 +48,14 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
   bool _initialized = false;
 
   void _initializeControllers(dynamic state) {
-    if (!_initialized && !state.isLoading && state.initialProduct != null) {
-      _nameController.text = state.name;
-      _descriptionController.text = state.description;
-      _bulkUnitController.text = state.bulkUnit;
-      _unitsPerBulkController.text = state.unitsPerBulk;
-      _costPriceController.text = state.bulkCostPrice;
-      _sellingPriceController.text = state.pieceSellingPrice;
-      _serialNumberController.text = state.serialNumber;
+    if (!_initialized && !state.isLoading && state.value!.initialProduct != null) {
+      _nameController.text = state.value!.name;
+      _descriptionController.text = state.value!.description;
+      _bulkUnitController.text = state.value!.bulkUnit;
+      _unitsPerBulkController.text = state.value!.unitsPerBulk;
+      _costPriceController.text = state.value!.bulkCostPrice;
+      _sellingPriceController.text = state.value!.pieceSellingPrice;
+      _serialNumberController.text = state.value!.serialNumber;
       _initialized = true;
     }
   }
@@ -183,7 +183,7 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
                       child: SizedBox(
                         width: double.infinity,
                         child: FButton(
-                          onPress: state.isSubmitting
+                          onPress: state.value!.isSubmitting
                               ? null
                               : () async {
                                   final router = GoRouter.of(context);
@@ -192,7 +192,7 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
                                     router.pop();
                                   }
                                 },
-                          child: state.isSubmitting
+                          child: state.value!.isSubmitting
                               ? const CircularProgressIndicator(
                                   color: Colors.white,
                                 )

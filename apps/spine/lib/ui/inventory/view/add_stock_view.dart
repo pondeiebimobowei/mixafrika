@@ -170,7 +170,7 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
                                       )
                                     : Icon(
                                         Icons.chevron_right,
-                                        color: colors.border,
+                                        color: colors.primaryForeground,
                                       ),
                               ),
                             );

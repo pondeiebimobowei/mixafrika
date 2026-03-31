@@ -8,10 +8,11 @@ import 'package:spine/ui/user_business/state/active_user_business_provider.dart'
 import 'package:spine/data/services/api/config/api_response.dart';
 
 
-class AddProductViewModel extends StateNotifier<AddProductState> {
-  AddProductViewModel(this.ref) : super(const AddProductState());
-
-  final Ref ref;
+class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {
+  @override
+  AddProductState build() {
+    return const AddProductState();
+  }
 
   void updateName(String name) =>
       state = state.copyWith(name: name, errorMessage: null);
@@ -97,6 +98,6 @@ class AddProductViewModel extends StateNotifier<AddProductState> {
 }
 
 final addProductViewModelProvider =
-    StateNotifierProvider.autoDispose<AddProductViewModel, AddProductState>(
-      (ref) => AddProductViewModel(ref),
+    NotifierProvider.autoDispose<AddProductViewModel, AddProductState>(
+      AddProductViewModel.new,
     );

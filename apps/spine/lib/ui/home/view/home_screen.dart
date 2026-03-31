@@ -570,7 +570,7 @@ class HomeView extends ConsumerWidget {
           'CALC',
           Icons.calculate_outlined,
           color: Colors.orangeAccent,
-          onTap: () => context.push(Routes.calculator),
+          onTap: () => context.go(Routes.calculator),
         ),
         _buildSmallMenuCard(
           context,
