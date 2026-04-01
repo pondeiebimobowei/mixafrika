@@ -492,7 +492,7 @@ class InventoryView extends ConsumerWidget {
                           ),
                         ),
                         child: Column(children: [
-                          Text('${item.stockEntries.quantity.toString()} ${item.product.pieceUnitName}',
+                          Text('${item.stockEntries?.quantity.toString()} ${item.product.pieceUnitName}',
                           style: TextStyle(
                             fontSize: 10
                           ),),
@@ -508,7 +508,7 @@ class InventoryView extends ConsumerWidget {
                           ),
                         ),
                         child: Column(children: [
-                          Text('${(item.stockEntries.quantity / item.product.unitsPerBulk).toInt().toString()} ${item.product.bulkUnitName}',
+                          Text('${(item.stockEntries?.quantity ?? 0 / item.product.unitsPerBulk).toInt().toString()} ${item.product.bulkUnitName}',
                           style: TextStyle(
                             fontSize: 10
                           ),),

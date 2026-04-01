@@ -653,8 +653,8 @@
             ]
           },
           {
-            "name": "cost_price_per_piece",
-            "getter_name": "costPricePerPiece",
+            "name": "cost_price_per_unit",
+            "getter_name": "costPricePerUnit",
             "moor_type": "int",
             "nullable": false,
             "customConstraints": null,
@@ -663,8 +663,18 @@
             "dsl_features": []
           },
           {
-            "name": "cost_price_per_bulk",
-            "getter_name": "costPricePerBulk",
+            "name": "selling_price_per_piece",
+            "getter_name": "sellingPricePerPiece",
+            "moor_type": "int",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "selling_price_per_bulk",
+            "getter_name": "sellingPricePerBulk",
             "moor_type": "int",
             "nullable": false,
             "customConstraints": null,
@@ -1947,6 +1957,7 @@
       "references": [
         2,
         1,
+        3,
         5
       ],
       "type": "table",
@@ -2057,6 +2068,32 @@
                 "foreign_key": {
                   "to": {
                     "table": "user_business",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": null
+                }
+              }
+            ]
+          },
+          {
+            "name": "batch_id",
+            "getter_name": "batchId",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES spine_batch (id)",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES spine_batch (id)"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "spine_batch",
                     "column": "id"
                   },
                   "initially_deferred": false,
@@ -2486,7 +2523,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"spine_batch\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"expiry_date\" TEXT NULL, \"batch_number\" TEXT NOT NULL UNIQUE, \"cost_price_per_piece\" INTEGER NOT NULL, \"cost_price_per_bulk\" INTEGER NOT NULL, \"initial_quantity\" INTEGER NOT NULL, \"remaining_quantity\" INTEGER NOT NULL, \"product_id\" TEXT NOT NULL REFERENCES product (id), \"business_id\" TEXT NOT NULL REFERENCES user_business (id));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"spine_batch\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"expiry_date\" TEXT NULL, \"batch_number\" TEXT NOT NULL UNIQUE, \"cost_price_per_unit\" INTEGER NOT NULL, \"selling_price_per_piece\" INTEGER NOT NULL, \"selling_price_per_bulk\" INTEGER NOT NULL, \"initial_quantity\" INTEGER NOT NULL, \"remaining_quantity\" INTEGER NOT NULL, \"product_id\" TEXT NOT NULL REFERENCES product (id), \"business_id\" TEXT NOT NULL REFERENCES user_business (id));"
         }
       ]
     },
@@ -2558,7 +2595,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"stock_movement\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"product_id\" TEXT NOT NULL REFERENCES product (id), \"business_id\" TEXT NOT NULL REFERENCES user_business (id), \"type\" TEXT NOT NULL, \"quantity\" INTEGER NOT NULL, \"reference_id\" TEXT NULL, \"notes\" TEXT NULL, \"created_by\" TEXT NULL REFERENCES user (id));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"stock_movement\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"product_id\" TEXT NOT NULL REFERENCES product (id), \"business_id\" TEXT NOT NULL REFERENCES user_business (id), \"batch_id\" TEXT NULL REFERENCES spine_batch (id), \"type\" TEXT NOT NULL, \"quantity\" INTEGER NOT NULL, \"reference_id\" TEXT NULL, \"notes\" TEXT NULL, \"created_by\" TEXT NULL REFERENCES user (id));"
         }
       ]
     },

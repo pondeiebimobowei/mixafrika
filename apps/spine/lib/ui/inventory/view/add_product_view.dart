@@ -27,15 +27,7 @@ class AddProductView extends ConsumerWidget {
       }
       if (next.errorMessage != null &&
           (previous == null || previous.errorMessage != next.errorMessage)) {
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(
-        //     content: Text(
-        //       next.errorMessage!,
-        //       style: TextStyle(color: Colors.white),
-        //     ),
-        //     backgroundColor: Colors.redAccent,
-        //   ),
-        // );
+        print(next.errorMessage);
       }
     });
 
@@ -63,7 +55,6 @@ class AddProductView extends ConsumerWidget {
         child: Stack(
           children: [
             SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

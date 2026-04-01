@@ -60,17 +60,16 @@ class InventoryRepository implements InventoryRepositoryAbstract {
 
     final inventoryQuery = _db.select(_db.inventory)
       ..where((i) => i.productId.equals(productId));
-    final inventoryRecords = await inventoryQuery.getSingle();
+    final inventoryRecords = await inventoryQuery.getSingleOrNull();
 
     final batchQuery = _db.select(_db.spineBatch)
-      ..where((b) => 
+    ..where((b) =>
         b.productId.equals(productId) &
-        b.expiryDate.isBiggerThanValue(DateTime.now()) &
-        b.remainingQuantity.isBiggerThanValue(0)
-      )
-      ..orderBy([
-        (b) => OrderingTerm(expression: b.createdAt, mode: OrderingMode.desc),
-      ]);
+        b.remainingQuantity.isBiggerThanValue(0))
+    ..orderBy([
+      (b) => OrderingTerm(expression: b.expiryDate, mode: OrderingMode.asc),
+      (b) => OrderingTerm(expression: b.createdAt, mode: OrderingMode.asc),
+    ]);
     final batches = await batchQuery.get();
 
     return InventoryItemData(

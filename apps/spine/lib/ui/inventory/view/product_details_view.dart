@@ -76,10 +76,10 @@ class ProductDetailsView extends ConsumerWidget {
     final product = item.product;
 
     // Calculate quantities
-    final totalUnits = item.stockEntries.quantity;
+    final totalUnits = item.stockEntries?.quantity ?? 0;
     final unitsPerBulk = product.unitsPerBulk.toDouble();
     final bulkQty = (totalUnits / unitsPerBulk).floor();
-    final remainingUnits = item.stockEntries.quantity.toInt();
+    final remainingUnits = item.stockEntries?.quantity.toInt() ?? 0;
 
     return Stack(
       children: [
@@ -590,6 +590,9 @@ class ProductDetailsView extends ConsumerWidget {
                 'TRANSFER',
                 Icons.swap_horiz,
                 Colors.teal,
+                onTap: () => context.push(
+                  '${Routes.inventory}/${Routes.productDetails}/${productId}/${Routes.stockTransfer}',
+                ),
               ),
             ),
             const SizedBox(width: 16),
@@ -602,29 +605,33 @@ class ProductDetailsView extends ConsumerWidget {
     );
   }
 
-  Widget _buildActionButton(BuildContext context, String label, IconData icon, Color color) {
+  Widget _buildActionButton(BuildContext context, String label, IconData icon, Color color, {VoidCallback? onTap}) {
     final FColors colors = context.theme.colors;
-    return Container(
-      height: 56,
-      decoration: BoxDecoration(
-        color: colors.secondaryForeground,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: color, size: 20),
-          const SizedBox(width: 8),
-          Text(
-            label,
-            style: TextStyle(
-              color: colors.primaryForeground,
-              fontWeight: FontWeight.w900,
-              fontSize: 14,
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        height: 56,
+        decoration: BoxDecoration(
+          color: colors.secondaryForeground,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: color, size: 20),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: TextStyle(
+                color: colors.primaryForeground,
+                fontWeight: FontWeight.w900,
+                fontSize: 14,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

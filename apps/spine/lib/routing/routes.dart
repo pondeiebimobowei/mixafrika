@@ -14,4 +14,6 @@ class Routes {
   static const String checkout = '/checkout';
   static const String salesLog = '/sales-log';
   static const String saleReceipt = '/sale-receipt';
+  static const String stockTransfer = 'stock-transfer';
+  static const String stockTransferSuccess = 'stock-transfer-success';
 }

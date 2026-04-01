@@ -74,7 +74,7 @@ class InventoryState {
 
 class InventoryItemData {
   final ProductData product;
-  final InventoryData stockEntries;
+  final InventoryData? stockEntries;
   final List<SpineBatchData> batches;
 
   InventoryItemData({

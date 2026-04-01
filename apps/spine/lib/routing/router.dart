@@ -12,6 +12,7 @@ import 'package:spine/ui/sales/view/create_sale_view.dart';
 import 'package:spine/ui/inventory/view/edit_product_view.dart';
 import 'package:spine/ui/inventory/view/inventory_screen.dart';
 import 'package:spine/ui/inventory/view/product_details_view.dart';
+import 'package:spine/ui/inventory/view/stock_transfer_view.dart';
 import 'package:spine/ui/sales/view/checkout_view.dart';
 
 import 'package:spine/ui/sales/view/sale_receipt_view.dart';
@@ -49,6 +50,27 @@ GoRouter router() => GoRouter(
             final id = state.pathParameters['id']!;
             return ProductDetailsView(productId: id);
           },
+          routes: [
+            GoRoute(
+              path: Routes.stockTransfer,
+              builder: (context, state) {
+                final id = state.pathParameters['id']!;
+                return StockTransferView(productId: id);
+              },
+            ),
+
+            GoRoute(
+              path: Routes.stockTransferSuccess,
+              builder: (context, state) {
+                final extra = state.extra as Map<String, dynamic>?;
+                return StockTransferSuccessView(
+                  productName: extra?['productName'] ?? 'Product',
+                  quantity: extra?['quantity'] ?? '0',
+                  destination: extra?['destination'] ?? 'Branch',
+                );
+              },
+            ),
+          ],
         ),
         GoRoute(
           path: '${Routes.editProduct}/:id',

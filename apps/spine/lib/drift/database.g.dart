@@ -8918,6 +8918,20 @@ class $StockMovementTable extends StockMovement
       'REFERENCES user_business (id)',
     ),
   );
+  static const VerificationMeta _batchIdMeta = const VerificationMeta(
+    'batchId',
+  );
+  @override
+  late final GeneratedColumn<String> batchId = GeneratedColumn<String>(
+    'batch_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES spine_batch (id)',
+    ),
+  );
   static const VerificationMeta _typeMeta = const VerificationMeta('type');
   @override
   late final GeneratedColumn<String> type = GeneratedColumn<String>(
@@ -8982,6 +8996,7 @@ class $StockMovementTable extends StockMovement
     deletedAt,
     productId,
     businessId,
+    batchId,
     type,
     quantity,
     referenceId,
@@ -9052,6 +9067,12 @@ class $StockMovementTable extends StockMovement
       );
     } else if (isInserting) {
       context.missing(_businessIdMeta);
+    }
+    if (data.containsKey('batch_id')) {
+      context.handle(
+        _batchIdMeta,
+        batchId.isAcceptableOrUnknown(data['batch_id']!, _batchIdMeta),
+      );
     }
     if (data.containsKey('type')) {
       context.handle(
@@ -9131,6 +9152,10 @@ class $StockMovementTable extends StockMovement
         DriftSqlType.string,
         data['${effectivePrefix}business_id'],
       )!,
+      batchId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}batch_id'],
+      ),
       type: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}type'],
@@ -9170,6 +9195,7 @@ class StockMovementData extends DataClass
   final DateTime? deletedAt;
   final String productId;
   final String businessId;
+  final String? batchId;
   final String type;
   final int quantity;
   final String? referenceId;
@@ -9184,6 +9210,7 @@ class StockMovementData extends DataClass
     this.deletedAt,
     required this.productId,
     required this.businessId,
+    this.batchId,
     required this.type,
     required this.quantity,
     this.referenceId,
@@ -9205,6 +9232,9 @@ class StockMovementData extends DataClass
     }
     map['product_id'] = Variable<String>(productId);
     map['business_id'] = Variable<String>(businessId);
+    if (!nullToAbsent || batchId != null) {
+      map['batch_id'] = Variable<String>(batchId);
+    }
     map['type'] = Variable<String>(type);
     map['quantity'] = Variable<int>(quantity);
     if (!nullToAbsent || referenceId != null) {
@@ -9233,6 +9263,9 @@ class StockMovementData extends DataClass
           : Value(deletedAt),
       productId: Value(productId),
       businessId: Value(businessId),
+      batchId: batchId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(batchId),
       type: Value(type),
       quantity: Value(quantity),
       referenceId: referenceId == null && nullToAbsent
@@ -9261,6 +9294,7 @@ class StockMovementData extends DataClass
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
       productId: serializer.fromJson<String>(json['productId']),
       businessId: serializer.fromJson<String>(json['businessId']),
+      batchId: serializer.fromJson<String?>(json['batchId']),
       type: serializer.fromJson<String>(json['type']),
       quantity: serializer.fromJson<int>(json['quantity']),
       referenceId: serializer.fromJson<String?>(json['referenceId']),
@@ -9280,6 +9314,7 @@ class StockMovementData extends DataClass
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
       'productId': serializer.toJson<String>(productId),
       'businessId': serializer.toJson<String>(businessId),
+      'batchId': serializer.toJson<String?>(batchId),
       'type': serializer.toJson<String>(type),
       'quantity': serializer.toJson<int>(quantity),
       'referenceId': serializer.toJson<String?>(referenceId),
@@ -9297,6 +9332,7 @@ class StockMovementData extends DataClass
     Value<DateTime?> deletedAt = const Value.absent(),
     String? productId,
     String? businessId,
+    Value<String?> batchId = const Value.absent(),
     String? type,
     int? quantity,
     Value<String?> referenceId = const Value.absent(),
@@ -9311,6 +9347,7 @@ class StockMovementData extends DataClass
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
     productId: productId ?? this.productId,
     businessId: businessId ?? this.businessId,
+    batchId: batchId.present ? batchId.value : this.batchId,
     type: type ?? this.type,
     quantity: quantity ?? this.quantity,
     referenceId: referenceId.present ? referenceId.value : this.referenceId,
@@ -9331,6 +9368,7 @@ class StockMovementData extends DataClass
       businessId: data.businessId.present
           ? data.businessId.value
           : this.businessId,
+      batchId: data.batchId.present ? data.batchId.value : this.batchId,
       type: data.type.present ? data.type.value : this.type,
       quantity: data.quantity.present ? data.quantity.value : this.quantity,
       referenceId: data.referenceId.present
@@ -9352,6 +9390,7 @@ class StockMovementData extends DataClass
           ..write('deletedAt: $deletedAt, ')
           ..write('productId: $productId, ')
           ..write('businessId: $businessId, ')
+          ..write('batchId: $batchId, ')
           ..write('type: $type, ')
           ..write('quantity: $quantity, ')
           ..write('referenceId: $referenceId, ')
@@ -9371,6 +9410,7 @@ class StockMovementData extends DataClass
     deletedAt,
     productId,
     businessId,
+    batchId,
     type,
     quantity,
     referenceId,
@@ -9389,6 +9429,7 @@ class StockMovementData extends DataClass
           other.deletedAt == this.deletedAt &&
           other.productId == this.productId &&
           other.businessId == this.businessId &&
+          other.batchId == this.batchId &&
           other.type == this.type &&
           other.quantity == this.quantity &&
           other.referenceId == this.referenceId &&
@@ -9405,6 +9446,7 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
   final Value<DateTime?> deletedAt;
   final Value<String> productId;
   final Value<String> businessId;
+  final Value<String?> batchId;
   final Value<String> type;
   final Value<int> quantity;
   final Value<String?> referenceId;
@@ -9420,6 +9462,7 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
     this.deletedAt = const Value.absent(),
     this.productId = const Value.absent(),
     this.businessId = const Value.absent(),
+    this.batchId = const Value.absent(),
     this.type = const Value.absent(),
     this.quantity = const Value.absent(),
     this.referenceId = const Value.absent(),
@@ -9436,6 +9479,7 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
     this.deletedAt = const Value.absent(),
     required String productId,
     required String businessId,
+    this.batchId = const Value.absent(),
     required String type,
     required int quantity,
     this.referenceId = const Value.absent(),
@@ -9457,6 +9501,7 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
     Expression<DateTime>? deletedAt,
     Expression<String>? productId,
     Expression<String>? businessId,
+    Expression<String>? batchId,
     Expression<String>? type,
     Expression<int>? quantity,
     Expression<String>? referenceId,
@@ -9473,6 +9518,7 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
       if (deletedAt != null) 'deleted_at': deletedAt,
       if (productId != null) 'product_id': productId,
       if (businessId != null) 'business_id': businessId,
+      if (batchId != null) 'batch_id': batchId,
       if (type != null) 'type': type,
       if (quantity != null) 'quantity': quantity,
       if (referenceId != null) 'reference_id': referenceId,
@@ -9491,6 +9537,7 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
     Value<DateTime?>? deletedAt,
     Value<String>? productId,
     Value<String>? businessId,
+    Value<String?>? batchId,
     Value<String>? type,
     Value<int>? quantity,
     Value<String?>? referenceId,
@@ -9507,6 +9554,7 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
       deletedAt: deletedAt ?? this.deletedAt,
       productId: productId ?? this.productId,
       businessId: businessId ?? this.businessId,
+      batchId: batchId ?? this.batchId,
       type: type ?? this.type,
       quantity: quantity ?? this.quantity,
       referenceId: referenceId ?? this.referenceId,
@@ -9543,6 +9591,9 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
     if (businessId.present) {
       map['business_id'] = Variable<String>(businessId.value);
     }
+    if (batchId.present) {
+      map['batch_id'] = Variable<String>(batchId.value);
+    }
     if (type.present) {
       map['type'] = Variable<String>(type.value);
     }
@@ -9575,6 +9626,7 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
           ..write('deletedAt: $deletedAt, ')
           ..write('productId: $productId, ')
           ..write('businessId: $businessId, ')
+          ..write('batchId: $batchId, ')
           ..write('type: $type, ')
           ..write('quantity: $quantity, ')
           ..write('referenceId: $referenceId, ')
@@ -11532,6 +11584,48 @@ final class $$UserBusinessTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$StockTransferTable, List<StockTransferData>>
+  _outgoingTransfersTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.stockTransfer,
+    aliasName: $_aliasNameGenerator(
+      db.userBusiness.id,
+      db.stockTransfer.fromBranchId,
+    ),
+  );
+
+  $$StockTransferTableProcessedTableManager get outgoingTransfers {
+    final manager = $$StockTransferTableTableManager(
+      $_db,
+      $_db.stockTransfer,
+    ).filter((f) => f.fromBranchId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_outgoingTransfersTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$StockTransferTable, List<StockTransferData>>
+  _incomingTransfersTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.stockTransfer,
+    aliasName: $_aliasNameGenerator(
+      db.userBusiness.id,
+      db.stockTransfer.toBranchId,
+    ),
+  );
+
+  $$StockTransferTableProcessedTableManager get incomingTransfers {
+    final manager = $$StockTransferTableTableManager(
+      $_db,
+      $_db.stockTransfer,
+    ).filter((f) => f.toBranchId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_incomingTransfersTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$UserBusinessTableFilterComposer
@@ -11782,6 +11876,56 @@ class $$UserBusinessTableFilterComposer
           }) => $$StockMovementTableFilterComposer(
             $db: $db,
             $table: $db.stockMovement,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> outgoingTransfers(
+    Expression<bool> Function($$StockTransferTableFilterComposer f) f,
+  ) {
+    final $$StockTransferTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.stockTransfer,
+      getReferencedColumn: (t) => t.fromBranchId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StockTransferTableFilterComposer(
+            $db: $db,
+            $table: $db.stockTransfer,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> incomingTransfers(
+    Expression<bool> Function($$StockTransferTableFilterComposer f) f,
+  ) {
+    final $$StockTransferTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.stockTransfer,
+      getReferencedColumn: (t) => t.toBranchId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StockTransferTableFilterComposer(
+            $db: $db,
+            $table: $db.stockTransfer,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -12134,6 +12278,56 @@ class $$UserBusinessTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> outgoingTransfers<T extends Object>(
+    Expression<T> Function($$StockTransferTableAnnotationComposer a) f,
+  ) {
+    final $$StockTransferTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.stockTransfer,
+      getReferencedColumn: (t) => t.fromBranchId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StockTransferTableAnnotationComposer(
+            $db: $db,
+            $table: $db.stockTransfer,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> incomingTransfers<T extends Object>(
+    Expression<T> Function($$StockTransferTableAnnotationComposer a) f,
+  ) {
+    final $$StockTransferTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.stockTransfer,
+      getReferencedColumn: (t) => t.toBranchId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StockTransferTableAnnotationComposer(
+            $db: $db,
+            $table: $db.stockTransfer,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$UserBusinessTableTableManager
@@ -12157,6 +12351,8 @@ class $$UserBusinessTableTableManager
             bool salesRefs,
             bool stockAdjustmentRefs,
             bool stockMovementRefs,
+            bool outgoingTransfers,
+            bool incomingTransfers,
           })
         > {
   $$UserBusinessTableTableManager(_$AppDatabase db, $UserBusinessTable table)
@@ -12263,6 +12459,8 @@ class $$UserBusinessTableTableManager
                 salesRefs = false,
                 stockAdjustmentRefs = false,
                 stockMovementRefs = false,
+                outgoingTransfers = false,
+                incomingTransfers = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -12273,6 +12471,8 @@ class $$UserBusinessTableTableManager
                     if (salesRefs) db.sales,
                     if (stockAdjustmentRefs) db.stockAdjustment,
                     if (stockMovementRefs) db.stockMovement,
+                    if (outgoingTransfers) db.stockTransfer,
+                    if (incomingTransfers) db.stockTransfer,
                   ],
                   addJoins:
                       <
@@ -12436,6 +12636,48 @@ class $$UserBusinessTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (outgoingTransfers)
+                        await $_getPrefetchedData<
+                          UserBusinessData,
+                          $UserBusinessTable,
+                          StockTransferData
+                        >(
+                          currentTable: table,
+                          referencedTable: $$UserBusinessTableReferences
+                              ._outgoingTransfersTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$UserBusinessTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).outgoingTransfers,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.fromBranchId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (incomingTransfers)
+                        await $_getPrefetchedData<
+                          UserBusinessData,
+                          $UserBusinessTable,
+                          StockTransferData
+                        >(
+                          currentTable: table,
+                          referencedTable: $$UserBusinessTableReferences
+                              ._incomingTransfersTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$UserBusinessTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).incomingTransfers,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.toBranchId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -12464,6 +12706,8 @@ typedef $$UserBusinessTableProcessedTableManager =
         bool salesRefs,
         bool stockAdjustmentRefs,
         bool stockMovementRefs,
+        bool outgoingTransfers,
+        bool incomingTransfers,
       })
     >;
 typedef $$ProductTableCreateCompanionBuilder =
@@ -13762,6 +14006,24 @@ final class $$SpineBatchTableReferences
       manager.$state.copyWith(prefetchedData: cache),
     );
   }
+
+  static MultiTypedResultKey<$StockMovementTable, List<StockMovementData>>
+  _stockMovementRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.stockMovement,
+    aliasName: $_aliasNameGenerator(db.spineBatch.id, db.stockMovement.batchId),
+  );
+
+  $$StockMovementTableProcessedTableManager get stockMovementRefs {
+    final manager = $$StockMovementTableTableManager(
+      $_db,
+      $_db.stockMovement,
+    ).filter((f) => f.batchId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_stockMovementRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
 }
 
 class $$SpineBatchTableFilterComposer
@@ -13925,6 +14187,31 @@ class $$SpineBatchTableFilterComposer
           }) => $$SalesItemTableFilterComposer(
             $db: $db,
             $table: $db.salesItem,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> stockMovementRefs(
+    Expression<bool> Function($$StockMovementTableFilterComposer f) f,
+  ) {
+    final $$StockMovementTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.stockMovement,
+      getReferencedColumn: (t) => t.batchId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StockMovementTableFilterComposer(
+            $db: $db,
+            $table: $db.stockMovement,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -14215,6 +14502,31 @@ class $$SpineBatchTableAnnotationComposer
     );
     return f(composer);
   }
+
+  Expression<T> stockMovementRefs<T extends Object>(
+    Expression<T> Function($$StockMovementTableAnnotationComposer a) f,
+  ) {
+    final $$StockMovementTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.stockMovement,
+      getReferencedColumn: (t) => t.batchId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StockMovementTableAnnotationComposer(
+            $db: $db,
+            $table: $db.stockMovement,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
 }
 
 class $$SpineBatchTableTableManager
@@ -14235,6 +14547,7 @@ class $$SpineBatchTableTableManager
             bool businessId,
             bool inventoryRefs,
             bool salesItemRefs,
+            bool stockMovementRefs,
           })
         > {
   $$SpineBatchTableTableManager(_$AppDatabase db, $SpineBatchTable table)
@@ -14334,12 +14647,14 @@ class $$SpineBatchTableTableManager
                 businessId = false,
                 inventoryRefs = false,
                 salesItemRefs = false,
+                stockMovementRefs = false,
               }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
                     if (inventoryRefs) db.inventory,
                     if (salesItemRefs) db.salesItem,
+                    if (stockMovementRefs) db.stockMovement,
                   ],
                   addJoins:
                       <
@@ -14432,6 +14747,27 @@ class $$SpineBatchTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (stockMovementRefs)
+                        await $_getPrefetchedData<
+                          SpineBatchData,
+                          $SpineBatchTable,
+                          StockMovementData
+                        >(
+                          currentTable: table,
+                          referencedTable: $$SpineBatchTableReferences
+                              ._stockMovementRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$SpineBatchTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).stockMovementRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.batchId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                     ];
                   },
                 );
@@ -14457,6 +14793,7 @@ typedef $$SpineBatchTableProcessedTableManager =
         bool businessId,
         bool inventoryRefs,
         bool salesItemRefs,
+        bool stockMovementRefs,
       })
     >;
 typedef $$InventoryTableCreateCompanionBuilder =
@@ -18738,6 +19075,7 @@ typedef $$StockMovementTableCreateCompanionBuilder =
       Value<DateTime?> deletedAt,
       required String productId,
       required String businessId,
+      Value<String?> batchId,
       required String type,
       required int quantity,
       Value<String?> referenceId,
@@ -18755,6 +19093,7 @@ typedef $$StockMovementTableUpdateCompanionBuilder =
       Value<DateTime?> deletedAt,
       Value<String> productId,
       Value<String> businessId,
+      Value<String?> batchId,
       Value<String> type,
       Value<int> quantity,
       Value<String?> referenceId,
@@ -18804,6 +19143,25 @@ final class $$StockMovementTableReferences
       $_db.userBusiness,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_businessIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $SpineBatchTable _batchIdTable(_$AppDatabase db) =>
+      db.spineBatch.createAlias(
+        $_aliasNameGenerator(db.stockMovement.batchId, db.spineBatch.id),
+      );
+
+  $$SpineBatchTableProcessedTableManager? get batchId {
+    final $_column = $_itemColumn<String>('batch_id');
+    if ($_column == null) return null;
+    final manager = $$SpineBatchTableTableManager(
+      $_db,
+      $_db.spineBatch,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_batchIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
@@ -18925,6 +19283,29 @@ class $$StockMovementTableFilterComposer
           }) => $$UserBusinessTableFilterComposer(
             $db: $db,
             $table: $db.userBusiness,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$SpineBatchTableFilterComposer get batchId {
+    final $$SpineBatchTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.batchId,
+      referencedTable: $db.spineBatch,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SpineBatchTableFilterComposer(
+            $db: $db,
+            $table: $db.spineBatch,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -19063,6 +19444,29 @@ class $$StockMovementTableOrderingComposer
     return composer;
   }
 
+  $$SpineBatchTableOrderingComposer get batchId {
+    final $$SpineBatchTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.batchId,
+      referencedTable: $db.spineBatch,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SpineBatchTableOrderingComposer(
+            $db: $db,
+            $table: $db.spineBatch,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
   $$UserTableOrderingComposer get createdBy {
     final $$UserTableOrderingComposer composer = $composerBuilder(
       composer: this,
@@ -19176,6 +19580,29 @@ class $$StockMovementTableAnnotationComposer
     return composer;
   }
 
+  $$SpineBatchTableAnnotationComposer get batchId {
+    final $$SpineBatchTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.batchId,
+      referencedTable: $db.spineBatch,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SpineBatchTableAnnotationComposer(
+            $db: $db,
+            $table: $db.spineBatch,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
   $$UserTableAnnotationComposer get createdBy {
     final $$UserTableAnnotationComposer composer = $composerBuilder(
       composer: this,
@@ -19216,6 +19643,7 @@ class $$StockMovementTableTableManager
           PrefetchHooks Function({
             bool productId,
             bool businessId,
+            bool batchId,
             bool createdBy,
           })
         > {
@@ -19240,6 +19668,7 @@ class $$StockMovementTableTableManager
                 Value<DateTime?> deletedAt = const Value.absent(),
                 Value<String> productId = const Value.absent(),
                 Value<String> businessId = const Value.absent(),
+                Value<String?> batchId = const Value.absent(),
                 Value<String> type = const Value.absent(),
                 Value<int> quantity = const Value.absent(),
                 Value<String?> referenceId = const Value.absent(),
@@ -19255,6 +19684,7 @@ class $$StockMovementTableTableManager
                 deletedAt: deletedAt,
                 productId: productId,
                 businessId: businessId,
+                batchId: batchId,
                 type: type,
                 quantity: quantity,
                 referenceId: referenceId,
@@ -19272,6 +19702,7 @@ class $$StockMovementTableTableManager
                 Value<DateTime?> deletedAt = const Value.absent(),
                 required String productId,
                 required String businessId,
+                Value<String?> batchId = const Value.absent(),
                 required String type,
                 required int quantity,
                 Value<String?> referenceId = const Value.absent(),
@@ -19287,6 +19718,7 @@ class $$StockMovementTableTableManager
                 deletedAt: deletedAt,
                 productId: productId,
                 businessId: businessId,
+                batchId: batchId,
                 type: type,
                 quantity: quantity,
                 referenceId: referenceId,
@@ -19303,7 +19735,12 @@ class $$StockMovementTableTableManager
               )
               .toList(),
           prefetchHooksCallback:
-              ({productId = false, businessId = false, createdBy = false}) {
+              ({
+                productId = false,
+                businessId = false,
+                batchId = false,
+                createdBy = false,
+              }) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [],
@@ -19353,6 +19790,21 @@ class $$StockMovementTableTableManager
                                   )
                                   as T;
                         }
+                        if (batchId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.batchId,
+                                    referencedTable:
+                                        $$StockMovementTableReferences
+                                            ._batchIdTable(db),
+                                    referencedColumn:
+                                        $$StockMovementTableReferences
+                                            ._batchIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
                         if (createdBy) {
                           state =
                               state.withJoin(
@@ -19392,7 +19844,12 @@ typedef $$StockMovementTableProcessedTableManager =
       $$StockMovementTableUpdateCompanionBuilder,
       (StockMovementData, $$StockMovementTableReferences),
       StockMovementData,
-      PrefetchHooks Function({bool productId, bool businessId, bool createdBy})
+      PrefetchHooks Function({
+        bool productId,
+        bool businessId,
+        bool batchId,
+        bool createdBy,
+      })
     >;
 typedef $$StockTransferTableCreateCompanionBuilder =
     StockTransferCompanion Function({
