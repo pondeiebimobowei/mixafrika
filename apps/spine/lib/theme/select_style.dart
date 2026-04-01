@@ -189,10 +189,10 @@ FSelectStyle selectStyle({
                 const TextStyle(),
                 variants: {
                   []: TextStyle(
-                    color: colors.secondary
+                    color: colors.destructive
                   ),
                   [FTappableVariantConstraint.not(.linux)]: TextStyle(
-                    color: colors.secondary
+                    color: colors.destructive
                   )
                 }
               ) 
@@ -204,14 +204,14 @@ FSelectStyle selectStyle({
               const BoxDecoration(),
               variants: {
                 [FTappableVariantConstraint.touch]: BoxDecoration(
-                  color: colors.primaryForeground,
+                  color: colors.secondaryForeground,
                 ),
                 [FTappableVariantConstraint.hovered]: BoxDecoration(
-                  color: colors.primaryForeground,
+                  color: colors.secondaryForeground,
                   
                 ),
                 [FTappableVariantConstraint.focused]: BoxDecoration(
-                  color: colors.primaryForeground,
+                  color: colors.secondaryForeground,
                   
                 ),
               },
@@ -225,10 +225,10 @@ FSelectStyle selectStyle({
           const TextStyle(),
           variants: {
             []: TextStyle(
-              color: colors.secondaryForeground
+              color: colors.primaryForeground
             ),
             [FTappableVariantConstraint.focused]: TextStyle(
-              color: colors.secondaryForeground
+              color: colors.primaryForeground
             )
           }
         )

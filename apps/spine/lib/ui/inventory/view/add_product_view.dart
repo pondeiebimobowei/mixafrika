@@ -6,6 +6,7 @@ import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/inventory/state/add_product_state.dart';
 import 'package:spine/ui/inventory/view_model/add_product_view_model.dart';
 import 'package:spine/ui/inventory/view_model/inventory_view_model.dart';
+import 'package:spine/widget/icon_widget.dart';
 
 class AddProductView extends ConsumerWidget {
   const AddProductView({super.key});
@@ -44,7 +45,7 @@ class AddProductView extends ConsumerWidget {
           children: [
             GestureDetector(
               onTap: () => context.go(Routes.inventory),
-              child: const Icon(Icons.close, size: 24, color: Colors.white),
+              child: const IconWidget(icon: Icons.arrow_back),
             ),
             const SizedBox(width: 20),
             Text(
@@ -52,7 +53,6 @@ class AddProductView extends ConsumerWidget {
               style: TextStyle(
                 fontSize: 20,
                 color: colors.primaryForeground,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ],
@@ -67,10 +67,10 @@ class AddProductView extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildActionButtons(),
-                  const SizedBox(height: 32),
+                  // _buildActionButtons(),
+                  // const SizedBox(height: 32),
 
-                  const SizedBox(height: 8),
+                  // const SizedBox(height: 8),
                   FTextField(
                     control: .managed(
                       onChange: (value) => viewModel.updateName(value.text),

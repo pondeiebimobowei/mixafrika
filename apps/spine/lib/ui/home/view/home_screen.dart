@@ -484,7 +484,7 @@ class HomeView extends ConsumerWidget {
           'Add Stock',
           Icons.add_shopping_cart_outlined,
           colors.secondary,
-          onTap: () => context.push(Routes.addStock),
+          onTap: () => context.push('${Routes.inventory}/${Routes.addStock}'),
         ),
       ],
     );
@@ -677,9 +677,9 @@ class HomeView extends ConsumerWidget {
             .toList();
 
         final allAlerts = [
-          ...soldOut.map((e) => (e, 'SOLD OUT', colors.error, 'Restock')),
+          ...soldOut.map((e) => (e, 'SOLD OUT', colors.destructive, 'Restock')),
           ...criticalExpiry.map(
-            (e) => (e, 'CRITICAL EXPIRY', colors.error, 'Review'),
+            (e) => (e, 'CRITICAL EXPIRY', colors.destructive, 'Review'),
           ),
           ...lowStock.map((e) => (e, 'LOW STOCK', Colors.amber, 'Restock')),
           ...expiringSoon.map(
@@ -701,7 +701,7 @@ class HomeView extends ConsumerWidget {
                   const SizedBox(width: 8),
                   const Text(
                     'STOCK ALERTS',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 8),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ],
               ),
@@ -772,7 +772,7 @@ class HomeView extends ConsumerWidget {
                       'STOCK ALERTS',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 8,
+                        fontSize: 12,
                       ),
                     ),
                   ],
@@ -787,7 +787,7 @@ class HomeView extends ConsumerWidget {
                   variant: FBadgeVariant.destructive,
                   child: Text(
                     '${allAlerts.length} Issues',
-                    style: TextStyle(fontSize: 8),
+                    style: TextStyle(fontSize: 12),
                   ),
                 ),
               ],
@@ -836,15 +836,14 @@ class HomeView extends ConsumerWidget {
                   'CRITICAL EXPIRATION ALERT',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
                   ),
                 ),
                 Text(
                   '$count items expire within 7 days!',
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -879,7 +878,7 @@ class HomeView extends ConsumerWidget {
                 Text(
                   product.name,
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 16,
                     color: context.theme.colors.primaryForeground,
                     fontWeight: FontWeight.bold,
                   ),
@@ -890,7 +889,7 @@ class HomeView extends ConsumerWidget {
                   children: [
                     Icon(
                       Icons.event_busy_outlined,
-                      size: 8,
+                      size: 12,
                       color: statusColor,
                     ),
                     const SizedBox(width: 4),
@@ -898,7 +897,7 @@ class HomeView extends ConsumerWidget {
                       status,
                       style: TextStyle(
                         color: statusColor,
-                        fontSize: 8,
+                        fontSize: 10,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -908,7 +907,7 @@ class HomeView extends ConsumerWidget {
             ),
           ),
           GestureDetector(
-            onTap: () => context.go('/product-details/${product.id}'),
+            onTap: () => context.go('${Routes.inventory}/${Routes.productDetails}/${product.id}'),
             child: SizedBox(
               width: 80,
               height: 24,

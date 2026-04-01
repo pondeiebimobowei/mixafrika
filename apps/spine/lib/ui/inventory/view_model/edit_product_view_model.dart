@@ -26,8 +26,6 @@ class EditProductViewModel extends FamilyAsyncNotifier<EditProductState, String>
     final response = await _productRepository.getProduct(productId);
     if (response.success && response.data != null) {
       final product = await _productRepository.getProductById(productId);
-      print(response.data!.name);
-      print('object');
 
       state = AsyncData(state.value!.copyWith(
         isLoading: false,
@@ -43,7 +41,6 @@ class EditProductViewModel extends FamilyAsyncNotifier<EditProductState, String>
         serialNumber: product.serialNumber,
       ));
     } else {
-      print('fail');
       state = AsyncData(state.value!.copyWith(isLoading: false, errorMessage: response.message));
     }
   }

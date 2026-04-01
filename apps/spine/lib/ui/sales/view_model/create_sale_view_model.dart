@@ -57,7 +57,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
     state = state.copyWith(
       cartItems: [
         ...state.cartItems,
-        CartItem(id: Uuid().v4(), manualName: name, manualPrice: amount, quantity: 1),
+        CartItem(id: Uuid().v4(), manualName: name, type: 'manual', manualPrice: amount, quantity: 1),
       ],
     );
   }
@@ -201,7 +201,6 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
         updatedAt: DateTime.now(),
       );
 
-      print('count ${state.cartItems.length}' );
 
       final items = state.cartItems.map((item) {
         return SalesItemData(
@@ -212,7 +211,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
           name: item.product?.name ?? item.manualName ?? 'none',
           productId: item.product?.id ?? '',
           quantity: item.quantity,
-          type: '',
+          type: item.type,
           description: '',
           unitPrice: item.unitPrice,
           total: item.total,

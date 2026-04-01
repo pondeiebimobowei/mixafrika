@@ -42,7 +42,7 @@ class ProductDetailsView extends ConsumerWidget {
               onPressed: state.item == null
                   ? null
                   : () => context.push(
-                      '${Routes.editProduct}/${state.item!.product.id}',
+                      '${Routes.inventory}/${Routes.editProduct}/${state.item!.product.id}',
                     ),
               icon: Icon(
                 Icons.edit_outlined,
@@ -74,9 +74,6 @@ class ProductDetailsView extends ConsumerWidget {
   Widget _buildContent(BuildContext context, ProductDetailsState state) {
     final item = state.item!;
     final product = item.product;
-    final batch = item.batches;
-    print(batch[0]);
-    print(batch[1]);
 
     // Calculate quantities
     final totalUnits = item.stockEntries.quantity;
@@ -196,8 +193,12 @@ class ProductDetailsView extends ConsumerWidget {
     final colors = context.theme.colors;
 
     final product = state.item!.product;
-    final batch = state.item!.batches;
-    final costPricePerUnit = batch.first.costPricePerUnit / batch.first.initialQuantity;
+    final batchItem = state.item!.batches.firstOrNull;
+
+    final costPricePerUnit =
+        batchItem != null && batchItem.initialQuantity > 0
+            ? batchItem.costPricePerUnit / batchItem.initialQuantity
+            : 0;
 
     
 
@@ -259,15 +260,15 @@ class ProductDetailsView extends ConsumerWidget {
 
   Widget _buildProfitCard(BuildContext context, ProductDetailsState state) {
     final product = state.item!.product;
-    final batch = state.item!.batches;
-    // final cost = product.costPricePerUnit.toDouble();
-    // final selling = product.sellingPricePerPiece.toDouble();
+    final batchItem = state.item!.batches.firstOrNull;
 
-    final costPricePerUnit = batch.first.costPricePerUnit / batch.first.initialQuantity;
-    print('project: $product');
-    // final profit = selling - cost;
-    final margin = costPricePerUnit > 0 ? (costPricePerUnit / product.sellingPricePerPiece * 100).round() : 0;
-
+    final costPricePerUnit = batchItem != null && batchItem.initialQuantity > 0
+        ? batchItem.costPricePerUnit / batchItem.initialQuantity
+        : 0;
+    final sellingPrice = product.sellingPricePerPiece;
+    final margin = sellingPrice > 0
+    ? (((sellingPrice - costPricePerUnit) / sellingPrice) * 100).round()
+    : 0;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -294,7 +295,7 @@ class ProductDetailsView extends ConsumerWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  formatCurrency(product.sellingPricePerPiece - costPricePerUnit),
+                  formatCurrency(product.sellingPricePerPiece - costPricePerUnit.toInt()),
                   style: const TextStyle(
                     color: Color(0xFF1DB978),
                     fontSize: 32,

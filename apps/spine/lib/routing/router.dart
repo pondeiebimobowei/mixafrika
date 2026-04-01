@@ -42,29 +42,33 @@ GoRouter router() => GoRouter(
     GoRoute(
       path: Routes.inventory,
       builder: (context, state) => const InventoryView(),
+      routes: [
+        GoRoute(
+          path: '${Routes.productDetails}/:id',
+          builder: (context, state) {
+            final id = state.pathParameters['id']!;
+            return ProductDetailsView(productId: id);
+          },
+        ),
+        GoRoute(
+          path: '${Routes.editProduct}/:id',
+          builder: (context, state) {
+            final id = state.pathParameters['id']!;
+            return EditProductView(productId: id);
+          },
+        ),
+
+        GoRoute(
+          path: Routes.addProduct,
+          builder: (context, state) => const AddProductView(),
+        ),
+        GoRoute(
+          path: Routes.addStock,
+          builder: (context, state) => const AddStockView(),
+        ),
+      ]
     ),
-    GoRoute(
-      path: Routes.addProduct,
-      builder: (context, state) => const AddProductView(),
-    ),
-    GoRoute(
-      path: Routes.addStock,
-      builder: (context, state) => const AddStockView(),
-    ),
-    GoRoute(
-      path: '${Routes.productDetails}/:id',
-      builder: (context, state) {
-        final id = state.pathParameters['id']!;
-        return ProductDetailsView(productId: id);
-      },
-    ),
-    GoRoute(
-      path: '${Routes.editProduct}/:id',
-      builder: (context, state) {
-        final id = state.pathParameters['id']!;
-        return EditProductView(productId: id);
-      },
-    ),
+    
     GoRoute(
       path: Routes.calculator,
       builder: (context, state) => const CalculatorView(),

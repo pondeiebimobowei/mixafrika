@@ -48,7 +48,7 @@ class AppDatabase extends _$AppDatabase {
 
   static QueryExecutor _openConnection() {
     return driftDatabase(
-      name: 'spinedbbB',
+      name: 'spinedbbbb',
       
     
       

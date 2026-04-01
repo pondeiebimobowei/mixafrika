@@ -18,70 +18,69 @@ Future<void> createSale(
 ) async {
   try {
     await _db.transaction(() async {
-      // 1. Insert the main sale record
       await _db.into(_db.sales).insert(sale);
 
       for (final item in items) {
-        var remainingToFulfill = item.quantity;
+        if(item.type == 'product'){
+          if (item.productId == null) {
+            throw Exception('Product item must have productId');
+          }
 
-        print('item: ${item.name}');
+          var remainingToFulfill = item.quantity;
 
-        // 2. Fetch batches ONLY for the specific product in this loop
-        // Also: We usually want non-expired batches first!
-        final batchQuery = _db.select(_db.spineBatch)
-          ..where((tbl) => 
-            tbl.productId.equals(item.productId ?? '') & 
-            tbl.remainingQuantity.isBiggerThanValue(0) & 
-            ( tbl.expiryDate.isNull() |
-              tbl.expiryDate.isBiggerThanValue(DateTime.now())
+          final batchQuery = _db.select(_db.spineBatch)
+            ..where((tbl) => 
+              tbl.productId.equals(item.productId!) & 
+              tbl.remainingQuantity.isBiggerThanValue(0) & 
+              ( tbl.expiryDate.isNull() |
+                tbl.expiryDate.isBiggerThanValue(DateTime.now())
+              )
             )
-          )
-          ..orderBy([
-            (t) => OrderingTerm(expression: t.expiryDate, mode: OrderingMode.asc),
-            (t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.asc),
-          ]);
+            ..orderBy([
+              (t) => OrderingTerm(expression: t.expiryDate, mode: OrderingMode.asc),
+              (t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.asc),
+            ]);
 
-        final batches = await batchQuery.get();
+          final batches = await batchQuery.get();
 
-        for (final batch in batches) {
-          if (remainingToFulfill <= 0) break;
+          for (final batch in batches) {
+            if (remainingToFulfill <= 0) break;
 
-          final take = min(batch.remainingQuantity, remainingToFulfill);
+            final take = min(batch.remainingQuantity, remainingToFulfill);
 
-          // 3. Insert the SalesItem linked to this specific batch
-          await _db.into(_db.salesItem).insert(item.copyWith(
-                quantity: take,
-                batchId: Value(batch.id), // Ensure your schema links salesItem to the batch
-              ));
+            await _db.into(_db.salesItem).insert(item.copyWith(
+              quantity: take,
+              batchId: Value(batch.id), // Ensure your schema links salesItem to the batch
+            ));
 
-          // 4. Update the batch remaining quantity
-          await _db.customUpdate(
-      'UPDATE spine_batch SET remaining_quantity = remaining_quantity - ? WHERE id = ?',
-      variables: [Variable.withInt(take), Variable.withString(batch.id)],
-      updates: {_db.spineBatch}, // This tells Drift which table changed so watchers/streams update
-    );
-    await _db.customUpdate(
-      'UPDATE inventory SET quantity = quantity - ? WHERE product_id = ?',
-      variables: [Variable.withInt(take), Variable.withString(batch.productId)],
-      updates: {_db.inventory}, // This tells Drift which table changed so watchers/streams update
-    );
+            await _db.customUpdate(
+              'UPDATE spine_batch SET remaining_quantity = remaining_quantity - ? WHERE id = ?',
+              variables: [Variable.withInt(take), Variable.withString(batch.id)],
+              updates: {_db.spineBatch}, 
+            );
+            await _db.customUpdate(
+              'UPDATE inventory SET quantity = quantity - ? WHERE product_id = ?',
+              variables: [Variable.withInt(take), Variable.withString(batch.productId)],
+              updates: {_db.inventory}, 
+            );
 
-      remainingToFulfill -= take;
-    }
-        
-        if (remainingToFulfill > 0) {
-          throw Exception('Insufficient stock for ${item.name}');
+            remainingToFulfill -= take;
+          }
+          
+          if (remainingToFulfill > 0) {
+            throw Exception('Insufficient stock for ${item.name}');
+          }
+        }else{
+          await _db.into(_db.salesItem).insert(item);
         }
       }
 
-      // 5. Record payments
       for (final payment in payments) {
         await _db.into(_db.payments).insert(payment);
       }
     });
   } catch (e) {
-    // In a production app, you might want to rethrow or log to a service
-    print('Sale Transaction Failed: $e');
+    print(e);
     rethrow; 
   }
 }
@@ -131,7 +130,6 @@ Future<void> createSale(
         }
       }
     }
-
     return salesMap.values.toList();
   }
 

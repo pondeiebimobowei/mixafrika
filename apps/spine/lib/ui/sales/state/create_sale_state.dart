@@ -54,12 +54,14 @@ class CartItem {
   final String? manualName;
   final int? manualPrice;
   final int quantity;
+  final String type;
   final SaleUnit unit;
 
   CartItem({
     required this.id,
     this.product,
     this.manualName,
+    this.type = 'product',
     this.manualPrice,
     this.quantity = 1,
     this.unit = SaleUnit.piece,

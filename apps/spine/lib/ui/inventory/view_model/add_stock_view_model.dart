@@ -21,9 +21,7 @@ class AddStockViewModel extends AutoDisposeNotifier<AddStockState> {
           .getProductsByBusinessId(business.id);
       state = state.copyWith(products: products, isLoading: false);
 
-      print('products: ${products.length}');
     } else {
-      print('No active business found');
       state = state.copyWith(
         isLoading: false,
         errorMessage: 'No active business found',
@@ -45,7 +43,6 @@ class AddStockViewModel extends AutoDisposeNotifier<AddStockState> {
   }
 
   void updateBulkQuantity(String qty) {
-    print(qty);
     if (state.selectedProduct == null) {
       state = state.copyWith(bulkQuantity: qty);
       return;

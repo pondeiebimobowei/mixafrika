@@ -36,7 +36,7 @@ class InventoryView extends ConsumerWidget {
                 Icons.shopping_cart_outlined,
                 color: colors.primaryForeground,
               ),
-              onPress: () => context.go(Routes.addStock),
+              onPress: () => context.go('${Routes.inventory}/${Routes.addStock}'),
               variant: .outline,
               child: Text(
                 'RESTOCK',
@@ -54,7 +54,7 @@ class InventoryView extends ConsumerWidget {
               ),
               child: FButton(
                 size: .xs,
-                onPress: () => context.go(Routes.addProduct),
+                onPress: () => context.go('${Routes.inventory}/${Routes.addProduct}'),
                 child: Icon(Icons.add, color: Colors.white, size: 24),
               ),
             ),
@@ -446,7 +446,7 @@ class InventoryView extends ConsumerWidget {
     String? statusBadge;
 
     return GestureDetector(
-      onTap: () => context.push('${Routes.productDetails}/${item.product.id}'),
+      onTap: () => context.go('${Routes.inventory}/${Routes.productDetails}/${item.product.id}'),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
         decoration: BoxDecoration(

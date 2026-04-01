@@ -199,7 +199,6 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
     ref.listen(addStockViewModelProvider, (previous, next) {
       if (next.isSuccess) {
         context.go(Routes.inventory);
-        print('donre');
         ref.invalidate(inventoryViewModelProvider);
       }
       if (next.errorMessage != null &&
