@@ -63,7 +63,14 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     final inventoryRecords = await inventoryQuery.getSingle();
 
     final batchQuery = _db.select(_db.spineBatch)
-      ..where((b) => b.productId.equals(productId));
+      ..where((b) => 
+        b.productId.equals(productId) &
+        b.expiryDate.isBiggerThanValue(DateTime.now()) &
+        b.remainingQuantity.isBiggerThanValue(0)
+      )
+      ..orderBy([
+        (b) => OrderingTerm(expression: b.createdAt, mode: OrderingMode.desc),
+      ]);
     final batches = await batchQuery.get();
 
     return InventoryItemData(
@@ -105,9 +112,8 @@ class InventoryRepository implements InventoryRepositoryAbstract {
   Future<void> addStock({
     required String productId,
     required String businessId,
-    // required int bulkQuantity,
     required int pieceQuantity,
-    // required String totalCost,
+    required String totalCost,
     required int piecePrice,
     required int bulkPrice,
     DateTime? expiryDate,
@@ -119,8 +125,9 @@ class InventoryRepository implements InventoryRepositoryAbstract {
       id: Uuid().v4(),
       productId: productId,
       expiryDate: expiryDate?.toUtc() ?? DateTime.now().toUtc(),
-      costPricePerBulk: bulkPrice,
-      costPricePerPiece: piecePrice,
+      costPricePerUnit: int.tryParse(totalCost) ?? 0,
+      sellingPricePerBulk: bulkPrice,
+      sellingPricePerPiece: piecePrice,
       remainingQuantity: pieceQuantity,
       initialQuantity: pieceQuantity,
       businessId: businessId,
@@ -151,6 +158,12 @@ class InventoryRepository implements InventoryRepositoryAbstract {
       'UPDATE inventory SET quantity = quantity + ? WHERE product_id = ?',
       variables: [Variable.withInt(pieceQuantity), Variable.withString(productId)],
       updates: {_db.inventory}, // This tells Drift which table changed so watchers/streams update
+    );
+
+    await _db.customUpdate(
+      'UPDATE product SET cost_price_per_unit = ? WHERE id = ?',
+      variables: [Variable.withInt(int.tryParse(totalCost) ?? 0), Variable.withString(productId)],
+      updates: {_db.product}, // This tells Drift which table changed so watchers/streams update
     );
   }
 

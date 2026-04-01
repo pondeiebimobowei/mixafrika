@@ -1,9 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:spine/routing/routes.dart';
-import 'package:spine/screens/signup_screen.dart';
 import 'package:spine/screens/business_details_screen.dart';
 import 'package:spine/screens/splash_screen.dart';
 import 'package:spine/ui/auth/view/login_view.dart';
+import 'package:spine/ui/auth/view/signup_view.dart';
 import 'package:spine/ui/home/view/home_screen.dart';
 import 'package:spine/ui/inventory/view/add_product_view.dart';
 import 'package:spine/ui/inventory/view/add_stock_view.dart';
@@ -18,7 +18,7 @@ import 'package:spine/ui/sales/view/sale_receipt_view.dart';
 import 'package:spine/ui/sales/view/sales_log_view.dart';
 
 GoRouter router() => GoRouter(
-  initialLocation: Routes.splash,
+  initialLocation: Routes.dashboard,
   routes: [
     GoRoute(
       path: Routes.splash,
@@ -32,7 +32,7 @@ GoRouter router() => GoRouter(
     ),
     GoRoute(
       path: Routes.signup,
-      builder: (context, state) => const SignupScreen(),
+      builder: (context, state) => SignupView(),
     ),
     GoRoute(
       path: Routes.businessDetails,

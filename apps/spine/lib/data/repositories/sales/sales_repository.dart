@@ -24,11 +24,18 @@ Future<void> createSale(
       for (final item in items) {
         var remainingToFulfill = item.quantity;
 
+        print('item: ${item.name}');
+
         // 2. Fetch batches ONLY for the specific product in this loop
         // Also: We usually want non-expired batches first!
         final batchQuery = _db.select(_db.spineBatch)
-          ..where((tbl) => tbl.productId.equals(item.productId ?? '')) 
-          ..where((tbl) => tbl.remainingQuantity.isBiggerThanValue(0))
+          ..where((tbl) => 
+            tbl.productId.equals(item.productId ?? '') & 
+            tbl.remainingQuantity.isBiggerThanValue(0) & 
+            ( tbl.expiryDate.isNull() |
+              tbl.expiryDate.isBiggerThanValue(DateTime.now())
+            )
+          )
           ..orderBy([
             (t) => OrderingTerm(expression: t.expiryDate, mode: OrderingMode.asc),
             (t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.asc),
@@ -49,8 +56,8 @@ Future<void> createSale(
 
           // 4. Update the batch remaining quantity
           await _db.customUpdate(
-      'UPDATE spine_batch SET remaining_quantity = remaining_quantity - ? WHERE product_id = ?',
-      variables: [Variable.withInt(take), Variable.withString(batch.productId)],
+      'UPDATE spine_batch SET remaining_quantity = remaining_quantity - ? WHERE id = ?',
+      variables: [Variable.withInt(take), Variable.withString(batch.id)],
       updates: {_db.spineBatch}, // This tells Drift which table changed so watchers/streams update
     );
     await _db.customUpdate(
@@ -62,7 +69,9 @@ Future<void> createSale(
       remainingToFulfill -= take;
     }
         
-        // Optional: Check if remainingToFulfill > 0 here to throw an "Out of Stock" error
+        if (remainingToFulfill > 0) {
+          throw Exception('Insufficient stock for ${item.name}');
+        }
       }
 
       // 5. Record payments
@@ -76,6 +85,7 @@ Future<void> createSale(
     rethrow; 
   }
 }
+
   @override
   Future<List<SaleWithItems>> getSalesWithItems({String? businessId}) async {
     final query = _db.select(_db.sales).join([

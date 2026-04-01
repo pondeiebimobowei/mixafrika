@@ -2815,23 +2815,32 @@ class $SpineBatchTable extends SpineBatch
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
   );
-  static const VerificationMeta _costPricePerPieceMeta = const VerificationMeta(
-    'costPricePerPiece',
+  static const VerificationMeta _costPricePerUnitMeta = const VerificationMeta(
+    'costPricePerUnit',
   );
   @override
-  late final GeneratedColumn<int> costPricePerPiece = GeneratedColumn<int>(
-    'cost_price_per_piece',
+  late final GeneratedColumn<int> costPricePerUnit = GeneratedColumn<int>(
+    'cost_price_per_unit',
     aliasedName,
     false,
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _costPricePerBulkMeta = const VerificationMeta(
-    'costPricePerBulk',
-  );
+  static const VerificationMeta _sellingPricePerPieceMeta =
+      const VerificationMeta('sellingPricePerPiece');
   @override
-  late final GeneratedColumn<int> costPricePerBulk = GeneratedColumn<int>(
-    'cost_price_per_bulk',
+  late final GeneratedColumn<int> sellingPricePerPiece = GeneratedColumn<int>(
+    'selling_price_per_piece',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _sellingPricePerBulkMeta =
+      const VerificationMeta('sellingPricePerBulk');
+  @override
+  late final GeneratedColumn<int> sellingPricePerBulk = GeneratedColumn<int>(
+    'selling_price_per_bulk',
     aliasedName,
     false,
     type: DriftSqlType.int,
@@ -2897,8 +2906,9 @@ class $SpineBatchTable extends SpineBatch
     deletedAt,
     expiryDate,
     batchNumber,
-    costPricePerPiece,
-    costPricePerBulk,
+    costPricePerUnit,
+    sellingPricePerPiece,
+    sellingPricePerBulk,
     initialQuantity,
     remainingQuantity,
     productId,
@@ -2970,27 +2980,38 @@ class $SpineBatchTable extends SpineBatch
     } else if (isInserting) {
       context.missing(_batchNumberMeta);
     }
-    if (data.containsKey('cost_price_per_piece')) {
+    if (data.containsKey('cost_price_per_unit')) {
       context.handle(
-        _costPricePerPieceMeta,
-        costPricePerPiece.isAcceptableOrUnknown(
-          data['cost_price_per_piece']!,
-          _costPricePerPieceMeta,
+        _costPricePerUnitMeta,
+        costPricePerUnit.isAcceptableOrUnknown(
+          data['cost_price_per_unit']!,
+          _costPricePerUnitMeta,
         ),
       );
     } else if (isInserting) {
-      context.missing(_costPricePerPieceMeta);
+      context.missing(_costPricePerUnitMeta);
     }
-    if (data.containsKey('cost_price_per_bulk')) {
+    if (data.containsKey('selling_price_per_piece')) {
       context.handle(
-        _costPricePerBulkMeta,
-        costPricePerBulk.isAcceptableOrUnknown(
-          data['cost_price_per_bulk']!,
-          _costPricePerBulkMeta,
+        _sellingPricePerPieceMeta,
+        sellingPricePerPiece.isAcceptableOrUnknown(
+          data['selling_price_per_piece']!,
+          _sellingPricePerPieceMeta,
         ),
       );
     } else if (isInserting) {
-      context.missing(_costPricePerBulkMeta);
+      context.missing(_sellingPricePerPieceMeta);
+    }
+    if (data.containsKey('selling_price_per_bulk')) {
+      context.handle(
+        _sellingPricePerBulkMeta,
+        sellingPricePerBulk.isAcceptableOrUnknown(
+          data['selling_price_per_bulk']!,
+          _sellingPricePerBulkMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_sellingPricePerBulkMeta);
     }
     if (data.containsKey('initial_quantity')) {
       context.handle(
@@ -3071,13 +3092,17 @@ class $SpineBatchTable extends SpineBatch
         DriftSqlType.string,
         data['${effectivePrefix}batch_number'],
       )!,
-      costPricePerPiece: attachedDatabase.typeMapping.read(
+      costPricePerUnit: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}cost_price_per_piece'],
+        data['${effectivePrefix}cost_price_per_unit'],
       )!,
-      costPricePerBulk: attachedDatabase.typeMapping.read(
+      sellingPricePerPiece: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
-        data['${effectivePrefix}cost_price_per_bulk'],
+        data['${effectivePrefix}selling_price_per_piece'],
+      )!,
+      sellingPricePerBulk: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}selling_price_per_bulk'],
       )!,
       initialQuantity: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
@@ -3113,8 +3138,9 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
   final DateTime? deletedAt;
   final DateTime? expiryDate;
   final String batchNumber;
-  final int costPricePerPiece;
-  final int costPricePerBulk;
+  final int costPricePerUnit;
+  final int sellingPricePerPiece;
+  final int sellingPricePerBulk;
   final int initialQuantity;
   final int remainingQuantity;
   final String productId;
@@ -3128,8 +3154,9 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     this.deletedAt,
     this.expiryDate,
     required this.batchNumber,
-    required this.costPricePerPiece,
-    required this.costPricePerBulk,
+    required this.costPricePerUnit,
+    required this.sellingPricePerPiece,
+    required this.sellingPricePerBulk,
     required this.initialQuantity,
     required this.remainingQuantity,
     required this.productId,
@@ -3152,8 +3179,9 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
       map['expiry_date'] = Variable<DateTime>(expiryDate);
     }
     map['batch_number'] = Variable<String>(batchNumber);
-    map['cost_price_per_piece'] = Variable<int>(costPricePerPiece);
-    map['cost_price_per_bulk'] = Variable<int>(costPricePerBulk);
+    map['cost_price_per_unit'] = Variable<int>(costPricePerUnit);
+    map['selling_price_per_piece'] = Variable<int>(sellingPricePerPiece);
+    map['selling_price_per_bulk'] = Variable<int>(sellingPricePerBulk);
     map['initial_quantity'] = Variable<int>(initialQuantity);
     map['remaining_quantity'] = Variable<int>(remainingQuantity);
     map['product_id'] = Variable<String>(productId);
@@ -3177,8 +3205,9 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
           ? const Value.absent()
           : Value(expiryDate),
       batchNumber: Value(batchNumber),
-      costPricePerPiece: Value(costPricePerPiece),
-      costPricePerBulk: Value(costPricePerBulk),
+      costPricePerUnit: Value(costPricePerUnit),
+      sellingPricePerPiece: Value(sellingPricePerPiece),
+      sellingPricePerBulk: Value(sellingPricePerBulk),
       initialQuantity: Value(initialQuantity),
       remainingQuantity: Value(remainingQuantity),
       productId: Value(productId),
@@ -3200,8 +3229,13 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
       expiryDate: serializer.fromJson<DateTime?>(json['expiryDate']),
       batchNumber: serializer.fromJson<String>(json['batchNumber']),
-      costPricePerPiece: serializer.fromJson<int>(json['costPricePerPiece']),
-      costPricePerBulk: serializer.fromJson<int>(json['costPricePerBulk']),
+      costPricePerUnit: serializer.fromJson<int>(json['costPricePerUnit']),
+      sellingPricePerPiece: serializer.fromJson<int>(
+        json['sellingPricePerPiece'],
+      ),
+      sellingPricePerBulk: serializer.fromJson<int>(
+        json['sellingPricePerBulk'],
+      ),
       initialQuantity: serializer.fromJson<int>(json['initialQuantity']),
       remainingQuantity: serializer.fromJson<int>(json['remainingQuantity']),
       productId: serializer.fromJson<String>(json['productId']),
@@ -3220,8 +3254,9 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
       'expiryDate': serializer.toJson<DateTime?>(expiryDate),
       'batchNumber': serializer.toJson<String>(batchNumber),
-      'costPricePerPiece': serializer.toJson<int>(costPricePerPiece),
-      'costPricePerBulk': serializer.toJson<int>(costPricePerBulk),
+      'costPricePerUnit': serializer.toJson<int>(costPricePerUnit),
+      'sellingPricePerPiece': serializer.toJson<int>(sellingPricePerPiece),
+      'sellingPricePerBulk': serializer.toJson<int>(sellingPricePerBulk),
       'initialQuantity': serializer.toJson<int>(initialQuantity),
       'remainingQuantity': serializer.toJson<int>(remainingQuantity),
       'productId': serializer.toJson<String>(productId),
@@ -3238,8 +3273,9 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     Value<DateTime?> deletedAt = const Value.absent(),
     Value<DateTime?> expiryDate = const Value.absent(),
     String? batchNumber,
-    int? costPricePerPiece,
-    int? costPricePerBulk,
+    int? costPricePerUnit,
+    int? sellingPricePerPiece,
+    int? sellingPricePerBulk,
     int? initialQuantity,
     int? remainingQuantity,
     String? productId,
@@ -3253,8 +3289,9 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
     expiryDate: expiryDate.present ? expiryDate.value : this.expiryDate,
     batchNumber: batchNumber ?? this.batchNumber,
-    costPricePerPiece: costPricePerPiece ?? this.costPricePerPiece,
-    costPricePerBulk: costPricePerBulk ?? this.costPricePerBulk,
+    costPricePerUnit: costPricePerUnit ?? this.costPricePerUnit,
+    sellingPricePerPiece: sellingPricePerPiece ?? this.sellingPricePerPiece,
+    sellingPricePerBulk: sellingPricePerBulk ?? this.sellingPricePerBulk,
     initialQuantity: initialQuantity ?? this.initialQuantity,
     remainingQuantity: remainingQuantity ?? this.remainingQuantity,
     productId: productId ?? this.productId,
@@ -3276,12 +3313,15 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
       batchNumber: data.batchNumber.present
           ? data.batchNumber.value
           : this.batchNumber,
-      costPricePerPiece: data.costPricePerPiece.present
-          ? data.costPricePerPiece.value
-          : this.costPricePerPiece,
-      costPricePerBulk: data.costPricePerBulk.present
-          ? data.costPricePerBulk.value
-          : this.costPricePerBulk,
+      costPricePerUnit: data.costPricePerUnit.present
+          ? data.costPricePerUnit.value
+          : this.costPricePerUnit,
+      sellingPricePerPiece: data.sellingPricePerPiece.present
+          ? data.sellingPricePerPiece.value
+          : this.sellingPricePerPiece,
+      sellingPricePerBulk: data.sellingPricePerBulk.present
+          ? data.sellingPricePerBulk.value
+          : this.sellingPricePerBulk,
       initialQuantity: data.initialQuantity.present
           ? data.initialQuantity.value
           : this.initialQuantity,
@@ -3306,8 +3346,9 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
           ..write('deletedAt: $deletedAt, ')
           ..write('expiryDate: $expiryDate, ')
           ..write('batchNumber: $batchNumber, ')
-          ..write('costPricePerPiece: $costPricePerPiece, ')
-          ..write('costPricePerBulk: $costPricePerBulk, ')
+          ..write('costPricePerUnit: $costPricePerUnit, ')
+          ..write('sellingPricePerPiece: $sellingPricePerPiece, ')
+          ..write('sellingPricePerBulk: $sellingPricePerBulk, ')
           ..write('initialQuantity: $initialQuantity, ')
           ..write('remainingQuantity: $remainingQuantity, ')
           ..write('productId: $productId, ')
@@ -3326,8 +3367,9 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
     deletedAt,
     expiryDate,
     batchNumber,
-    costPricePerPiece,
-    costPricePerBulk,
+    costPricePerUnit,
+    sellingPricePerPiece,
+    sellingPricePerBulk,
     initialQuantity,
     remainingQuantity,
     productId,
@@ -3345,8 +3387,9 @@ class SpineBatchData extends DataClass implements Insertable<SpineBatchData> {
           other.deletedAt == this.deletedAt &&
           other.expiryDate == this.expiryDate &&
           other.batchNumber == this.batchNumber &&
-          other.costPricePerPiece == this.costPricePerPiece &&
-          other.costPricePerBulk == this.costPricePerBulk &&
+          other.costPricePerUnit == this.costPricePerUnit &&
+          other.sellingPricePerPiece == this.sellingPricePerPiece &&
+          other.sellingPricePerBulk == this.sellingPricePerBulk &&
           other.initialQuantity == this.initialQuantity &&
           other.remainingQuantity == this.remainingQuantity &&
           other.productId == this.productId &&
@@ -3362,8 +3405,9 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
   final Value<DateTime?> deletedAt;
   final Value<DateTime?> expiryDate;
   final Value<String> batchNumber;
-  final Value<int> costPricePerPiece;
-  final Value<int> costPricePerBulk;
+  final Value<int> costPricePerUnit;
+  final Value<int> sellingPricePerPiece;
+  final Value<int> sellingPricePerBulk;
   final Value<int> initialQuantity;
   final Value<int> remainingQuantity;
   final Value<String> productId;
@@ -3378,8 +3422,9 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
     this.deletedAt = const Value.absent(),
     this.expiryDate = const Value.absent(),
     this.batchNumber = const Value.absent(),
-    this.costPricePerPiece = const Value.absent(),
-    this.costPricePerBulk = const Value.absent(),
+    this.costPricePerUnit = const Value.absent(),
+    this.sellingPricePerPiece = const Value.absent(),
+    this.sellingPricePerBulk = const Value.absent(),
     this.initialQuantity = const Value.absent(),
     this.remainingQuantity = const Value.absent(),
     this.productId = const Value.absent(),
@@ -3395,8 +3440,9 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
     this.deletedAt = const Value.absent(),
     this.expiryDate = const Value.absent(),
     required String batchNumber,
-    required int costPricePerPiece,
-    required int costPricePerBulk,
+    required int costPricePerUnit,
+    required int sellingPricePerPiece,
+    required int sellingPricePerBulk,
     required int initialQuantity,
     required int remainingQuantity,
     required String productId,
@@ -3405,8 +3451,9 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
   }) : id = Value(id),
        syncStatus = Value(syncStatus),
        batchNumber = Value(batchNumber),
-       costPricePerPiece = Value(costPricePerPiece),
-       costPricePerBulk = Value(costPricePerBulk),
+       costPricePerUnit = Value(costPricePerUnit),
+       sellingPricePerPiece = Value(sellingPricePerPiece),
+       sellingPricePerBulk = Value(sellingPricePerBulk),
        initialQuantity = Value(initialQuantity),
        remainingQuantity = Value(remainingQuantity),
        productId = Value(productId),
@@ -3420,8 +3467,9 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
     Expression<DateTime>? deletedAt,
     Expression<DateTime>? expiryDate,
     Expression<String>? batchNumber,
-    Expression<int>? costPricePerPiece,
-    Expression<int>? costPricePerBulk,
+    Expression<int>? costPricePerUnit,
+    Expression<int>? sellingPricePerPiece,
+    Expression<int>? sellingPricePerBulk,
     Expression<int>? initialQuantity,
     Expression<int>? remainingQuantity,
     Expression<String>? productId,
@@ -3437,8 +3485,11 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
       if (deletedAt != null) 'deleted_at': deletedAt,
       if (expiryDate != null) 'expiry_date': expiryDate,
       if (batchNumber != null) 'batch_number': batchNumber,
-      if (costPricePerPiece != null) 'cost_price_per_piece': costPricePerPiece,
-      if (costPricePerBulk != null) 'cost_price_per_bulk': costPricePerBulk,
+      if (costPricePerUnit != null) 'cost_price_per_unit': costPricePerUnit,
+      if (sellingPricePerPiece != null)
+        'selling_price_per_piece': sellingPricePerPiece,
+      if (sellingPricePerBulk != null)
+        'selling_price_per_bulk': sellingPricePerBulk,
       if (initialQuantity != null) 'initial_quantity': initialQuantity,
       if (remainingQuantity != null) 'remaining_quantity': remainingQuantity,
       if (productId != null) 'product_id': productId,
@@ -3456,8 +3507,9 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
     Value<DateTime?>? deletedAt,
     Value<DateTime?>? expiryDate,
     Value<String>? batchNumber,
-    Value<int>? costPricePerPiece,
-    Value<int>? costPricePerBulk,
+    Value<int>? costPricePerUnit,
+    Value<int>? sellingPricePerPiece,
+    Value<int>? sellingPricePerBulk,
     Value<int>? initialQuantity,
     Value<int>? remainingQuantity,
     Value<String>? productId,
@@ -3473,8 +3525,9 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
       deletedAt: deletedAt ?? this.deletedAt,
       expiryDate: expiryDate ?? this.expiryDate,
       batchNumber: batchNumber ?? this.batchNumber,
-      costPricePerPiece: costPricePerPiece ?? this.costPricePerPiece,
-      costPricePerBulk: costPricePerBulk ?? this.costPricePerBulk,
+      costPricePerUnit: costPricePerUnit ?? this.costPricePerUnit,
+      sellingPricePerPiece: sellingPricePerPiece ?? this.sellingPricePerPiece,
+      sellingPricePerBulk: sellingPricePerBulk ?? this.sellingPricePerBulk,
       initialQuantity: initialQuantity ?? this.initialQuantity,
       remainingQuantity: remainingQuantity ?? this.remainingQuantity,
       productId: productId ?? this.productId,
@@ -3510,11 +3563,16 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
     if (batchNumber.present) {
       map['batch_number'] = Variable<String>(batchNumber.value);
     }
-    if (costPricePerPiece.present) {
-      map['cost_price_per_piece'] = Variable<int>(costPricePerPiece.value);
+    if (costPricePerUnit.present) {
+      map['cost_price_per_unit'] = Variable<int>(costPricePerUnit.value);
     }
-    if (costPricePerBulk.present) {
-      map['cost_price_per_bulk'] = Variable<int>(costPricePerBulk.value);
+    if (sellingPricePerPiece.present) {
+      map['selling_price_per_piece'] = Variable<int>(
+        sellingPricePerPiece.value,
+      );
+    }
+    if (sellingPricePerBulk.present) {
+      map['selling_price_per_bulk'] = Variable<int>(sellingPricePerBulk.value);
     }
     if (initialQuantity.present) {
       map['initial_quantity'] = Variable<int>(initialQuantity.value);
@@ -3545,8 +3603,9 @@ class SpineBatchCompanion extends UpdateCompanion<SpineBatchData> {
           ..write('deletedAt: $deletedAt, ')
           ..write('expiryDate: $expiryDate, ')
           ..write('batchNumber: $batchNumber, ')
-          ..write('costPricePerPiece: $costPricePerPiece, ')
-          ..write('costPricePerBulk: $costPricePerBulk, ')
+          ..write('costPricePerUnit: $costPricePerUnit, ')
+          ..write('sellingPricePerPiece: $sellingPricePerPiece, ')
+          ..write('sellingPricePerBulk: $sellingPricePerBulk, ')
           ..write('initialQuantity: $initialQuantity, ')
           ..write('remainingQuantity: $remainingQuantity, ')
           ..write('productId: $productId, ')
@@ -13597,8 +13656,9 @@ typedef $$SpineBatchTableCreateCompanionBuilder =
       Value<DateTime?> deletedAt,
       Value<DateTime?> expiryDate,
       required String batchNumber,
-      required int costPricePerPiece,
-      required int costPricePerBulk,
+      required int costPricePerUnit,
+      required int sellingPricePerPiece,
+      required int sellingPricePerBulk,
       required int initialQuantity,
       required int remainingQuantity,
       required String productId,
@@ -13615,8 +13675,9 @@ typedef $$SpineBatchTableUpdateCompanionBuilder =
       Value<DateTime?> deletedAt,
       Value<DateTime?> expiryDate,
       Value<String> batchNumber,
-      Value<int> costPricePerPiece,
-      Value<int> costPricePerBulk,
+      Value<int> costPricePerUnit,
+      Value<int> sellingPricePerPiece,
+      Value<int> sellingPricePerBulk,
       Value<int> initialQuantity,
       Value<int> remainingQuantity,
       Value<String> productId,
@@ -13752,13 +13813,18 @@ class $$SpineBatchTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get costPricePerPiece => $composableBuilder(
-    column: $table.costPricePerPiece,
+  ColumnFilters<int> get costPricePerUnit => $composableBuilder(
+    column: $table.costPricePerUnit,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get costPricePerBulk => $composableBuilder(
-    column: $table.costPricePerBulk,
+  ColumnFilters<int> get sellingPricePerPiece => $composableBuilder(
+    column: $table.sellingPricePerPiece,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get sellingPricePerBulk => $composableBuilder(
+    column: $table.sellingPricePerBulk,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -13918,13 +13984,18 @@ class $$SpineBatchTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get costPricePerPiece => $composableBuilder(
-    column: $table.costPricePerPiece,
+  ColumnOrderings<int> get costPricePerUnit => $composableBuilder(
+    column: $table.costPricePerUnit,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get costPricePerBulk => $composableBuilder(
-    column: $table.costPricePerBulk,
+  ColumnOrderings<int> get sellingPricePerPiece => $composableBuilder(
+    column: $table.sellingPricePerPiece,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get sellingPricePerBulk => $composableBuilder(
+    column: $table.sellingPricePerBulk,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -14024,13 +14095,18 @@ class $$SpineBatchTableAnnotationComposer
     builder: (column) => column,
   );
 
-  GeneratedColumn<int> get costPricePerPiece => $composableBuilder(
-    column: $table.costPricePerPiece,
+  GeneratedColumn<int> get costPricePerUnit => $composableBuilder(
+    column: $table.costPricePerUnit,
     builder: (column) => column,
   );
 
-  GeneratedColumn<int> get costPricePerBulk => $composableBuilder(
-    column: $table.costPricePerBulk,
+  GeneratedColumn<int> get sellingPricePerPiece => $composableBuilder(
+    column: $table.sellingPricePerPiece,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get sellingPricePerBulk => $composableBuilder(
+    column: $table.sellingPricePerBulk,
     builder: (column) => column,
   );
 
@@ -14182,8 +14258,9 @@ class $$SpineBatchTableTableManager
                 Value<DateTime?> deletedAt = const Value.absent(),
                 Value<DateTime?> expiryDate = const Value.absent(),
                 Value<String> batchNumber = const Value.absent(),
-                Value<int> costPricePerPiece = const Value.absent(),
-                Value<int> costPricePerBulk = const Value.absent(),
+                Value<int> costPricePerUnit = const Value.absent(),
+                Value<int> sellingPricePerPiece = const Value.absent(),
+                Value<int> sellingPricePerBulk = const Value.absent(),
                 Value<int> initialQuantity = const Value.absent(),
                 Value<int> remainingQuantity = const Value.absent(),
                 Value<String> productId = const Value.absent(),
@@ -14198,8 +14275,9 @@ class $$SpineBatchTableTableManager
                 deletedAt: deletedAt,
                 expiryDate: expiryDate,
                 batchNumber: batchNumber,
-                costPricePerPiece: costPricePerPiece,
-                costPricePerBulk: costPricePerBulk,
+                costPricePerUnit: costPricePerUnit,
+                sellingPricePerPiece: sellingPricePerPiece,
+                sellingPricePerBulk: sellingPricePerBulk,
                 initialQuantity: initialQuantity,
                 remainingQuantity: remainingQuantity,
                 productId: productId,
@@ -14216,8 +14294,9 @@ class $$SpineBatchTableTableManager
                 Value<DateTime?> deletedAt = const Value.absent(),
                 Value<DateTime?> expiryDate = const Value.absent(),
                 required String batchNumber,
-                required int costPricePerPiece,
-                required int costPricePerBulk,
+                required int costPricePerUnit,
+                required int sellingPricePerPiece,
+                required int sellingPricePerBulk,
                 required int initialQuantity,
                 required int remainingQuantity,
                 required String productId,
@@ -14232,8 +14311,9 @@ class $$SpineBatchTableTableManager
                 deletedAt: deletedAt,
                 expiryDate: expiryDate,
                 batchNumber: batchNumber,
-                costPricePerPiece: costPricePerPiece,
-                costPricePerBulk: costPricePerBulk,
+                costPricePerUnit: costPricePerUnit,
+                sellingPricePerPiece: sellingPricePerPiece,
+                sellingPricePerBulk: sellingPricePerBulk,
                 initialQuantity: initialQuantity,
                 remainingQuantity: remainingQuantity,
                 productId: productId,

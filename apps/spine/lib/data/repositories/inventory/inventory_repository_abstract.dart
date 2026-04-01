@@ -12,7 +12,7 @@ abstract class InventoryRepositoryAbstract {
     required String businessId,
     // required int bulkQuantity,
     required int pieceQuantity,
-    // required String totalCost,
+    required String totalCost,
     required int bulkPrice,
     required int piecePrice,
     DateTime? expiryDate,

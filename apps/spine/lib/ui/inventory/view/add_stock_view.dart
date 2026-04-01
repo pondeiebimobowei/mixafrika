@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/inventory/state/add_stock_state.dart';
 import 'package:spine/ui/inventory/view_model/add_stock_view_model.dart';
 import 'package:intl/intl.dart';
+import 'package:spine/ui/inventory/view_model/inventory_view_model.dart';
 import 'package:spine/widget/icon_widget.dart';
 
 class AddStockView extends ConsumerStatefulWidget {
@@ -196,23 +198,15 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
 
     ref.listen(addStockViewModelProvider, (previous, next) {
       if (next.isSuccess) {
-        context.pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Stock recorded successfully!'),
-            backgroundColor: Colors.green,
-          ),
-        );
+        context.go(Routes.inventory);
+        print('donre');
+        ref.invalidate(inventoryViewModelProvider);
       }
       if (next.errorMessage != null &&
           next.errorMessage != previous?.errorMessage) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(next.errorMessage!),
-            backgroundColor: Colors.redAccent,
-          ),
-        );
+            print(next.errorMessage);
       }
+
 
       // Update controllers if state changes from outside (e.g. conversion logic)
       if (next.bulkQuantity != _bulkController.text &&
@@ -230,16 +224,15 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
         title: Row(
           children: [
             IconButton(
-              onPressed: () => context.pop(),
-              icon: const Icon(Icons.close, color: Colors.white),
+              onPressed: () => context.go(Routes.dashboard),
+              icon: const IconWidget( icon: Icons.arrow_back),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 20),
             Text(
               'Add New Stock',
               style: TextStyle(
                 color: colors.primaryForeground,
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ],
@@ -250,7 +243,6 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
         child: Stack(
           children: [
             SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -731,7 +723,7 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
           const Icon(Icons.analytics_outlined, color: Colors.teal, size: 18),
           const SizedBox(width: 12),
           Text(
-            'EST. COST PER ${state.selectedProduct?.pieceUnitName.toUpperCase() ?? 'UNIT'}:',
+            'EST. PURCHASE COST PER ${state.selectedProduct?.pieceUnitName.toUpperCase() ?? 'UNIT'}:',
             style: const TextStyle(
               color: Colors.grey,
               fontSize: 11,

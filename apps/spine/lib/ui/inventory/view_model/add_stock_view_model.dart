@@ -8,7 +8,7 @@ import 'package:spine/ui/user_business/state/active_user_business_provider.dart'
 class AddStockViewModel extends AutoDisposeNotifier<AddStockState> {
   @override
   AddStockState build() {
-    _init();
+    Future.microtask(() => _init());
     return const AddStockState();
   }
 
@@ -20,7 +20,10 @@ class AddStockViewModel extends AutoDisposeNotifier<AddStockState> {
           .read(productRepositoryProvider)
           .getProductsByBusinessId(business.id);
       state = state.copyWith(products: products, isLoading: false);
+
+      print('products: ${products.length}');
     } else {
+      print('No active business found');
       state = state.copyWith(
         isLoading: false,
         errorMessage: 'No active business found',
@@ -42,6 +45,7 @@ class AddStockViewModel extends AutoDisposeNotifier<AddStockState> {
   }
 
   void updateBulkQuantity(String qty) {
+    print(qty);
     if (state.selectedProduct == null) {
       state = state.copyWith(bulkQuantity: qty);
       return;
@@ -97,9 +101,9 @@ class AddStockViewModel extends AutoDisposeNotifier<AddStockState> {
       await inventoryRepository.addStock(
         productId: state.selectedProduct!.id,
         businessId: businessProvider.id,
-        // bulkQuantity: int.tryParse(state.bulkQuantity) ?? 0,
         pieceQuantity: int.tryParse(state.pieceQuantity) ?? 0,
-        // totalCost: state.totalCost,
+        totalCost: state.totalCost,
+      
         bulkPrice: int.tryParse(state.bulkPrice) ?? 0,
         piecePrice: int.tryParse(state.piecePrice) ?? 0,
         expiryDate: state.expiryDate,

@@ -27,9 +27,14 @@ class AuthRepository implements AuthRepositoryAbstract {
   }
 
   @override
-  Future<ApiResponse<void>> signUp(String email, String password) {
-    // TODO: implement signUp
-    throw UnimplementedError();
+  Future<ApiResponse<AuthResponse>> signUp(String firstName, String lastName, String phone, String email, String password) async {
+    final res = await _authApiServices.signUp(firstName, lastName, phone, email, password);
+
+    return ApiResponse(
+      data: res.data,
+      message: res.message,
+      success: res.success,
+    );
   }
 }
 

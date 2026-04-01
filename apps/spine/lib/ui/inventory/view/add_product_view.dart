@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/inventory/state/add_product_state.dart';
 import 'package:spine/ui/inventory/view_model/add_product_view_model.dart';
+import 'package:spine/ui/inventory/view_model/inventory_view_model.dart';
 
 class AddProductView extends ConsumerWidget {
   const AddProductView({super.key});
@@ -18,16 +19,10 @@ class AddProductView extends ConsumerWidget {
     // Handle Success Navigation and Toaster in a listener if needed
     ref.listen(addProductViewModelProvider, (previous, next) {
       if (next.isSuccess && (previous == null || !previous.isSuccess)) {
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(
-        //     content: Text(
-        //       'Product added successfully!',
-        //       style: TextStyle(color: Colors.white),
-        //     ),
-        //     backgroundColor: Colors.green,
-        //   ),
-        // );
-        context.go(Routes.inventory); // Go back to inventory
+
+        ref.invalidate(inventoryViewModelProvider);
+        
+        context.go(Routes.dashboard); // Go back to inventory
       }
       if (next.errorMessage != null &&
           (previous == null || previous.errorMessage != next.errorMessage)) {
@@ -48,7 +43,7 @@ class AddProductView extends ConsumerWidget {
         title: Row(
           children: [
             GestureDetector(
-              onTap: () => context.pop(),
+              onTap: () => context.go(Routes.inventory),
               child: const Icon(Icons.close, size: 24, color: Colors.white),
             ),
             const SizedBox(width: 20),

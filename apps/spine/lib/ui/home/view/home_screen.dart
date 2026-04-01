@@ -557,20 +557,20 @@ class HomeView extends ConsumerWidget {
           context,
           'INVENTORY',
           FIcons.package,
-          onTap: () => context.go(Routes.inventory),
+          onTap: () => context.push(Routes.inventory),
         ),
         _buildSmallMenuCard(
           context,
           'SALES LOG',
           FIcons.list,
-          onTap: () => context.go(Routes.salesLog),
+          onTap: () => context.push(Routes.salesLog),
         ),
         _buildSmallMenuCard(
           context,
           'CALC',
           Icons.calculate_outlined,
           color: Colors.orangeAccent,
-          onTap: () => context.go(Routes.calculator),
+          onTap: () => context.push(Routes.calculator),
         ),
         _buildSmallMenuCard(
           context,

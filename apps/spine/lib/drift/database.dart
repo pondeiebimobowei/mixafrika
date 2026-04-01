@@ -48,7 +48,7 @@ class AppDatabase extends _$AppDatabase {
 
   static QueryExecutor _openConnection() {
     return driftDatabase(
-      name: 'spinedbb',
+      name: 'spinedbbB',
       
     
       
@@ -99,13 +99,8 @@ class AppDatabase extends _$AppDatabase {
   }
 
   Future<void> _insertSeedData(AppDatabase db) async {
-    await db.into(db.product).insert(product1);
-    await db.into(db.product).insert(product2);
     await db.into(db.userBusiness).insert(userBiz1);
     await db.into(db.userBusiness).insert(userBiz2);
-    await db.into(db.spineBatch).insert(batch1);
-    await db.into(db.inventory).insert(inventory1);
-    await db.into(db.inventory).insert(inventory2);
   }
 }
 

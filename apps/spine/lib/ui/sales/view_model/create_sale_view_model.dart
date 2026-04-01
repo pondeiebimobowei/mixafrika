@@ -201,11 +201,13 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
         updatedAt: DateTime.now(),
       );
 
+      print('count ${state.cartItems.length}' );
+
       final items = state.cartItems.map((item) {
         return SalesItemData(
           id: const Uuid().v4(),
           saleId: saleId,
-          batchId: item.product?.id ?? '',
+          batchId: item.product?.id ?? '', //TODO: change id
           costPrice: item.product?.costPricePerUnit ?? 0,
           name: item.product?.name ?? item.manualName ?? 'none',
           productId: item.product?.id ?? '',
@@ -232,7 +234,6 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
           reference: payment.reference,
         );
       }).toList();
-
       await _salesRepository.createSale(sale, items, paymentsList);
       state = CreateSaleState(quickPicks: state.quickPicks); // Reset cart
       return true;

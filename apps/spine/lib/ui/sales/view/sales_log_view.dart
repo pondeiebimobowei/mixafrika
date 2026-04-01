@@ -7,6 +7,7 @@ import 'package:spine/data/repositories/sales/sales_repository_abstract.dart';
 import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/sales/state/sales_log_state.dart';
 import 'package:spine/ui/sales/view_model/sales_log_view_model.dart';
+import 'package:spine/widget/icon_widget.dart';
 
 class SalesLogView extends ConsumerWidget {
   const SalesLogView({super.key});
@@ -23,13 +24,16 @@ class SalesLogView extends ConsumerWidget {
           children: [
             GestureDetector(
               onTap: () => context.pop(),
-              child: const Icon(Icons.close, size: 24, color: Colors.white),
+              child: const IconWidget(icon: Icons.arrow_back),
             ),
-            Text('Sales Log', style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: colors.primaryForeground
-            ),),
+            const SizedBox(width: 20),
+            Text(
+              'Sales Log',
+              style: TextStyle(
+                fontSize: 20,
+                color: colors.primaryForeground
+              ),
+            ),
             const Spacer(),
             IconButton(
               onPressed: () {},

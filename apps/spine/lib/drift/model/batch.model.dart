@@ -6,8 +6,9 @@ import 'package:spine/drift/model/user_business.dart';
 class SpineBatch extends Table with TableMixin {
     late final expiryDate = dateTime().nullable()();
     late final batchNumber = text().unique()();
-    late final costPricePerPiece = integer()();
-    late final costPricePerBulk = integer()();
+    late final costPricePerUnit = integer()();
+    late final sellingPricePerPiece = integer()();
+    late final sellingPricePerBulk = integer()();
     late final initialQuantity = integer()();
     late final remainingQuantity = integer()();
     

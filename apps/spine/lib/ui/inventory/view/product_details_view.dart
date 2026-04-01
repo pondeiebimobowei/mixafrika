@@ -74,6 +74,9 @@ class ProductDetailsView extends ConsumerWidget {
   Widget _buildContent(BuildContext context, ProductDetailsState state) {
     final item = state.item!;
     final product = item.product;
+    final batch = item.batches;
+    print(batch[0]);
+    print(batch[1]);
 
     // Calculate quantities
     final totalUnits = item.stockEntries.quantity;
@@ -89,9 +92,9 @@ class ProductDetailsView extends ConsumerWidget {
             children: [
               _buildStockOverview(context, bulkQty, remainingUnits, product),
               const SizedBox(height: 24),
-              _buildPricingSection(context, product),
+              _buildPricingSection(context, state),
               const SizedBox(height: 24),
-              _buildProfitCard(context, product),
+              _buildProfitCard(context, state),
               const SizedBox(height: 32),
               _buildBatchesHeader(context, item.batches.length),
               const SizedBox(height: 12),
@@ -189,8 +192,14 @@ class ProductDetailsView extends ConsumerWidget {
     );
   }
 
-  Widget _buildPricingSection(BuildContext context, ProductData product) {
+  Widget _buildPricingSection(BuildContext context, ProductDetailsState state) {
     final colors = context.theme.colors;
+
+    final product = state.item!.product;
+    final batch = state.item!.batches;
+    final costPricePerUnit = batch.first.costPricePerUnit / batch.first.initialQuantity;
+
+    
 
     return Row(
       children: [
@@ -198,7 +207,7 @@ class ProductDetailsView extends ConsumerWidget {
           child: _buildPriceCard(
             context,
             'COST PRICE',
-            formatCurrency(product.costPricePerUnit),
+            formatCurrency(costPricePerUnit),
             colors.primaryForeground,
           ),
         ),
@@ -248,11 +257,16 @@ class ProductDetailsView extends ConsumerWidget {
     );
   }
 
-  Widget _buildProfitCard(BuildContext context, ProductData product) {
-    final cost = product.costPricePerUnit.toDouble();
-    final selling = product.sellingPricePerPiece.toDouble();
-    final profit = selling - cost;
-    final margin = cost > 0 ? (profit / cost * 100).round() : 0;
+  Widget _buildProfitCard(BuildContext context, ProductDetailsState state) {
+    final product = state.item!.product;
+    final batch = state.item!.batches;
+    // final cost = product.costPricePerUnit.toDouble();
+    // final selling = product.sellingPricePerPiece.toDouble();
+
+    final costPricePerUnit = batch.first.costPricePerUnit / batch.first.initialQuantity;
+    print('project: $product');
+    // final profit = selling - cost;
+    final margin = costPricePerUnit > 0 ? (costPricePerUnit / product.sellingPricePerPiece * 100).round() : 0;
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -280,7 +294,7 @@ class ProductDetailsView extends ConsumerWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  formatCurrency(profit / product.unitsPerBulk),
+                  formatCurrency(product.sellingPricePerPiece - costPricePerUnit),
                   style: const TextStyle(
                     color: Color(0xFF1DB978),
                     fontSize: 32,

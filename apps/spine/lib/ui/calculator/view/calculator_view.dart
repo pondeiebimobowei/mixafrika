@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spine/ui/calculator/view_model/calculator_view_model.dart';
+import 'package:spine/widget/icon_widget.dart';
 
 class CalculatorView extends ConsumerWidget {
   const CalculatorView({super.key});
@@ -19,7 +20,7 @@ class CalculatorView extends ConsumerWidget {
           children: [
             GestureDetector(
               onTap: () => context.pop(),
-              child: const Icon(Icons.close, size: 24, color: Colors.white),
+              child: const IconWidget(icon: Icons.arrow_back),
             ),
             const SizedBox(width: 20),
             Text(
@@ -27,7 +28,6 @@ class CalculatorView extends ConsumerWidget {
               style: TextStyle(
                 fontSize: 20,
                 color: colors.primaryForeground,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ],

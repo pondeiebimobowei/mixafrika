@@ -16,15 +16,12 @@ class LoginView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final loginState = ref.watch(loginViewModelProvider);
-
+    final viewModel = ref.read(loginViewModelProvider.notifier);
     final FColors colors = context.theme.colors;
 
     return Scaffold(
       body: SafeArea(
-        child: loginState.when(
-          data: (data) {
-            return SingleChildScrollView(
+        child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(12.0),
 
@@ -95,14 +92,10 @@ class LoginView extends ConsumerWidget {
                                 if (!_key.currentState!.validate()) {
                                   return; // Form is invalid.
                                 }
-                                final res = await ref
-                                    .read(loginViewModelProvider.notifier)
-                                    .login(
-                                      email: _emailController.text,
-                                      password: _passwordController.text,
-                                    );
-                                if (res.success) {
-                                  print(res.message);
+
+                                final res = await viewModel.login(email: _emailController.text, password: _passwordController.text);
+                                
+                                if (res.success && context.mounted) {
                                   context.go(Routes.dashboard);
                                 }
 
@@ -140,11 +133,7 @@ class LoginView extends ConsumerWidget {
                   ],
                 ),
               ),
-            );
-          },
-          loading: () => const Center(child: CircularProgressIndicator()),
-          error: (error, stack) => Center(child: Text('Error: $error')),
-        ),
+            ),
       ),
     );
   }

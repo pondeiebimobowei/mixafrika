@@ -31,7 +31,6 @@ class CheckoutView extends ConsumerWidget {
       child: Material(
         color: Colors.transparent,
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -327,51 +326,7 @@ class CheckoutView extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 12),
-              SizedBox(
-                width: double.infinity,
-                child: Material(
-                  color: state.selectedPaymentMethod == null || state.isLoading
-                      ? const Color(0xFF334155)
-                      : const Color(0xFF475569),
-                  borderRadius: BorderRadius.circular(12),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(12),
-                    onTap:
-                        state.selectedPaymentMethod == null || state.isLoading
-                        ? null
-                        : () async {
-                            final success = await viewModel.checkout();
-                            if (context.mounted) {
-                              if (success) {
-                                context.go(Routes.dashboard);
-                              } else {}
-                            }
-                          },
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: Center(
-                        child: state.isLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : const Text(
-                                'Finish & Print Receipt',
-                                style: TextStyle(
-                                  color: Colors.white54,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+
               const SizedBox(height: 32),
             ],
           ),
