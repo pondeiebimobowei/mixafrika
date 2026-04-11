@@ -37,7 +37,6 @@ class UserBusinessRepositoryRemote implements UserBusinessRepositoryAbstract {
 
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
-      deletedAt: DateTime.now(),
     );
 
     final res = await _apiService.createUserBusiness(userBusiness);
@@ -79,4 +78,3 @@ final userBusinessRepositoryRemoteProvider = Provider(
     apiService: ref.watch(userBusinessApiServiceProvider),
   ),
 );
-

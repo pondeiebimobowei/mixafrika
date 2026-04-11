@@ -2,7 +2,7 @@ import { BaseModel, SyncableModel } from "./base-model-type";
 
 export interface IBatch extends BaseModel, SyncableModel {
     expiry_date: string,
-    quantity: string,
+    quantity: number,
     batch_number: string,
     product_id: string,
 }

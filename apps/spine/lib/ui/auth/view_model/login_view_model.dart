@@ -3,10 +3,10 @@ import 'package:spine/data/repositories/auth/auth_repository.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/data/shared_preference.dart';
 
-class LoginViewModel extends AsyncNotifier<void> {
+class LoginViewModel extends Notifier<void> {
 
   @override
-  Future<void> build() async {
+  void build() {
     return;
   }
 
@@ -22,6 +22,6 @@ class LoginViewModel extends AsyncNotifier<void> {
 }
 
 final loginViewModelProvider =
-    AsyncNotifierProvider<LoginViewModel, void>(
+    NotifierProvider<LoginViewModel, void>(
       LoginViewModel.new,
     );

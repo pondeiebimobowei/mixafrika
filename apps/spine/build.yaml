@@ -1,0 +1,20 @@
+targets:
+  $default:
+    builders:
+      drift_dev:
+        options:
+          databases:
+            spine: lib/drift/database.dart
+          schema_dir: lib/drift/schemas/
+          store_date_time_values_as_text: true
+          named_parameters: true
+          sql:
+            dialect: sqlite
+            options:
+              version: "3.39"
+              modules: [fts5]
+        generate_for:
+          include:
+            - lib/**
+          exclude:
+            - test/**

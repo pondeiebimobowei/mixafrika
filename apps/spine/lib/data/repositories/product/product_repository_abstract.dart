@@ -7,9 +7,13 @@ abstract class ProductRepositoryAbstract {
 
   Future<List<ProductData>> getProductsByBusinessId(String businessId);
 
-  Future<ApiResponse<Product>> getProduct(String id);
+  Future<ApiResponse<Product?>> getProduct(String id);
 
-  Future<ApiResponse<void>> createProduct(ProductData product);
+  Future<ProductData> getProductById(String id);
+
+  Future<ApiResponse<ProductData?>> createProduct(ProductData product, GlobalProductData globalProduct);
+
+  Future<ApiResponse<void>> updateProduct(ProductData product);
 
   Future<void> deleteProduct(String id);
 }

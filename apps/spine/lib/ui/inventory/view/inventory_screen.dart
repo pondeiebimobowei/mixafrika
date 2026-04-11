@@ -4,6 +4,7 @@ import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spine/ui/inventory/state/inventory_state.dart';
 import 'package:spine/ui/inventory/view_model/inventory_view_model.dart';
+import 'package:spine/utils/helper.dart';
 import 'package:spine/widget/icon_widget.dart';
 import 'package:spine/routing/routes.dart';
 
@@ -20,7 +21,7 @@ class InventoryView extends ConsumerWidget {
         title: Row(
           children: [
             GestureDetector(
-              onTap: () => context.pop(),
+              onTap: () => context.go(Routes.dashboard),
               child: const IconWidget(icon: Icons.arrow_back),
             ),
             const SizedBox(width: 20),
@@ -35,7 +36,7 @@ class InventoryView extends ConsumerWidget {
                 Icons.shopping_cart_outlined,
                 color: colors.primaryForeground,
               ),
-              onPress: () => context.go(Routes.addStock),
+              onPress: () => context.go('${Routes.inventory}/${Routes.addStock}'),
               variant: .outline,
               child: Text(
                 'RESTOCK',
@@ -53,9 +54,7 @@ class InventoryView extends ConsumerWidget {
               ),
               child: FButton(
                 size: .xs,
-
-                // variant: .secondary,
-                onPress: () => context.go(Routes.addProduct),
+                onPress: () => context.go('${Routes.inventory}/${Routes.addProduct}'),
                 child: Icon(Icons.add, color: Colors.white, size: 24),
               ),
             ),
@@ -92,7 +91,6 @@ class InventoryView extends ConsumerWidget {
     InventoryState state,
   ) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -111,15 +109,16 @@ class InventoryView extends ConsumerWidget {
   }
 
   Widget _buildStats(BuildContext context, InventoryState state) {
+    final colors = context.theme.colors;
+
     return Row(
       children: [
         Expanded(
           child: _buildStatCard(
             context,
             'STOCK WORTH',
-            '₦${state.stockWorth.toStringAsFixed(0)}',
+            formatCurrency(state.stockWorth),
             'Cost value of inventory',
-            const Color(0xFF1E293B),
           ),
         ),
         const SizedBox(width: 12),
@@ -127,10 +126,9 @@ class InventoryView extends ConsumerWidget {
           child: _buildStatCard(
             context,
             'EST. PROFIT',
-            '₦${state.estProfit.toStringAsFixed(0)}',
+            formatCurrency(state.estProfit),
             'Potential earnings',
-            const Color(0xFF1E293B),
-            valueColor: Colors.greenAccent,
+            valueColor: colors.primary,
           ),
         ),
       ],
@@ -142,14 +140,16 @@ class InventoryView extends ConsumerWidget {
     String title,
     String value,
     String sub,
-    Color bgColor, {
+    {
     Color? valueColor,
   }) {
+    final colors = context.theme.colors;
+
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(24),
+        color: colors.secondaryForeground,
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -301,16 +301,18 @@ class InventoryView extends ConsumerWidget {
   }
 
   Widget _buildSearchBar(BuildContext context, WidgetRef ref) {
+    final colors = context.theme.colors;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E293B),
-        borderRadius: BorderRadius.circular(20),
+        color: colors.secondaryForeground,
+        borderRadius: BorderRadius.circular(12),
       ),
       child: TextField(
         onChanged: (v) =>
             ref.read(inventoryViewModelProvider.notifier).setSearchQuery(v),
-        style: const TextStyle(color: Colors.white),
+        // style: TextStyle(color: colors.primaryForeground),
         decoration: InputDecoration(
           icon: Icon(Icons.search, color: Colors.grey[400]),
           hintText: 'Search items...',
@@ -438,23 +440,17 @@ class InventoryView extends ConsumerWidget {
     );
   }
 
-  Widget _buildInventoryItem(BuildContext context, dynamic item) {
-    // Determine status color based on logic (low stock, expiring)
+  Widget _buildInventoryItem(BuildContext context, InventoryItemData item) {
+    final FColors colors = context.theme.colors;
     Color statusColor = Colors.greenAccent;
     String? statusBadge;
 
-    // Mock logic for demo purposes based on design
-    if (item.product.name.contains('Bananas')) {
-      statusBadge = 'EXPIRING';
-      statusColor = Colors.orangeAccent;
-    }
-
     return GestureDetector(
-      onTap: () => context.push('${Routes.productDetails}/${item.product.id}'),
+      onTap: () => context.go('${Routes.inventory}/${Routes.productDetails}/${item.product.id}'),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
         decoration: BoxDecoration(
-          color: const Color(0xFF1E293B),
+          color: colors.secondaryForeground,
           borderRadius: BorderRadius.circular(24),
         ),
         child: Row(
@@ -466,8 +462,9 @@ class InventoryView extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Icon(
-                Icons.calendar_today_rounded,
-                color: Colors.orange[700],
+                Icons.inventory_2_outlined,
+                color: colors.primary,
+                size: 28,
               ),
             ),
             const SizedBox(width: 16),
@@ -477,24 +474,47 @@ class InventoryView extends ConsumerWidget {
                 children: [
                   Text(
                     item.product.name,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
+                      fontWeight: .w900,
+                      color: colors.primaryForeground
                     ),
                   ),
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      _buildCountBadge(context, '12', 'Bunchs'),
-                      const SizedBox(width: 8),
-                      _buildCountBadge(
-                        context,
-                        '12',
-                        'Fingers',
-                        color: Colors.green.withValues(alpha: 0.1),
-                        textColor: Colors.greenAccent,
+                      FBadge(
+                        variant: .macOS,
+                        style: FBadgeStyleDelta.delta(
+                          decoration: BoxDecorationDelta.delta(
+                            color: colors.primaryForeground.withValues(alpha: .2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: Column(children: [
+                          Text('${item.stockEntries?.quantity.toString()} ${item.product.pieceUnitName}',
+                          style: TextStyle(
+                            fontSize: 10
+                          ),),
+                        ],),
+                        // variant: FBadgeVariant.secondary,
                       ),
+                      const SizedBox(width: 8),
+                      FBadge(
+                        style: FBadgeStyleDelta.delta(
+                          decoration: BoxDecorationDelta.delta(
+                            color: colors.primaryForeground.withValues(alpha: .2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: Column(children: [
+                          Text('${(item.stockEntries?.quantity ?? 0 / item.product.unitsPerBulk).toInt().toString()} ${item.product.bulkUnitName}',
+                          style: TextStyle(
+                            fontSize: 10
+                          ),),
+                        ],),
+                      ),
+                    
                       if (statusBadge != null) ...[
                         const SizedBox(width: 8),
                         _buildStatusBadge(context, statusBadge, statusColor),
@@ -508,7 +528,7 @@ class InventoryView extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  '₦${item.product.sellingPricePerPiece}',
+                  formatCurrency(item.product.sellingPricePerPiece),
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -521,37 +541,6 @@ class InventoryView extends ConsumerWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildCountBadge(
-    BuildContext context,
-    String count,
-    String label, {
-    Color? color,
-    Color? textColor,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: color ?? Colors.white.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        children: [
-          Text(
-            count,
-            style: TextStyle(fontSize: 10, fontWeight: .bold, color: textColor),
-          ),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 8,
-              color: textColor?.withValues(alpha: .7),
-            ),
-          ),
-        ],
       ),
     );
   }

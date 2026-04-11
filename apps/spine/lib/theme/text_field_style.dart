@@ -91,7 +91,7 @@ FTextFieldStyle textFieldStyle({
         [.disabled]: colors.disable(colors.card),
       },
     ),
-    cursorColor: colors.primary,
+    cursorColor: colors.primaryForeground,
     iconStyle: iconStyle,
     clearButtonStyle: bounceableButtonStyle,
     obscureButtonStyle: bounceableButtonStyle.copyWith(
@@ -99,10 +99,12 @@ FTextFieldStyle textFieldStyle({
         motion: .delta(bounceTween: FTappableMotion.noBounceTween),
       ),
     ),
+    
+    contentPadding: .symmetric(horizontal: 18, vertical: 18),
     contentTextStyle: FVariants.from(
-      textStyle.copyWith(color: colors.foreground),
+      textStyle.copyWith(color: colors.primaryForeground),
       variants: {
-        [.disabled]: .delta(color: colors.disable(colors.foreground)),
+        [.disabled]: .delta(color: colors.disable(colors.primaryForeground), ),
       },
     ),
     hintTextStyle: FVariants.from(

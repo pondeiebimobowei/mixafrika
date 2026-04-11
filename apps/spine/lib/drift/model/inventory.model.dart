@@ -5,7 +5,7 @@ import 'package:spine/drift/model/product.model.dart';
 import 'package:spine/drift/model/user_business.dart';
 
 class Inventory extends Table with TableMixin {
-  late final quantity = text()();
+  late final quantity = integer()();
   
   
   late final productId = text().references(Product, #id)();

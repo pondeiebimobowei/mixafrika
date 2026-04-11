@@ -6,11 +6,14 @@ class AddStockState {
   final String bulkQuantity;
   final String pieceQuantity;
   final String totalCost;
+  final String bulkPrice;
+  final String piecePrice;
   final String searchQuery;
   final DateTime? expiryDate;
   final bool isLoading;
   final bool isSuccess;
   final String? errorMessage;
+  final bool isEnteringBulk;
 
   const AddStockState({
     this.products = const [],
@@ -18,11 +21,14 @@ class AddStockState {
     this.bulkQuantity = '',
     this.pieceQuantity = '',
     this.totalCost = '',
+    this.bulkPrice = '',
+    this.piecePrice = '',
     this.searchQuery = '',
     this.expiryDate,
     this.isLoading = false,
     this.isSuccess = false,
     this.errorMessage,
+    this.isEnteringBulk = true,
   });
 
   List<ProductData> get filteredProducts {
@@ -35,11 +41,9 @@ class AddStockState {
   double get estCostPerPiece {
     if (selectedProduct == null) return 0.0;
     final total = double.tryParse(totalCost) ?? 0.0;
-    final bulk = double.tryParse(bulkQuantity) ?? 0.0;
     final pieces = double.tryParse(pieceQuantity) ?? 0.0;
-    final unitsPerBulk = double.tryParse(selectedProduct!.unitsPerBulk) ?? 1.0;
 
-    final totalPieces = (bulk * unitsPerBulk) + pieces;
+    final totalPieces = pieces;
     if (totalPieces == 0) return 0.0;
     return total / totalPieces;
   }
@@ -55,6 +59,7 @@ class AddStockState {
     bool? isLoading,
     bool? isSuccess,
     String? errorMessage,
+    bool? isEnteringBulk,
   }) {
     return AddStockState(
       products: products ?? this.products,
@@ -67,6 +72,7 @@ class AddStockState {
       isLoading: isLoading ?? this.isLoading,
       isSuccess: isSuccess ?? this.isSuccess,
       errorMessage: errorMessage, // Nullable override
+      isEnteringBulk: isEnteringBulk ?? this.isEnteringBulk,
     );
   }
 }

@@ -47,6 +47,9 @@ dependencies:
   dio: ^5.9.1
   shared_preferences: ^2.5.4
   flutter_riverpod: ^2.6.1
+  intl: ^0.20.2
+  math_expressions: ^2.5.0
+  drift_devtools: ^0.0.17
   
   # flutter_shared:
   #   path: ../../packages/flutter_shared

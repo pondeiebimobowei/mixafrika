@@ -3,14 +3,17 @@ import 'package:spine/data/repositories/inventory/inventory_repository.dart';
 import 'package:spine/data/repositories/product/product_repository.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/inventory/state/add_product_state.dart';
+import 'package:spine/utils/helper.dart';
 import 'package:uuid/uuid.dart';
-import 'package:spine/ui/user_business/active_user_business_provider.dart';
+import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 
-class AddProductViewModel extends StateNotifier<AddProductState> {
-  AddProductViewModel(this.ref) : super(const AddProductState());
 
-  final Ref ref;
+class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {
+  @override
+  AddProductState build() {
+    return const AddProductState();
+  }
 
   void updateName(String name) =>
       state = state.copyWith(name: name, errorMessage: null);
@@ -18,11 +21,11 @@ class AddProductViewModel extends StateNotifier<AddProductState> {
       state = state.copyWith(barcode: barcode, errorMessage: null);
   void updateBulkUnit(String unit) =>
       state = state.copyWith(bulkUnit: unit, errorMessage: null);
-  void updateRetailUnit(String unit) =>
-      state = state.copyWith(retailUnit: unit, errorMessage: null);
+  void updatePieceUnit(String unit) =>
+      state = state.copyWith(pieceUnit: unit, errorMessage: null);
   void updateConversionFactor(String factor) =>
       state = state.copyWith(conversionFactor: factor, errorMessage: null);
-  void updateSellPricePerRetail(String price) =>
+  void updateSellPricePerUnit(String price) =>
       state = state.copyWith(sellPricePerRetail: price, errorMessage: null);
   void updateSellPricePerBulk(String price) =>
       state = state.copyWith(sellPricePerBulk: price, errorMessage: null);
@@ -32,14 +35,6 @@ class AddProductViewModel extends StateNotifier<AddProductState> {
   }
 
   Future<ApiResponse<void>> submitProduct() async {
-    if (state.name.isEmpty) {
-      state = state.copyWith(errorMessage: 'Product name is required');
-      return ApiResponse(
-        data: null,
-        success: false,
-        message: 'Product name is required',
-      );
-    }
 
     state = state.copyWith(isLoading: true, errorMessage: null);
 
@@ -47,45 +42,76 @@ class AddProductViewModel extends StateNotifier<AddProductState> {
       final business = ref.read(activeUserBusinessProvider);
       final businessId = business?.id ?? '';
 
+      final newGlobalProduct = GlobalProductData(
+        id: const Uuid().v4(),
+        name: state.name,
+        description: 'description of ${state.name}',
+        barcode: state.barcode,
+        imageUrl: '',
+        normalizedName: normalizeName(state.name),
+        category: '',
+
+
+        syncStatus: 'pending',
+        syncDate: DateTime.now(),
+
+
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+
+        
+      );
+
       final newProduct = ProductData(
         id: const Uuid().v4(),
         businessId: businessId,
         name: state.name,
-        description: '', // Optional in UI
-        bulkUnitName: state.bulkUnit.isEmpty ? 'Bulk' : state.bulkUnit,
-        pieceUnitName: state.retailUnit.isEmpty ? 'Piece' : state.retailUnit,
-        unitsPerBulk: state.conversionFactor.isEmpty
-            ? '1'
-            : state.conversionFactor,
-        costPrice: '0', // Optional or not in UI
-        sellingPricePerPiece: state.sellPricePerRetail,
-        sellingPricePerBulk: state.sellPricePerBulk,
+        description: 'description of ${state.name}',
+        bulkUnitName: state.bulkUnit,
+        pieceUnitName: state.pieceUnit,
+        unitsPerBulk: int.parse(state.conversionFactor),
+        costPricePerUnit: 0,
+        sellingPricePerPiece: int.parse(state.sellPricePerRetail),
+        sellingPricePerBulk: int.parse(state.sellPricePerBulk),
         category: '',
-        serialNumber: state.barcode,
+        globalProductId: newGlobalProduct.id,
+
         imageUrl: '',
-        reviews: '[]',
-        createdAt: DateTime.now(),
-        updatedAt: DateTime.now(),
-        deletedAt: DateTime.now(),
+        reviews: '',
+
         syncStatus: 'pending',
         syncDate: DateTime.now(),
+
+
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
       );
 
-      final repository = ref.read(productRepositoryProvider);
+      final productRepository = ref.read(productRepositoryProvider);
       final inventoryRepository = ref.read(inventoryRepositoryProvider);
-      final response = await repository.createProduct(newProduct);
-      await inventoryRepository.addInventoryItem(newProduct);
-      
+      final productResponse = await productRepository.createProduct(newProduct, newGlobalProduct);
+      final inventoryResponse =await inventoryRepository.addInventoryItem(newProduct);
 
-      if (response.success) {
+      if (productResponse.success) {
         state = state.copyWith(isLoading: false, isSuccess: true);
+
       } else {
         state = state.copyWith(
           isLoading: false,
-          errorMessage: response.message,
+          errorMessage: productResponse.message,
         );
       }
-      return response;
+
+      if (inventoryResponse.success) {
+        state = state.copyWith(isLoading: false, isSuccess: true);
+
+      } else {
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: inventoryResponse.message,
+        );
+      }
+      return productResponse;
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
       return ApiResponse(data: null, success: false, message: e.toString());
@@ -94,6 +120,6 @@ class AddProductViewModel extends StateNotifier<AddProductState> {
 }
 
 final addProductViewModelProvider =
-    StateNotifierProvider.autoDispose<AddProductViewModel, AddProductState>(
-      (ref) => AddProductViewModel(ref),
+    NotifierProvider.autoDispose<AddProductViewModel, AddProductState>(
+      AddProductViewModel.new,
     );

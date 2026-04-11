@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:spine/drift/database.dart';
 import 'package:spine/routing/routes.dart';
 import 'package:spine/theme/app-theme.dart';
 import 'package:spine/theme/typography.dart';
 import 'package:spine/ui/home/view_model/home_view_model.dart';
-import 'package:spine/ui/user_business/active_user_business_provider.dart';
+import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/widget/icon_widget.dart';
+import 'package:spine/widget/styles/f_header_style.dart';
 
 class HomeView extends ConsumerWidget {
   const HomeView({super.key});
@@ -15,6 +17,7 @@ class HomeView extends ConsumerWidget {
   void _showShopSelectionSheet(BuildContext context, WidgetRef ref) {
     final homeState = ref.read(homeViewModelProvider).value;
     final FColors colors = context.theme.colors;
+    
 
     showModalBottomSheet(
       context: context,
@@ -80,14 +83,10 @@ class HomeView extends ConsumerWidget {
                             searchQuery = value;
                           });
                         },
-                        style: TextStyle(
-                          color: colors.foreground,
-                        ),
+                        style: TextStyle(color: colors.foreground),
                         decoration: InputDecoration(
                           hintText: 'Search shops...',
-                          hintStyle: TextStyle(
-                            color: colors.mutedForeground,
-                          ),
+                          hintStyle: TextStyle(color: colors.mutedForeground),
                           prefixIcon: Icon(
                             Icons.search,
                             color: colors.mutedForeground,
@@ -129,9 +128,7 @@ class HomeView extends ConsumerWidget {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 tileColor: isSelected
-                                    ? colors.primary.withValues(
-                                        alpha: 0.1,
-                                      )
+                                    ? colors.primary.withValues(alpha: 0.1)
                                     : Colors.transparent,
                                 contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 16,
@@ -140,11 +137,11 @@ class HomeView extends ConsumerWidget {
                                 title: Text(
                                   shop.name,
                                   style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: isSelected ? .bold : .normal,
-                                  color: isSelected
-                                      ? colors.primary
-                                      : colors.primaryForeground,
+                                    fontSize: 14,
+                                    fontWeight: isSelected ? .bold : .normal,
+                                    color: isSelected
+                                        ? colors.primary
+                                        : colors.primaryForeground,
                                   ),
                                 ),
                                 trailing: isSelected
@@ -178,31 +175,37 @@ class HomeView extends ConsumerWidget {
 
     return FScaffold(
       header: FHeader(
+        style: FHeaderStyling().build(context),
         title: Row(
           children: [
-            // CircleAvatar(
-            //   radius: 16,
-            //   backgroundImage: NetworkImage(
-            //     'https://placeholder.com/150',
-            //   ), // Placeholder for profile pic
-            // ),
+            CircleAvatar(
+              radius: 16,
+              backgroundImage: NetworkImage(
+                'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
+              ), // Placeholder for profile pic
+            ),
             const SizedBox(width: 12),
-            const HeadingText(title: 'Dashboard', fontSize: 12),
+            Text(
+              'Dashboard',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w900,
+                color: colors.primaryForeground,
+              ),
+            ),
             const Spacer(),
             IconWidget(icon: Icons.notifications_outlined),
             GestureDetector(
               onTap: () => themeNotifier.toggleTheme(),
               child: IconWidget(icon: Icons.wb_sunny_outlined),
-            )
+            ),
           ],
         ),
       ),
-      child: homeState.when(
-        data: (homeState) {
-          return Material(
-            color: colors.background,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(8),
+      child: Material(
+        child: homeState.when(
+          data: (homeState) {
+            return SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -214,17 +217,17 @@ class HomeView extends ConsumerWidget {
                   const SizedBox(height: 24),
                   _buildMenuGrid(context),
                   const SizedBox(height: 32),
-                  _buildStockAlertsSection(context),
+                  _buildStockAlertsSection(context, homeState),
                   const SizedBox(height: 32),
                   _buildSpineIntelligence(context),
                   const SizedBox(height: 40),
                 ],
               ),
-            ),
-          );
-        },
-        loading: () => const CircularProgressIndicator(),
-        error: (error, stack) => RegularText(title: 'Error: $error'),
+            );
+          },
+          loading: () => const CircularProgressIndicator(),
+          error: (error, stack) => RegularText(title: 'Error: $error'),
+        ),
       ),
     );
   }
@@ -240,18 +243,36 @@ class HomeView extends ConsumerWidget {
           child: GestureDetector(
             onTap: () => _showShopSelectionSheet(context, ref),
             child: FCard(
+              style: FCardStyleDelta.delta(
+                decoration: BoxDecorationDelta.delta(
+                  border: Border.all(
+                    color: colors.primaryForeground.withValues(alpha: 0.5),
+                    width: 0.02,
+                  ),
+
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                contentStyle: FCardContentStyleDelta.delta(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
+                ),
+              ),
+
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
                 child: Row(
                   children: [
                     Icon(
                       Icons.location_on_outlined,
-                      size: 16,
+                      size: 12,
                       color: colors.primary,
                     ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
+                        overflow: TextOverflow.ellipsis,
                         activeBusiness?.name ?? "Select Shop",
                         style: context.theme.typography.sm.copyWith(
                           fontWeight: FontWeight.bold,
@@ -262,7 +283,7 @@ class HomeView extends ConsumerWidget {
                       Icons.keyboard_arrow_down,
                       textDirection: TextDirection.rtl,
                       color: colors.primaryForeground,
-                      size: 16,
+                      size: 12,
                     ),
                   ],
                 ),
@@ -271,7 +292,41 @@ class HomeView extends ConsumerWidget {
           ),
         ),
         const SizedBox(width: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+          width: 80,
+          // color: colors.destructive,
+          decoration: BoxDecoration(
+            border: BoxBorder.all(
+              color: colors.destructive.withValues(alpha: .6),
+            ),
+            // color: colors.destructive,
+            borderRadius: BorderRadius.circular(24),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center, // horizontal center
+            crossAxisAlignment: CrossAxisAlignment.center, // vertical center
+            children: [
+              Icon(
+                Icons.receipt_long_outlined,
+                color: colors.destructive,
+                size: 14,
+              ),
+              SizedBox(width: 4),
+              Text(
+                '₦14,000',
+                style: context.theme.typography.sm.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: colors.destructive,
+                  fontSize: 8,
+                ),
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(width: 8),
         IconWidget(icon: Icons.videocam_outlined),
+        const SizedBox(width: 4),
         IconWidget(icon: Icons.settings_outlined),
         const SizedBox(width: 8),
       ],
@@ -296,17 +351,27 @@ class HomeView extends ConsumerWidget {
             children: [
               Text(
                 "TODAY'S ACTIVITY (NET REVENUE)",
-                style: typography.xs.copyWith(fontWeight: FontWeight.bold, color: colors.primaryForeground.withValues(alpha: .6)),
+                style: typography.xs.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: colors.primaryForeground.withValues(alpha: .6),
+                ),
               ),
               Icon(Icons.refresh, size: 16, color: colors.primaryForeground),
             ],
           ),
           const SizedBox(height: 24),
-          Text('₦23,500', style: typography.xl4.copyWith(fontWeight: FontWeight.w800 )),
+          Text(
+            '₦23,500',
+            style: typography.xl4.copyWith(fontWeight: FontWeight.w800),
+          ),
           const SizedBox(height: 8),
           Row(
             children: [
-              _buildStatusIndicator(context, '₦23,500 REALIZED', colors.primary),
+              _buildStatusIndicator(
+                context,
+                '₦23,500 REALIZED',
+                colors.primary,
+              ),
               const SizedBox(width: 12),
               _buildStatusIndicator(context, 'NO PENDING', colors.destructive),
             ],
@@ -365,12 +430,17 @@ class HomeView extends ConsumerWidget {
 
     return Expanded(
       child: FCard(
-        style: FCardStyle(decoration: BoxDecoration(
-          color: colors.primaryForeground.withValues(alpha: 0.05),
-          borderRadius: BorderRadius.circular(16),
+        style: FCardStyle(
+          decoration: BoxDecoration(
+            color: colors.primaryForeground.withValues(alpha: 0.05),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          contentStyle: FCardContentStyle(
+            titleTextStyle: TextStyle(),
+            subtitleTextStyle: TextStyle(),
+          ),
+        ),
 
-        ), contentStyle: FCardContentStyle(titleTextStyle: TextStyle(), subtitleTextStyle: TextStyle())),
-        
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -404,11 +474,18 @@ class HomeView extends ConsumerWidget {
         _buildActionCard(
           context,
           'Sell Item',
-          FIcons.shoppingCart,
+          Icons.shopping_basket_outlined,
           colors.primary,
+          onTap: () => context.push(Routes.createSale),
         ),
         const SizedBox(width: 12),
-        _buildActionCard(context, 'Add Stock', FIcons.shoppingBag, colors.secondary),
+        _buildActionCard(
+          context,
+          'Add Stock',
+          Icons.add_shopping_cart_outlined,
+          colors.secondary,
+          onTap: () => context.push('${Routes.inventory}/${Routes.addStock}'),
+        ),
       ],
     );
   }
@@ -417,47 +494,51 @@ class HomeView extends ConsumerWidget {
     BuildContext context,
     String title,
     IconData icon,
-    Color color,
-  ) {
+    Color color, {
+    VoidCallback? onTap,
+  }) {
     return Expanded(
-      child: Container(
-        height: 140,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [color.withValues(alpha: .8), color],
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          height: 140,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [color.withValues(alpha: .8), color],
+            ),
+            borderRadius: BorderRadius.circular(24),
+            boxShadow: [
+              BoxShadow(
+                color: color.withValues(alpha: .3),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
           ),
-          borderRadius: BorderRadius.circular(24),
-          boxShadow: [
-            BoxShadow(
-              color: color.withValues(alpha: .3),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: .2),
-                shape: BoxShape.circle,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: .2),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(icon, color: Colors.white, size: 28),
               ),
-              child: Icon(icon, color: Colors.white, size: 28),
-            ),
-            const SizedBox(height: 12),
-            Text(
-              title,
-              style: const TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
+              const SizedBox(height: 12),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -478,9 +559,26 @@ class HomeView extends ConsumerWidget {
           FIcons.package,
           onTap: () => context.push(Routes.inventory),
         ),
-        _buildSmallMenuCard(context, 'SALES LOG', FIcons.list),
-        _buildSmallMenuCard(context, 'CALC', FIcons.calculator),
-        _buildSmallMenuCard(context, 'GROWTH', FIcons.trendingUp),
+        _buildSmallMenuCard(
+          context,
+          'SALES LOG',
+          FIcons.list,
+          onTap: () => context.push(Routes.salesLog),
+        ),
+        _buildSmallMenuCard(
+          context,
+          'CALC',
+          Icons.calculate_outlined,
+          color: Colors.orangeAccent,
+          onTap: () => context.push(Routes.calculator),
+        ),
+        _buildSmallMenuCard(
+          context,
+          'GROWTH',
+          FIcons.trendingUp,
+          color: Colors.purpleAccent,
+          onTap: () => {},
+        ),
       ],
     );
   }
@@ -489,6 +587,7 @@ class HomeView extends ConsumerWidget {
     BuildContext context,
     String title,
     IconData icon, {
+    Color? color,
     VoidCallback? onTap,
   }) {
     final FColors colors = context.theme.colors;
@@ -509,13 +608,17 @@ class HomeView extends ConsumerWidget {
                 color: colors.primaryForeground.withValues(alpha: .05),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: Icon(icon, size: 20, color: colors.primaryForeground.withValues(alpha: .7)),
+              child: Icon(
+                icon,
+                size: 20,
+                color: color ?? colors.primaryForeground.withValues(alpha: 1),
+              ),
             ),
             const SizedBox(width: 12),
             Text(
               title,
               style: TextStyle(
-                color: colors.primaryForeground.withValues(alpha: .7),
+                color: colors.primaryForeground.withValues(alpha: 1),
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
               ),
@@ -526,69 +629,195 @@ class HomeView extends ConsumerWidget {
     );
   }
 
-  Widget _buildStockAlertsSection(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget _buildStockAlertsSection(BuildContext context, HomeState homeState) {
+    final FColors colors = context.theme.colors;
+
+    return homeState.inventory.when(
+      data: (inventory) {
+        final items = inventory.items;
+
+        // 1. SOLD OUT
+        final soldOut = items
+            .where((item) => item.totalRemainingQuantity == 0)
+            .toList();
+
+        // 2. LOW STOCK
+        final lowStock = items
+            .where(
+              (item) =>
+                  item.totalRemainingQuantity > 0 &&
+                  item.totalRemainingQuantity < 10,
+            )
+            .toList();
+
+        // 3. EXPIRY
+        final now = DateTime.now();
+        final criticalExpiry = items
+            .where(
+              (item) => item.batches.any(
+                (b) =>
+                    b.expiryDate != null &&
+                    b.expiryDate!.isBefore(now.add(const Duration(days: 7))),
+              ),
+            )
+            .toList();
+
+        final expiringSoon = items
+            .where(
+              (item) =>
+                  !criticalExpiry.contains(item) &&
+                  item.batches.any(
+                    (b) =>
+                        b.expiryDate != null &&
+                        b.expiryDate!.isBefore(
+                          now.add(const Duration(days: 30)),
+                        ),
+                  ),
+            )
+            .toList();
+
+        final allAlerts = [
+          ...soldOut.map((e) => (e, 'SOLD OUT', colors.destructive, 'Restock')),
+          ...criticalExpiry.map(
+            (e) => (e, 'CRITICAL EXPIRY', colors.destructive, 'Review'),
+          ),
+          ...lowStock.map((e) => (e, 'LOW STOCK', Colors.amber, 'Restock')),
+          ...expiringSoon.map(
+            (e) => (e, 'BATCH EXPIRING SOON', Colors.amber, 'Review'),
+          ),
+        ];
+
+        if (allAlerts.isEmpty) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.warning_amber_rounded,
+                    color: Colors.amber,
+                    size: 16,
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    'STOCK ALERTS',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: colors.primary.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: colors.primary.withValues(alpha: 0.2),
+                  ),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.check_circle_outline,
+                      color: colors.primary,
+                      size: 20,
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'All Clear!',
+                            style: TextStyle(
+                              color: colors.primary,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          Text(
+                            'No inventory issues detected at this time.',
+                            style: TextStyle(
+                              color: colors.primary.withValues(alpha: 0.8),
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        }
+
+        final displayAlerts = allAlerts.take(5).toList();
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(
-                  Icons.warning_amber_rounded,
-                  color: Colors.amber,
-                  size: 18,
+                Row(
+                  children: [
+                    Icon(
+                      Icons.warning_amber_rounded,
+                      color: Colors.amber,
+                      size: 16,
+                    ),
+                    const SizedBox(width: 8),
+                    const Text(
+                      'STOCK ALERTS',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 8),
-                const Text(
-                  'STOCK ALERTS',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12),
+                FBadge(
+                  style: FBadgeStyleDelta.delta(
+                    decoration: BoxDecorationDelta.delta(
+                      color: colors.error.withValues(alpha: .2),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  variant: FBadgeVariant.destructive,
+                  child: Text(
+                    '${allAlerts.length} Issues',
+                    style: TextStyle(fontSize: 12),
+                  ),
                 ),
               ],
             ),
-            FBadge(child: Text('15 Issues'), variant: FBadgeVariant.destructive),
+            const SizedBox(height: 16),
+            if (criticalExpiry.isNotEmpty) ...[
+              _buildCriticalAlertBanner(context, criticalExpiry.length),
+              const SizedBox(height: 16),
+            ],
+            ...displayAlerts.map((alert) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: _buildAlertItem(
+                  context,
+                  alert.$1.product,
+                  alert.$2,
+                  alert.$3,
+                  alert.$4,
+                ),
+              );
+            }),
           ],
-        ),
-        const SizedBox(height: 16),
-        _buildCriticalAlertBanner(context),
-        const SizedBox(height: 16),
-        _buildAlertItem(
-          context,
-          'Organic Bananas',
-          'CRITICAL EXPIRY',
-          Colors.red,
-          'Review',
-        ),
-        const SizedBox(height: 12),
-        _buildAlertItem(
-          context,
-          'Premium Parboiled Rice',
-          'BATCH EXPIRING SOON',
-          Colors.amber,
-          'Review',
-        ),
-        const SizedBox(height: 12),
-        _buildAlertItem(
-          context,
-          'Shea Butter Soap',
-          'SOLD OUT',
-          Colors.red,
-          'Restock',
-        ),
-        const SizedBox(height: 12),
-        _buildAlertItem(
-          context,
-          'Standard Cement Bag',
-          'SOLD OUT',
-          Colors.red,
-          'Restock',
-        ),
-      ],
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (e, s) => const SizedBox.shrink(),
     );
   }
 
-  Widget _buildCriticalAlertBanner(BuildContext context) {
+  Widget _buildCriticalAlertBanner(BuildContext context, int count) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -599,23 +828,22 @@ class HomeView extends ConsumerWidget {
         children: [
           Icon(FIcons.calendar, color: Colors.white),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'CRITICAL EXPIRATION ALERT',
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
                   ),
                 ),
                 Text(
-                  '1 items expire within 7 days!',
-                  style: TextStyle(
+                  '$count items expire within 7 days!',
+                  style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 14,
+                    fontSize: 12,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -630,7 +858,7 @@ class HomeView extends ConsumerWidget {
 
   Widget _buildAlertItem(
     BuildContext context,
-    String name,
+    ProductData product,
     String status,
     Color statusColor,
     String actionText,
@@ -638,7 +866,7 @@ class HomeView extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E293B),
+        color: context.theme.colors.secondaryForeground,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -648,16 +876,22 @@ class HomeView extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  name,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  product.name,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: context.theme.colors.primaryForeground,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 const SizedBox(height: 4),
                 Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Icon(FIcons.calendar, size: 12, color: statusColor),
+                    Icon(
+                      Icons.event_busy_outlined,
+                      size: 12,
+                      color: statusColor,
+                    ),
                     const SizedBox(width: 4),
                     Text(
                       status,
@@ -673,32 +907,28 @@ class HomeView extends ConsumerWidget {
             ),
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () => context.go('${Routes.inventory}/${Routes.productDetails}/${product.id}'),
             child: SizedBox(
               width: 80,
-              height: 30,
-              child: FBadge(child: Text(actionText, style: TextStyle(fontSize: 14),), variant: .android),
+              height: 24,
+              child: FBadge(
+                style: FBadgeStyleDelta.delta(
+                  decoration: BoxDecorationDelta.delta(
+                    color: context.theme.colors.destructive.withValues(alpha: .2),
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                ),
+                child: Text(
+                  actionText,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: context.theme.colors.destructive,
+                  ),
+                ),
+              ),
             ),
           ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildBadge(String text, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: color,
-          fontSize: 10,
-          fontWeight: FontWeight.bold,
-        ),
       ),
     );
   }
@@ -741,18 +971,27 @@ class HomeView extends ConsumerWidget {
             width: 150,
             height: 40,
             child: FButton(
-            onPress: () {},
-            style: FButtonStyleDelta.delta(
-              decoration: FVariants.from(BoxDecoration(
-                color: Colors.white.withValues(alpha: .05),
-                borderRadius: BorderRadius.circular(16)), variants: {})),
-            variant: .ghost,
-            child: const Text(
-              'VIEW FULL ANALYSIS',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white),
+              onPress: () {},
+              style: FButtonStyleDelta.delta(
+                decoration: FVariants.from(
+                  BoxDecoration(
+                    color: Colors.white.withValues(alpha: .05),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  variants: {},
+                ),
+              ),
+              variant: .ghost,
+              child: const Text(
+                'VIEW FULL ANALYSIS',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 12,
+                  color: Colors.white,
+                ),
+              ),
             ),
           ),
-          )
         ],
       ),
     );

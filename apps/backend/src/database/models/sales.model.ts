@@ -33,14 +33,20 @@ export class Sales
     @Column(DataType.STRING)
     declare customer_id: string;
 
-    @Column(DataType.STRING)
-    declare total_amount: string;
+    @Column(DataType.INTEGER)
+    declare total_amount: number;
 
     @Column(DataType.STRING)
     declare payment_method: string;
 
     @Column(DataType.STRING)
     declare status: SalesStatus;
+
+    @Column(DataType.INTEGER)
+    declare amount_paid: number;
+
+    @Column(DataType.INTEGER)
+    declare balance: number;
 
     @ForeignKey(() => User)
     @Column(DataType.UUID)

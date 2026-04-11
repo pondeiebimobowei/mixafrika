@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:spine/drift/database.dart';
+import 'package:spine/routing/routes.dart';
+import 'package:spine/ui/inventory/state/product_details_state.dart';
 import 'package:spine/ui/inventory/view_model/product_details_view_model.dart';
+import 'package:spine/utils/helper.dart';
 import 'package:spine/widget/icon_widget.dart';
-import 'package:intl/intl.dart';
 
 class ProductDetailsView extends ConsumerWidget {
   final String productId;
@@ -12,7 +15,7 @@ class ProductDetailsView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(productDetailsViewModelProvider(productId));
+    final ProductDetailsState state = ref.watch(productDetailsViewModelProvider(productId));
     final colors = context.theme.colors;
 
     return FScaffold(
@@ -36,7 +39,11 @@ class ProductDetailsView extends ConsumerWidget {
               ),
             ),
             IconButton(
-              onPressed: () {}, // Edit action
+              onPressed: state.item == null
+                  ? null
+                  : () => context.push(
+                      '${Routes.inventory}/${Routes.editProduct}/${state.item!.product.id}',
+                    ),
               icon: Icon(
                 Icons.edit_outlined,
                 color: colors.mutedForeground,
@@ -64,28 +71,27 @@ class ProductDetailsView extends ConsumerWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, dynamic state) {
+  Widget _buildContent(BuildContext context, ProductDetailsState state) {
     final item = state.item!;
     final product = item.product;
 
     // Calculate quantities
-    final totalUnits = item.totalQuantity;
-    final unitsPerBulk = double.tryParse(product.unitsPerBulk) ?? 1.0;
+    final totalUnits = item.stockEntries?.quantity ?? 0;
+    final unitsPerBulk = product.unitsPerBulk.toDouble();
     final bulkQty = (totalUnits / unitsPerBulk).floor();
-    final remainingUnits = (totalUnits % unitsPerBulk).floor();
+    final remainingUnits = item.stockEntries?.quantity.toInt() ?? 0;
 
     return Stack(
       children: [
         SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildStockOverview(context, bulkQty, remainingUnits, product),
               const SizedBox(height: 24),
-              _buildPricingSection(context, product),
+              _buildPricingSection(context, state),
               const SizedBox(height: 24),
-              _buildProfitCard(context, product),
+              _buildProfitCard(context, state),
               const SizedBox(height: 32),
               _buildBatchesHeader(context, item.batches.length),
               const SizedBox(height: 12),
@@ -107,13 +113,14 @@ class ProductDetailsView extends ConsumerWidget {
     BuildContext context,
     int bulk,
     int units,
-    dynamic product,
+    ProductData product,
   ) {
+    final FColors colors = context.theme.colors;
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 24),
       decoration: BoxDecoration(
-        color: const Color(0xFF121826).withValues(alpha: 0.5),
+        color: colors.foreground,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
@@ -182,33 +189,48 @@ class ProductDetailsView extends ConsumerWidget {
     );
   }
 
-  Widget _buildPricingSection(BuildContext context, dynamic product) {
+  Widget _buildPricingSection(BuildContext context, ProductDetailsState state) {
+    final colors = context.theme.colors;
+
+    final product = state.item!.product;
+    final batchItem = state.item!.batches.firstOrNull;
+
+    final costPricePerUnit =
+        batchItem != null && batchItem.initialQuantity > 0
+            ? batchItem.costPricePerUnit / batchItem.initialQuantity
+            : 0;
+
+    
+
     return Row(
       children: [
         Expanded(
           child: _buildPriceCard(
+            context,
             'COST PRICE',
-            '₦${product.costPrice}',
-            Colors.white,
+            formatCurrency(costPricePerUnit),
+            colors.primaryForeground,
           ),
         ),
         const SizedBox(width: 16),
         Expanded(
           child: _buildPriceCard(
+            context,
             'SELLING PRICE',
-            '₦${product.sellingPricePerPiece}',
-            const Color(0xFF1DB978),
+            formatCurrency(product.sellingPricePerPiece),
+            colors.primary,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildPriceCard(String label, String price, Color priceColor) {
+  Widget _buildPriceCard(BuildContext context, String label, String price, Color priceColor) {
+    final FColors colors = context.theme.colors;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E2433).withValues(alpha: 0.5),
+        color: colors.secondaryForeground,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(
@@ -236,15 +258,17 @@ class ProductDetailsView extends ConsumerWidget {
     );
   }
 
-  Widget _buildProfitCard(BuildContext context, dynamic product) {
-    // Basic calculation for demo
-    final cost = double.tryParse(product.costPrice) ?? 0;
-    final selling =
-        (double.tryParse(product.sellingPricePerPiece) ?? 0) *
-        (double.tryParse(product.unitsPerBulk) ?? 1);
-    final profit = selling - cost;
-    final margin = cost > 0 ? (profit / cost * 100).round() : 0;
+  Widget _buildProfitCard(BuildContext context, ProductDetailsState state) {
+    final product = state.item!.product;
+    final batchItem = state.item!.batches.firstOrNull;
 
+    final costPricePerUnit = batchItem != null && batchItem.initialQuantity > 0
+        ? batchItem.costPricePerUnit / batchItem.initialQuantity
+        : 0;
+    final sellingPrice = product.sellingPricePerPiece;
+    final margin = sellingPrice > 0
+    ? (((sellingPrice - costPricePerUnit) / sellingPrice) * 100).round()
+    : 0;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -271,7 +295,7 @@ class ProductDetailsView extends ConsumerWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  '₦${(profit / (double.tryParse(product.unitsPerBulk) ?? 1)).toStringAsFixed(0)}',
+                  formatCurrency(product.sellingPricePerPiece - costPricePerUnit.toInt()),
                   style: const TextStyle(
                     color: Color(0xFF1DB978),
                     fontSize: 32,
@@ -345,22 +369,22 @@ class ProductDetailsView extends ConsumerWidget {
 
   Widget _buildBatchTile(
     BuildContext context,
-    dynamic batch,
+    SpineBatchData batch,
     double unitsPerBulk,
   ) {
-    final qty = double.tryParse(batch.quantity) ?? 0;
+    final qty = batch.remainingQuantity;
     final bulk = (qty / unitsPerBulk).floor();
-    final pieces = (qty % unitsPerBulk).floor();
-    final expiry = DateTime.tryParse(batch.expiryDate);
-    final formattedExpiry = expiry != null
-        ? DateFormat('dd MMM yyyy').format(expiry)
-        : 'N/A';
+    final pieces = (qty % unitsPerBulk).toInt();
+    final expiry = batch.expiryDate;
+    final formattedExpiry = toDateTime(expiry.toString());
+
+    final FColors colors = context.theme.colors;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E2433).withValues(alpha: 0.5),
+        color: colors.secondaryForeground,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -385,11 +409,11 @@ class ProductDetailsView extends ConsumerWidget {
                 Row(
                   children: [
                     Text(
-                      batch.batchNumber ?? 'Batch',
-                      style: const TextStyle(
-                        color: Colors.white,
+                      toEllipsis(batch.batchNumber),
+                      style: TextStyle(
+                        color: colors.primaryForeground,
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 12,
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -442,7 +466,7 @@ class ProductDetailsView extends ConsumerWidget {
 
   Widget _buildSmallButton(String text, IconData icon, Color color) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(6),
@@ -467,12 +491,13 @@ class ProductDetailsView extends ConsumerWidget {
 
   Widget _buildProductDetailsTable(
     BuildContext context,
-    dynamic product,
-    double totalUnits,
+    ProductData product,
+    int totalUnits,
   ) {
     // Calculate total stock value
-    final piecePrice = double.tryParse(product.sellingPricePerPiece) ?? 0;
+    final piecePrice = product.sellingPricePerPiece.toDouble();
     final totalValue = piecePrice * totalUnits;
+    final FColors colors = context.theme.colors;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -489,20 +514,22 @@ class ProductDetailsView extends ConsumerWidget {
         const SizedBox(height: 12),
         Container(
           decoration: BoxDecoration(
-            color: const Color(0xFF1E2433).withValues(alpha: 0.5),
+            color: colors.secondaryForeground,
             borderRadius: BorderRadius.circular(20),
           ),
           child: Column(
             children: [
-              _buildDetailRow('Category', product.category, true),
+              _buildDetailRow(context,'Category', product.category, true),
               _buildDetailRow(
+                context,
                 'Stock Code',
-                product.serialNumber ?? 'N/A',
+                 'N/A',
                 true,
               ),
               _buildDetailRow(
+                context,
                 'Total Stock Value',
-                '₦${NumberFormat('#,###').format(totalValue)}',
+                formatCurrency(totalValue),
                 false,
               ),
             ],
@@ -512,7 +539,8 @@ class ProductDetailsView extends ConsumerWidget {
     );
   }
 
-  Widget _buildDetailRow(String label, String value, bool showBorder) {
+  Widget _buildDetailRow(BuildContext context, String label, String value, bool showBorder) {
+    final FColors colors = context.theme.colors;
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -528,8 +556,8 @@ class ProductDetailsView extends ConsumerWidget {
           Text(label, style: const TextStyle(color: Colors.grey, fontSize: 15)),
           Text(
             value,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: colors.primaryForeground,
               fontSize: 16,
               fontWeight: FontWeight.bold,
             ),
@@ -558,14 +586,18 @@ class ProductDetailsView extends ConsumerWidget {
           children: [
             Expanded(
               child: _buildActionButton(
+                context,
                 'TRANSFER',
                 Icons.swap_horiz,
                 Colors.teal,
+                onTap: () => context.push(
+                  '${Routes.inventory}/${Routes.productDetails}/${productId}/${Routes.stockTransfer}',
+                ),
               ),
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: _buildActionButton('ADJUST', Icons.tune, Colors.redAccent),
+              child: _buildActionButton(context,'ADJUST', Icons.tune, Colors.redAccent),
             ),
           ],
         ),
@@ -573,28 +605,33 @@ class ProductDetailsView extends ConsumerWidget {
     );
   }
 
-  Widget _buildActionButton(String label, IconData icon, Color color) {
-    return Container(
-      height: 56,
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E2433),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, color: color, size: 20),
-          const SizedBox(width: 8),
-          Text(
-            label,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w900,
-              fontSize: 14,
+  Widget _buildActionButton(BuildContext context, String label, IconData icon, Color color, {VoidCallback? onTap}) {
+    final FColors colors = context.theme.colors;
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
+        height: 56,
+        decoration: BoxDecoration(
+          color: colors.secondaryForeground,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, color: color, size: 20),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: TextStyle(
+                color: colors.primaryForeground,
+                fontWeight: FontWeight.w900,
+                fontSize: 14,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

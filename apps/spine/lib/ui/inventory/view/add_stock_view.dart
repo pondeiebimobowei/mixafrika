@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/inventory/state/add_stock_state.dart';
 import 'package:spine/ui/inventory/view_model/add_stock_view_model.dart';
 import 'package:intl/intl.dart';
+import 'package:spine/ui/inventory/view_model/inventory_view_model.dart';
 import 'package:spine/widget/icon_widget.dart';
 
 class AddStockView extends ConsumerStatefulWidget {
@@ -170,7 +172,7 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
                                       )
                                     : Icon(
                                         Icons.chevron_right,
-                                        color: colors.border,
+                                        color: colors.primaryForeground,
                                       ),
                               ),
                             );
@@ -196,23 +198,14 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
 
     ref.listen(addStockViewModelProvider, (previous, next) {
       if (next.isSuccess) {
-        context.pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Stock recorded successfully!'),
-            backgroundColor: Colors.green,
-          ),
-        );
+        context.go(Routes.inventory);
+        ref.invalidate(inventoryViewModelProvider);
       }
       if (next.errorMessage != null &&
           next.errorMessage != previous?.errorMessage) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(next.errorMessage!),
-            backgroundColor: Colors.redAccent,
-          ),
-        );
+            print(next.errorMessage);
       }
+
 
       // Update controllers if state changes from outside (e.g. conversion logic)
       if (next.bulkQuantity != _bulkController.text &&
@@ -230,16 +223,15 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
         title: Row(
           children: [
             IconButton(
-              onPressed: () => context.pop(),
-              icon: const Icon(Icons.close, color: Colors.white),
+              onPressed: () => context.go(Routes.dashboard),
+              icon: const IconWidget( icon: Icons.arrow_back),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 20),
             Text(
               'Add New Stock',
               style: TextStyle(
                 color: colors.primaryForeground,
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
               ),
             ),
           ],
@@ -250,7 +242,6 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
         child: Stack(
           children: [
             SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -327,7 +318,6 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
   Widget _buildBanner(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(28),
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           begin: Alignment.topLeft,
@@ -343,32 +333,51 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
+          Positioned(
+            right: -20,
+            top: -20,
+            child: Icon(
+              Icons.inventory_2_rounded,
+              size: 140,
               color: Colors.white.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: const Text(
-              'RESTOCKING OPERATION',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 10,
-                fontWeight: FontWeight.w800,
-                letterSpacing: 1.2,
-              ),
             ),
           ),
-          const SizedBox(height: 16),
-          const Text(
-            'Record Purchase',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 32,
-              fontWeight: FontWeight.w900,
+          Padding(
+            padding: const EdgeInsets.all(28),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: const Text(
+                    'RESTOCKING OPERATION',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Record Purchase',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 32,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -395,9 +404,9 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: const Color(0xFF121826),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: colors.border.withValues(alpha: 0.1)),
+          color: const Color(0xFF1E2433).withValues(alpha: 0.5),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
         ),
         child: Row(
           children: [
@@ -436,7 +445,11 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
                 ],
               ),
             ),
-            const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
+            const Icon(
+              Icons.keyboard_arrow_down_rounded,
+              color: Colors.grey,
+              size: 28,
+            ),
           ],
         ),
       ),
@@ -458,14 +471,20 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'QUANTITY RECEIVED',
-            style: TextStyle(
-              color: Colors.grey,
-              fontSize: 12,
-              fontWeight: FontWeight.w800,
-              letterSpacing: 1.1,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'QUANTITY RECEIVED',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w800,
+                  letterSpacing: 1.1,
+                ),
+              ),
+              _buildInputModeToggle(context, state, viewModel),
+            ],
           ),
           const SizedBox(height: 24),
           Row(
@@ -475,15 +494,16 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
                   state.selectedProduct?.bulkUnitName.toUpperCase() ?? 'BULK',
                   _bulkController,
                   viewModel.updateBulkQuantity,
+                  state.isEnteringBulk,
                 ),
               ),
               const SizedBox(width: 20),
               Expanded(
                 child: _buildQtyField(
-                  state.selectedProduct?.pieceUnitName.toUpperCase() ??
-                      'PIECES',
+                  state.selectedProduct?.pieceUnitName.toUpperCase() ?? 'ITEM',
                   _pieceController,
                   viewModel.updatePieceQuantity,
+                  !state.isEnteringBulk,
                 ),
               ),
             ],
@@ -493,44 +513,155 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
     );
   }
 
+  Widget _buildInputModeToggle(
+    BuildContext context,
+    AddStockState state,
+    AddStockViewModel viewModel,
+  ) {
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: const Color(0xFF0A0F1A),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildToggleOption(
+            'BULK',
+            state.isEnteringBulk,
+            () => viewModel.toggleEntryMode(true),
+          ),
+          _buildToggleOption(
+            'UNIT',
+            !state.isEnteringBulk,
+            () => viewModel.toggleEntryMode(false),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildToggleOption(String label, bool isSelected, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF1DB978) : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: isSelected
+              ? [
+                  BoxShadow(
+                    color: const Color(0xFF1DB978).withValues(alpha: 0.3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ]
+              : [],
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected
+                ? Colors.white
+                : Colors.grey.withValues(alpha: 0.6),
+            fontSize: 11,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 0.5,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildQtyField(
     String label,
     TextEditingController controller,
     Function(String) onChanged,
+    bool isEnabled,
   ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          style: const TextStyle(
-            color: Colors.grey,
-            fontSize: 10,
-            fontWeight: FontWeight.w700,
-          ),
+        Row(
+          children: [
+            Text(
+              label,
+              style: TextStyle(
+                color: isEnabled
+                    ? Colors.grey
+                    : Colors.grey.withValues(alpha: 0.5),
+                fontSize: 10,
+                fontWeight: FontWeight.w800,
+                letterSpacing: 0.5,
+              ),
+            ),
+            if (!isEnabled) ...[
+              const SizedBox(width: 6),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                decoration: BoxDecoration(
+                  color: Colors.amber.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.auto_awesome,
+                      size: 10,
+                      color: Colors.amber.withValues(alpha: 0.9),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      'AUTO',
+                      style: TextStyle(
+                        fontSize: 9,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.amber.withValues(alpha: 0.9),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
         ),
-        const SizedBox(height: 8),
-        Container(
+        const SizedBox(height: 10),
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
-            color: const Color(0xFF0A0F1A),
-            borderRadius: BorderRadius.circular(14),
+            color: isEnabled
+                ? const Color(0xFF0A0F1A)
+                : const Color(0xFF0A0F1A).withValues(alpha: 0.4),
+            borderRadius: BorderRadius.circular(16),
+            border: isEnabled
+                ? Border.all(
+                    color: const Color(0xFF1DB978).withValues(alpha: 0.3),
+                  )
+                : Border.all(color: Colors.transparent),
           ),
           child: TextField(
             controller: controller,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+            readOnly: !isEnabled,
+            style: TextStyle(
+              color: isEnabled
+                  ? Colors.white
+                  : Colors.grey.withValues(alpha: 0.4),
+              fontSize: 22,
+              fontWeight: FontWeight.w900,
             ),
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               border: InputBorder.none,
               hintText: '0',
-              hintStyle: TextStyle(color: Colors.grey),
-              contentPadding: EdgeInsets.symmetric(vertical: 16),
+              hintStyle: TextStyle(color: Colors.grey.withValues(alpha: 0.3)),
+              contentPadding: const EdgeInsets.symmetric(vertical: 18),
             ),
-            onChanged: onChanged,
+            onChanged: isEnabled ? onChanged : null,
           ),
         ),
       ],
@@ -545,8 +676,9 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-        color: const Color(0xFF121826),
-        borderRadius: BorderRadius.circular(20),
+        color: const Color(0xFF1E2433).withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: TextField(
         style: const TextStyle(
@@ -555,22 +687,22 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
           fontWeight: FontWeight.w900,
         ),
         keyboardType: TextInputType.number,
-        decoration: const InputDecoration(
+        decoration: InputDecoration(
           border: InputBorder.none,
           prefixIcon: Padding(
-            padding: EdgeInsets.only(right: 12.0, top: 12),
+            padding: const EdgeInsets.only(right: 12.0, top: 12),
             child: Text(
               '₦',
               style: TextStyle(
-                color: Colors.grey,
+                color: Colors.white.withValues(alpha: 0.7),
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
           ),
           hintText: '0.00',
-          hintStyle: TextStyle(color: Colors.grey),
-          contentPadding: EdgeInsets.symmetric(vertical: 20),
+          hintStyle: const TextStyle(color: Colors.grey),
+          contentPadding: const EdgeInsets.symmetric(vertical: 20),
         ),
         onChanged: viewModel.updateTotalCost,
       ),
@@ -590,7 +722,7 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
           const Icon(Icons.analytics_outlined, color: Colors.teal, size: 18),
           const SizedBox(width: 12),
           Text(
-            'EST. COST PER ${state.selectedProduct?.pieceUnitName.toUpperCase() ?? 'UNIT'}:',
+            'EST. PURCHASE COST PER ${state.selectedProduct?.pieceUnitName.toUpperCase() ?? 'UNIT'}:',
             style: const TextStyle(
               color: Colors.grey,
               fontSize: 11,
@@ -646,8 +778,9 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: const Color(0xFF121826),
-          borderRadius: BorderRadius.circular(20),
+          color: const Color(0xFF1E2433).withValues(alpha: 0.5),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
         ),
         child: Row(
           children: [

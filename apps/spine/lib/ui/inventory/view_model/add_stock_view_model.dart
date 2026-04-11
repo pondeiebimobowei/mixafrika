@@ -3,14 +3,14 @@ import 'package:spine/data/repositories/inventory/inventory_repository.dart';
 import 'package:spine/data/repositories/product/product_repository.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/inventory/state/add_stock_state.dart';
-import 'package:spine/ui/user_business/active_user_business_provider.dart';
+import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
 
-class AddStockViewModel extends StateNotifier<AddStockState> {
-  AddStockViewModel(this.ref) : super(const AddStockState()) {
-    _init();
+class AddStockViewModel extends AutoDisposeNotifier<AddStockState> {
+  @override
+  AddStockState build() {
+    Future.microtask(() => _init());
+    return const AddStockState();
   }
-
-  final Ref ref;
 
   Future<void> _init() async {
     state = state.copyWith(isLoading: true);
@@ -20,6 +20,7 @@ class AddStockViewModel extends StateNotifier<AddStockState> {
           .read(productRepositoryProvider)
           .getProductsByBusinessId(business.id);
       state = state.copyWith(products: products, isLoading: false);
+
     } else {
       state = state.copyWith(
         isLoading: false,
@@ -28,22 +29,30 @@ class AddStockViewModel extends StateNotifier<AddStockState> {
     }
   }
 
-  void selectProduct(ProductData? product) =>
-      state = state.copyWith(selectedProduct: product, errorMessage: null);
+  void selectProduct(ProductData? product) => state = state.copyWith(
+    selectedProduct: product,
+    errorMessage: null,
+    bulkQuantity: '',
+    pieceQuantity: '',
+  );
   void updateSearchQuery(String query) =>
       state = state.copyWith(searchQuery: query);
+  void toggleEntryMode(bool isBulk) {
+    if (state.isEnteringBulk == isBulk) return;
+    state = state.copyWith(isEnteringBulk: isBulk);
+  }
+
   void updateBulkQuantity(String qty) {
     if (state.selectedProduct == null) {
       state = state.copyWith(bulkQuantity: qty);
       return;
     }
-    final bulk = double.tryParse(qty) ?? 0;
-    final unitsPerBulk =
-        double.tryParse(state.selectedProduct!.unitsPerBulk) ?? 1;
+    final bulk = int.tryParse(qty) ?? 0;
+    final unitsPerBulk = state.selectedProduct!.unitsPerBulk;
     final pieces = bulk * unitsPerBulk;
     state = state.copyWith(
       bulkQuantity: qty,
-      pieceQuantity: pieces == 0 ? '' : pieces.toStringAsFixed(0),
+      pieceQuantity: pieces == 0 ? '' : pieces.toString(),
     );
   }
 
@@ -52,13 +61,12 @@ class AddStockViewModel extends StateNotifier<AddStockState> {
       state = state.copyWith(pieceQuantity: qty);
       return;
     }
-    final pieces = double.tryParse(qty) ?? 0;
-    final unitsPerBulk =
-        double.tryParse(state.selectedProduct!.unitsPerBulk) ?? 1;
-    final bulk = pieces / unitsPerBulk;
+    final pieces = int.tryParse(qty) ?? 0;
+    final unitsPerBulk = state.selectedProduct!.unitsPerBulk;
+    final bulk = pieces ~/ (unitsPerBulk != 0 ? unitsPerBulk : 1);
     state = state.copyWith(
       pieceQuantity: qty,
-      bulkQuantity: bulk == 0 ? '' : bulk.toStringAsFixed(2),
+      bulkQuantity: bulk == 0 ? '' : bulk.toString(),
     );
   }
 
@@ -80,18 +88,21 @@ class AddStockViewModel extends StateNotifier<AddStockState> {
     state = state.copyWith(isLoading: true, errorMessage: null);
 
     try {
-      final repository = ref.read(inventoryRepositoryProvider);
-      final business = ref.read(activeUserBusinessProvider);
+      final inventoryRepository = ref.read(inventoryRepositoryProvider);
+      final businessProvider = ref.read(activeUserBusinessProvider);
 
-      if (business == null) throw Exception('Active business not found');
+      if (businessProvider == null)
+        throw Exception('Active business not found');
 
       // Note: We'll implement recordPurchase in InventoryRepository
-      await repository.addStock(
+      await inventoryRepository.addStock(
         productId: state.selectedProduct!.id,
-        businessId: business.id,
-        bulkQuantity: state.bulkQuantity,
-        pieceQuantity: state.pieceQuantity,
+        businessId: businessProvider.id,
+        pieceQuantity: int.tryParse(state.pieceQuantity) ?? 0,
         totalCost: state.totalCost,
+      
+        bulkPrice: int.tryParse(state.bulkPrice) ?? 0,
+        piecePrice: int.tryParse(state.piecePrice) ?? 0,
         expiryDate: state.expiryDate,
       );
 
@@ -103,6 +114,6 @@ class AddStockViewModel extends StateNotifier<AddStockState> {
 }
 
 final addStockViewModelProvider =
-    StateNotifierProvider.autoDispose<AddStockViewModel, AddStockState>(
-      (ref) => AddStockViewModel(ref),
+    NotifierProvider.autoDispose<AddStockViewModel, AddStockState>(
+      AddStockViewModel.new,
     );

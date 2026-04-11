@@ -16,7 +16,10 @@ class UserBusinessApiServices {
       );
     } on DioException catch (err) {
       if (err.response?.data != null) {
-        return ApiResponse.fromJson(err.response!.data, (_) => <UserBusiness>[]);
+        return ApiResponse.fromJson(
+          err.response!.data,
+          (_) => <UserBusiness>[],
+        );
       }
 
       return ApiResponse(
@@ -27,34 +30,45 @@ class UserBusinessApiServices {
     }
   }
 
-  Future<ApiResponse<UserBusinessData>> createUserBusiness(UserBusinessData userBusiness) async {
+  Future<ApiResponse<UserBusinessData>> createUserBusiness(
+    UserBusinessData userBusiness,
+  ) async {
     try {
-      final res = await apiPrivate.post('/user_business', data: {
-        'id': userBusiness.id,
-        
-        'userId': userBusiness.userId,
-        'collectionId': userBusiness.collectionId,
-        'name': userBusiness.name,
-        'type': userBusiness.type,
-        'phone': userBusiness.phone,
-        'streetAddress': userBusiness.streetAddress,
-        'city': userBusiness.city,
-        'state': userBusiness.state,
-        'country': userBusiness.country,
-        'verification': userBusiness.verification,
-        
-        'syncStatus': userBusiness.syncStatus,
-        'syncDate': userBusiness.syncDate,
+      final res = await apiPrivate.post(
+        '/user_business',
+        data: {
+          'id': userBusiness.id,
 
-        'createdAt': userBusiness.createdAt,
-        'updatedAt': userBusiness.updatedAt,
-        'deletedAt': userBusiness.deletedAt,
-      });
+          'userId': userBusiness.userId,
+          'collectionId': userBusiness.collectionId,
+          'name': userBusiness.name,
+          'type': userBusiness.type,
+          'phone': userBusiness.phone,
+          'streetAddress': userBusiness.streetAddress,
+          'city': userBusiness.city,
+          'state': userBusiness.state,
+          'country': userBusiness.country,
+          'verification': userBusiness.verification,
 
-      return ApiResponse.fromJson(res.data, (_) => UserBusinessData.fromJson(res.data));
+          'syncStatus': userBusiness.syncStatus,
+          'syncDate': userBusiness.syncDate,
+
+          'createdAt': userBusiness.createdAt,
+          'updatedAt': userBusiness.updatedAt,
+          'deletedAt': userBusiness.deletedAt,
+        },
+      );
+
+      return ApiResponse.fromJson(
+        res.data,
+        (_) => UserBusinessData.fromJson(res.data),
+      );
     } on DioException catch (err) {
       if (err.response?.data != null) {
-        return ApiResponse.fromJson(err.response!.data, (_) => UserBusinessData.fromJson(err.response!.data));
+        return ApiResponse.fromJson(
+          err.response!.data,
+          (_) => UserBusinessData.fromJson(err.response!.data),
+        );
       }
 
       return ApiResponse(
@@ -66,4 +80,6 @@ class UserBusinessApiServices {
   }
 }
 
-final userBusinessApiServiceProvider = Provider((ref) => UserBusinessApiServices());
+final userBusinessApiServiceProvider = Provider(
+  (ref) => UserBusinessApiServices(),
+);

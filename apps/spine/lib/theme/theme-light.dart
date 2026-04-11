@@ -4,6 +4,9 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:spine/theme/badge_styles.dart';
 import 'package:spine/theme/card_style.dart';
+import 'package:spine/theme/form_field_style.dart';
+import 'package:spine/theme/select_style.dart';
+import 'package:spine/theme/text_field_style.dart';
 
 // ignore_for_file: avoid_redundant_argument_values
 
@@ -33,7 +36,7 @@ FThemeData get greenLight {
     secondaryForeground: Color.fromARGB(255, 255, 255, 255),
     muted: Color(0xFFF4F4F5),
     mutedForeground: Color(0xFF71717A),
-    destructive: Color.fromARGB(255, 255, 0, 0),
+    destructive: Color.fromARGB(255, 242, 92 , 77),
     destructiveForeground: Color(0xFFFAFAFA),
     error: Color(0xFFEF4444),
     errorForeground: Color(0xFFFAFAFA),
@@ -48,6 +51,9 @@ FThemeData get greenLight {
     colors: colors, 
     typography: typography, 
     style: style,
+    
+    textFieldStyle: textFieldStyle(colors: colors, typography: typography, style: style),
+    selectStyle: selectStyle(colors: colors, typography: typography, style: style),
     cardStyle: cardStyle(colors: colors, typography: typography, style: style),
     badgeStyles: badgeStyles(colors: colors, typography: typography, style: style),
     );
@@ -133,7 +139,7 @@ FTypography _typography({
 
 FStyle _style({required FColors colors, required FTypography typography}) =>
     FStyle(
-      formFieldStyle: .inherit(colors: colors, typography: typography),
+      formFieldStyle: CustomFFormFieldStyle.formFieldStyle(colors: colors, typography: typography),
       focusedOutlineStyle: FFocusedOutlineStyle(
         color: colors.primary,
         borderRadius: const .all(.circular(8)),
