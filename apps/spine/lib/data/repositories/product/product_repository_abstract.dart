@@ -11,7 +11,7 @@ abstract class ProductRepositoryAbstract {
 
   Future<ProductData> getProductById(String id);
 
-  Future<ApiResponse<void>> createProduct(ProductData product);
+  Future<ApiResponse<ProductData?>> createProduct(ProductData product, GlobalProductData globalProduct);
 
   Future<ApiResponse<void>> updateProduct(ProductData product);
 

@@ -19,8 +19,8 @@ class ProductsViewModel extends AsyncNotifier<List<ProductData>> {
     return ref.read(productRepositoryProvider).getProducts();
   }
 
-  Future<ApiResponse<void>> createProduct(ProductData product) async {
-    return ref.read(productRepositoryProvider).createProduct(product);
+  Future<ApiResponse<void>> createProduct(ProductData product, GlobalProductData globalProduct ) async {
+    return ref.read(productRepositoryProvider).createProduct(product, globalProduct);
   }
 
   Future<void> deleteProduct(String id) async {

@@ -19,4 +19,8 @@ abstract class InventoryRepositoryAbstract {
   });
   Future<double> getStockWorth(String businessId);
   Future<double> getEstProfit(String businessId);
+  Future<List<InventoryItemData>> searchInventoryItems(
+    String businessId,
+    String query,
+  );
 }

@@ -22,3 +22,11 @@ String formatCurrency(num amount, { int decimal = 0}) {
     decimalDigits: decimal,  // number of decimal places
   ).format(amount);
 }
+
+String normalizeName(String name) {
+  return name
+      .toLowerCase()
+      .trim()
+      .replaceAll(RegExp(r'[^\w\s]'), '') // remove punctuation
+      .replaceAll(RegExp(r'\s+'), ' ');   // collapse spaces
+}

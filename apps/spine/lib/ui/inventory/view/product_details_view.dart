@@ -523,7 +523,7 @@ class ProductDetailsView extends ConsumerWidget {
               _buildDetailRow(
                 context,
                 'Stock Code',
-                product.serialNumber ?? 'N/A',
+                 'N/A',
                 true,
               ),
               _buildDetailRow(

@@ -3,6 +3,7 @@ import 'package:spine/data/repositories/inventory/inventory_repository.dart';
 import 'package:spine/data/repositories/product/product_repository.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/inventory/state/add_product_state.dart';
+import 'package:spine/utils/helper.dart';
 import 'package:uuid/uuid.dart';
 import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
@@ -41,11 +42,31 @@ class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {
       final business = ref.read(activeUserBusinessProvider);
       final businessId = business?.id ?? '';
 
+      final newGlobalProduct = GlobalProductData(
+        id: const Uuid().v4(),
+        name: state.name,
+        description: 'description of ${state.name}',
+        barcode: state.barcode,
+        imageUrl: '',
+        normalizedName: normalizeName(state.name),
+        category: '',
+
+
+        syncStatus: 'pending',
+        syncDate: DateTime.now(),
+
+
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+
+        
+      );
+
       final newProduct = ProductData(
         id: const Uuid().v4(),
         businessId: businessId,
         name: state.name,
-        description: '',
+        description: 'description of ${state.name}',
         bulkUnitName: state.bulkUnit,
         pieceUnitName: state.pieceUnit,
         unitsPerBulk: int.parse(state.conversionFactor),
@@ -53,7 +74,8 @@ class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {
         sellingPricePerPiece: int.parse(state.sellPricePerRetail),
         sellingPricePerBulk: int.parse(state.sellPricePerBulk),
         category: '',
-        serialNumber: state.barcode,
+        globalProductId: newGlobalProduct.id,
+
         imageUrl: '',
         reviews: '',
 
@@ -67,7 +89,7 @@ class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {
 
       final productRepository = ref.read(productRepositoryProvider);
       final inventoryRepository = ref.read(inventoryRepositoryProvider);
-      final productResponse = await productRepository.createProduct(newProduct);
+      final productResponse = await productRepository.createProduct(newProduct, newGlobalProduct);
       final inventoryResponse =await inventoryRepository.addInventoryItem(newProduct);
 
       if (productResponse.success) {

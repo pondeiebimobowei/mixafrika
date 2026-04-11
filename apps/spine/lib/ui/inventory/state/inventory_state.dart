@@ -45,7 +45,7 @@ class InventoryState {
           )
           .toList();
     }
-
+  
     switch (currentFilter) {
       case InventoryFilter.lowStock:
         // Logic for low stock, e.g., totalQuantity < 5

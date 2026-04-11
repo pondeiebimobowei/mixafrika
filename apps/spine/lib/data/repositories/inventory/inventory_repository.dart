@@ -56,6 +56,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     final productQuery = _db.select(_db.product)
       ..where((p) => p.id.equals(productId));
     final product = await productQuery.getSingleOrNull();
+  
     if (product == null) return null;
 
     final inventoryQuery = _db.select(_db.inventory)
@@ -187,6 +188,53 @@ class InventoryRepository implements InventoryRepositoryAbstract {
       total += ((sellingPrice - costPrice) * item.totalRemainingQuantity.toDouble());
     }
     return total;
+  }
+
+  @override
+  Future<List<InventoryItemData>> searchInventoryItems(
+    String businessId,
+    String query,
+  ) async {
+    final response = await _db.select(_db.inventory).join([
+      innerJoin(_db.product, _db.product.id.equalsExp(_db.inventory.productId)),
+      leftOuterJoin(
+        _db.spineBatch,
+        _db.spineBatch.productId.equalsExp(_db.product.id),
+      ),
+    ])
+    ..where(_db.inventory.businessId.equals(businessId))
+    ..where(
+      _db.product.name.like('%$query%') 
+      // |
+      // _db.product.sku.like('%$query%') |
+      // _db.product.description.like('%$query%'),
+    );
+
+    final rows = await response.get();
+
+    // 2. Group the rows by Product ID
+    // This handles the "1 Product -> Many Batches/Inventory Rows" relationship
+    final Map<String, InventoryItemData> groupedItems = {};
+
+    for (final row in rows) {
+      final prod = row.readTable(_db.product);
+      final inv = row.readTable(_db.inventory);
+      final batch = row.readTableOrNull(_db.spineBatch);
+
+      if (!groupedItems.containsKey(prod.id)) {
+        groupedItems[prod.id] = InventoryItemData(
+          product: prod,
+          stockEntries: inv,
+          batches: batch != null ? [batch] : [],
+        );
+      } else {
+        if (batch != null && !groupedItems[prod.id]!.batches.contains(batch)) {
+          groupedItems[prod.id]!.batches.add(batch);
+        }
+      }
+    }
+
+    return groupedItems.values.toList();
   }
 }
 

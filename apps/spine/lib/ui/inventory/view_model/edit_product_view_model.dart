@@ -38,7 +38,6 @@ class EditProductViewModel extends FamilyAsyncNotifier<EditProductState, String>
         unitsPerBulk: product.unitsPerBulk.toString(),
         bulkCostPrice: product.costPricePerUnit.toString(),
         pieceSellingPrice: product.sellingPricePerPiece.toString(),
-        serialNumber: product.serialNumber,
       ));
     } else {
       state = AsyncData(state.value!.copyWith(isLoading: false, errorMessage: response.message));
@@ -75,7 +74,6 @@ class EditProductViewModel extends FamilyAsyncNotifier<EditProductState, String>
       unitsPerBulk: int.tryParse(state.value!.unitsPerBulk) ?? 1,
       costPricePerUnit: int.tryParse(state.value!.bulkCostPrice) ?? 0,
       sellingPricePerPiece: int.tryParse(state.value!.pieceSellingPrice) ?? 0,
-      serialNumber: state.value!.serialNumber,
       updatedAt: DateTime.now(),
     ));
 

@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart';
 import 'package:spine/data/repositories/product/product_repository_abstract.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/data/services/models/product_model.dart';
@@ -10,24 +11,45 @@ class ProductRepository implements ProductRepositoryAbstract {
   final AppDatabase _database;
 
   @override
-  Future<ApiResponse<void>> createProduct(ProductData product) async {
+  Future<ApiResponse<ProductData?>> createProduct( product, globalProduct ) async {
     try {
-      await _database.into(_database.product).insert(product);
+      late ProductData createdProduct; 
+
+      await _database.transaction(() async {
+        String globalProductId;
+
+        try {
+          final inserted = await _database
+              .into(_database.globalProduct)
+              .insertReturning(globalProduct);
+
+          globalProductId = inserted.id;
+        } catch (_) {
+          final existing = await (_database.select(_database.globalProduct)
+                ..where((g) => g.normalizedName.equals(globalProduct.normalizedName)))
+              .getSingle();
+
+          globalProductId = existing.id;
+        }
+
+        createdProduct = await _database.into(_database.product).insertReturning(
+                product.copyWith(globalProductId: globalProductId),
+              );
+        });
 
       return ApiResponse(
-        data: null,
+        data: createdProduct,
         message: 'Product created successfully',
         success: true,
       );
     } catch (e) {
       return ApiResponse(
         success: false,
-        message: 'Product creation failed',
+        message: 'Product creation failed: $e',
         data: null,
       );
     }
   }
-
   @override
   Future<ApiResponse<Product?>> getProduct(String id) async {
     try {

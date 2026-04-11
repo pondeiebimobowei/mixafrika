@@ -1634,6 +1634,720 @@ class UserBusinessCompanion extends UpdateCompanion<UserBusinessData> {
   }
 }
 
+class $GlobalProductTable extends GlobalProduct
+    with TableInfo<$GlobalProductTable, GlobalProductData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $GlobalProductTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncDateMeta = const VerificationMeta(
+    'syncDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
+    'sync_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _normalizedNameMeta = const VerificationMeta(
+    'normalizedName',
+  );
+  @override
+  late final GeneratedColumn<String> normalizedName = GeneratedColumn<String>(
+    'normalized_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _categoryMeta = const VerificationMeta(
+    'category',
+  );
+  @override
+  late final GeneratedColumn<String> category = GeneratedColumn<String>(
+    'category',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _barcodeMeta = const VerificationMeta(
+    'barcode',
+  );
+  @override
+  late final GeneratedColumn<String> barcode = GeneratedColumn<String>(
+    'barcode',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways('UNIQUE'),
+  );
+  static const VerificationMeta _imageUrlMeta = const VerificationMeta(
+    'imageUrl',
+  );
+  @override
+  late final GeneratedColumn<String> imageUrl = GeneratedColumn<String>(
+    'image_url',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    name,
+    normalizedName,
+    description,
+    category,
+    barcode,
+    imageUrl,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'global_product';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<GlobalProductData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('sync_date')) {
+      context.handle(
+        _syncDateMeta,
+        syncDate.isAcceptableOrUnknown(data['sync_date']!, _syncDateMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('normalized_name')) {
+      context.handle(
+        _normalizedNameMeta,
+        normalizedName.isAcceptableOrUnknown(
+          data['normalized_name']!,
+          _normalizedNameMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_normalizedNameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (data.containsKey('category')) {
+      context.handle(
+        _categoryMeta,
+        category.isAcceptableOrUnknown(data['category']!, _categoryMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_categoryMeta);
+    }
+    if (data.containsKey('barcode')) {
+      context.handle(
+        _barcodeMeta,
+        barcode.isAcceptableOrUnknown(data['barcode']!, _barcodeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_barcodeMeta);
+    }
+    if (data.containsKey('image_url')) {
+      context.handle(
+        _imageUrlMeta,
+        imageUrl.isAcceptableOrUnknown(data['image_url']!, _imageUrlMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_imageUrlMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  GlobalProductData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return GlobalProductData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      syncDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}sync_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      normalizedName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}normalized_name'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      )!,
+      category: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}category'],
+      )!,
+      barcode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}barcode'],
+      )!,
+      imageUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}image_url'],
+      )!,
+    );
+  }
+
+  @override
+  $GlobalProductTable createAlias(String alias) {
+    return $GlobalProductTable(attachedDatabase, alias);
+  }
+}
+
+class GlobalProductData extends DataClass
+    implements Insertable<GlobalProductData> {
+  final String id;
+  final String syncStatus;
+  final DateTime? syncDate;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String name;
+  final String normalizedName;
+  final String description;
+  final String category;
+  final String barcode;
+  final String imageUrl;
+  const GlobalProductData({
+    required this.id,
+    required this.syncStatus,
+    this.syncDate,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.name,
+    required this.normalizedName,
+    required this.description,
+    required this.category,
+    required this.barcode,
+    required this.imageUrl,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['name'] = Variable<String>(name);
+    map['normalized_name'] = Variable<String>(normalizedName);
+    map['description'] = Variable<String>(description);
+    map['category'] = Variable<String>(category);
+    map['barcode'] = Variable<String>(barcode);
+    map['image_url'] = Variable<String>(imageUrl);
+    return map;
+  }
+
+  GlobalProductCompanion toCompanion(bool nullToAbsent) {
+    return GlobalProductCompanion(
+      id: Value(id),
+      syncStatus: Value(syncStatus),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      name: Value(name),
+      normalizedName: Value(normalizedName),
+      description: Value(description),
+      category: Value(category),
+      barcode: Value(barcode),
+      imageUrl: Value(imageUrl),
+    );
+  }
+
+  factory GlobalProductData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return GlobalProductData(
+      id: serializer.fromJson<String>(json['id']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      name: serializer.fromJson<String>(json['name']),
+      normalizedName: serializer.fromJson<String>(json['normalizedName']),
+      description: serializer.fromJson<String>(json['description']),
+      category: serializer.fromJson<String>(json['category']),
+      barcode: serializer.fromJson<String>(json['barcode']),
+      imageUrl: serializer.fromJson<String>(json['imageUrl']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'name': serializer.toJson<String>(name),
+      'normalizedName': serializer.toJson<String>(normalizedName),
+      'description': serializer.toJson<String>(description),
+      'category': serializer.toJson<String>(category),
+      'barcode': serializer.toJson<String>(barcode),
+      'imageUrl': serializer.toJson<String>(imageUrl),
+    };
+  }
+
+  GlobalProductData copyWith({
+    String? id,
+    String? syncStatus,
+    Value<DateTime?> syncDate = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? name,
+    String? normalizedName,
+    String? description,
+    String? category,
+    String? barcode,
+    String? imageUrl,
+  }) => GlobalProductData(
+    id: id ?? this.id,
+    syncStatus: syncStatus ?? this.syncStatus,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    name: name ?? this.name,
+    normalizedName: normalizedName ?? this.normalizedName,
+    description: description ?? this.description,
+    category: category ?? this.category,
+    barcode: barcode ?? this.barcode,
+    imageUrl: imageUrl ?? this.imageUrl,
+  );
+  GlobalProductData copyWithCompanion(GlobalProductCompanion data) {
+    return GlobalProductData(
+      id: data.id.present ? data.id.value : this.id,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      name: data.name.present ? data.name.value : this.name,
+      normalizedName: data.normalizedName.present
+          ? data.normalizedName.value
+          : this.normalizedName,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      category: data.category.present ? data.category.value : this.category,
+      barcode: data.barcode.present ? data.barcode.value : this.barcode,
+      imageUrl: data.imageUrl.present ? data.imageUrl.value : this.imageUrl,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GlobalProductData(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('name: $name, ')
+          ..write('normalizedName: $normalizedName, ')
+          ..write('description: $description, ')
+          ..write('category: $category, ')
+          ..write('barcode: $barcode, ')
+          ..write('imageUrl: $imageUrl')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    name,
+    normalizedName,
+    description,
+    category,
+    barcode,
+    imageUrl,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is GlobalProductData &&
+          other.id == this.id &&
+          other.syncStatus == this.syncStatus &&
+          other.syncDate == this.syncDate &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.name == this.name &&
+          other.normalizedName == this.normalizedName &&
+          other.description == this.description &&
+          other.category == this.category &&
+          other.barcode == this.barcode &&
+          other.imageUrl == this.imageUrl);
+}
+
+class GlobalProductCompanion extends UpdateCompanion<GlobalProductData> {
+  final Value<String> id;
+  final Value<String> syncStatus;
+  final Value<DateTime?> syncDate;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> name;
+  final Value<String> normalizedName;
+  final Value<String> description;
+  final Value<String> category;
+  final Value<String> barcode;
+  final Value<String> imageUrl;
+  final Value<int> rowid;
+  const GlobalProductCompanion({
+    this.id = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.name = const Value.absent(),
+    this.normalizedName = const Value.absent(),
+    this.description = const Value.absent(),
+    this.category = const Value.absent(),
+    this.barcode = const Value.absent(),
+    this.imageUrl = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  GlobalProductCompanion.insert({
+    required String id,
+    required String syncStatus,
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required String name,
+    required String normalizedName,
+    required String description,
+    required String category,
+    required String barcode,
+    required String imageUrl,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       syncStatus = Value(syncStatus),
+       name = Value(name),
+       normalizedName = Value(normalizedName),
+       description = Value(description),
+       category = Value(category),
+       barcode = Value(barcode),
+       imageUrl = Value(imageUrl);
+  static Insertable<GlobalProductData> custom({
+    Expression<String>? id,
+    Expression<String>? syncStatus,
+    Expression<DateTime>? syncDate,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? name,
+    Expression<String>? normalizedName,
+    Expression<String>? description,
+    Expression<String>? category,
+    Expression<String>? barcode,
+    Expression<String>? imageUrl,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (syncDate != null) 'sync_date': syncDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (name != null) 'name': name,
+      if (normalizedName != null) 'normalized_name': normalizedName,
+      if (description != null) 'description': description,
+      if (category != null) 'category': category,
+      if (barcode != null) 'barcode': barcode,
+      if (imageUrl != null) 'image_url': imageUrl,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  GlobalProductCompanion copyWith({
+    Value<String>? id,
+    Value<String>? syncStatus,
+    Value<DateTime?>? syncDate,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? name,
+    Value<String>? normalizedName,
+    Value<String>? description,
+    Value<String>? category,
+    Value<String>? barcode,
+    Value<String>? imageUrl,
+    Value<int>? rowid,
+  }) {
+    return GlobalProductCompanion(
+      id: id ?? this.id,
+      syncStatus: syncStatus ?? this.syncStatus,
+      syncDate: syncDate ?? this.syncDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      name: name ?? this.name,
+      normalizedName: normalizedName ?? this.normalizedName,
+      description: description ?? this.description,
+      category: category ?? this.category,
+      barcode: barcode ?? this.barcode,
+      imageUrl: imageUrl ?? this.imageUrl,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (syncDate.present) {
+      map['sync_date'] = Variable<DateTime>(syncDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (normalizedName.present) {
+      map['normalized_name'] = Variable<String>(normalizedName.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (category.present) {
+      map['category'] = Variable<String>(category.value);
+    }
+    if (barcode.present) {
+      map['barcode'] = Variable<String>(barcode.value);
+    }
+    if (imageUrl.present) {
+      map['image_url'] = Variable<String>(imageUrl.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('GlobalProductCompanion(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('name: $name, ')
+          ..write('normalizedName: $normalizedName, ')
+          ..write('description: $description, ')
+          ..write('category: $category, ')
+          ..write('barcode: $barcode, ')
+          ..write('imageUrl: $imageUrl, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -1801,17 +2515,6 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _serialNumberMeta = const VerificationMeta(
-    'serialNumber',
-  );
-  @override
-  late final GeneratedColumn<String> serialNumber = GeneratedColumn<String>(
-    'serial_number',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
   static const VerificationMeta _imageUrlMeta = const VerificationMeta(
     'imageUrl',
   );
@@ -1848,6 +2551,20 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
       'REFERENCES user_business (id)',
     ),
   );
+  static const VerificationMeta _globalProductIdMeta = const VerificationMeta(
+    'globalProductId',
+  );
+  @override
+  late final GeneratedColumn<String> globalProductId = GeneratedColumn<String>(
+    'global_product_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES global_product (id)',
+    ),
+  );
   @override
   List<GeneratedColumn> get $columns => [
     id,
@@ -1865,10 +2582,10 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
     sellingPricePerPiece,
     sellingPricePerBulk,
     category,
-    serialNumber,
     imageUrl,
     reviews,
     businessId,
+    globalProductId,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -2010,17 +2727,6 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
     } else if (isInserting) {
       context.missing(_categoryMeta);
     }
-    if (data.containsKey('serial_number')) {
-      context.handle(
-        _serialNumberMeta,
-        serialNumber.isAcceptableOrUnknown(
-          data['serial_number']!,
-          _serialNumberMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_serialNumberMeta);
-    }
     if (data.containsKey('image_url')) {
       context.handle(
         _imageUrlMeta,
@@ -2044,6 +2750,17 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
       );
     } else if (isInserting) {
       context.missing(_businessIdMeta);
+    }
+    if (data.containsKey('global_product_id')) {
+      context.handle(
+        _globalProductIdMeta,
+        globalProductId.isAcceptableOrUnknown(
+          data['global_product_id']!,
+          _globalProductIdMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_globalProductIdMeta);
     }
     return context;
   }
@@ -2114,10 +2831,6 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
         DriftSqlType.string,
         data['${effectivePrefix}category'],
       )!,
-      serialNumber: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}serial_number'],
-      )!,
       imageUrl: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}image_url'],
@@ -2129,6 +2842,10 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
       businessId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}business_id'],
+      )!,
+      globalProductId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}global_product_id'],
       )!,
     );
   }
@@ -2155,10 +2872,10 @@ class ProductData extends DataClass implements Insertable<ProductData> {
   final int sellingPricePerPiece;
   final int sellingPricePerBulk;
   final String category;
-  final String serialNumber;
   final String imageUrl;
   final String reviews;
   final String businessId;
+  final String globalProductId;
   const ProductData({
     required this.id,
     required this.syncStatus,
@@ -2175,10 +2892,10 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     required this.sellingPricePerPiece,
     required this.sellingPricePerBulk,
     required this.category,
-    required this.serialNumber,
     required this.imageUrl,
     required this.reviews,
     required this.businessId,
+    required this.globalProductId,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -2202,10 +2919,10 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     map['selling_price_per_piece'] = Variable<int>(sellingPricePerPiece);
     map['selling_price_per_bulk'] = Variable<int>(sellingPricePerBulk);
     map['category'] = Variable<String>(category);
-    map['serial_number'] = Variable<String>(serialNumber);
     map['image_url'] = Variable<String>(imageUrl);
     map['reviews'] = Variable<String>(reviews);
     map['business_id'] = Variable<String>(businessId);
+    map['global_product_id'] = Variable<String>(globalProductId);
     return map;
   }
 
@@ -2230,10 +2947,10 @@ class ProductData extends DataClass implements Insertable<ProductData> {
       sellingPricePerPiece: Value(sellingPricePerPiece),
       sellingPricePerBulk: Value(sellingPricePerBulk),
       category: Value(category),
-      serialNumber: Value(serialNumber),
       imageUrl: Value(imageUrl),
       reviews: Value(reviews),
       businessId: Value(businessId),
+      globalProductId: Value(globalProductId),
     );
   }
 
@@ -2262,10 +2979,10 @@ class ProductData extends DataClass implements Insertable<ProductData> {
         json['sellingPricePerBulk'],
       ),
       category: serializer.fromJson<String>(json['category']),
-      serialNumber: serializer.fromJson<String>(json['serialNumber']),
       imageUrl: serializer.fromJson<String>(json['imageUrl']),
       reviews: serializer.fromJson<String>(json['reviews']),
       businessId: serializer.fromJson<String>(json['businessId']),
+      globalProductId: serializer.fromJson<String>(json['globalProductId']),
     );
   }
   @override
@@ -2287,10 +3004,10 @@ class ProductData extends DataClass implements Insertable<ProductData> {
       'sellingPricePerPiece': serializer.toJson<int>(sellingPricePerPiece),
       'sellingPricePerBulk': serializer.toJson<int>(sellingPricePerBulk),
       'category': serializer.toJson<String>(category),
-      'serialNumber': serializer.toJson<String>(serialNumber),
       'imageUrl': serializer.toJson<String>(imageUrl),
       'reviews': serializer.toJson<String>(reviews),
       'businessId': serializer.toJson<String>(businessId),
+      'globalProductId': serializer.toJson<String>(globalProductId),
     };
   }
 
@@ -2310,10 +3027,10 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     int? sellingPricePerPiece,
     int? sellingPricePerBulk,
     String? category,
-    String? serialNumber,
     String? imageUrl,
     String? reviews,
     String? businessId,
+    String? globalProductId,
   }) => ProductData(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
@@ -2330,10 +3047,10 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     sellingPricePerPiece: sellingPricePerPiece ?? this.sellingPricePerPiece,
     sellingPricePerBulk: sellingPricePerBulk ?? this.sellingPricePerBulk,
     category: category ?? this.category,
-    serialNumber: serialNumber ?? this.serialNumber,
     imageUrl: imageUrl ?? this.imageUrl,
     reviews: reviews ?? this.reviews,
     businessId: businessId ?? this.businessId,
+    globalProductId: globalProductId ?? this.globalProductId,
   );
   ProductData copyWithCompanion(ProductCompanion data) {
     return ProductData(
@@ -2368,14 +3085,14 @@ class ProductData extends DataClass implements Insertable<ProductData> {
           ? data.sellingPricePerBulk.value
           : this.sellingPricePerBulk,
       category: data.category.present ? data.category.value : this.category,
-      serialNumber: data.serialNumber.present
-          ? data.serialNumber.value
-          : this.serialNumber,
       imageUrl: data.imageUrl.present ? data.imageUrl.value : this.imageUrl,
       reviews: data.reviews.present ? data.reviews.value : this.reviews,
       businessId: data.businessId.present
           ? data.businessId.value
           : this.businessId,
+      globalProductId: data.globalProductId.present
+          ? data.globalProductId.value
+          : this.globalProductId,
     );
   }
 
@@ -2397,10 +3114,10 @@ class ProductData extends DataClass implements Insertable<ProductData> {
           ..write('sellingPricePerPiece: $sellingPricePerPiece, ')
           ..write('sellingPricePerBulk: $sellingPricePerBulk, ')
           ..write('category: $category, ')
-          ..write('serialNumber: $serialNumber, ')
           ..write('imageUrl: $imageUrl, ')
           ..write('reviews: $reviews, ')
-          ..write('businessId: $businessId')
+          ..write('businessId: $businessId, ')
+          ..write('globalProductId: $globalProductId')
           ..write(')'))
         .toString();
   }
@@ -2422,10 +3139,10 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     sellingPricePerPiece,
     sellingPricePerBulk,
     category,
-    serialNumber,
     imageUrl,
     reviews,
     businessId,
+    globalProductId,
   );
   @override
   bool operator ==(Object other) =>
@@ -2446,10 +3163,10 @@ class ProductData extends DataClass implements Insertable<ProductData> {
           other.sellingPricePerPiece == this.sellingPricePerPiece &&
           other.sellingPricePerBulk == this.sellingPricePerBulk &&
           other.category == this.category &&
-          other.serialNumber == this.serialNumber &&
           other.imageUrl == this.imageUrl &&
           other.reviews == this.reviews &&
-          other.businessId == this.businessId);
+          other.businessId == this.businessId &&
+          other.globalProductId == this.globalProductId);
 }
 
 class ProductCompanion extends UpdateCompanion<ProductData> {
@@ -2468,10 +3185,10 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
   final Value<int> sellingPricePerPiece;
   final Value<int> sellingPricePerBulk;
   final Value<String> category;
-  final Value<String> serialNumber;
   final Value<String> imageUrl;
   final Value<String> reviews;
   final Value<String> businessId;
+  final Value<String> globalProductId;
   final Value<int> rowid;
   const ProductCompanion({
     this.id = const Value.absent(),
@@ -2489,10 +3206,10 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
     this.sellingPricePerPiece = const Value.absent(),
     this.sellingPricePerBulk = const Value.absent(),
     this.category = const Value.absent(),
-    this.serialNumber = const Value.absent(),
     this.imageUrl = const Value.absent(),
     this.reviews = const Value.absent(),
     this.businessId = const Value.absent(),
+    this.globalProductId = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ProductCompanion.insert({
@@ -2511,10 +3228,10 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
     required int sellingPricePerPiece,
     required int sellingPricePerBulk,
     required String category,
-    required String serialNumber,
     required String imageUrl,
     required String reviews,
     required String businessId,
+    required String globalProductId,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        syncStatus = Value(syncStatus),
@@ -2526,10 +3243,10 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
        sellingPricePerPiece = Value(sellingPricePerPiece),
        sellingPricePerBulk = Value(sellingPricePerBulk),
        category = Value(category),
-       serialNumber = Value(serialNumber),
        imageUrl = Value(imageUrl),
        reviews = Value(reviews),
-       businessId = Value(businessId);
+       businessId = Value(businessId),
+       globalProductId = Value(globalProductId);
   static Insertable<ProductData> custom({
     Expression<String>? id,
     Expression<String>? syncStatus,
@@ -2546,10 +3263,10 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
     Expression<int>? sellingPricePerPiece,
     Expression<int>? sellingPricePerBulk,
     Expression<String>? category,
-    Expression<String>? serialNumber,
     Expression<String>? imageUrl,
     Expression<String>? reviews,
     Expression<String>? businessId,
+    Expression<String>? globalProductId,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -2570,10 +3287,10 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
       if (sellingPricePerBulk != null)
         'selling_price_per_bulk': sellingPricePerBulk,
       if (category != null) 'category': category,
-      if (serialNumber != null) 'serial_number': serialNumber,
       if (imageUrl != null) 'image_url': imageUrl,
       if (reviews != null) 'reviews': reviews,
       if (businessId != null) 'business_id': businessId,
+      if (globalProductId != null) 'global_product_id': globalProductId,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -2594,10 +3311,10 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
     Value<int>? sellingPricePerPiece,
     Value<int>? sellingPricePerBulk,
     Value<String>? category,
-    Value<String>? serialNumber,
     Value<String>? imageUrl,
     Value<String>? reviews,
     Value<String>? businessId,
+    Value<String>? globalProductId,
     Value<int>? rowid,
   }) {
     return ProductCompanion(
@@ -2616,10 +3333,10 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
       sellingPricePerPiece: sellingPricePerPiece ?? this.sellingPricePerPiece,
       sellingPricePerBulk: sellingPricePerBulk ?? this.sellingPricePerBulk,
       category: category ?? this.category,
-      serialNumber: serialNumber ?? this.serialNumber,
       imageUrl: imageUrl ?? this.imageUrl,
       reviews: reviews ?? this.reviews,
       businessId: businessId ?? this.businessId,
+      globalProductId: globalProductId ?? this.globalProductId,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -2674,9 +3391,6 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
     if (category.present) {
       map['category'] = Variable<String>(category.value);
     }
-    if (serialNumber.present) {
-      map['serial_number'] = Variable<String>(serialNumber.value);
-    }
     if (imageUrl.present) {
       map['image_url'] = Variable<String>(imageUrl.value);
     }
@@ -2685,6 +3399,9 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
     }
     if (businessId.present) {
       map['business_id'] = Variable<String>(businessId.value);
+    }
+    if (globalProductId.present) {
+      map['global_product_id'] = Variable<String>(globalProductId.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -2710,10 +3427,10 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
           ..write('sellingPricePerPiece: $sellingPricePerPiece, ')
           ..write('sellingPricePerBulk: $sellingPricePerBulk, ')
           ..write('category: $category, ')
-          ..write('serialNumber: $serialNumber, ')
           ..write('imageUrl: $imageUrl, ')
           ..write('reviews: $reviews, ')
           ..write('businessId: $businessId, ')
+          ..write('globalProductId: $globalProductId, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -10886,6 +11603,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $BusinessVerificationTable businessVerification =
       $BusinessVerificationTable(this);
   late final $UserBusinessTable userBusiness = $UserBusinessTable(this);
+  late final $GlobalProductTable globalProduct = $GlobalProductTable(this);
   late final $ProductTable product = $ProductTable(this);
   late final $SpineBatchTable spineBatch = $SpineBatchTable(this);
   late final $InventoryTable inventory = $InventoryTable(this);
@@ -10908,6 +11626,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     businessVerification,
     userBusiness,
+    globalProduct,
     product,
     spineBatch,
     inventory,
@@ -12710,6 +13429,455 @@ typedef $$UserBusinessTableProcessedTableManager =
         bool incomingTransfers,
       })
     >;
+typedef $$GlobalProductTableCreateCompanionBuilder =
+    GlobalProductCompanion Function({
+      required String id,
+      required String syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      required String name,
+      required String normalizedName,
+      required String description,
+      required String category,
+      required String barcode,
+      required String imageUrl,
+      Value<int> rowid,
+    });
+typedef $$GlobalProductTableUpdateCompanionBuilder =
+    GlobalProductCompanion Function({
+      Value<String> id,
+      Value<String> syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> name,
+      Value<String> normalizedName,
+      Value<String> description,
+      Value<String> category,
+      Value<String> barcode,
+      Value<String> imageUrl,
+      Value<int> rowid,
+    });
+
+final class $$GlobalProductTableReferences
+    extends
+        BaseReferences<_$AppDatabase, $GlobalProductTable, GlobalProductData> {
+  $$GlobalProductTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static MultiTypedResultKey<$ProductTable, List<ProductData>>
+  _productRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.product,
+    aliasName: $_aliasNameGenerator(
+      db.globalProduct.id,
+      db.product.globalProductId,
+    ),
+  );
+
+  $$ProductTableProcessedTableManager get productRefs {
+    final manager = $$ProductTableTableManager($_db, $_db.product).filter(
+      (f) => f.globalProductId.id.sqlEquals($_itemColumn<String>('id')!),
+    );
+
+    final cache = $_typedResult.readTableOrNull(_productRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$GlobalProductTableFilterComposer
+    extends Composer<_$AppDatabase, $GlobalProductTable> {
+  $$GlobalProductTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get normalizedName => $composableBuilder(
+    column: $table.normalizedName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get barcode => $composableBuilder(
+    column: $table.barcode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get imageUrl => $composableBuilder(
+    column: $table.imageUrl,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  Expression<bool> productRefs(
+    Expression<bool> Function($$ProductTableFilterComposer f) f,
+  ) {
+    final $$ProductTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.product,
+      getReferencedColumn: (t) => t.globalProductId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProductTableFilterComposer(
+            $db: $db,
+            $table: $db.product,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$GlobalProductTableOrderingComposer
+    extends Composer<_$AppDatabase, $GlobalProductTable> {
+  $$GlobalProductTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get normalizedName => $composableBuilder(
+    column: $table.normalizedName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get category => $composableBuilder(
+    column: $table.category,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get barcode => $composableBuilder(
+    column: $table.barcode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get imageUrl => $composableBuilder(
+    column: $table.imageUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$GlobalProductTableAnnotationComposer
+    extends Composer<_$AppDatabase, $GlobalProductTable> {
+  $$GlobalProductTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get syncDate =>
+      $composableBuilder(column: $table.syncDate, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get normalizedName => $composableBuilder(
+    column: $table.normalizedName,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get category =>
+      $composableBuilder(column: $table.category, builder: (column) => column);
+
+  GeneratedColumn<String> get barcode =>
+      $composableBuilder(column: $table.barcode, builder: (column) => column);
+
+  GeneratedColumn<String> get imageUrl =>
+      $composableBuilder(column: $table.imageUrl, builder: (column) => column);
+
+  Expression<T> productRefs<T extends Object>(
+    Expression<T> Function($$ProductTableAnnotationComposer a) f,
+  ) {
+    final $$ProductTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.product,
+      getReferencedColumn: (t) => t.globalProductId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProductTableAnnotationComposer(
+            $db: $db,
+            $table: $db.product,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$GlobalProductTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $GlobalProductTable,
+          GlobalProductData,
+          $$GlobalProductTableFilterComposer,
+          $$GlobalProductTableOrderingComposer,
+          $$GlobalProductTableAnnotationComposer,
+          $$GlobalProductTableCreateCompanionBuilder,
+          $$GlobalProductTableUpdateCompanionBuilder,
+          (GlobalProductData, $$GlobalProductTableReferences),
+          GlobalProductData,
+          PrefetchHooks Function({bool productRefs})
+        > {
+  $$GlobalProductTableTableManager(_$AppDatabase db, $GlobalProductTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$GlobalProductTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$GlobalProductTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$GlobalProductTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> normalizedName = const Value.absent(),
+                Value<String> description = const Value.absent(),
+                Value<String> category = const Value.absent(),
+                Value<String> barcode = const Value.absent(),
+                Value<String> imageUrl = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => GlobalProductCompanion(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                name: name,
+                normalizedName: normalizedName,
+                description: description,
+                category: category,
+                barcode: barcode,
+                imageUrl: imageUrl,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String syncStatus,
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String name,
+                required String normalizedName,
+                required String description,
+                required String category,
+                required String barcode,
+                required String imageUrl,
+                Value<int> rowid = const Value.absent(),
+              }) => GlobalProductCompanion.insert(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                name: name,
+                normalizedName: normalizedName,
+                description: description,
+                category: category,
+                barcode: barcode,
+                imageUrl: imageUrl,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$GlobalProductTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({productRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [if (productRefs) db.product],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (productRefs)
+                    await $_getPrefetchedData<
+                      GlobalProductData,
+                      $GlobalProductTable,
+                      ProductData
+                    >(
+                      currentTable: table,
+                      referencedTable: $$GlobalProductTableReferences
+                          ._productRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$GlobalProductTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).productRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where(
+                            (e) => e.globalProductId == item.id,
+                          ),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$GlobalProductTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $GlobalProductTable,
+      GlobalProductData,
+      $$GlobalProductTableFilterComposer,
+      $$GlobalProductTableOrderingComposer,
+      $$GlobalProductTableAnnotationComposer,
+      $$GlobalProductTableCreateCompanionBuilder,
+      $$GlobalProductTableUpdateCompanionBuilder,
+      (GlobalProductData, $$GlobalProductTableReferences),
+      GlobalProductData,
+      PrefetchHooks Function({bool productRefs})
+    >;
 typedef $$ProductTableCreateCompanionBuilder =
     ProductCompanion Function({
       required String id,
@@ -12727,10 +13895,10 @@ typedef $$ProductTableCreateCompanionBuilder =
       required int sellingPricePerPiece,
       required int sellingPricePerBulk,
       required String category,
-      required String serialNumber,
       required String imageUrl,
       required String reviews,
       required String businessId,
+      required String globalProductId,
       Value<int> rowid,
     });
 typedef $$ProductTableUpdateCompanionBuilder =
@@ -12750,10 +13918,10 @@ typedef $$ProductTableUpdateCompanionBuilder =
       Value<int> sellingPricePerPiece,
       Value<int> sellingPricePerBulk,
       Value<String> category,
-      Value<String> serialNumber,
       Value<String> imageUrl,
       Value<String> reviews,
       Value<String> businessId,
+      Value<String> globalProductId,
       Value<int> rowid,
     });
 
@@ -12774,6 +13942,25 @@ final class $$ProductTableReferences
       $_db.userBusiness,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_businessIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $GlobalProductTable _globalProductIdTable(_$AppDatabase db) =>
+      db.globalProduct.createAlias(
+        $_aliasNameGenerator(db.product.globalProductId, db.globalProduct.id),
+      );
+
+  $$GlobalProductTableProcessedTableManager get globalProductId {
+    final $_column = $_itemColumn<String>('global_product_id')!;
+
+    final manager = $$GlobalProductTableTableManager(
+      $_db,
+      $_db.globalProduct,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_globalProductIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
@@ -12982,11 +14169,6 @@ class $$ProductTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get serialNumber => $composableBuilder(
-    column: $table.serialNumber,
-    builder: (column) => ColumnFilters(column),
-  );
-
   ColumnFilters<String> get imageUrl => $composableBuilder(
     column: $table.imageUrl,
     builder: (column) => ColumnFilters(column),
@@ -13011,6 +14193,29 @@ class $$ProductTableFilterComposer
           }) => $$UserBusinessTableFilterComposer(
             $db: $db,
             $table: $db.userBusiness,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$GlobalProductTableFilterComposer get globalProductId {
+    final $$GlobalProductTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.globalProductId,
+      referencedTable: $db.globalProduct,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$GlobalProductTableFilterComposer(
+            $db: $db,
+            $table: $db.globalProduct,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -13255,11 +14460,6 @@ class $$ProductTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get serialNumber => $composableBuilder(
-    column: $table.serialNumber,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<String> get imageUrl => $composableBuilder(
     column: $table.imageUrl,
     builder: (column) => ColumnOrderings(column),
@@ -13284,6 +14484,29 @@ class $$ProductTableOrderingComposer
           }) => $$UserBusinessTableOrderingComposer(
             $db: $db,
             $table: $db.userBusiness,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$GlobalProductTableOrderingComposer get globalProductId {
+    final $$GlobalProductTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.globalProductId,
+      referencedTable: $db.globalProduct,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$GlobalProductTableOrderingComposer(
+            $db: $db,
+            $table: $db.globalProduct,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -13364,11 +14587,6 @@ class $$ProductTableAnnotationComposer
   GeneratedColumn<String> get category =>
       $composableBuilder(column: $table.category, builder: (column) => column);
 
-  GeneratedColumn<String> get serialNumber => $composableBuilder(
-    column: $table.serialNumber,
-    builder: (column) => column,
-  );
-
   GeneratedColumn<String> get imageUrl =>
       $composableBuilder(column: $table.imageUrl, builder: (column) => column);
 
@@ -13389,6 +14607,29 @@ class $$ProductTableAnnotationComposer
           }) => $$UserBusinessTableAnnotationComposer(
             $db: $db,
             $table: $db.userBusiness,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$GlobalProductTableAnnotationComposer get globalProductId {
+    final $$GlobalProductTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.globalProductId,
+      referencedTable: $db.globalProduct,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$GlobalProductTableAnnotationComposer(
+            $db: $db,
+            $table: $db.globalProduct,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -13565,6 +14806,7 @@ class $$ProductTableTableManager
           ProductData,
           PrefetchHooks Function({
             bool businessId,
+            bool globalProductId,
             bool spineBatchRefs,
             bool inventoryRefs,
             bool productImageRefs,
@@ -13601,10 +14843,10 @@ class $$ProductTableTableManager
                 Value<int> sellingPricePerPiece = const Value.absent(),
                 Value<int> sellingPricePerBulk = const Value.absent(),
                 Value<String> category = const Value.absent(),
-                Value<String> serialNumber = const Value.absent(),
                 Value<String> imageUrl = const Value.absent(),
                 Value<String> reviews = const Value.absent(),
                 Value<String> businessId = const Value.absent(),
+                Value<String> globalProductId = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ProductCompanion(
                 id: id,
@@ -13622,10 +14864,10 @@ class $$ProductTableTableManager
                 sellingPricePerPiece: sellingPricePerPiece,
                 sellingPricePerBulk: sellingPricePerBulk,
                 category: category,
-                serialNumber: serialNumber,
                 imageUrl: imageUrl,
                 reviews: reviews,
                 businessId: businessId,
+                globalProductId: globalProductId,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -13645,10 +14887,10 @@ class $$ProductTableTableManager
                 required int sellingPricePerPiece,
                 required int sellingPricePerBulk,
                 required String category,
-                required String serialNumber,
                 required String imageUrl,
                 required String reviews,
                 required String businessId,
+                required String globalProductId,
                 Value<int> rowid = const Value.absent(),
               }) => ProductCompanion.insert(
                 id: id,
@@ -13666,10 +14908,10 @@ class $$ProductTableTableManager
                 sellingPricePerPiece: sellingPricePerPiece,
                 sellingPricePerBulk: sellingPricePerBulk,
                 category: category,
-                serialNumber: serialNumber,
                 imageUrl: imageUrl,
                 reviews: reviews,
                 businessId: businessId,
+                globalProductId: globalProductId,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -13683,6 +14925,7 @@ class $$ProductTableTableManager
           prefetchHooksCallback:
               ({
                 businessId = false,
+                globalProductId = false,
                 spineBatchRefs = false,
                 inventoryRefs = false,
                 productImageRefs = false,
@@ -13725,6 +14968,19 @@ class $$ProductTableTableManager
                                         ._businessIdTable(db),
                                     referencedColumn: $$ProductTableReferences
                                         ._businessIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
+                        if (globalProductId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.globalProductId,
+                                    referencedTable: $$ProductTableReferences
+                                        ._globalProductIdTable(db),
+                                    referencedColumn: $$ProductTableReferences
+                                        ._globalProductIdTable(db)
                                         .id,
                                   )
                                   as T;
@@ -13882,6 +15138,7 @@ typedef $$ProductTableProcessedTableManager =
       ProductData,
       PrefetchHooks Function({
         bool businessId,
+        bool globalProductId,
         bool spineBatchRefs,
         bool inventoryRefs,
         bool productImageRefs,
@@ -21104,6 +22361,8 @@ class $AppDatabaseManager {
       $$BusinessVerificationTableTableManager(_db, _db.businessVerification);
   $$UserBusinessTableTableManager get userBusiness =>
       $$UserBusinessTableTableManager(_db, _db.userBusiness);
+  $$GlobalProductTableTableManager get globalProduct =>
+      $$GlobalProductTableTableManager(_db, _db.globalProduct);
   $$ProductTableTableManager get product =>
       $$ProductTableTableManager(_db, _db.product);
   $$SpineBatchTableTableManager get spineBatch =>
