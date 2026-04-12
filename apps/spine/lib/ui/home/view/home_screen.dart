@@ -361,7 +361,7 @@ class HomeView extends ConsumerWidget {
           ),
           const SizedBox(height: 24),
           Text(
-            '₦23,500',
+            '1,500',
             style: typography.xl4.copyWith(fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 8),
@@ -369,7 +369,7 @@ class HomeView extends ConsumerWidget {
             children: [
               _buildStatusIndicator(
                 context,
-                '₦23,500 REALIZED',
+                '500 REALIZED',
                 colors.primary,
               ),
               const SizedBox(width: 12),
@@ -382,14 +382,14 @@ class HomeView extends ConsumerWidget {
               _buildSubMetricCard(
                 context,
                 'EST. PROFIT',
-                '₦6,800',
+                '₦500',
                 colors.primary,
               ),
               const SizedBox(width: 12),
               _buildSubMetricCard(
                 context,
                 'PHYSICAL INFLOW',
-                '₦23,500',
+                '₦1,500',
                 colors.secondary,
               ),
             ],

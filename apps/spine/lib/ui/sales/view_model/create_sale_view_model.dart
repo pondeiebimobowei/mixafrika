@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/repositories/product/product_repository.dart';
 import 'package:spine/data/repositories/sales/sales_repository.dart';
+import 'package:spine/data/repositories/user_business/user_business_repository.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/sales/state/create_sale_state.dart';
 import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
@@ -9,14 +10,17 @@ import 'package:uuid/uuid.dart';
 class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
   final ProductRepository _productRepository;
   final SalesRepository _salesRepository;
+  final UserBusinessRepository _userBusinessRepository;
   final UserBusinessData? _activeUserBusiness;
 
   CreateSaleViewModel({
     required ProductRepository productRepository,
     required SalesRepository salesRepository,
+    required UserBusinessRepository userBusinessRepository,
     required UserBusinessData? activeUserBusiness
   }) : _productRepository = productRepository,
        _salesRepository = salesRepository,
+       _userBusinessRepository = userBusinessRepository,
        _activeUserBusiness = activeUserBusiness,
        super(CreateSaleState()) {
     _loadInitialData();
@@ -26,9 +30,12 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
     state = state.copyWith(isLoading: true);
     try {
       final products = await _productRepository.getProductsByBusinessId(_activeUserBusiness?.id ?? '');
+      final bankDetails = await _userBusinessRepository.getBankDetailsByBusinessId(_activeUserBusiness?.id ?? '');
+      
       // For demo, take first 5 as quick picks
       state = state.copyWith(
         quickPicks: products.take(5).toList(),
+        businessBankDetails: bankDetails,
         isLoading: false,
       );
     } catch (e) {
@@ -104,12 +111,26 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
     } else {
       initialPayments = [Payments(method: method, amount: state.grandTotal)];
     }
+
+    BankDetail? selectedBank = state.selectedBankDetail;
+    final hasTransfer = method == PaymentMethodType.transfer || 
+                       initialPayments.any((p) => p.method == PaymentMethodType.transfer);
+
+    if (hasTransfer && selectedBank == null && state.businessBankDetails.isNotEmpty) {
+      selectedBank = state.businessBankDetails.first;
+    }
+
     state = state.copyWith(
       selectedPaymentMethod: PaymentMethod(
         type: method,
         payments: initialPayments,
       ),
+      selectedBankDetail: selectedBank,
     );
+  }
+
+  void selectBankDetail(BankDetail bankDetail) {
+    state = state.copyWith(selectedBankDetail: bankDetail);
   }
 
   void updatePaymentAmount(int index, int amount) {
@@ -137,6 +158,10 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
           payments: payments,
         ),
       );
+
+      if (method == PaymentMethodType.transfer && state.selectedBankDetail == null && state.businessBankDetails.isNotEmpty) {
+        state = state.copyWith(selectedBankDetail: state.businessBankDetails.first);
+      }
     }
   }
 
@@ -165,6 +190,10 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
         payments: payments,
       ),
     );
+
+    if (availableMethods.isNotEmpty && availableMethods.first == PaymentMethodType.transfer && state.selectedBankDetail == null && state.businessBankDetails.isNotEmpty) {
+      state = state.copyWith(selectedBankDetail: state.businessBankDetails.first);
+    }
   }
 
   void removeMultiPaymentMethod(int index) {
@@ -248,6 +277,7 @@ final createSaleViewModelProvider =
     return CreateSaleViewModel(
       productRepository: ref.watch(productRepositoryProvider),
       salesRepository: ref.watch(salesRepositoryProvider),
+      userBusinessRepository: ref.watch(userBusinessRepositoryProvider),
       activeUserBusiness: ref.read(activeUserBusinessProvider),
     );
   }

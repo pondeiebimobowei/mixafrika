@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
-import 'package:flutter/foundation.dart';
 import 'package:spine/drift/model/base.dart';
+import 'package:spine/drift/model/product_category.model.dart';
 
 class GlobalProduct extends Table with TableMixin {
 
@@ -8,7 +8,7 @@ class GlobalProduct extends Table with TableMixin {
     late final normalizedName = text().unique()();
     late final description = text()();
 
-    late final category = text().nullable().references(Category, #id)();
+    late final category = text().nullable().references(ProductCategory, #id)();
     late final barcode = text().unique()();
     late final imageUrl = text()();
 

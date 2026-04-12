@@ -8,4 +8,5 @@ abstract class UserBusinessRepositoryAbstract {
   Future<void> createUserBusiness(String userId);
 
   Future<List<UserBusinessData>> getUserBusiness();
+  Future<List<BankDetail>> getBankDetailsByBusinessId(String businessId);
 }

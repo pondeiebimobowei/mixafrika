@@ -101,7 +101,9 @@ class CreateSaleState {
   final List<ProductData> quickPicks;
   final bool isLoading;
   final String? errorMessage;
-  final PaymentMethod? selectedPaymentMethod;
+   final PaymentMethod? selectedPaymentMethod;
+  final List<BankDetail> businessBankDetails;
+  final BankDetail? selectedBankDetail;
 
   CreateSaleState({
     this.cartItems = const [],
@@ -109,6 +111,8 @@ class CreateSaleState {
     this.isLoading = false,
     this.errorMessage,
     this.selectedPaymentMethod,
+    this.businessBankDetails = const [],
+    this.selectedBankDetail,
   });
 
   int get grandTotal => cartItems.fold(0, (sum, item) => sum + item.total);
@@ -128,6 +132,8 @@ class CreateSaleState {
     String? errorMessage,
     bool clearError = false,
     PaymentMethod? selectedPaymentMethod,
+    List<BankDetail>? businessBankDetails,
+    BankDetail? selectedBankDetail,
   }) {
     return CreateSaleState(
       cartItems: cartItems ?? this.cartItems,
@@ -136,6 +142,8 @@ class CreateSaleState {
       errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
       selectedPaymentMethod:
           selectedPaymentMethod ?? this.selectedPaymentMethod,
+      businessBankDetails: businessBankDetails ?? this.businessBankDetails,
+      selectedBankDetail: selectedBankDetail ?? this.selectedBankDetail,
     );
   }
 }

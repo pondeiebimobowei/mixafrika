@@ -43,3 +43,46 @@ final userBiz2 = UserBusinessData(
   createdAt: DateTime.now(),
   updatedAt: DateTime.now(),
 );
+
+final bankDetail1 = BankDetail(
+    id: const Uuid().v4(),
+    businessId: userBiz1.id,
+    bankName: 'Access Bank',
+    accountName: 'Chicken Republic Ltd',
+    accountNumber: '0123456789',
+    syncStatus: 'synced',
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+  );
+
+final bankDetail2 = BankDetail(
+    id: const Uuid().v4(),
+    businessId: userBiz1.id,
+    bankName: 'GTBank',
+    accountName: 'Chicken Republic Ltd',
+    accountNumber: '0987654321',
+    syncStatus: 'synced',
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+  );
+
+final bankDetail3 = BankDetail(
+    id: const Uuid().v4(),
+    businessId: userBiz2.id,
+    bankName: 'Zenith Bank',
+    accountName: 'Blessed Obaino Ventures',
+    accountNumber: '1122334455',
+    syncStatus: 'synced',
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+  );
+final bankDetail4 = BankDetail(
+    id: const Uuid().v4(),
+    businessId: userBiz2.id,
+    bankName: 'UBA',
+    accountName: 'Blessed Obaino Ventures',
+    accountNumber: '5544332211',
+    syncStatus: 'synced',
+    createdAt: DateTime.now(),
+    updatedAt: DateTime.now(),
+  );

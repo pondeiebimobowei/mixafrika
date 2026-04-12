@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:spine/drift/database.dart';
 import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/sales/state/create_sale_state.dart';
 import 'package:spine/ui/sales/view_model/create_sale_view_model.dart';
@@ -254,6 +255,56 @@ class CheckoutView extends ConsumerWidget {
                   ),
                 ],
                 const SizedBox(height: 24),
+                if (state.selectedPaymentMethod?.type == PaymentMethodType.transfer ||
+                    (state.selectedPaymentMethod?.type == PaymentMethodType.multiPay &&
+                     state.selectedPaymentMethod!.payments.any((p) => p.method == PaymentMethodType.transfer))) ...[
+                  Text(
+                    'BUSINESS BANK DETAILS',
+                    style: TextStyle(
+                      color: colors.mutedForeground,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  if (state.businessBankDetails.isEmpty)
+                    const Text(
+                      'No bank details available for this business.',
+                      style: TextStyle(color: Colors.redAccent, fontSize: 13),
+                    )
+                  else ...[
+                    if (state.businessBankDetails.length > 1)
+                      SizedBox(
+                        height: 100,
+                        child: ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: state.businessBankDetails.length,
+                          separatorBuilder: (context, index) => const SizedBox(width: 12),
+                          itemBuilder: (context, index) {
+                            final bank = state.businessBankDetails[index];
+                            final isSelected = state.selectedBankDetail?.id == bank.id;
+                            return GestureDetector(
+                              onTap: () => viewModel.selectBankDetail(bank),
+                              child: BankDetailCard(
+                                bank: bank,
+                                isSelected: isSelected,
+                                colors: colors,
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                    else if (state.selectedBankDetail != null)
+                      BankDetailCard(
+                        bank: state.selectedBankDetail!,
+                        isSelected: true,
+                        colors: colors,
+                        width: double.infinity,
+                      ),
+                  ],
+                  const SizedBox(height: 24),
+                ],
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -505,6 +556,83 @@ class _PaymentItemEditorState extends State<PaymentItemEditor> {
               constraints: const BoxConstraints(),
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+class BankDetailCard extends StatelessWidget {
+  final BankDetail bank;
+  final bool isSelected;
+  final FColors colors;
+  final double? width;
+
+  const BankDetailCard({
+    super.key,
+    required this.bank,
+    required this.isSelected,
+    required this.colors,
+    this.width,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width ?? 280,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: isSelected ? const Color(0xFF1DB978).withOpacity(0.1) : const Color(0xFF1E293B),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isSelected ? const Color(0xFF1DB978) : colors.border,
+          width: isSelected ? 2 : 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            children: [
+              Text(
+                bank.bankName.toUpperCase(),
+                style: TextStyle(
+                  color: isSelected ? const Color(0xFF1DB978) : colors.mutedForeground,
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  letterSpacing: 1.2,
+                ),
+              ),
+              const Spacer(),
+              if (isSelected)
+                const Icon(
+                  Icons.check_circle,
+                  color: Color(0xFF1DB978),
+                  size: 16,
+                ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            bank.accountNumber,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.5,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            bank.accountName,
+            style: TextStyle(
+              color: colors.mutedForeground,
+              fontSize: 12,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
         ],
       ),
     );

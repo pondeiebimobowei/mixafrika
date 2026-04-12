@@ -70,6 +70,13 @@ class UserBusinessRepositoryRemote implements UserBusinessRepositoryAbstract {
       _database.userBusiness,
     )..where((p) => p.id.equals(id))).go();
   }
+
+  @override
+  Future<List<BankDetail>> getBankDetailsByBusinessId(String businessId) async {
+    return await (_database.select(_database.bankDetails)
+          ..where((t) => t.businessId.equals(businessId)))
+        .get();
+  }
 }
 
 final userBusinessRepositoryRemoteProvider = Provider(

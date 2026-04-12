@@ -1,6 +1,5 @@
 import 'package:spine/data/repositories/user_business/user_business_repository_abstract.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
-import 'package:spine/data/services/models/user_model.dart';
 import 'package:spine/drift/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
@@ -80,6 +79,13 @@ class UserBusinessRepository implements UserBusinessRepositoryAbstract {
     await (_database.delete(
       _database.userBusiness,
     )..where((p) => p.id.equals(id))).go();
+  }
+
+  @override
+  Future<List<BankDetail>> getBankDetailsByBusinessId(String businessId) async {
+    return await (_database.select(_database.bankDetails)
+          ..where((t) => t.businessId.equals(businessId)))
+        .get();
   }
 }
 
