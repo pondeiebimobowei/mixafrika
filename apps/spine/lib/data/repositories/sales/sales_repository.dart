@@ -4,6 +4,7 @@ import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/data/repositories/sales/sales_repository_abstract.dart';
+import 'package:uuid/uuid.dart';
 
 class SalesRepository implements SalesRepositoryAbstract {
   final AppDatabase _db;
@@ -18,60 +19,72 @@ Future<void> createSale(
 ) async {
   try {
     await _db.transaction(() async {
+      final now = DateTime.now();
+
       await _db.into(_db.sales).insert(sale);
 
       for (final item in items) {
-        if(item.type == 'product'){
-          if (item.productId == null) {
-            throw Exception('Product item must have productId');
-          }
-
-          var remainingToFulfill = item.quantity;
-
-          final batchQuery = _db.select(_db.spineBatch)
-            ..where((tbl) => 
-              tbl.productId.equals(item.productId!) & 
-              tbl.remainingQuantity.isBiggerThanValue(0) & 
-              ( tbl.expiryDate.isNull() |
-                tbl.expiryDate.isBiggerThanValue(DateTime.now())
-              )
-            )
-            ..orderBy([
-              (t) => OrderingTerm(expression: t.expiryDate, mode: OrderingMode.asc),
-              (t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.asc),
-            ]);
-
-          final batches = await batchQuery.get();
-
-          for (final batch in batches) {
-            if (remainingToFulfill <= 0) break;
-
-            final take = min(batch.remainingQuantity, remainingToFulfill);
-
-            await _db.into(_db.salesItem).insert(item.copyWith(
-              quantity: take,
-              batchId: Value(batch.id), // Ensure your schema links salesItem to the batch
-            ));
-
-            await _db.customUpdate(
-              'UPDATE spine_batch SET remaining_quantity = remaining_quantity - ? WHERE id = ?',
-              variables: [Variable.withInt(take), Variable.withString(batch.id)],
-              updates: {_db.spineBatch}, 
-            );
-            await _db.customUpdate(
-              'UPDATE inventory SET quantity = quantity - ? WHERE product_id = ?',
-              variables: [Variable.withInt(take), Variable.withString(batch.productId)],
-              updates: {_db.inventory}, 
-            );
-
-            remainingToFulfill -= take;
-          }
-          
-          if (remainingToFulfill > 0) {
-            throw Exception('Insufficient stock for ${item.name}');
-          }
-        }else{
+        if( item.type != 'product') {
           await _db.into(_db.salesItem).insert(item);
+        }
+        
+        if (item.productId == null) {
+          throw Exception('Product item must have productId');
+        }
+
+        final batchQuery = _db.select(_db.spineBatch)
+          ..where((tbl) => 
+            tbl.productId.equals(item.productId!) & 
+            tbl.remainingQuantity.isBiggerThanValue(0) & 
+            ( tbl.expiryDate.isNull() |
+              tbl.expiryDate.isBiggerThanValue(now)
+            )
+          )
+          ..orderBy([
+            (t) => OrderingTerm(expression: t.expiryDate, mode: OrderingMode.asc),
+            (t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.asc),
+          ]);
+
+        final batches = await batchQuery.get();
+
+        final totalAvailable = batches.fold<int>(
+          0,
+          (sum, b) => sum + b.remainingQuantity,
+        );
+
+        if (totalAvailable < item.quantity) {
+          throw Exception('Insufficient stock for ${item.name}');
+        }
+
+        int remaining = item.quantity;
+
+
+        for (final batch in batches) {
+          if (remaining <= 0) break;
+
+          final take = min(batch.remainingQuantity, remaining);
+
+          await _db.into(_db.salesItem).insert(item.copyWith(
+            quantity: take,
+            batchId: Value(batch.id), // Ensure your schema links salesItem to the batch
+          ));
+
+          await _db.customUpdate(
+            'UPDATE spine_batch SET remaining_quantity = remaining_quantity - ? WHERE id = ?',
+            variables: [Variable.withInt(take), Variable.withString(batch.id)],
+            updates: {_db.spineBatch}, 
+          );
+          await _db.customUpdate(
+            'UPDATE inventory SET quantity = quantity - ? WHERE product_id = ?',
+            variables: [Variable.withInt(take), Variable.withString(batch.productId)],
+            updates: {_db.inventory}, 
+          );
+
+          remaining -= take;
+        }
+        
+        if (remaining > 0) {
+          throw Exception('Insufficient stock for ${item.name}');
         }
       }
 

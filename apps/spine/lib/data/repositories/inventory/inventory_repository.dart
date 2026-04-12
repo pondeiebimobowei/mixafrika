@@ -134,7 +134,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
       batchNumber: 'BATCH-${now.millisecondsSinceEpoch}',
       createdAt: now,
       updatedAt: now,
-      deletedAt: now,
+      deletedAt: null,
       syncStatus: 'pending',
       syncDate: now,
     );

@@ -96,80 +96,81 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
                   ),
 
                   // Quick Picks
-                  if (state.quickPicks.isNotEmpty) ...[
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        'Quick Picks',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    SizedBox(
-                      height: 100,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        itemCount: state.quickPicks.length,
-                        itemBuilder: (context, index) {
-                          final product = state.quickPicks[index];
-                          return GestureDetector(
-                            onTap: () => viewModel.addToCart(product),
-                            child: Container(
-                              width: 80,
-                              margin: const EdgeInsets.only(right: 12),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF0F172A),
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                  color: Colors.white.withValues(alpha: 0.05),
-                                ),
-                              ),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.inventory_2,
-                                    color: Color(0xFF1DB978),
-                                    size: 24,
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 4,
-                                    ),
-                                    child: Text(
-                                      product.name,
-                                      textAlign: TextAlign.center,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 10,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                  ],
+                  // if (state.quickPicks.isNotEmpty) ...[
+                  //   const Padding(
+                  //     padding: EdgeInsets.symmetric(horizontal: 16),
+                  //     child: Text(
+                  //       'Quick Picks',
+                  //       style: TextStyle(
+                  //         color: Colors.white,
+                  //         fontSize: 14,
+                  //         fontWeight: FontWeight.bold,
+                  //       ),
+                  //     ),
+                  //   ),
+                  //   const SizedBox(height: 12),
+                  //   SizedBox(
+                  //     height: 100,
+                  //     child: ListView.builder(
+                  //       scrollDirection: Axis.horizontal,
+                  //       padding: const EdgeInsets.symmetric(horizontal: 16),
+                  //       itemCount: state.quickPicks.length,
+                  //       itemBuilder: (context, index) {
+                  //         final product = state.quickPicks[index];
+                  //         return GestureDetector(
+                  //           onTap: () => viewModel.addToCart(product),
+                  //           child: Container(
+                  //             width: 80,
+                  //             margin: const EdgeInsets.only(right: 12),
+                  //             decoration: BoxDecoration(
+                  //               color: const Color(0xFF0F172A),
+                  //               borderRadius: BorderRadius.circular(16),
+                  //               border: Border.all(
+                  //                 color: Colors.white.withValues(alpha: 0.05),
+                  //               ),
+                  //             ),
+                  //             child: Column(
+                  //               mainAxisAlignment: MainAxisAlignment.center,
+                  //               children: [
+                  //                 const Icon(
+                  //                   Icons.inventory_2,
+                  //                   color: Color(0xFF1DB978),
+                  //                   size: 24,
+                  //                 ),
+                  //                 const SizedBox(height: 8),
+                  //                 Padding(
+                  //                   padding: const EdgeInsets.symmetric(
+                  //                     horizontal: 4,
+                  //                   ),
+                  //                   child: Text(
+                  //                     product.name,
+                  //                     textAlign: TextAlign.center,
+                  //                     maxLines: 2,
+                  //                     overflow: TextOverflow.ellipsis,
+                  //                     style: const TextStyle(
+                  //                       color: Colors.white,
+                  //                       fontSize: 10,
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         );
+                  //       },
+                  //     ),
+                  //   ),
+                  //   const SizedBox(height: 24),
+                  // ],
 
                   // Cart Label
-                  const Padding(
+                  const SizedBox( height: 24,),
+                  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       children: [
                         Text(
-                          'Cart',
+                          'Cart Items (${state.cartItems.length})',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
