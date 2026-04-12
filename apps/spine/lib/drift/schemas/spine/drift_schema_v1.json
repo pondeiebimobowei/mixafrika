@@ -1193,6 +1193,128 @@
     },
     {
       "id": 7,
+      "references": [
+        1
+      ],
+      "type": "table",
+      "data": {
+        "name": "customer",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "sync_status",
+            "getter_name": "syncStatus",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "sync_date",
+            "getter_name": "syncDate",
+            "moor_type": "dateTime",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "created_at",
+            "getter_name": "createdAt",
+            "moor_type": "dateTime",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('CURRENT_TIMESTAMP')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "updated_at",
+            "getter_name": "updatedAt",
+            "moor_type": "dateTime",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('CURRENT_TIMESTAMP')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "deleted_at",
+            "getter_name": "deletedAt",
+            "moor_type": "dateTime",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "name",
+            "getter_name": "name",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "phone",
+            "getter_name": "phone",
+            "moor_type": "string",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "business_id",
+            "getter_name": "businessId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "REFERENCES user_business (id)",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES user_business (id)"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "user_business",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": null
+                }
+              }
+            ]
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": []
+      }
+    },
+    {
+      "id": 8,
       "references": [],
       "type": "table",
       "data": {
@@ -1400,10 +1522,11 @@
       }
     },
     {
-      "id": 8,
+      "id": 9,
       "references": [
+        7,
         1,
-        7
+        8
       ],
       "type": "table",
       "data": {
@@ -1476,9 +1599,25 @@
             "moor_type": "string",
             "nullable": true,
             "customConstraints": null,
+            "defaultConstraints": "REFERENCES customer (id)",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "REFERENCES customer (id)"
+            },
             "default_dart": null,
             "default_client_dart": null,
-            "dsl_features": []
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "customer",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": null
+                }
+              }
+            ]
           },
           {
             "name": "total_amount",
@@ -1599,9 +1738,9 @@
       }
     },
     {
-      "id": 9,
+      "id": 10,
       "references": [
-        8
+        9
       ],
       "type": "table",
       "data": {
@@ -1731,7 +1870,7 @@
       }
     },
     {
-      "id": 10,
+      "id": 11,
       "references": [
         4
       ],
@@ -1853,9 +1992,9 @@
       }
     },
     {
-      "id": 11,
+      "id": 12,
       "references": [
-        8,
+        9,
         4,
         5
       ],
@@ -2079,10 +2218,10 @@
       }
     },
     {
-      "id": 12,
+      "id": 13,
       "references": [
         1,
-        7
+        8
       ],
       "type": "table",
       "data": {
@@ -2218,12 +2357,12 @@
       }
     },
     {
-      "id": 13,
+      "id": 14,
       "references": [
         4,
         1,
         5,
-        7
+        8
       ],
       "type": "table",
       "data": {
@@ -2441,10 +2580,10 @@
       }
     },
     {
-      "id": 14,
+      "id": 15,
       "references": [
         1,
-        7
+        8
       ],
       "type": "table",
       "data": {
@@ -2616,9 +2755,9 @@
       }
     },
     {
-      "id": 15,
+      "id": 16,
       "references": [
-        14,
+        15,
         4
       ],
       "type": "table",
@@ -2755,7 +2894,7 @@
       }
     },
     {
-      "id": 16,
+      "id": 17,
       "references": [
         1
       ],
@@ -2952,6 +3091,15 @@
       ]
     },
     {
+      "name": "customer",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"customer\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"name\" TEXT NOT NULL, \"phone\" TEXT NULL, \"business_id\" TEXT NOT NULL REFERENCES user_business (id));"
+        }
+      ]
+    },
+    {
       "name": "user",
       "sql": [
         {
@@ -2965,7 +3113,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"sales\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"customer_id\" TEXT NULL, \"total_amount\" INTEGER NOT NULL, \"amount_paid\" INTEGER NOT NULL DEFAULT 0, \"balance\" INTEGER NOT NULL DEFAULT 0, \"payment_method\" TEXT NOT NULL, \"status\" TEXT NOT NULL, \"note\" TEXT NULL, \"business_id\" TEXT NOT NULL REFERENCES user_business (id), \"created_by\" TEXT NULL REFERENCES user (id));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"sales\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"customer_id\" TEXT NULL REFERENCES customer (id), \"total_amount\" INTEGER NOT NULL, \"amount_paid\" INTEGER NOT NULL DEFAULT 0, \"balance\" INTEGER NOT NULL DEFAULT 0, \"payment_method\" TEXT NOT NULL, \"status\" TEXT NOT NULL, \"note\" TEXT NULL, \"business_id\" TEXT NOT NULL REFERENCES user_business (id), \"created_by\" TEXT NULL REFERENCES user (id));"
         }
       ]
     },
