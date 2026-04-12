@@ -14,6 +14,7 @@ import 'package:spine/ui/inventory/view/inventory_screen.dart';
 import 'package:spine/ui/inventory/view/product_details_view.dart';
 import 'package:spine/ui/inventory/view/stock_transfer_view.dart';
 import 'package:spine/ui/sales/view/checkout_view.dart';
+import 'package:spine/ui/shop_management/view/shop_management_view.dart';
 
 import 'package:spine/ui/sales/view/sale_receipt_view.dart';
 import 'package:spine/ui/sales/view/sales_log_view.dart';
@@ -113,6 +114,10 @@ GoRouter router() => GoRouter(
         final id = state.pathParameters['id']!;
         return SaleReceiptView(saleId: id);
       },
+    ),
+    GoRoute(
+      path: Routes.shopManagement,
+      builder: (context, state) => const ShopManagementView(),
     ),
   ],
 );

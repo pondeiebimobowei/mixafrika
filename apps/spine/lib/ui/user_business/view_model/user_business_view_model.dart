@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/repositories/user_business/user_business_repository.dart';
 import 'package:spine/data/repositories/user_business/user_business_repository_remote.dart';
@@ -22,7 +23,7 @@ class UserBusinessViewModel
   Future<ApiResponse<void>> createBusiness() async {
     final res = await ref
         .read(userBusinessRepositoryProvider)
-        .createUserBusiness('userId');
+        .createUserBusiness(UserBusinessCompanion(name: Value('userId')));
     return res;
   }
 

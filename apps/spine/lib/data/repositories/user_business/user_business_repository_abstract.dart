@@ -1,3 +1,4 @@
+import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/drift/database.dart';
 
 abstract class UserBusinessRepositoryAbstract {
@@ -5,8 +6,8 @@ abstract class UserBusinessRepositoryAbstract {
 
   Future<UserBusinessData> getUserBusinessById(String id);
 
-  Future<void> createUserBusiness(String userId);
-
+  Future<ApiResponse<void>> createUserBusiness(UserBusinessCompanion business);
+  // Future<ApiResponse<void>> updateUserBusiness(UserBusinessData business);
   Future<List<UserBusinessData>> getUserBusiness();
   Future<List<BankDetail>> getBankDetailsByBusinessId(String businessId);
 }

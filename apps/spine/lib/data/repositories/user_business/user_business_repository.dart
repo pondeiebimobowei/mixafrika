@@ -51,18 +51,50 @@ class UserBusinessRepository implements UserBusinessRepositoryAbstract {
   );
 
   @override
-  Future<ApiResponse<void>> createUserBusiness(String userId) async {
-    await _database.into(_database.userBusiness).insert(userBiz1);
-    await _database.into(_database.userBusiness).insert(userBiz2);
+  Future<ApiResponse<void>> createUserBusiness(
+    UserBusinessCompanion business,
+  ) async {
+    try {
+      await _database.into(_database.userBusiness).insert(business);
+      return ApiResponse(
+        data: null,
+        message: 'Business created successfully',
+        success: true,
+      );
+    } catch (e) {
+      return ApiResponse(
+        data: null,
+        message: 'Failed to create business: $e',
+        success: false,
+      );
+    }
+  }
 
-    return ApiResponse(data: null, message: 'Business created', success: true);
+  @override
+  Future<ApiResponse<void>> updateUserBusiness(UserBusinessData business) async {
+    try {
+      await _database.update(_database.userBusiness).replace(business);
+      return ApiResponse(
+        data: null,
+        message: 'Business updated successfully',
+        success: true,
+      );
+    } catch (e) {
+      return ApiResponse(
+        data: null,
+        message: 'Failed to update business: $e',
+        success: false,
+      );
+    }
   }
 
   @override
   Future<UserBusinessData> getUserBusinessById(String id) async {
-    final res = await _database.select(_database.userBusiness).get();
+    final query = _database.select(_database.userBusiness)
+      ..where((t) => t.id.equals(id));
+    final res = await query.getSingle();
 
-    return UserBusinessData.fromJson(res.first.toJson());
+    return res;
   }
 
   @override

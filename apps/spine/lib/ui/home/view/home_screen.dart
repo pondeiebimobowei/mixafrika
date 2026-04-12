@@ -327,7 +327,10 @@ class HomeView extends ConsumerWidget {
         const SizedBox(width: 8),
         IconWidget(icon: Icons.videocam_outlined),
         const SizedBox(width: 4),
-        IconWidget(icon: Icons.settings_outlined),
+        IconWidget(
+          icon: Icons.settings_outlined,
+          onTap: () => context.push(Routes.shopManagement),
+        ),
         const SizedBox(width: 8),
       ],
     );

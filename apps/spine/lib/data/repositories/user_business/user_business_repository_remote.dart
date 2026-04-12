@@ -17,11 +17,11 @@ class UserBusinessRepositoryRemote implements UserBusinessRepositoryAbstract {
 
   @override
   Future<ApiResponse<UserBusinessData>> createUserBusiness(
-    String userId,
+    UserBusinessCompanion business,
   ) async {
     UserBusinessData userBusiness = UserBusinessData(
       id: Uuid().v4(),
-      userId: userId,
+      userId: 'userId',
       collectionId: Uuid().v4(),
       name: 'Trader Business',
       type: 'business',
