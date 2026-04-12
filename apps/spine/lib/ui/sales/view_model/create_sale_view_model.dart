@@ -1,4 +1,6 @@
+import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:spine/data/repositories/customer/customer_repository.dart';
 import 'package:spine/data/repositories/product/product_repository.dart';
 import 'package:spine/data/repositories/sales/sales_repository.dart';
 import 'package:spine/data/repositories/user_business/user_business_repository.dart';
@@ -11,16 +13,19 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
   final ProductRepository _productRepository;
   final SalesRepository _salesRepository;
   final UserBusinessRepository _userBusinessRepository;
+  final CustomerRepository _customerRepository;
   final UserBusinessData? _activeUserBusiness;
 
   CreateSaleViewModel({
     required ProductRepository productRepository,
     required SalesRepository salesRepository,
     required UserBusinessRepository userBusinessRepository,
+    required CustomerRepository customerRepository,
     required UserBusinessData? activeUserBusiness
   }) : _productRepository = productRepository,
        _salesRepository = salesRepository,
        _userBusinessRepository = userBusinessRepository,
+       _customerRepository = customerRepository,
        _activeUserBusiness = activeUserBusiness,
        super(CreateSaleState()) {
     _loadInitialData();
@@ -31,11 +36,13 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
     try {
       final products = await _productRepository.getProductsByBusinessId(_activeUserBusiness?.id ?? '');
       final bankDetails = await _userBusinessRepository.getBankDetailsByBusinessId(_activeUserBusiness?.id ?? '');
+      final customers = await _customerRepository.getCustomers(_activeUserBusiness?.id ?? '');
       
       // For demo, take first 5 as quick picks
       state = state.copyWith(
         quickPicks: products.take(5).toList(),
         businessBankDetails: bankDetails,
+        customers: customers,
         isLoading: false,
       );
     } catch (e) {
@@ -209,6 +216,37 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
     }
   }
 
+  void searchCustomers(String query) async {
+    final customers = await _customerRepository.searchCustomers(_activeUserBusiness?.id ?? '', query);
+    state = state.copyWith(customers: customers);
+  }
+
+  void selectCustomer(CustomerData? customer) {
+    print('Selecting customer: ${customer?.name}');
+    state = state.copyWith(selectedCustomer: customer);
+  }
+
+  void addCustomer(String name, String phone) async {
+    final customer = CustomerCompanion(
+      id: Value(const Uuid().v4()),
+      name: Value(name),
+      phone: Value(phone),
+      businessId: Value(_activeUserBusiness?.id ?? ''),
+      syncStatus: const Value('pending'),
+      createdAt: Value(DateTime.now()),
+      updatedAt: Value(DateTime.now()),
+    );
+    await _customerRepository.addCustomer(customer);
+    final customers = await _customerRepository.getCustomers(_activeUserBusiness?.id ?? '');
+    state = state.copyWith(customers: customers);
+  }
+
+  void deleteCustomer(String id) async {
+    await _customerRepository.deleteCustomer(id);
+    final customers = await _customerRepository.getCustomers(_activeUserBusiness?.id ?? '');
+    state = state.copyWith(customers: customers);
+  }
+
   Future<bool> checkout() async {
     if (state.cartItems.isEmpty || state.selectedPaymentMethod == null) {
       return false;
@@ -224,6 +262,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
         status: state.balance > 0 ? 'partial' : 'completed',
         amountPaid: state.totalPaid,
         balance: state.balance,
+        customerId: state.selectedCustomer?.id,
         businessId: _activeUserBusiness?.id ?? '',
         syncStatus: 'pending',
         createdAt: DateTime.now(),
@@ -278,6 +317,7 @@ final createSaleViewModelProvider =
       productRepository: ref.watch(productRepositoryProvider),
       salesRepository: ref.watch(salesRepositoryProvider),
       userBusinessRepository: ref.watch(userBusinessRepositoryProvider),
+      customerRepository: ref.watch(customerRepositoryProvider),
       activeUserBusiness: ref.read(activeUserBusinessProvider),
     );
   }

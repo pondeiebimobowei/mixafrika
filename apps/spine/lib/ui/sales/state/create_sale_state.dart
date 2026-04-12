@@ -104,6 +104,8 @@ class CreateSaleState {
    final PaymentMethod? selectedPaymentMethod;
   final List<BankDetail> businessBankDetails;
   final BankDetail? selectedBankDetail;
+  final CustomerData? selectedCustomer;
+  final List<CustomerData> customers;
 
   CreateSaleState({
     this.cartItems = const [],
@@ -113,6 +115,8 @@ class CreateSaleState {
     this.selectedPaymentMethod,
     this.businessBankDetails = const [],
     this.selectedBankDetail,
+    this.selectedCustomer,
+    this.customers = const [],
   });
 
   int get grandTotal => cartItems.fold(0, (sum, item) => sum + item.total);
@@ -134,6 +138,8 @@ class CreateSaleState {
     PaymentMethod? selectedPaymentMethod,
     List<BankDetail>? businessBankDetails,
     BankDetail? selectedBankDetail,
+    CustomerData? selectedCustomer,
+    List<CustomerData>? customers,
   }) {
     return CreateSaleState(
       cartItems: cartItems ?? this.cartItems,
@@ -144,6 +150,8 @@ class CreateSaleState {
           selectedPaymentMethod ?? this.selectedPaymentMethod,
       businessBankDetails: businessBankDetails ?? this.businessBankDetails,
       selectedBankDetail: selectedBankDetail ?? this.selectedBankDetail,
+      selectedCustomer: selectedCustomer ?? this.selectedCustomer,
+      customers: customers ?? this.customers,
     );
   }
 }

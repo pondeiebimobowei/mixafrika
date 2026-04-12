@@ -272,6 +272,17 @@ class SalesLogView extends ConsumerWidget {
                       fontWeight: FontWeight.w900,
                     ),
                   ),
+                  if (item.customer != null) ...[
+                    const SizedBox(height: 2),
+                    Text(
+                      item.customer!.name,
+                      style: TextStyle(
+                        color: colors.primary,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: 4),
                   Row(
                     children: [

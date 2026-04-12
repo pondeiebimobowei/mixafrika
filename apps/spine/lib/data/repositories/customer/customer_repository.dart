@@ -1,0 +1,39 @@
+import 'package:drift/drift.dart';
+import 'package:spine/data/repositories/customer/customer_repository_abstract.dart';
+import 'package:spine/drift/database.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class CustomerRepository implements CustomerRepositoryAbstract {
+  final AppDatabase _database;
+
+  CustomerRepository({required AppDatabase database}) : _database = database;
+
+  @override
+  Future<List<CustomerData>> getCustomers(String businessId) async {
+    return await (_database.select(_database.customer)
+          ..where((t) => t.businessId.equals(businessId)))
+        .get();
+  }
+
+  @override
+  Future<List<CustomerData>> searchCustomers(String businessId, String query) async {
+    return await (_database.select(_database.customer)
+          ..where((t) => t.businessId.equals(businessId))
+          ..where((t) => t.name.contains(query) | t.phone.contains(query)))
+        .get();
+  }
+
+  @override
+  Future<void> addCustomer(CustomerCompanion customer) async {
+    await _database.into(_database.customer).insert(customer);
+  }
+
+  @override
+  Future<void> deleteCustomer(String id) async {
+    await (_database.delete(_database.customer)..where((t) => t.id.equals(id))).go();
+  }
+}
+
+final customerRepositoryProvider = Provider<CustomerRepository>((ref) {
+  return CustomerRepository(database: ref.watch(databaseProvider));
+});

@@ -14,11 +14,13 @@ class SaleWithItems {
   final Sale sale;
   final List<SaleItemWithProduct> items;
   final List<Payment> payments;
+  final CustomerData? customer;
 
   SaleWithItems({
     required this.sale,
     required this.items,
     required this.payments,
+    this.customer,
   });
 
   int get totalProfit {

@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/sales/state/create_sale_state.dart';
+import 'package:spine/ui/sales/view/customer_selection_sheet.dart';
 import 'package:spine/ui/sales/view_model/create_sale_view_model.dart';
 
 class CheckoutView extends ConsumerWidget {
@@ -71,35 +72,66 @@ class CheckoutView extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              Container(
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1E293B),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: colors.border),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 16,
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.person_add_outlined,
-                      color: colors.mutedForeground,
-                      size: 20,
+              GestureDetector(
+                onTap: () {
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    backgroundColor: Colors.transparent,
+                    builder: (context) => const CustomerSelectionSheet(),
+                  );
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1E293B),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: state.selectedCustomer != null 
+                          ? const Color(0xFF1DB978) 
+                          : colors.border
                     ),
-                    const SizedBox(width: 12),
-                    Text(
-                      'Tag a Customer (Optional)',
-                      style: TextStyle(
-                        color: colors.mutedForeground,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
+                  ),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 16,
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(
+                        state.selectedCustomer != null 
+                            ? Icons.person 
+                            : Icons.person_add_outlined,
+                        color: state.selectedCustomer != null 
+                            ? const Color(0xFF1DB978) 
+                            : colors.mutedForeground,
+                        size: 20,
                       ),
-                    ),
-                    const Spacer(),
-                    Icon(Icons.chevron_right, color: colors.mutedForeground),
-                  ],
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          state.selectedCustomer?.name ?? 'Tag a Customer (Optional)',
+                          style: TextStyle(
+                            color: state.selectedCustomer != null 
+                                ? Colors.white 
+                                : colors.mutedForeground,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      if (state.selectedCustomer != null)
+                        GestureDetector(
+                          onTap: () => viewModel.selectCustomer(null),
+                          child: const Icon(
+                            Icons.close, 
+                            color: Colors.redAccent, 
+                            size: 20
+                          ),
+                        )
+                      else
+                        Icon(Icons.chevron_right, color: colors.mutedForeground),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 32),

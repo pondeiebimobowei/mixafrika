@@ -106,6 +106,10 @@ Future<void> createSale(
         _db.product,
         _db.product.id.equalsExp(_db.salesItem.productId),
       ),
+      leftOuterJoin(
+        _db.customer,
+        _db.customer.id.equalsExp(_db.sales.customerId),
+      ),
     ]);
 
     if (businessId != null) {
@@ -123,9 +127,15 @@ Future<void> createSale(
       final sale = row.readTable(_db.sales);
       final item = row.readTable(_db.salesItem);
       final product = row.readTableOrNull(_db.product);
+      final customer = row.readTableOrNull(_db.customer);
 
       if (!salesMap.containsKey(sale.id)) {
-        salesMap[sale.id] = SaleWithItems(sale: sale, items: [], payments: []);
+        salesMap[sale.id] = SaleWithItems(
+          sale: sale, 
+          items: [], 
+          payments: [],
+          customer: customer,
+        );
       }
 
       salesMap[sale.id]!.items.add(
@@ -154,12 +164,17 @@ Future<void> createSale(
         _db.product,
         _db.product.id.equalsExp(_db.salesItem.productId),
       ),
+      leftOuterJoin(
+        _db.customer,
+        _db.customer.id.equalsExp(_db.sales.customerId),
+      ),
     ])..where(_db.sales.id.equals(id));
 
     final rows = await query.get();
     if (rows.isEmpty) return null;
 
     final sale = rows.first.readTable(_db.sales);
+    final customer = rows.first.readTableOrNull(_db.customer);
     final items = rows.map((row) {
       return SaleItemWithProduct(
         item: row.readTable(_db.salesItem),
@@ -171,7 +186,12 @@ Future<void> createSale(
       _db.payments,
     )..where((p) => p.saleId.equals(id))).get();
 
-    return SaleWithItems(sale: sale, items: items, payments: payments);
+    return SaleWithItems(
+      sale: sale, 
+      items: items, 
+      payments: payments,
+      customer: customer,
+    );
   }
 }
 
