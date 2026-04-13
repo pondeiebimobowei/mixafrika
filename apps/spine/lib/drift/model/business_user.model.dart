@@ -8,6 +8,7 @@ class BusinessUser extends Table with TableMixin {
 
     late final role = text()();
     late final isActive = boolean().withDefault(const Constant(false))();
+    late final hasFullAccess = boolean().withDefault(const Constant(false))();
     late final joinedAt = dateTime().nullable()();
 
     

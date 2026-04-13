@@ -11,7 +11,6 @@ class BusinessesRepository implements BusinessesRepositoryAbstract {
 
   final userBiz1 = BusinessesData(
     id: Uuid().v4(),
-    collectionId: '1',
     name: 'Trader 1',
     type: 'business',
     phone: '08023467856',
@@ -20,6 +19,7 @@ class BusinessesRepository implements BusinessesRepositoryAbstract {
     state: 'Abuja',
     country: 'Nigeria',
     verification: '',
+    isVerified: true,
 
     syncStatus: '',
     syncDate: DateTime.now(),
@@ -30,7 +30,6 @@ class BusinessesRepository implements BusinessesRepositoryAbstract {
 
   final userBiz2 = BusinessesData(
     id: Uuid().v4(),
-    collectionId: '1',
     name: 'Trader 2',
     type: 'business',
     phone: '08023467856',
@@ -39,6 +38,7 @@ class BusinessesRepository implements BusinessesRepositoryAbstract {
     state: 'Abuja',
     country: 'Nigeria',
     verification: '',
+    isVerified: true,
 
     syncStatus: '',
     syncDate: DateTime.now(),

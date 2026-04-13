@@ -4,7 +4,6 @@ import 'package:spine/drift/model/business_verification.model.dart';
 
 
 class Businesses extends Table with TableMixin {
-    late final collectionId = text()();
     late final name = text()();
     late final type = text()();
     late final phone = text()();
@@ -12,6 +11,7 @@ class Businesses extends Table with TableMixin {
     late final city = text()();
     late final state = text()();
     late final country = text()();
+    late final isVerified = boolean()();
 
     
     late final verification = text().references(BusinessVerification, #id)();

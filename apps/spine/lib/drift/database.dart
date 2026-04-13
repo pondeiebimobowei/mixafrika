@@ -22,6 +22,13 @@ import 'package:spine/drift/model/product_category.model.dart';
 import 'package:spine/drift/model/bank_details.model.dart';
 import 'package:spine/drift/model/customer.model.dart';
 import 'package:spine/drift/model/business_user.model.dart';
+import 'package:spine/drift/model/collection.model.dart';
+import 'package:spine/drift/model/cluster.model.dart';
+import 'package:spine/drift/model/branch.model.dart';
+import 'package:spine/drift/model/branch_user.model.dart';
+import 'package:spine/drift/model/verification_token.model.dart';
+import 'package:spine/drift/model/user_verification.model.dart';
+import 'package:spine/drift/model/invites.model.dart';
 
 import 'package:spine/drift/seed.dart';
 
@@ -46,6 +53,13 @@ part 'database.g.dart';
     StockTransfer,
     Businesses,
     Customer,
+    Collection,
+    Cluster,
+    Branch,
+    BranchUser,
+    VerificationToken,
+    UserVerification,
+    Invites,
     User,
     BankDetails,
   ],
@@ -59,7 +73,7 @@ class AppDatabase extends _$AppDatabase {
 
   static QueryExecutor _openConnection() {
     return driftDatabase(
-      name: 'spinedbbbbbbB-1',
+      name: 'spinedbbbbbbBb-1',
 
       native: const DriftNativeOptions(
         databaseDirectory: getApplicationSupportDirectory,

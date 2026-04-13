@@ -3,6 +3,969 @@
 part of 'database.dart';
 
 // ignore_for_file: type=lint
+class $UserTable extends User with TableInfo<$UserTable, UserData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UserTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncDateMeta = const VerificationMeta(
+    'syncDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
+    'sync_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _userNameMeta = const VerificationMeta(
+    'userName',
+  );
+  @override
+  late final GeneratedColumn<String> userName = GeneratedColumn<String>(
+    'user_name',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _firstNameMeta = const VerificationMeta(
+    'firstName',
+  );
+  @override
+  late final GeneratedColumn<String> firstName = GeneratedColumn<String>(
+    'first_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _lastNameMeta = const VerificationMeta(
+    'lastName',
+  );
+  @override
+  late final GeneratedColumn<String> lastName = GeneratedColumn<String>(
+    'last_name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _emailMeta = const VerificationMeta('email');
+  @override
+  late final GeneratedColumn<String> email = GeneratedColumn<String>(
+    'email',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _passwordMeta = const VerificationMeta(
+    'password',
+  );
+  @override
+  late final GeneratedColumn<String> password = GeneratedColumn<String>(
+    'password',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _roleMeta = const VerificationMeta('role');
+  @override
+  late final GeneratedColumn<String> role = GeneratedColumn<String>(
+    'role',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _isEmailVerifiedMeta = const VerificationMeta(
+    'isEmailVerified',
+  );
+  @override
+  late final GeneratedColumn<bool> isEmailVerified = GeneratedColumn<bool>(
+    'is_email_verified',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_email_verified" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _isVerifiedMeta = const VerificationMeta(
+    'isVerified',
+  );
+  @override
+  late final GeneratedColumn<bool> isVerified = GeneratedColumn<bool>(
+    'is_verified',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_verified" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _avatarMeta = const VerificationMeta('avatar');
+  @override
+  late final GeneratedColumn<String> avatar = GeneratedColumn<String>(
+    'avatar',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _creditScoreMeta = const VerificationMeta(
+    'creditScore',
+  );
+  @override
+  late final GeneratedColumn<int> creditScore = GeneratedColumn<int>(
+    'credit_score',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _creditScoreStatusMeta = const VerificationMeta(
+    'creditScoreStatus',
+  );
+  @override
+  late final GeneratedColumn<String> creditScoreStatus =
+      GeneratedColumn<String>(
+        'credit_score_status',
+        aliasedName,
+        false,
+        type: DriftSqlType.string,
+        requiredDuringInsert: true,
+      );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    userName,
+    firstName,
+    lastName,
+    email,
+    password,
+    role,
+    isEmailVerified,
+    isVerified,
+    avatar,
+    creditScore,
+    creditScoreStatus,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'user';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<UserData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('sync_date')) {
+      context.handle(
+        _syncDateMeta,
+        syncDate.isAcceptableOrUnknown(data['sync_date']!, _syncDateMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('user_name')) {
+      context.handle(
+        _userNameMeta,
+        userName.isAcceptableOrUnknown(data['user_name']!, _userNameMeta),
+      );
+    }
+    if (data.containsKey('first_name')) {
+      context.handle(
+        _firstNameMeta,
+        firstName.isAcceptableOrUnknown(data['first_name']!, _firstNameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_firstNameMeta);
+    }
+    if (data.containsKey('last_name')) {
+      context.handle(
+        _lastNameMeta,
+        lastName.isAcceptableOrUnknown(data['last_name']!, _lastNameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_lastNameMeta);
+    }
+    if (data.containsKey('email')) {
+      context.handle(
+        _emailMeta,
+        email.isAcceptableOrUnknown(data['email']!, _emailMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_emailMeta);
+    }
+    if (data.containsKey('password')) {
+      context.handle(
+        _passwordMeta,
+        password.isAcceptableOrUnknown(data['password']!, _passwordMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_passwordMeta);
+    }
+    if (data.containsKey('role')) {
+      context.handle(
+        _roleMeta,
+        role.isAcceptableOrUnknown(data['role']!, _roleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_roleMeta);
+    }
+    if (data.containsKey('is_email_verified')) {
+      context.handle(
+        _isEmailVerifiedMeta,
+        isEmailVerified.isAcceptableOrUnknown(
+          data['is_email_verified']!,
+          _isEmailVerifiedMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_isEmailVerifiedMeta);
+    }
+    if (data.containsKey('is_verified')) {
+      context.handle(
+        _isVerifiedMeta,
+        isVerified.isAcceptableOrUnknown(data['is_verified']!, _isVerifiedMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_isVerifiedMeta);
+    }
+    if (data.containsKey('avatar')) {
+      context.handle(
+        _avatarMeta,
+        avatar.isAcceptableOrUnknown(data['avatar']!, _avatarMeta),
+      );
+    }
+    if (data.containsKey('credit_score')) {
+      context.handle(
+        _creditScoreMeta,
+        creditScore.isAcceptableOrUnknown(
+          data['credit_score']!,
+          _creditScoreMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_creditScoreMeta);
+    }
+    if (data.containsKey('credit_score_status')) {
+      context.handle(
+        _creditScoreStatusMeta,
+        creditScoreStatus.isAcceptableOrUnknown(
+          data['credit_score_status']!,
+          _creditScoreStatusMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_creditScoreStatusMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  UserData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UserData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      syncDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}sync_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      userName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_name'],
+      ),
+      firstName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}first_name'],
+      )!,
+      lastName: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}last_name'],
+      )!,
+      email: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}email'],
+      )!,
+      password: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}password'],
+      )!,
+      role: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}role'],
+      )!,
+      isEmailVerified: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_email_verified'],
+      )!,
+      isVerified: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_verified'],
+      )!,
+      avatar: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}avatar'],
+      ),
+      creditScore: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}credit_score'],
+      )!,
+      creditScoreStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}credit_score_status'],
+      )!,
+    );
+  }
+
+  @override
+  $UserTable createAlias(String alias) {
+    return $UserTable(attachedDatabase, alias);
+  }
+}
+
+class UserData extends DataClass implements Insertable<UserData> {
+  final String id;
+  final String syncStatus;
+  final DateTime? syncDate;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String? userName;
+  final String firstName;
+  final String lastName;
+  final String email;
+  final String password;
+  final String role;
+  final bool isEmailVerified;
+  final bool isVerified;
+  final String? avatar;
+  final int creditScore;
+  final String creditScoreStatus;
+  const UserData({
+    required this.id,
+    required this.syncStatus,
+    this.syncDate,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    this.userName,
+    required this.firstName,
+    required this.lastName,
+    required this.email,
+    required this.password,
+    required this.role,
+    required this.isEmailVerified,
+    required this.isVerified,
+    this.avatar,
+    required this.creditScore,
+    required this.creditScoreStatus,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    if (!nullToAbsent || userName != null) {
+      map['user_name'] = Variable<String>(userName);
+    }
+    map['first_name'] = Variable<String>(firstName);
+    map['last_name'] = Variable<String>(lastName);
+    map['email'] = Variable<String>(email);
+    map['password'] = Variable<String>(password);
+    map['role'] = Variable<String>(role);
+    map['is_email_verified'] = Variable<bool>(isEmailVerified);
+    map['is_verified'] = Variable<bool>(isVerified);
+    if (!nullToAbsent || avatar != null) {
+      map['avatar'] = Variable<String>(avatar);
+    }
+    map['credit_score'] = Variable<int>(creditScore);
+    map['credit_score_status'] = Variable<String>(creditScoreStatus);
+    return map;
+  }
+
+  UserCompanion toCompanion(bool nullToAbsent) {
+    return UserCompanion(
+      id: Value(id),
+      syncStatus: Value(syncStatus),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      userName: userName == null && nullToAbsent
+          ? const Value.absent()
+          : Value(userName),
+      firstName: Value(firstName),
+      lastName: Value(lastName),
+      email: Value(email),
+      password: Value(password),
+      role: Value(role),
+      isEmailVerified: Value(isEmailVerified),
+      isVerified: Value(isVerified),
+      avatar: avatar == null && nullToAbsent
+          ? const Value.absent()
+          : Value(avatar),
+      creditScore: Value(creditScore),
+      creditScoreStatus: Value(creditScoreStatus),
+    );
+  }
+
+  factory UserData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UserData(
+      id: serializer.fromJson<String>(json['id']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      userName: serializer.fromJson<String?>(json['userName']),
+      firstName: serializer.fromJson<String>(json['firstName']),
+      lastName: serializer.fromJson<String>(json['lastName']),
+      email: serializer.fromJson<String>(json['email']),
+      password: serializer.fromJson<String>(json['password']),
+      role: serializer.fromJson<String>(json['role']),
+      isEmailVerified: serializer.fromJson<bool>(json['isEmailVerified']),
+      isVerified: serializer.fromJson<bool>(json['isVerified']),
+      avatar: serializer.fromJson<String?>(json['avatar']),
+      creditScore: serializer.fromJson<int>(json['creditScore']),
+      creditScoreStatus: serializer.fromJson<String>(json['creditScoreStatus']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'userName': serializer.toJson<String?>(userName),
+      'firstName': serializer.toJson<String>(firstName),
+      'lastName': serializer.toJson<String>(lastName),
+      'email': serializer.toJson<String>(email),
+      'password': serializer.toJson<String>(password),
+      'role': serializer.toJson<String>(role),
+      'isEmailVerified': serializer.toJson<bool>(isEmailVerified),
+      'isVerified': serializer.toJson<bool>(isVerified),
+      'avatar': serializer.toJson<String?>(avatar),
+      'creditScore': serializer.toJson<int>(creditScore),
+      'creditScoreStatus': serializer.toJson<String>(creditScoreStatus),
+    };
+  }
+
+  UserData copyWith({
+    String? id,
+    String? syncStatus,
+    Value<DateTime?> syncDate = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    Value<String?> userName = const Value.absent(),
+    String? firstName,
+    String? lastName,
+    String? email,
+    String? password,
+    String? role,
+    bool? isEmailVerified,
+    bool? isVerified,
+    Value<String?> avatar = const Value.absent(),
+    int? creditScore,
+    String? creditScoreStatus,
+  }) => UserData(
+    id: id ?? this.id,
+    syncStatus: syncStatus ?? this.syncStatus,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    userName: userName.present ? userName.value : this.userName,
+    firstName: firstName ?? this.firstName,
+    lastName: lastName ?? this.lastName,
+    email: email ?? this.email,
+    password: password ?? this.password,
+    role: role ?? this.role,
+    isEmailVerified: isEmailVerified ?? this.isEmailVerified,
+    isVerified: isVerified ?? this.isVerified,
+    avatar: avatar.present ? avatar.value : this.avatar,
+    creditScore: creditScore ?? this.creditScore,
+    creditScoreStatus: creditScoreStatus ?? this.creditScoreStatus,
+  );
+  UserData copyWithCompanion(UserCompanion data) {
+    return UserData(
+      id: data.id.present ? data.id.value : this.id,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      userName: data.userName.present ? data.userName.value : this.userName,
+      firstName: data.firstName.present ? data.firstName.value : this.firstName,
+      lastName: data.lastName.present ? data.lastName.value : this.lastName,
+      email: data.email.present ? data.email.value : this.email,
+      password: data.password.present ? data.password.value : this.password,
+      role: data.role.present ? data.role.value : this.role,
+      isEmailVerified: data.isEmailVerified.present
+          ? data.isEmailVerified.value
+          : this.isEmailVerified,
+      isVerified: data.isVerified.present
+          ? data.isVerified.value
+          : this.isVerified,
+      avatar: data.avatar.present ? data.avatar.value : this.avatar,
+      creditScore: data.creditScore.present
+          ? data.creditScore.value
+          : this.creditScore,
+      creditScoreStatus: data.creditScoreStatus.present
+          ? data.creditScoreStatus.value
+          : this.creditScoreStatus,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserData(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('userName: $userName, ')
+          ..write('firstName: $firstName, ')
+          ..write('lastName: $lastName, ')
+          ..write('email: $email, ')
+          ..write('password: $password, ')
+          ..write('role: $role, ')
+          ..write('isEmailVerified: $isEmailVerified, ')
+          ..write('isVerified: $isVerified, ')
+          ..write('avatar: $avatar, ')
+          ..write('creditScore: $creditScore, ')
+          ..write('creditScoreStatus: $creditScoreStatus')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    userName,
+    firstName,
+    lastName,
+    email,
+    password,
+    role,
+    isEmailVerified,
+    isVerified,
+    avatar,
+    creditScore,
+    creditScoreStatus,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserData &&
+          other.id == this.id &&
+          other.syncStatus == this.syncStatus &&
+          other.syncDate == this.syncDate &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.userName == this.userName &&
+          other.firstName == this.firstName &&
+          other.lastName == this.lastName &&
+          other.email == this.email &&
+          other.password == this.password &&
+          other.role == this.role &&
+          other.isEmailVerified == this.isEmailVerified &&
+          other.isVerified == this.isVerified &&
+          other.avatar == this.avatar &&
+          other.creditScore == this.creditScore &&
+          other.creditScoreStatus == this.creditScoreStatus);
+}
+
+class UserCompanion extends UpdateCompanion<UserData> {
+  final Value<String> id;
+  final Value<String> syncStatus;
+  final Value<DateTime?> syncDate;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String?> userName;
+  final Value<String> firstName;
+  final Value<String> lastName;
+  final Value<String> email;
+  final Value<String> password;
+  final Value<String> role;
+  final Value<bool> isEmailVerified;
+  final Value<bool> isVerified;
+  final Value<String?> avatar;
+  final Value<int> creditScore;
+  final Value<String> creditScoreStatus;
+  final Value<int> rowid;
+  const UserCompanion({
+    this.id = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.userName = const Value.absent(),
+    this.firstName = const Value.absent(),
+    this.lastName = const Value.absent(),
+    this.email = const Value.absent(),
+    this.password = const Value.absent(),
+    this.role = const Value.absent(),
+    this.isEmailVerified = const Value.absent(),
+    this.isVerified = const Value.absent(),
+    this.avatar = const Value.absent(),
+    this.creditScore = const Value.absent(),
+    this.creditScoreStatus = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  UserCompanion.insert({
+    required String id,
+    required String syncStatus,
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.userName = const Value.absent(),
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String password,
+    required String role,
+    required bool isEmailVerified,
+    required bool isVerified,
+    this.avatar = const Value.absent(),
+    required int creditScore,
+    required String creditScoreStatus,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       syncStatus = Value(syncStatus),
+       firstName = Value(firstName),
+       lastName = Value(lastName),
+       email = Value(email),
+       password = Value(password),
+       role = Value(role),
+       isEmailVerified = Value(isEmailVerified),
+       isVerified = Value(isVerified),
+       creditScore = Value(creditScore),
+       creditScoreStatus = Value(creditScoreStatus);
+  static Insertable<UserData> custom({
+    Expression<String>? id,
+    Expression<String>? syncStatus,
+    Expression<DateTime>? syncDate,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? userName,
+    Expression<String>? firstName,
+    Expression<String>? lastName,
+    Expression<String>? email,
+    Expression<String>? password,
+    Expression<String>? role,
+    Expression<bool>? isEmailVerified,
+    Expression<bool>? isVerified,
+    Expression<String>? avatar,
+    Expression<int>? creditScore,
+    Expression<String>? creditScoreStatus,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (syncDate != null) 'sync_date': syncDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (userName != null) 'user_name': userName,
+      if (firstName != null) 'first_name': firstName,
+      if (lastName != null) 'last_name': lastName,
+      if (email != null) 'email': email,
+      if (password != null) 'password': password,
+      if (role != null) 'role': role,
+      if (isEmailVerified != null) 'is_email_verified': isEmailVerified,
+      if (isVerified != null) 'is_verified': isVerified,
+      if (avatar != null) 'avatar': avatar,
+      if (creditScore != null) 'credit_score': creditScore,
+      if (creditScoreStatus != null) 'credit_score_status': creditScoreStatus,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  UserCompanion copyWith({
+    Value<String>? id,
+    Value<String>? syncStatus,
+    Value<DateTime?>? syncDate,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String?>? userName,
+    Value<String>? firstName,
+    Value<String>? lastName,
+    Value<String>? email,
+    Value<String>? password,
+    Value<String>? role,
+    Value<bool>? isEmailVerified,
+    Value<bool>? isVerified,
+    Value<String?>? avatar,
+    Value<int>? creditScore,
+    Value<String>? creditScoreStatus,
+    Value<int>? rowid,
+  }) {
+    return UserCompanion(
+      id: id ?? this.id,
+      syncStatus: syncStatus ?? this.syncStatus,
+      syncDate: syncDate ?? this.syncDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      userName: userName ?? this.userName,
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      email: email ?? this.email,
+      password: password ?? this.password,
+      role: role ?? this.role,
+      isEmailVerified: isEmailVerified ?? this.isEmailVerified,
+      isVerified: isVerified ?? this.isVerified,
+      avatar: avatar ?? this.avatar,
+      creditScore: creditScore ?? this.creditScore,
+      creditScoreStatus: creditScoreStatus ?? this.creditScoreStatus,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (syncDate.present) {
+      map['sync_date'] = Variable<DateTime>(syncDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (userName.present) {
+      map['user_name'] = Variable<String>(userName.value);
+    }
+    if (firstName.present) {
+      map['first_name'] = Variable<String>(firstName.value);
+    }
+    if (lastName.present) {
+      map['last_name'] = Variable<String>(lastName.value);
+    }
+    if (email.present) {
+      map['email'] = Variable<String>(email.value);
+    }
+    if (password.present) {
+      map['password'] = Variable<String>(password.value);
+    }
+    if (role.present) {
+      map['role'] = Variable<String>(role.value);
+    }
+    if (isEmailVerified.present) {
+      map['is_email_verified'] = Variable<bool>(isEmailVerified.value);
+    }
+    if (isVerified.present) {
+      map['is_verified'] = Variable<bool>(isVerified.value);
+    }
+    if (avatar.present) {
+      map['avatar'] = Variable<String>(avatar.value);
+    }
+    if (creditScore.present) {
+      map['credit_score'] = Variable<int>(creditScore.value);
+    }
+    if (creditScoreStatus.present) {
+      map['credit_score_status'] = Variable<String>(creditScoreStatus.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserCompanion(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('userName: $userName, ')
+          ..write('firstName: $firstName, ')
+          ..write('lastName: $lastName, ')
+          ..write('email: $email, ')
+          ..write('password: $password, ')
+          ..write('role: $role, ')
+          ..write('isEmailVerified: $isEmailVerified, ')
+          ..write('isVerified: $isVerified, ')
+          ..write('avatar: $avatar, ')
+          ..write('creditScore: $creditScore, ')
+          ..write('creditScoreStatus: $creditScoreStatus, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $BusinessVerificationTable extends BusinessVerification
     with TableInfo<$BusinessVerificationTable, BusinessVerificationData> {
   @override
@@ -75,12 +1038,19 @@ class $BusinessVerificationTable extends BusinessVerification
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _businessIdMeta = const VerificationMeta(
-    'businessId',
-  );
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
   @override
-  late final GeneratedColumn<String> businessId = GeneratedColumn<String>(
-    'business_id',
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _docUrlMeta = const VerificationMeta('docUrl');
+  @override
+  late final GeneratedColumn<String> docUrl = GeneratedColumn<String>(
+    'doc_url',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -106,38 +1076,55 @@ class $BusinessVerificationTable extends BusinessVerification
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _cacDocumentMeta = const VerificationMeta(
-    'cacDocument',
-  );
-  @override
-  late final GeneratedColumn<String> cacDocument = GeneratedColumn<String>(
-    'cac_document',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _reviewedByIdMeta = const VerificationMeta(
-    'reviewedById',
-  );
-  @override
-  late final GeneratedColumn<String> reviewedById = GeneratedColumn<String>(
-    'reviewed_by_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
   static const VerificationMeta _reviewedAtMeta = const VerificationMeta(
     'reviewedAt',
   );
   @override
-  late final GeneratedColumn<String> reviewedAt = GeneratedColumn<String>(
+  late final GeneratedColumn<DateTime> reviewedAt = GeneratedColumn<DateTime>(
     'reviewed_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _businessIdMeta = const VerificationMeta(
+    'businessId',
+  );
+  @override
+  late final GeneratedColumn<String> businessId = GeneratedColumn<String>(
+    'business_id',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
+  );
+  static const VerificationMeta _submittedByMeta = const VerificationMeta(
+    'submittedBy',
+  );
+  @override
+  late final GeneratedColumn<String> submittedBy = GeneratedColumn<String>(
+    'submitted_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES user (id)',
+    ),
+  );
+  static const VerificationMeta _reviewedByMeta = const VerificationMeta(
+    'reviewedBy',
+  );
+  @override
+  late final GeneratedColumn<String> reviewedBy = GeneratedColumn<String>(
+    'reviewed_by',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES user (id)',
+    ),
   );
   @override
   List<GeneratedColumn> get $columns => [
@@ -147,12 +1134,14 @@ class $BusinessVerificationTable extends BusinessVerification
     createdAt,
     updatedAt,
     deletedAt,
-    businessId,
+    type,
+    docUrl,
     status,
     rejectionReason,
-    cacDocument,
-    reviewedById,
     reviewedAt,
+    businessId,
+    submittedBy,
+    reviewedBy,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -203,13 +1192,21 @@ class $BusinessVerificationTable extends BusinessVerification
         deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
       );
     }
-    if (data.containsKey('business_id')) {
+    if (data.containsKey('type')) {
       context.handle(
-        _businessIdMeta,
-        businessId.isAcceptableOrUnknown(data['business_id']!, _businessIdMeta),
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
       );
     } else if (isInserting) {
-      context.missing(_businessIdMeta);
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('doc_url')) {
+      context.handle(
+        _docUrlMeta,
+        docUrl.isAcceptableOrUnknown(data['doc_url']!, _docUrlMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_docUrlMeta);
     }
     if (data.containsKey('status')) {
       context.handle(
@@ -230,28 +1227,6 @@ class $BusinessVerificationTable extends BusinessVerification
     } else if (isInserting) {
       context.missing(_rejectionReasonMeta);
     }
-    if (data.containsKey('cac_document')) {
-      context.handle(
-        _cacDocumentMeta,
-        cacDocument.isAcceptableOrUnknown(
-          data['cac_document']!,
-          _cacDocumentMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_cacDocumentMeta);
-    }
-    if (data.containsKey('reviewed_by_id')) {
-      context.handle(
-        _reviewedByIdMeta,
-        reviewedById.isAcceptableOrUnknown(
-          data['reviewed_by_id']!,
-          _reviewedByIdMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_reviewedByIdMeta);
-    }
     if (data.containsKey('reviewed_at')) {
       context.handle(
         _reviewedAtMeta,
@@ -259,6 +1234,33 @@ class $BusinessVerificationTable extends BusinessVerification
       );
     } else if (isInserting) {
       context.missing(_reviewedAtMeta);
+    }
+    if (data.containsKey('business_id')) {
+      context.handle(
+        _businessIdMeta,
+        businessId.isAcceptableOrUnknown(data['business_id']!, _businessIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_businessIdMeta);
+    }
+    if (data.containsKey('submitted_by')) {
+      context.handle(
+        _submittedByMeta,
+        submittedBy.isAcceptableOrUnknown(
+          data['submitted_by']!,
+          _submittedByMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_submittedByMeta);
+    }
+    if (data.containsKey('reviewed_by')) {
+      context.handle(
+        _reviewedByMeta,
+        reviewedBy.isAcceptableOrUnknown(data['reviewed_by']!, _reviewedByMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_reviewedByMeta);
     }
     return context;
   }
@@ -296,9 +1298,13 @@ class $BusinessVerificationTable extends BusinessVerification
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
       ),
-      businessId: attachedDatabase.typeMapping.read(
+      type: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}business_id'],
+        data['${effectivePrefix}type'],
+      )!,
+      docUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}doc_url'],
       )!,
       status: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -308,17 +1314,21 @@ class $BusinessVerificationTable extends BusinessVerification
         DriftSqlType.string,
         data['${effectivePrefix}rejection_reason'],
       )!,
-      cacDocument: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}cac_document'],
-      )!,
-      reviewedById: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}reviewed_by_id'],
-      )!,
       reviewedAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
+        DriftSqlType.dateTime,
         data['${effectivePrefix}reviewed_at'],
+      )!,
+      businessId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}business_id'],
+      )!,
+      submittedBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}submitted_by'],
+      )!,
+      reviewedBy: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}reviewed_by'],
       )!,
     );
   }
@@ -337,12 +1347,14 @@ class BusinessVerificationData extends DataClass
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
-  final String businessId;
+  final String type;
+  final String docUrl;
   final String status;
   final String rejectionReason;
-  final String cacDocument;
-  final String reviewedById;
-  final String reviewedAt;
+  final DateTime reviewedAt;
+  final String businessId;
+  final String submittedBy;
+  final String reviewedBy;
   const BusinessVerificationData({
     required this.id,
     required this.syncStatus,
@@ -350,12 +1362,14 @@ class BusinessVerificationData extends DataClass
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,
-    required this.businessId,
+    required this.type,
+    required this.docUrl,
     required this.status,
     required this.rejectionReason,
-    required this.cacDocument,
-    required this.reviewedById,
     required this.reviewedAt,
+    required this.businessId,
+    required this.submittedBy,
+    required this.reviewedBy,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -370,12 +1384,14 @@ class BusinessVerificationData extends DataClass
     if (!nullToAbsent || deletedAt != null) {
       map['deleted_at'] = Variable<DateTime>(deletedAt);
     }
-    map['business_id'] = Variable<String>(businessId);
+    map['type'] = Variable<String>(type);
+    map['doc_url'] = Variable<String>(docUrl);
     map['status'] = Variable<String>(status);
     map['rejection_reason'] = Variable<String>(rejectionReason);
-    map['cac_document'] = Variable<String>(cacDocument);
-    map['reviewed_by_id'] = Variable<String>(reviewedById);
-    map['reviewed_at'] = Variable<String>(reviewedAt);
+    map['reviewed_at'] = Variable<DateTime>(reviewedAt);
+    map['business_id'] = Variable<String>(businessId);
+    map['submitted_by'] = Variable<String>(submittedBy);
+    map['reviewed_by'] = Variable<String>(reviewedBy);
     return map;
   }
 
@@ -391,12 +1407,14 @@ class BusinessVerificationData extends DataClass
       deletedAt: deletedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(deletedAt),
-      businessId: Value(businessId),
+      type: Value(type),
+      docUrl: Value(docUrl),
       status: Value(status),
       rejectionReason: Value(rejectionReason),
-      cacDocument: Value(cacDocument),
-      reviewedById: Value(reviewedById),
       reviewedAt: Value(reviewedAt),
+      businessId: Value(businessId),
+      submittedBy: Value(submittedBy),
+      reviewedBy: Value(reviewedBy),
     );
   }
 
@@ -412,12 +1430,14 @@ class BusinessVerificationData extends DataClass
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
-      businessId: serializer.fromJson<String>(json['businessId']),
+      type: serializer.fromJson<String>(json['type']),
+      docUrl: serializer.fromJson<String>(json['docUrl']),
       status: serializer.fromJson<String>(json['status']),
       rejectionReason: serializer.fromJson<String>(json['rejectionReason']),
-      cacDocument: serializer.fromJson<String>(json['cacDocument']),
-      reviewedById: serializer.fromJson<String>(json['reviewedById']),
-      reviewedAt: serializer.fromJson<String>(json['reviewedAt']),
+      reviewedAt: serializer.fromJson<DateTime>(json['reviewedAt']),
+      businessId: serializer.fromJson<String>(json['businessId']),
+      submittedBy: serializer.fromJson<String>(json['submittedBy']),
+      reviewedBy: serializer.fromJson<String>(json['reviewedBy']),
     );
   }
   @override
@@ -430,12 +1450,14 @@ class BusinessVerificationData extends DataClass
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
-      'businessId': serializer.toJson<String>(businessId),
+      'type': serializer.toJson<String>(type),
+      'docUrl': serializer.toJson<String>(docUrl),
       'status': serializer.toJson<String>(status),
       'rejectionReason': serializer.toJson<String>(rejectionReason),
-      'cacDocument': serializer.toJson<String>(cacDocument),
-      'reviewedById': serializer.toJson<String>(reviewedById),
-      'reviewedAt': serializer.toJson<String>(reviewedAt),
+      'reviewedAt': serializer.toJson<DateTime>(reviewedAt),
+      'businessId': serializer.toJson<String>(businessId),
+      'submittedBy': serializer.toJson<String>(submittedBy),
+      'reviewedBy': serializer.toJson<String>(reviewedBy),
     };
   }
 
@@ -446,12 +1468,14 @@ class BusinessVerificationData extends DataClass
     DateTime? createdAt,
     DateTime? updatedAt,
     Value<DateTime?> deletedAt = const Value.absent(),
-    String? businessId,
+    String? type,
+    String? docUrl,
     String? status,
     String? rejectionReason,
-    String? cacDocument,
-    String? reviewedById,
-    String? reviewedAt,
+    DateTime? reviewedAt,
+    String? businessId,
+    String? submittedBy,
+    String? reviewedBy,
   }) => BusinessVerificationData(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
@@ -459,12 +1483,14 @@ class BusinessVerificationData extends DataClass
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
-    businessId: businessId ?? this.businessId,
+    type: type ?? this.type,
+    docUrl: docUrl ?? this.docUrl,
     status: status ?? this.status,
     rejectionReason: rejectionReason ?? this.rejectionReason,
-    cacDocument: cacDocument ?? this.cacDocument,
-    reviewedById: reviewedById ?? this.reviewedById,
     reviewedAt: reviewedAt ?? this.reviewedAt,
+    businessId: businessId ?? this.businessId,
+    submittedBy: submittedBy ?? this.submittedBy,
+    reviewedBy: reviewedBy ?? this.reviewedBy,
   );
   BusinessVerificationData copyWithCompanion(
     BusinessVerificationCompanion data,
@@ -478,22 +1504,24 @@ class BusinessVerificationData extends DataClass
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
-      businessId: data.businessId.present
-          ? data.businessId.value
-          : this.businessId,
+      type: data.type.present ? data.type.value : this.type,
+      docUrl: data.docUrl.present ? data.docUrl.value : this.docUrl,
       status: data.status.present ? data.status.value : this.status,
       rejectionReason: data.rejectionReason.present
           ? data.rejectionReason.value
           : this.rejectionReason,
-      cacDocument: data.cacDocument.present
-          ? data.cacDocument.value
-          : this.cacDocument,
-      reviewedById: data.reviewedById.present
-          ? data.reviewedById.value
-          : this.reviewedById,
       reviewedAt: data.reviewedAt.present
           ? data.reviewedAt.value
           : this.reviewedAt,
+      businessId: data.businessId.present
+          ? data.businessId.value
+          : this.businessId,
+      submittedBy: data.submittedBy.present
+          ? data.submittedBy.value
+          : this.submittedBy,
+      reviewedBy: data.reviewedBy.present
+          ? data.reviewedBy.value
+          : this.reviewedBy,
     );
   }
 
@@ -506,12 +1534,14 @@ class BusinessVerificationData extends DataClass
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
-          ..write('businessId: $businessId, ')
+          ..write('type: $type, ')
+          ..write('docUrl: $docUrl, ')
           ..write('status: $status, ')
           ..write('rejectionReason: $rejectionReason, ')
-          ..write('cacDocument: $cacDocument, ')
-          ..write('reviewedById: $reviewedById, ')
-          ..write('reviewedAt: $reviewedAt')
+          ..write('reviewedAt: $reviewedAt, ')
+          ..write('businessId: $businessId, ')
+          ..write('submittedBy: $submittedBy, ')
+          ..write('reviewedBy: $reviewedBy')
           ..write(')'))
         .toString();
   }
@@ -524,12 +1554,14 @@ class BusinessVerificationData extends DataClass
     createdAt,
     updatedAt,
     deletedAt,
-    businessId,
+    type,
+    docUrl,
     status,
     rejectionReason,
-    cacDocument,
-    reviewedById,
     reviewedAt,
+    businessId,
+    submittedBy,
+    reviewedBy,
   );
   @override
   bool operator ==(Object other) =>
@@ -541,12 +1573,14 @@ class BusinessVerificationData extends DataClass
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
           other.deletedAt == this.deletedAt &&
-          other.businessId == this.businessId &&
+          other.type == this.type &&
+          other.docUrl == this.docUrl &&
           other.status == this.status &&
           other.rejectionReason == this.rejectionReason &&
-          other.cacDocument == this.cacDocument &&
-          other.reviewedById == this.reviewedById &&
-          other.reviewedAt == this.reviewedAt);
+          other.reviewedAt == this.reviewedAt &&
+          other.businessId == this.businessId &&
+          other.submittedBy == this.submittedBy &&
+          other.reviewedBy == this.reviewedBy);
 }
 
 class BusinessVerificationCompanion
@@ -557,12 +1591,14 @@ class BusinessVerificationCompanion
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   final Value<DateTime?> deletedAt;
-  final Value<String> businessId;
+  final Value<String> type;
+  final Value<String> docUrl;
   final Value<String> status;
   final Value<String> rejectionReason;
-  final Value<String> cacDocument;
-  final Value<String> reviewedById;
-  final Value<String> reviewedAt;
+  final Value<DateTime> reviewedAt;
+  final Value<String> businessId;
+  final Value<String> submittedBy;
+  final Value<String> reviewedBy;
   final Value<int> rowid;
   const BusinessVerificationCompanion({
     this.id = const Value.absent(),
@@ -571,12 +1607,14 @@ class BusinessVerificationCompanion
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
-    this.businessId = const Value.absent(),
+    this.type = const Value.absent(),
+    this.docUrl = const Value.absent(),
     this.status = const Value.absent(),
     this.rejectionReason = const Value.absent(),
-    this.cacDocument = const Value.absent(),
-    this.reviewedById = const Value.absent(),
     this.reviewedAt = const Value.absent(),
+    this.businessId = const Value.absent(),
+    this.submittedBy = const Value.absent(),
+    this.reviewedBy = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   BusinessVerificationCompanion.insert({
@@ -586,21 +1624,25 @@ class BusinessVerificationCompanion
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
-    required String businessId,
+    required String type,
+    required String docUrl,
     required String status,
     required String rejectionReason,
-    required String cacDocument,
-    required String reviewedById,
-    required String reviewedAt,
+    required DateTime reviewedAt,
+    required String businessId,
+    required String submittedBy,
+    required String reviewedBy,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        syncStatus = Value(syncStatus),
-       businessId = Value(businessId),
+       type = Value(type),
+       docUrl = Value(docUrl),
        status = Value(status),
        rejectionReason = Value(rejectionReason),
-       cacDocument = Value(cacDocument),
-       reviewedById = Value(reviewedById),
-       reviewedAt = Value(reviewedAt);
+       reviewedAt = Value(reviewedAt),
+       businessId = Value(businessId),
+       submittedBy = Value(submittedBy),
+       reviewedBy = Value(reviewedBy);
   static Insertable<BusinessVerificationData> custom({
     Expression<String>? id,
     Expression<String>? syncStatus,
@@ -608,12 +1650,14 @@ class BusinessVerificationCompanion
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<DateTime>? deletedAt,
-    Expression<String>? businessId,
+    Expression<String>? type,
+    Expression<String>? docUrl,
     Expression<String>? status,
     Expression<String>? rejectionReason,
-    Expression<String>? cacDocument,
-    Expression<String>? reviewedById,
-    Expression<String>? reviewedAt,
+    Expression<DateTime>? reviewedAt,
+    Expression<String>? businessId,
+    Expression<String>? submittedBy,
+    Expression<String>? reviewedBy,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -623,12 +1667,14 @@ class BusinessVerificationCompanion
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (deletedAt != null) 'deleted_at': deletedAt,
-      if (businessId != null) 'business_id': businessId,
+      if (type != null) 'type': type,
+      if (docUrl != null) 'doc_url': docUrl,
       if (status != null) 'status': status,
       if (rejectionReason != null) 'rejection_reason': rejectionReason,
-      if (cacDocument != null) 'cac_document': cacDocument,
-      if (reviewedById != null) 'reviewed_by_id': reviewedById,
       if (reviewedAt != null) 'reviewed_at': reviewedAt,
+      if (businessId != null) 'business_id': businessId,
+      if (submittedBy != null) 'submitted_by': submittedBy,
+      if (reviewedBy != null) 'reviewed_by': reviewedBy,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -640,12 +1686,14 @@ class BusinessVerificationCompanion
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
     Value<DateTime?>? deletedAt,
-    Value<String>? businessId,
+    Value<String>? type,
+    Value<String>? docUrl,
     Value<String>? status,
     Value<String>? rejectionReason,
-    Value<String>? cacDocument,
-    Value<String>? reviewedById,
-    Value<String>? reviewedAt,
+    Value<DateTime>? reviewedAt,
+    Value<String>? businessId,
+    Value<String>? submittedBy,
+    Value<String>? reviewedBy,
     Value<int>? rowid,
   }) {
     return BusinessVerificationCompanion(
@@ -655,12 +1703,14 @@ class BusinessVerificationCompanion
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
-      businessId: businessId ?? this.businessId,
+      type: type ?? this.type,
+      docUrl: docUrl ?? this.docUrl,
       status: status ?? this.status,
       rejectionReason: rejectionReason ?? this.rejectionReason,
-      cacDocument: cacDocument ?? this.cacDocument,
-      reviewedById: reviewedById ?? this.reviewedById,
       reviewedAt: reviewedAt ?? this.reviewedAt,
+      businessId: businessId ?? this.businessId,
+      submittedBy: submittedBy ?? this.submittedBy,
+      reviewedBy: reviewedBy ?? this.reviewedBy,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -686,8 +1736,11 @@ class BusinessVerificationCompanion
     if (deletedAt.present) {
       map['deleted_at'] = Variable<DateTime>(deletedAt.value);
     }
-    if (businessId.present) {
-      map['business_id'] = Variable<String>(businessId.value);
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (docUrl.present) {
+      map['doc_url'] = Variable<String>(docUrl.value);
     }
     if (status.present) {
       map['status'] = Variable<String>(status.value);
@@ -695,14 +1748,17 @@ class BusinessVerificationCompanion
     if (rejectionReason.present) {
       map['rejection_reason'] = Variable<String>(rejectionReason.value);
     }
-    if (cacDocument.present) {
-      map['cac_document'] = Variable<String>(cacDocument.value);
-    }
-    if (reviewedById.present) {
-      map['reviewed_by_id'] = Variable<String>(reviewedById.value);
-    }
     if (reviewedAt.present) {
-      map['reviewed_at'] = Variable<String>(reviewedAt.value);
+      map['reviewed_at'] = Variable<DateTime>(reviewedAt.value);
+    }
+    if (businessId.present) {
+      map['business_id'] = Variable<String>(businessId.value);
+    }
+    if (submittedBy.present) {
+      map['submitted_by'] = Variable<String>(submittedBy.value);
+    }
+    if (reviewedBy.present) {
+      map['reviewed_by'] = Variable<String>(reviewedBy.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -719,12 +1775,14 @@ class BusinessVerificationCompanion
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
-          ..write('businessId: $businessId, ')
+          ..write('type: $type, ')
+          ..write('docUrl: $docUrl, ')
           ..write('status: $status, ')
           ..write('rejectionReason: $rejectionReason, ')
-          ..write('cacDocument: $cacDocument, ')
-          ..write('reviewedById: $reviewedById, ')
           ..write('reviewedAt: $reviewedAt, ')
+          ..write('businessId: $businessId, ')
+          ..write('submittedBy: $submittedBy, ')
+          ..write('reviewedBy: $reviewedBy, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -803,17 +1861,6 @@ class $BusinessesTable extends Businesses
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _collectionIdMeta = const VerificationMeta(
-    'collectionId',
-  );
-  @override
-  late final GeneratedColumn<String> collectionId = GeneratedColumn<String>(
-    'collection_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -881,6 +1928,20 @@ class $BusinessesTable extends Businesses
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
+  static const VerificationMeta _isVerifiedMeta = const VerificationMeta(
+    'isVerified',
+  );
+  @override
+  late final GeneratedColumn<bool> isVerified = GeneratedColumn<bool>(
+    'is_verified',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_verified" IN (0, 1))',
+    ),
+  );
   static const VerificationMeta _verificationMeta = const VerificationMeta(
     'verification',
   );
@@ -903,7 +1964,6 @@ class $BusinessesTable extends Businesses
     createdAt,
     updatedAt,
     deletedAt,
-    collectionId,
     name,
     type,
     phone,
@@ -911,6 +1971,7 @@ class $BusinessesTable extends Businesses
     city,
     state,
     country,
+    isVerified,
     verification,
   ];
   @override
@@ -961,17 +2022,6 @@ class $BusinessesTable extends Businesses
         _deletedAtMeta,
         deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
       );
-    }
-    if (data.containsKey('collection_id')) {
-      context.handle(
-        _collectionIdMeta,
-        collectionId.isAcceptableOrUnknown(
-          data['collection_id']!,
-          _collectionIdMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_collectionIdMeta);
     }
     if (data.containsKey('name')) {
       context.handle(
@@ -1032,6 +2082,14 @@ class $BusinessesTable extends Businesses
     } else if (isInserting) {
       context.missing(_countryMeta);
     }
+    if (data.containsKey('is_verified')) {
+      context.handle(
+        _isVerifiedMeta,
+        isVerified.isAcceptableOrUnknown(data['is_verified']!, _isVerifiedMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_isVerifiedMeta);
+    }
     if (data.containsKey('verification')) {
       context.handle(
         _verificationMeta,
@@ -1076,10 +2134,6 @@ class $BusinessesTable extends Businesses
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
       ),
-      collectionId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}collection_id'],
-      )!,
       name: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}name'],
@@ -1108,6 +2162,10 @@ class $BusinessesTable extends Businesses
         DriftSqlType.string,
         data['${effectivePrefix}country'],
       )!,
+      isVerified: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_verified'],
+      )!,
       verification: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}verification'],
@@ -1128,7 +2186,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
-  final String collectionId;
   final String name;
   final String type;
   final String phone;
@@ -1136,6 +2193,7 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
   final String city;
   final String state;
   final String country;
+  final bool isVerified;
   final String verification;
   const BusinessesData({
     required this.id,
@@ -1144,7 +2202,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,
-    required this.collectionId,
     required this.name,
     required this.type,
     required this.phone,
@@ -1152,6 +2209,7 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
     required this.city,
     required this.state,
     required this.country,
+    required this.isVerified,
     required this.verification,
   });
   @override
@@ -1167,7 +2225,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
     if (!nullToAbsent || deletedAt != null) {
       map['deleted_at'] = Variable<DateTime>(deletedAt);
     }
-    map['collection_id'] = Variable<String>(collectionId);
     map['name'] = Variable<String>(name);
     map['type'] = Variable<String>(type);
     map['phone'] = Variable<String>(phone);
@@ -1175,6 +2232,7 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
     map['city'] = Variable<String>(city);
     map['state'] = Variable<String>(state);
     map['country'] = Variable<String>(country);
+    map['is_verified'] = Variable<bool>(isVerified);
     map['verification'] = Variable<String>(verification);
     return map;
   }
@@ -1191,7 +2249,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
       deletedAt: deletedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(deletedAt),
-      collectionId: Value(collectionId),
       name: Value(name),
       type: Value(type),
       phone: Value(phone),
@@ -1199,6 +2256,7 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
       city: Value(city),
       state: Value(state),
       country: Value(country),
+      isVerified: Value(isVerified),
       verification: Value(verification),
     );
   }
@@ -1215,7 +2273,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
-      collectionId: serializer.fromJson<String>(json['collectionId']),
       name: serializer.fromJson<String>(json['name']),
       type: serializer.fromJson<String>(json['type']),
       phone: serializer.fromJson<String>(json['phone']),
@@ -1223,6 +2280,7 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
       city: serializer.fromJson<String>(json['city']),
       state: serializer.fromJson<String>(json['state']),
       country: serializer.fromJson<String>(json['country']),
+      isVerified: serializer.fromJson<bool>(json['isVerified']),
       verification: serializer.fromJson<String>(json['verification']),
     );
   }
@@ -1236,7 +2294,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
-      'collectionId': serializer.toJson<String>(collectionId),
       'name': serializer.toJson<String>(name),
       'type': serializer.toJson<String>(type),
       'phone': serializer.toJson<String>(phone),
@@ -1244,6 +2301,7 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
       'city': serializer.toJson<String>(city),
       'state': serializer.toJson<String>(state),
       'country': serializer.toJson<String>(country),
+      'isVerified': serializer.toJson<bool>(isVerified),
       'verification': serializer.toJson<String>(verification),
     };
   }
@@ -1255,7 +2313,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
     DateTime? createdAt,
     DateTime? updatedAt,
     Value<DateTime?> deletedAt = const Value.absent(),
-    String? collectionId,
     String? name,
     String? type,
     String? phone,
@@ -1263,6 +2320,7 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
     String? city,
     String? state,
     String? country,
+    bool? isVerified,
     String? verification,
   }) => BusinessesData(
     id: id ?? this.id,
@@ -1271,7 +2329,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
-    collectionId: collectionId ?? this.collectionId,
     name: name ?? this.name,
     type: type ?? this.type,
     phone: phone ?? this.phone,
@@ -1279,6 +2336,7 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
     city: city ?? this.city,
     state: state ?? this.state,
     country: country ?? this.country,
+    isVerified: isVerified ?? this.isVerified,
     verification: verification ?? this.verification,
   );
   BusinessesData copyWithCompanion(BusinessesCompanion data) {
@@ -1291,9 +2349,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
-      collectionId: data.collectionId.present
-          ? data.collectionId.value
-          : this.collectionId,
       name: data.name.present ? data.name.value : this.name,
       type: data.type.present ? data.type.value : this.type,
       phone: data.phone.present ? data.phone.value : this.phone,
@@ -1303,6 +2358,9 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
       city: data.city.present ? data.city.value : this.city,
       state: data.state.present ? data.state.value : this.state,
       country: data.country.present ? data.country.value : this.country,
+      isVerified: data.isVerified.present
+          ? data.isVerified.value
+          : this.isVerified,
       verification: data.verification.present
           ? data.verification.value
           : this.verification,
@@ -1318,7 +2376,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
-          ..write('collectionId: $collectionId, ')
           ..write('name: $name, ')
           ..write('type: $type, ')
           ..write('phone: $phone, ')
@@ -1326,6 +2383,7 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
           ..write('city: $city, ')
           ..write('state: $state, ')
           ..write('country: $country, ')
+          ..write('isVerified: $isVerified, ')
           ..write('verification: $verification')
           ..write(')'))
         .toString();
@@ -1339,7 +2397,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
     createdAt,
     updatedAt,
     deletedAt,
-    collectionId,
     name,
     type,
     phone,
@@ -1347,6 +2404,7 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
     city,
     state,
     country,
+    isVerified,
     verification,
   );
   @override
@@ -1359,7 +2417,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
           other.deletedAt == this.deletedAt &&
-          other.collectionId == this.collectionId &&
           other.name == this.name &&
           other.type == this.type &&
           other.phone == this.phone &&
@@ -1367,6 +2424,7 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
           other.city == this.city &&
           other.state == this.state &&
           other.country == this.country &&
+          other.isVerified == this.isVerified &&
           other.verification == this.verification);
 }
 
@@ -1377,7 +2435,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   final Value<DateTime?> deletedAt;
-  final Value<String> collectionId;
   final Value<String> name;
   final Value<String> type;
   final Value<String> phone;
@@ -1385,6 +2442,7 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
   final Value<String> city;
   final Value<String> state;
   final Value<String> country;
+  final Value<bool> isVerified;
   final Value<String> verification;
   final Value<int> rowid;
   const BusinessesCompanion({
@@ -1394,7 +2452,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
-    this.collectionId = const Value.absent(),
     this.name = const Value.absent(),
     this.type = const Value.absent(),
     this.phone = const Value.absent(),
@@ -1402,6 +2459,7 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
     this.city = const Value.absent(),
     this.state = const Value.absent(),
     this.country = const Value.absent(),
+    this.isVerified = const Value.absent(),
     this.verification = const Value.absent(),
     this.rowid = const Value.absent(),
   });
@@ -1412,7 +2470,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
-    required String collectionId,
     required String name,
     required String type,
     required String phone,
@@ -1420,11 +2477,11 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
     required String city,
     required String state,
     required String country,
+    required bool isVerified,
     required String verification,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        syncStatus = Value(syncStatus),
-       collectionId = Value(collectionId),
        name = Value(name),
        type = Value(type),
        phone = Value(phone),
@@ -1432,6 +2489,7 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
        city = Value(city),
        state = Value(state),
        country = Value(country),
+       isVerified = Value(isVerified),
        verification = Value(verification);
   static Insertable<BusinessesData> custom({
     Expression<String>? id,
@@ -1440,7 +2498,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<DateTime>? deletedAt,
-    Expression<String>? collectionId,
     Expression<String>? name,
     Expression<String>? type,
     Expression<String>? phone,
@@ -1448,6 +2505,7 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
     Expression<String>? city,
     Expression<String>? state,
     Expression<String>? country,
+    Expression<bool>? isVerified,
     Expression<String>? verification,
     Expression<int>? rowid,
   }) {
@@ -1458,7 +2516,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (deletedAt != null) 'deleted_at': deletedAt,
-      if (collectionId != null) 'collection_id': collectionId,
       if (name != null) 'name': name,
       if (type != null) 'type': type,
       if (phone != null) 'phone': phone,
@@ -1466,6 +2523,7 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
       if (city != null) 'city': city,
       if (state != null) 'state': state,
       if (country != null) 'country': country,
+      if (isVerified != null) 'is_verified': isVerified,
       if (verification != null) 'verification': verification,
       if (rowid != null) 'rowid': rowid,
     });
@@ -1478,7 +2536,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
     Value<DateTime?>? deletedAt,
-    Value<String>? collectionId,
     Value<String>? name,
     Value<String>? type,
     Value<String>? phone,
@@ -1486,6 +2543,7 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
     Value<String>? city,
     Value<String>? state,
     Value<String>? country,
+    Value<bool>? isVerified,
     Value<String>? verification,
     Value<int>? rowid,
   }) {
@@ -1496,7 +2554,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
-      collectionId: collectionId ?? this.collectionId,
       name: name ?? this.name,
       type: type ?? this.type,
       phone: phone ?? this.phone,
@@ -1504,6 +2561,7 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
       city: city ?? this.city,
       state: state ?? this.state,
       country: country ?? this.country,
+      isVerified: isVerified ?? this.isVerified,
       verification: verification ?? this.verification,
       rowid: rowid ?? this.rowid,
     );
@@ -1530,9 +2588,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
     if (deletedAt.present) {
       map['deleted_at'] = Variable<DateTime>(deletedAt.value);
     }
-    if (collectionId.present) {
-      map['collection_id'] = Variable<String>(collectionId.value);
-    }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
@@ -1554,6 +2609,9 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
     if (country.present) {
       map['country'] = Variable<String>(country.value);
     }
+    if (isVerified.present) {
+      map['is_verified'] = Variable<bool>(isVerified.value);
+    }
     if (verification.present) {
       map['verification'] = Variable<String>(verification.value);
     }
@@ -1572,7 +2630,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
-          ..write('collectionId: $collectionId, ')
           ..write('name: $name, ')
           ..write('type: $type, ')
           ..write('phone: $phone, ')
@@ -1580,6 +2637,7 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
           ..write('city: $city, ')
           ..write('state: $state, ')
           ..write('country: $country, ')
+          ..write('isVerified: $isVerified, ')
           ..write('verification: $verification, ')
           ..write('rowid: $rowid')
           ..write(')'))
@@ -5936,1078 +6994,6 @@ class CustomerCompanion extends UpdateCompanion<CustomerData> {
   }
 }
 
-class $UserTable extends User with TableInfo<$UserTable, UserData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $UserTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<String> id = GeneratedColumn<String>(
-    'id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
-    'syncStatus',
-  );
-  @override
-  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
-    'sync_status',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _syncDateMeta = const VerificationMeta(
-    'syncDate',
-  );
-  @override
-  late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
-    'sync_date',
-    aliasedName,
-    true,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta(
-    'createdAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
-    'created_at',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
-  );
-  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
-    'updatedAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
-    'updated_at',
-    aliasedName,
-    false,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-    defaultValue: currentDateAndTime,
-  );
-  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
-    'deletedAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
-    'deleted_at',
-    aliasedName,
-    true,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _imageMeta = const VerificationMeta('image');
-  @override
-  late final GeneratedColumn<String> image = GeneratedColumn<String>(
-    'image',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _userNameMeta = const VerificationMeta(
-    'userName',
-  );
-  @override
-  late final GeneratedColumn<String> userName = GeneratedColumn<String>(
-    'user_name',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _firstNameMeta = const VerificationMeta(
-    'firstName',
-  );
-  @override
-  late final GeneratedColumn<String> firstName = GeneratedColumn<String>(
-    'first_name',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _lastNameMeta = const VerificationMeta(
-    'lastName',
-  );
-  @override
-  late final GeneratedColumn<String> lastName = GeneratedColumn<String>(
-    'last_name',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _emailMeta = const VerificationMeta('email');
-  @override
-  late final GeneratedColumn<String> email = GeneratedColumn<String>(
-    'email',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _passwordMeta = const VerificationMeta(
-    'password',
-  );
-  @override
-  late final GeneratedColumn<String> password = GeneratedColumn<String>(
-    'password',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _roleMeta = const VerificationMeta('role');
-  @override
-  late final GeneratedColumn<String> role = GeneratedColumn<String>(
-    'role',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _isEmailVerifiedMeta = const VerificationMeta(
-    'isEmailVerified',
-  );
-  @override
-  late final GeneratedColumn<bool> isEmailVerified = GeneratedColumn<bool>(
-    'is_email_verified',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("is_email_verified" IN (0, 1))',
-    ),
-  );
-  static const VerificationMeta _creditScoreMeta = const VerificationMeta(
-    'creditScore',
-  );
-  @override
-  late final GeneratedColumn<int> creditScore = GeneratedColumn<int>(
-    'credit_score',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _creditScoreStatusMeta = const VerificationMeta(
-    'creditScoreStatus',
-  );
-  @override
-  late final GeneratedColumn<String> creditScoreStatus =
-      GeneratedColumn<String>(
-        'credit_score_status',
-        aliasedName,
-        false,
-        type: DriftSqlType.string,
-        requiredDuringInsert: true,
-      );
-  static const VerificationMeta _verificationMeta = const VerificationMeta(
-    'verification',
-  );
-  @override
-  late final GeneratedColumn<String> verification = GeneratedColumn<String>(
-    'verification',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _businessVerificationMeta =
-      const VerificationMeta('businessVerification');
-  @override
-  late final GeneratedColumn<String> businessVerification =
-      GeneratedColumn<String>(
-        'business_verification',
-        aliasedName,
-        true,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-      );
-  static const VerificationMeta _traderMeta = const VerificationMeta('trader');
-  @override
-  late final GeneratedColumn<String> trader = GeneratedColumn<String>(
-    'trader',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    syncStatus,
-    syncDate,
-    createdAt,
-    updatedAt,
-    deletedAt,
-    image,
-    userName,
-    firstName,
-    lastName,
-    email,
-    password,
-    role,
-    isEmailVerified,
-    creditScore,
-    creditScoreStatus,
-    verification,
-    businessVerification,
-    trader,
-  ];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'user';
-  @override
-  VerificationContext validateIntegrity(
-    Insertable<UserData> instance, {
-    bool isInserting = false,
-  }) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
-    }
-    if (data.containsKey('sync_status')) {
-      context.handle(
-        _syncStatusMeta,
-        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_syncStatusMeta);
-    }
-    if (data.containsKey('sync_date')) {
-      context.handle(
-        _syncDateMeta,
-        syncDate.isAcceptableOrUnknown(data['sync_date']!, _syncDateMeta),
-      );
-    }
-    if (data.containsKey('created_at')) {
-      context.handle(
-        _createdAtMeta,
-        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
-      );
-    }
-    if (data.containsKey('updated_at')) {
-      context.handle(
-        _updatedAtMeta,
-        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
-      );
-    }
-    if (data.containsKey('deleted_at')) {
-      context.handle(
-        _deletedAtMeta,
-        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
-      );
-    }
-    if (data.containsKey('image')) {
-      context.handle(
-        _imageMeta,
-        image.isAcceptableOrUnknown(data['image']!, _imageMeta),
-      );
-    }
-    if (data.containsKey('user_name')) {
-      context.handle(
-        _userNameMeta,
-        userName.isAcceptableOrUnknown(data['user_name']!, _userNameMeta),
-      );
-    }
-    if (data.containsKey('first_name')) {
-      context.handle(
-        _firstNameMeta,
-        firstName.isAcceptableOrUnknown(data['first_name']!, _firstNameMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_firstNameMeta);
-    }
-    if (data.containsKey('last_name')) {
-      context.handle(
-        _lastNameMeta,
-        lastName.isAcceptableOrUnknown(data['last_name']!, _lastNameMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_lastNameMeta);
-    }
-    if (data.containsKey('email')) {
-      context.handle(
-        _emailMeta,
-        email.isAcceptableOrUnknown(data['email']!, _emailMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_emailMeta);
-    }
-    if (data.containsKey('password')) {
-      context.handle(
-        _passwordMeta,
-        password.isAcceptableOrUnknown(data['password']!, _passwordMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_passwordMeta);
-    }
-    if (data.containsKey('role')) {
-      context.handle(
-        _roleMeta,
-        role.isAcceptableOrUnknown(data['role']!, _roleMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_roleMeta);
-    }
-    if (data.containsKey('is_email_verified')) {
-      context.handle(
-        _isEmailVerifiedMeta,
-        isEmailVerified.isAcceptableOrUnknown(
-          data['is_email_verified']!,
-          _isEmailVerifiedMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_isEmailVerifiedMeta);
-    }
-    if (data.containsKey('credit_score')) {
-      context.handle(
-        _creditScoreMeta,
-        creditScore.isAcceptableOrUnknown(
-          data['credit_score']!,
-          _creditScoreMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_creditScoreMeta);
-    }
-    if (data.containsKey('credit_score_status')) {
-      context.handle(
-        _creditScoreStatusMeta,
-        creditScoreStatus.isAcceptableOrUnknown(
-          data['credit_score_status']!,
-          _creditScoreStatusMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_creditScoreStatusMeta);
-    }
-    if (data.containsKey('verification')) {
-      context.handle(
-        _verificationMeta,
-        verification.isAcceptableOrUnknown(
-          data['verification']!,
-          _verificationMeta,
-        ),
-      );
-    }
-    if (data.containsKey('business_verification')) {
-      context.handle(
-        _businessVerificationMeta,
-        businessVerification.isAcceptableOrUnknown(
-          data['business_verification']!,
-          _businessVerificationMeta,
-        ),
-      );
-    }
-    if (data.containsKey('trader')) {
-      context.handle(
-        _traderMeta,
-        trader.isAcceptableOrUnknown(data['trader']!, _traderMeta),
-      );
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => const {};
-  @override
-  UserData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return UserData(
-      id: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}id'],
-      )!,
-      syncStatus: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}sync_status'],
-      )!,
-      syncDate: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}sync_date'],
-      ),
-      createdAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}created_at'],
-      )!,
-      updatedAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}updated_at'],
-      )!,
-      deletedAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}deleted_at'],
-      ),
-      image: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}image'],
-      ),
-      userName: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}user_name'],
-      ),
-      firstName: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}first_name'],
-      )!,
-      lastName: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}last_name'],
-      )!,
-      email: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}email'],
-      )!,
-      password: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}password'],
-      )!,
-      role: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}role'],
-      )!,
-      isEmailVerified: attachedDatabase.typeMapping.read(
-        DriftSqlType.bool,
-        data['${effectivePrefix}is_email_verified'],
-      )!,
-      creditScore: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}credit_score'],
-      )!,
-      creditScoreStatus: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}credit_score_status'],
-      )!,
-      verification: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}verification'],
-      ),
-      businessVerification: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}business_verification'],
-      ),
-      trader: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}trader'],
-      ),
-    );
-  }
-
-  @override
-  $UserTable createAlias(String alias) {
-    return $UserTable(attachedDatabase, alias);
-  }
-}
-
-class UserData extends DataClass implements Insertable<UserData> {
-  final String id;
-  final String syncStatus;
-  final DateTime? syncDate;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final DateTime? deletedAt;
-  final String? image;
-  final String? userName;
-  final String firstName;
-  final String lastName;
-  final String email;
-  final String password;
-  final String role;
-  final bool isEmailVerified;
-  final int creditScore;
-  final String creditScoreStatus;
-  final String? verification;
-  final String? businessVerification;
-  final String? trader;
-  const UserData({
-    required this.id,
-    required this.syncStatus,
-    this.syncDate,
-    required this.createdAt,
-    required this.updatedAt,
-    this.deletedAt,
-    this.image,
-    this.userName,
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    required this.password,
-    required this.role,
-    required this.isEmailVerified,
-    required this.creditScore,
-    required this.creditScoreStatus,
-    this.verification,
-    this.businessVerification,
-    this.trader,
-  });
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<String>(id);
-    map['sync_status'] = Variable<String>(syncStatus);
-    if (!nullToAbsent || syncDate != null) {
-      map['sync_date'] = Variable<DateTime>(syncDate);
-    }
-    map['created_at'] = Variable<DateTime>(createdAt);
-    map['updated_at'] = Variable<DateTime>(updatedAt);
-    if (!nullToAbsent || deletedAt != null) {
-      map['deleted_at'] = Variable<DateTime>(deletedAt);
-    }
-    if (!nullToAbsent || image != null) {
-      map['image'] = Variable<String>(image);
-    }
-    if (!nullToAbsent || userName != null) {
-      map['user_name'] = Variable<String>(userName);
-    }
-    map['first_name'] = Variable<String>(firstName);
-    map['last_name'] = Variable<String>(lastName);
-    map['email'] = Variable<String>(email);
-    map['password'] = Variable<String>(password);
-    map['role'] = Variable<String>(role);
-    map['is_email_verified'] = Variable<bool>(isEmailVerified);
-    map['credit_score'] = Variable<int>(creditScore);
-    map['credit_score_status'] = Variable<String>(creditScoreStatus);
-    if (!nullToAbsent || verification != null) {
-      map['verification'] = Variable<String>(verification);
-    }
-    if (!nullToAbsent || businessVerification != null) {
-      map['business_verification'] = Variable<String>(businessVerification);
-    }
-    if (!nullToAbsent || trader != null) {
-      map['trader'] = Variable<String>(trader);
-    }
-    return map;
-  }
-
-  UserCompanion toCompanion(bool nullToAbsent) {
-    return UserCompanion(
-      id: Value(id),
-      syncStatus: Value(syncStatus),
-      syncDate: syncDate == null && nullToAbsent
-          ? const Value.absent()
-          : Value(syncDate),
-      createdAt: Value(createdAt),
-      updatedAt: Value(updatedAt),
-      deletedAt: deletedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(deletedAt),
-      image: image == null && nullToAbsent
-          ? const Value.absent()
-          : Value(image),
-      userName: userName == null && nullToAbsent
-          ? const Value.absent()
-          : Value(userName),
-      firstName: Value(firstName),
-      lastName: Value(lastName),
-      email: Value(email),
-      password: Value(password),
-      role: Value(role),
-      isEmailVerified: Value(isEmailVerified),
-      creditScore: Value(creditScore),
-      creditScoreStatus: Value(creditScoreStatus),
-      verification: verification == null && nullToAbsent
-          ? const Value.absent()
-          : Value(verification),
-      businessVerification: businessVerification == null && nullToAbsent
-          ? const Value.absent()
-          : Value(businessVerification),
-      trader: trader == null && nullToAbsent
-          ? const Value.absent()
-          : Value(trader),
-    );
-  }
-
-  factory UserData.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return UserData(
-      id: serializer.fromJson<String>(json['id']),
-      syncStatus: serializer.fromJson<String>(json['syncStatus']),
-      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
-      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
-      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
-      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
-      image: serializer.fromJson<String?>(json['image']),
-      userName: serializer.fromJson<String?>(json['userName']),
-      firstName: serializer.fromJson<String>(json['firstName']),
-      lastName: serializer.fromJson<String>(json['lastName']),
-      email: serializer.fromJson<String>(json['email']),
-      password: serializer.fromJson<String>(json['password']),
-      role: serializer.fromJson<String>(json['role']),
-      isEmailVerified: serializer.fromJson<bool>(json['isEmailVerified']),
-      creditScore: serializer.fromJson<int>(json['creditScore']),
-      creditScoreStatus: serializer.fromJson<String>(json['creditScoreStatus']),
-      verification: serializer.fromJson<String?>(json['verification']),
-      businessVerification: serializer.fromJson<String?>(
-        json['businessVerification'],
-      ),
-      trader: serializer.fromJson<String?>(json['trader']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<String>(id),
-      'syncStatus': serializer.toJson<String>(syncStatus),
-      'syncDate': serializer.toJson<DateTime?>(syncDate),
-      'createdAt': serializer.toJson<DateTime>(createdAt),
-      'updatedAt': serializer.toJson<DateTime>(updatedAt),
-      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
-      'image': serializer.toJson<String?>(image),
-      'userName': serializer.toJson<String?>(userName),
-      'firstName': serializer.toJson<String>(firstName),
-      'lastName': serializer.toJson<String>(lastName),
-      'email': serializer.toJson<String>(email),
-      'password': serializer.toJson<String>(password),
-      'role': serializer.toJson<String>(role),
-      'isEmailVerified': serializer.toJson<bool>(isEmailVerified),
-      'creditScore': serializer.toJson<int>(creditScore),
-      'creditScoreStatus': serializer.toJson<String>(creditScoreStatus),
-      'verification': serializer.toJson<String?>(verification),
-      'businessVerification': serializer.toJson<String?>(businessVerification),
-      'trader': serializer.toJson<String?>(trader),
-    };
-  }
-
-  UserData copyWith({
-    String? id,
-    String? syncStatus,
-    Value<DateTime?> syncDate = const Value.absent(),
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    Value<DateTime?> deletedAt = const Value.absent(),
-    Value<String?> image = const Value.absent(),
-    Value<String?> userName = const Value.absent(),
-    String? firstName,
-    String? lastName,
-    String? email,
-    String? password,
-    String? role,
-    bool? isEmailVerified,
-    int? creditScore,
-    String? creditScoreStatus,
-    Value<String?> verification = const Value.absent(),
-    Value<String?> businessVerification = const Value.absent(),
-    Value<String?> trader = const Value.absent(),
-  }) => UserData(
-    id: id ?? this.id,
-    syncStatus: syncStatus ?? this.syncStatus,
-    syncDate: syncDate.present ? syncDate.value : this.syncDate,
-    createdAt: createdAt ?? this.createdAt,
-    updatedAt: updatedAt ?? this.updatedAt,
-    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
-    image: image.present ? image.value : this.image,
-    userName: userName.present ? userName.value : this.userName,
-    firstName: firstName ?? this.firstName,
-    lastName: lastName ?? this.lastName,
-    email: email ?? this.email,
-    password: password ?? this.password,
-    role: role ?? this.role,
-    isEmailVerified: isEmailVerified ?? this.isEmailVerified,
-    creditScore: creditScore ?? this.creditScore,
-    creditScoreStatus: creditScoreStatus ?? this.creditScoreStatus,
-    verification: verification.present ? verification.value : this.verification,
-    businessVerification: businessVerification.present
-        ? businessVerification.value
-        : this.businessVerification,
-    trader: trader.present ? trader.value : this.trader,
-  );
-  UserData copyWithCompanion(UserCompanion data) {
-    return UserData(
-      id: data.id.present ? data.id.value : this.id,
-      syncStatus: data.syncStatus.present
-          ? data.syncStatus.value
-          : this.syncStatus,
-      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
-      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
-      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
-      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
-      image: data.image.present ? data.image.value : this.image,
-      userName: data.userName.present ? data.userName.value : this.userName,
-      firstName: data.firstName.present ? data.firstName.value : this.firstName,
-      lastName: data.lastName.present ? data.lastName.value : this.lastName,
-      email: data.email.present ? data.email.value : this.email,
-      password: data.password.present ? data.password.value : this.password,
-      role: data.role.present ? data.role.value : this.role,
-      isEmailVerified: data.isEmailVerified.present
-          ? data.isEmailVerified.value
-          : this.isEmailVerified,
-      creditScore: data.creditScore.present
-          ? data.creditScore.value
-          : this.creditScore,
-      creditScoreStatus: data.creditScoreStatus.present
-          ? data.creditScoreStatus.value
-          : this.creditScoreStatus,
-      verification: data.verification.present
-          ? data.verification.value
-          : this.verification,
-      businessVerification: data.businessVerification.present
-          ? data.businessVerification.value
-          : this.businessVerification,
-      trader: data.trader.present ? data.trader.value : this.trader,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('UserData(')
-          ..write('id: $id, ')
-          ..write('syncStatus: $syncStatus, ')
-          ..write('syncDate: $syncDate, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt, ')
-          ..write('deletedAt: $deletedAt, ')
-          ..write('image: $image, ')
-          ..write('userName: $userName, ')
-          ..write('firstName: $firstName, ')
-          ..write('lastName: $lastName, ')
-          ..write('email: $email, ')
-          ..write('password: $password, ')
-          ..write('role: $role, ')
-          ..write('isEmailVerified: $isEmailVerified, ')
-          ..write('creditScore: $creditScore, ')
-          ..write('creditScoreStatus: $creditScoreStatus, ')
-          ..write('verification: $verification, ')
-          ..write('businessVerification: $businessVerification, ')
-          ..write('trader: $trader')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(
-    id,
-    syncStatus,
-    syncDate,
-    createdAt,
-    updatedAt,
-    deletedAt,
-    image,
-    userName,
-    firstName,
-    lastName,
-    email,
-    password,
-    role,
-    isEmailVerified,
-    creditScore,
-    creditScoreStatus,
-    verification,
-    businessVerification,
-    trader,
-  );
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is UserData &&
-          other.id == this.id &&
-          other.syncStatus == this.syncStatus &&
-          other.syncDate == this.syncDate &&
-          other.createdAt == this.createdAt &&
-          other.updatedAt == this.updatedAt &&
-          other.deletedAt == this.deletedAt &&
-          other.image == this.image &&
-          other.userName == this.userName &&
-          other.firstName == this.firstName &&
-          other.lastName == this.lastName &&
-          other.email == this.email &&
-          other.password == this.password &&
-          other.role == this.role &&
-          other.isEmailVerified == this.isEmailVerified &&
-          other.creditScore == this.creditScore &&
-          other.creditScoreStatus == this.creditScoreStatus &&
-          other.verification == this.verification &&
-          other.businessVerification == this.businessVerification &&
-          other.trader == this.trader);
-}
-
-class UserCompanion extends UpdateCompanion<UserData> {
-  final Value<String> id;
-  final Value<String> syncStatus;
-  final Value<DateTime?> syncDate;
-  final Value<DateTime> createdAt;
-  final Value<DateTime> updatedAt;
-  final Value<DateTime?> deletedAt;
-  final Value<String?> image;
-  final Value<String?> userName;
-  final Value<String> firstName;
-  final Value<String> lastName;
-  final Value<String> email;
-  final Value<String> password;
-  final Value<String> role;
-  final Value<bool> isEmailVerified;
-  final Value<int> creditScore;
-  final Value<String> creditScoreStatus;
-  final Value<String?> verification;
-  final Value<String?> businessVerification;
-  final Value<String?> trader;
-  final Value<int> rowid;
-  const UserCompanion({
-    this.id = const Value.absent(),
-    this.syncStatus = const Value.absent(),
-    this.syncDate = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.updatedAt = const Value.absent(),
-    this.deletedAt = const Value.absent(),
-    this.image = const Value.absent(),
-    this.userName = const Value.absent(),
-    this.firstName = const Value.absent(),
-    this.lastName = const Value.absent(),
-    this.email = const Value.absent(),
-    this.password = const Value.absent(),
-    this.role = const Value.absent(),
-    this.isEmailVerified = const Value.absent(),
-    this.creditScore = const Value.absent(),
-    this.creditScoreStatus = const Value.absent(),
-    this.verification = const Value.absent(),
-    this.businessVerification = const Value.absent(),
-    this.trader = const Value.absent(),
-    this.rowid = const Value.absent(),
-  });
-  UserCompanion.insert({
-    required String id,
-    required String syncStatus,
-    this.syncDate = const Value.absent(),
-    this.createdAt = const Value.absent(),
-    this.updatedAt = const Value.absent(),
-    this.deletedAt = const Value.absent(),
-    this.image = const Value.absent(),
-    this.userName = const Value.absent(),
-    required String firstName,
-    required String lastName,
-    required String email,
-    required String password,
-    required String role,
-    required bool isEmailVerified,
-    required int creditScore,
-    required String creditScoreStatus,
-    this.verification = const Value.absent(),
-    this.businessVerification = const Value.absent(),
-    this.trader = const Value.absent(),
-    this.rowid = const Value.absent(),
-  }) : id = Value(id),
-       syncStatus = Value(syncStatus),
-       firstName = Value(firstName),
-       lastName = Value(lastName),
-       email = Value(email),
-       password = Value(password),
-       role = Value(role),
-       isEmailVerified = Value(isEmailVerified),
-       creditScore = Value(creditScore),
-       creditScoreStatus = Value(creditScoreStatus);
-  static Insertable<UserData> custom({
-    Expression<String>? id,
-    Expression<String>? syncStatus,
-    Expression<DateTime>? syncDate,
-    Expression<DateTime>? createdAt,
-    Expression<DateTime>? updatedAt,
-    Expression<DateTime>? deletedAt,
-    Expression<String>? image,
-    Expression<String>? userName,
-    Expression<String>? firstName,
-    Expression<String>? lastName,
-    Expression<String>? email,
-    Expression<String>? password,
-    Expression<String>? role,
-    Expression<bool>? isEmailVerified,
-    Expression<int>? creditScore,
-    Expression<String>? creditScoreStatus,
-    Expression<String>? verification,
-    Expression<String>? businessVerification,
-    Expression<String>? trader,
-    Expression<int>? rowid,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (syncStatus != null) 'sync_status': syncStatus,
-      if (syncDate != null) 'sync_date': syncDate,
-      if (createdAt != null) 'created_at': createdAt,
-      if (updatedAt != null) 'updated_at': updatedAt,
-      if (deletedAt != null) 'deleted_at': deletedAt,
-      if (image != null) 'image': image,
-      if (userName != null) 'user_name': userName,
-      if (firstName != null) 'first_name': firstName,
-      if (lastName != null) 'last_name': lastName,
-      if (email != null) 'email': email,
-      if (password != null) 'password': password,
-      if (role != null) 'role': role,
-      if (isEmailVerified != null) 'is_email_verified': isEmailVerified,
-      if (creditScore != null) 'credit_score': creditScore,
-      if (creditScoreStatus != null) 'credit_score_status': creditScoreStatus,
-      if (verification != null) 'verification': verification,
-      if (businessVerification != null)
-        'business_verification': businessVerification,
-      if (trader != null) 'trader': trader,
-      if (rowid != null) 'rowid': rowid,
-    });
-  }
-
-  UserCompanion copyWith({
-    Value<String>? id,
-    Value<String>? syncStatus,
-    Value<DateTime?>? syncDate,
-    Value<DateTime>? createdAt,
-    Value<DateTime>? updatedAt,
-    Value<DateTime?>? deletedAt,
-    Value<String?>? image,
-    Value<String?>? userName,
-    Value<String>? firstName,
-    Value<String>? lastName,
-    Value<String>? email,
-    Value<String>? password,
-    Value<String>? role,
-    Value<bool>? isEmailVerified,
-    Value<int>? creditScore,
-    Value<String>? creditScoreStatus,
-    Value<String?>? verification,
-    Value<String?>? businessVerification,
-    Value<String?>? trader,
-    Value<int>? rowid,
-  }) {
-    return UserCompanion(
-      id: id ?? this.id,
-      syncStatus: syncStatus ?? this.syncStatus,
-      syncDate: syncDate ?? this.syncDate,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      deletedAt: deletedAt ?? this.deletedAt,
-      image: image ?? this.image,
-      userName: userName ?? this.userName,
-      firstName: firstName ?? this.firstName,
-      lastName: lastName ?? this.lastName,
-      email: email ?? this.email,
-      password: password ?? this.password,
-      role: role ?? this.role,
-      isEmailVerified: isEmailVerified ?? this.isEmailVerified,
-      creditScore: creditScore ?? this.creditScore,
-      creditScoreStatus: creditScoreStatus ?? this.creditScoreStatus,
-      verification: verification ?? this.verification,
-      businessVerification: businessVerification ?? this.businessVerification,
-      trader: trader ?? this.trader,
-      rowid: rowid ?? this.rowid,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<String>(id.value);
-    }
-    if (syncStatus.present) {
-      map['sync_status'] = Variable<String>(syncStatus.value);
-    }
-    if (syncDate.present) {
-      map['sync_date'] = Variable<DateTime>(syncDate.value);
-    }
-    if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
-    }
-    if (updatedAt.present) {
-      map['updated_at'] = Variable<DateTime>(updatedAt.value);
-    }
-    if (deletedAt.present) {
-      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
-    }
-    if (image.present) {
-      map['image'] = Variable<String>(image.value);
-    }
-    if (userName.present) {
-      map['user_name'] = Variable<String>(userName.value);
-    }
-    if (firstName.present) {
-      map['first_name'] = Variable<String>(firstName.value);
-    }
-    if (lastName.present) {
-      map['last_name'] = Variable<String>(lastName.value);
-    }
-    if (email.present) {
-      map['email'] = Variable<String>(email.value);
-    }
-    if (password.present) {
-      map['password'] = Variable<String>(password.value);
-    }
-    if (role.present) {
-      map['role'] = Variable<String>(role.value);
-    }
-    if (isEmailVerified.present) {
-      map['is_email_verified'] = Variable<bool>(isEmailVerified.value);
-    }
-    if (creditScore.present) {
-      map['credit_score'] = Variable<int>(creditScore.value);
-    }
-    if (creditScoreStatus.present) {
-      map['credit_score_status'] = Variable<String>(creditScoreStatus.value);
-    }
-    if (verification.present) {
-      map['verification'] = Variable<String>(verification.value);
-    }
-    if (businessVerification.present) {
-      map['business_verification'] = Variable<String>(
-        businessVerification.value,
-      );
-    }
-    if (trader.present) {
-      map['trader'] = Variable<String>(trader.value);
-    }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('UserCompanion(')
-          ..write('id: $id, ')
-          ..write('syncStatus: $syncStatus, ')
-          ..write('syncDate: $syncDate, ')
-          ..write('createdAt: $createdAt, ')
-          ..write('updatedAt: $updatedAt, ')
-          ..write('deletedAt: $deletedAt, ')
-          ..write('image: $image, ')
-          ..write('userName: $userName, ')
-          ..write('firstName: $firstName, ')
-          ..write('lastName: $lastName, ')
-          ..write('email: $email, ')
-          ..write('password: $password, ')
-          ..write('role: $role, ')
-          ..write('isEmailVerified: $isEmailVerified, ')
-          ..write('creditScore: $creditScore, ')
-          ..write('creditScoreStatus: $creditScoreStatus, ')
-          ..write('verification: $verification, ')
-          ..write('businessVerification: $businessVerification, ')
-          ..write('trader: $trader, ')
-          ..write('rowid: $rowid')
-          ..write(')'))
-        .toString();
-  }
-}
-
 class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -10050,6 +10036,21 @@ class $BusinessUserTable extends BusinessUser
     ),
     defaultValue: const Constant(false),
   );
+  static const VerificationMeta _hasFullAccessMeta = const VerificationMeta(
+    'hasFullAccess',
+  );
+  @override
+  late final GeneratedColumn<bool> hasFullAccess = GeneratedColumn<bool>(
+    'has_full_access',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("has_full_access" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
   static const VerificationMeta _joinedAtMeta = const VerificationMeta(
     'joinedAt',
   );
@@ -10097,6 +10098,7 @@ class $BusinessUserTable extends BusinessUser
     deletedAt,
     role,
     isActive,
+    hasFullAccess,
     joinedAt,
     userId,
     businessId,
@@ -10164,6 +10166,15 @@ class $BusinessUserTable extends BusinessUser
         isActive.isAcceptableOrUnknown(data['is_active']!, _isActiveMeta),
       );
     }
+    if (data.containsKey('has_full_access')) {
+      context.handle(
+        _hasFullAccessMeta,
+        hasFullAccess.isAcceptableOrUnknown(
+          data['has_full_access']!,
+          _hasFullAccessMeta,
+        ),
+      );
+    }
     if (data.containsKey('joined_at')) {
       context.handle(
         _joinedAtMeta,
@@ -10227,6 +10238,10 @@ class $BusinessUserTable extends BusinessUser
         DriftSqlType.bool,
         data['${effectivePrefix}is_active'],
       )!,
+      hasFullAccess: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}has_full_access'],
+      )!,
       joinedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}joined_at'],
@@ -10258,6 +10273,7 @@ class BusinessUserData extends DataClass
   final DateTime? deletedAt;
   final String role;
   final bool isActive;
+  final bool hasFullAccess;
   final DateTime? joinedAt;
   final String userId;
   final String businessId;
@@ -10270,6 +10286,7 @@ class BusinessUserData extends DataClass
     this.deletedAt,
     required this.role,
     required this.isActive,
+    required this.hasFullAccess,
     this.joinedAt,
     required this.userId,
     required this.businessId,
@@ -10289,6 +10306,7 @@ class BusinessUserData extends DataClass
     }
     map['role'] = Variable<String>(role);
     map['is_active'] = Variable<bool>(isActive);
+    map['has_full_access'] = Variable<bool>(hasFullAccess);
     if (!nullToAbsent || joinedAt != null) {
       map['joined_at'] = Variable<DateTime>(joinedAt);
     }
@@ -10311,6 +10329,7 @@ class BusinessUserData extends DataClass
           : Value(deletedAt),
       role: Value(role),
       isActive: Value(isActive),
+      hasFullAccess: Value(hasFullAccess),
       joinedAt: joinedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(joinedAt),
@@ -10333,6 +10352,7 @@ class BusinessUserData extends DataClass
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
       role: serializer.fromJson<String>(json['role']),
       isActive: serializer.fromJson<bool>(json['isActive']),
+      hasFullAccess: serializer.fromJson<bool>(json['hasFullAccess']),
       joinedAt: serializer.fromJson<DateTime?>(json['joinedAt']),
       userId: serializer.fromJson<String>(json['userId']),
       businessId: serializer.fromJson<String>(json['businessId']),
@@ -10350,6 +10370,7 @@ class BusinessUserData extends DataClass
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
       'role': serializer.toJson<String>(role),
       'isActive': serializer.toJson<bool>(isActive),
+      'hasFullAccess': serializer.toJson<bool>(hasFullAccess),
       'joinedAt': serializer.toJson<DateTime?>(joinedAt),
       'userId': serializer.toJson<String>(userId),
       'businessId': serializer.toJson<String>(businessId),
@@ -10365,6 +10386,7 @@ class BusinessUserData extends DataClass
     Value<DateTime?> deletedAt = const Value.absent(),
     String? role,
     bool? isActive,
+    bool? hasFullAccess,
     Value<DateTime?> joinedAt = const Value.absent(),
     String? userId,
     String? businessId,
@@ -10377,6 +10399,7 @@ class BusinessUserData extends DataClass
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
     role: role ?? this.role,
     isActive: isActive ?? this.isActive,
+    hasFullAccess: hasFullAccess ?? this.hasFullAccess,
     joinedAt: joinedAt.present ? joinedAt.value : this.joinedAt,
     userId: userId ?? this.userId,
     businessId: businessId ?? this.businessId,
@@ -10393,6 +10416,9 @@ class BusinessUserData extends DataClass
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
       role: data.role.present ? data.role.value : this.role,
       isActive: data.isActive.present ? data.isActive.value : this.isActive,
+      hasFullAccess: data.hasFullAccess.present
+          ? data.hasFullAccess.value
+          : this.hasFullAccess,
       joinedAt: data.joinedAt.present ? data.joinedAt.value : this.joinedAt,
       userId: data.userId.present ? data.userId.value : this.userId,
       businessId: data.businessId.present
@@ -10412,6 +10438,7 @@ class BusinessUserData extends DataClass
           ..write('deletedAt: $deletedAt, ')
           ..write('role: $role, ')
           ..write('isActive: $isActive, ')
+          ..write('hasFullAccess: $hasFullAccess, ')
           ..write('joinedAt: $joinedAt, ')
           ..write('userId: $userId, ')
           ..write('businessId: $businessId')
@@ -10429,6 +10456,7 @@ class BusinessUserData extends DataClass
     deletedAt,
     role,
     isActive,
+    hasFullAccess,
     joinedAt,
     userId,
     businessId,
@@ -10445,6 +10473,7 @@ class BusinessUserData extends DataClass
           other.deletedAt == this.deletedAt &&
           other.role == this.role &&
           other.isActive == this.isActive &&
+          other.hasFullAccess == this.hasFullAccess &&
           other.joinedAt == this.joinedAt &&
           other.userId == this.userId &&
           other.businessId == this.businessId);
@@ -10459,6 +10488,7 @@ class BusinessUserCompanion extends UpdateCompanion<BusinessUserData> {
   final Value<DateTime?> deletedAt;
   final Value<String> role;
   final Value<bool> isActive;
+  final Value<bool> hasFullAccess;
   final Value<DateTime?> joinedAt;
   final Value<String> userId;
   final Value<String> businessId;
@@ -10472,6 +10502,7 @@ class BusinessUserCompanion extends UpdateCompanion<BusinessUserData> {
     this.deletedAt = const Value.absent(),
     this.role = const Value.absent(),
     this.isActive = const Value.absent(),
+    this.hasFullAccess = const Value.absent(),
     this.joinedAt = const Value.absent(),
     this.userId = const Value.absent(),
     this.businessId = const Value.absent(),
@@ -10486,6 +10517,7 @@ class BusinessUserCompanion extends UpdateCompanion<BusinessUserData> {
     this.deletedAt = const Value.absent(),
     required String role,
     this.isActive = const Value.absent(),
+    this.hasFullAccess = const Value.absent(),
     this.joinedAt = const Value.absent(),
     required String userId,
     required String businessId,
@@ -10504,6 +10536,7 @@ class BusinessUserCompanion extends UpdateCompanion<BusinessUserData> {
     Expression<DateTime>? deletedAt,
     Expression<String>? role,
     Expression<bool>? isActive,
+    Expression<bool>? hasFullAccess,
     Expression<DateTime>? joinedAt,
     Expression<String>? userId,
     Expression<String>? businessId,
@@ -10518,6 +10551,7 @@ class BusinessUserCompanion extends UpdateCompanion<BusinessUserData> {
       if (deletedAt != null) 'deleted_at': deletedAt,
       if (role != null) 'role': role,
       if (isActive != null) 'is_active': isActive,
+      if (hasFullAccess != null) 'has_full_access': hasFullAccess,
       if (joinedAt != null) 'joined_at': joinedAt,
       if (userId != null) 'user_id': userId,
       if (businessId != null) 'business_id': businessId,
@@ -10534,6 +10568,7 @@ class BusinessUserCompanion extends UpdateCompanion<BusinessUserData> {
     Value<DateTime?>? deletedAt,
     Value<String>? role,
     Value<bool>? isActive,
+    Value<bool>? hasFullAccess,
     Value<DateTime?>? joinedAt,
     Value<String>? userId,
     Value<String>? businessId,
@@ -10548,6 +10583,7 @@ class BusinessUserCompanion extends UpdateCompanion<BusinessUserData> {
       deletedAt: deletedAt ?? this.deletedAt,
       role: role ?? this.role,
       isActive: isActive ?? this.isActive,
+      hasFullAccess: hasFullAccess ?? this.hasFullAccess,
       joinedAt: joinedAt ?? this.joinedAt,
       userId: userId ?? this.userId,
       businessId: businessId ?? this.businessId,
@@ -10582,6 +10618,9 @@ class BusinessUserCompanion extends UpdateCompanion<BusinessUserData> {
     if (isActive.present) {
       map['is_active'] = Variable<bool>(isActive.value);
     }
+    if (hasFullAccess.present) {
+      map['has_full_access'] = Variable<bool>(hasFullAccess.value);
+    }
     if (joinedAt.present) {
       map['joined_at'] = Variable<DateTime>(joinedAt.value);
     }
@@ -10608,6 +10647,7 @@ class BusinessUserCompanion extends UpdateCompanion<BusinessUserData> {
           ..write('deletedAt: $deletedAt, ')
           ..write('role: $role, ')
           ..write('isActive: $isActive, ')
+          ..write('hasFullAccess: $hasFullAccess, ')
           ..write('joinedAt: $joinedAt, ')
           ..write('userId: $userId, ')
           ..write('businessId: $businessId, ')
@@ -13246,6 +13286,5732 @@ class StockTransferItemCompanion
   }
 }
 
+class $CollectionTable extends Collection
+    with TableInfo<$CollectionTable, CollectionData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $CollectionTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncDateMeta = const VerificationMeta(
+    'syncDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
+    'sync_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _totalTradersMeta = const VerificationMeta(
+    'totalTraders',
+  );
+  @override
+  late final GeneratedColumn<int> totalTraders = GeneratedColumn<int>(
+    'total_traders',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _aboutMeta = const VerificationMeta('about');
+  @override
+  late final GeneratedColumn<String> about = GeneratedColumn<String>(
+    'about',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _coverImageMeta = const VerificationMeta(
+    'coverImage',
+  );
+  @override
+  late final GeneratedColumn<String> coverImage = GeneratedColumn<String>(
+    'cover_image',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _roiMeta = const VerificationMeta('roi');
+  @override
+  late final GeneratedColumn<int> roi = GeneratedColumn<int>(
+    'roi',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _minInvestmentMeta = const VerificationMeta(
+    'minInvestment',
+  );
+  @override
+  late final GeneratedColumn<int> minInvestment = GeneratedColumn<int>(
+    'min_investment',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _cityMeta = const VerificationMeta('city');
+  @override
+  late final GeneratedColumn<String> city = GeneratedColumn<String>(
+    'city',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _stateMeta = const VerificationMeta('state');
+  @override
+  late final GeneratedColumn<String> state = GeneratedColumn<String>(
+    'state',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _countryMeta = const VerificationMeta(
+    'country',
+  );
+  @override
+  late final GeneratedColumn<String> country = GeneratedColumn<String>(
+    'country',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    name,
+    description,
+    totalTraders,
+    about,
+    coverImage,
+    roi,
+    minInvestment,
+    city,
+    state,
+    country,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'collection';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<CollectionData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('sync_date')) {
+      context.handle(
+        _syncDateMeta,
+        syncDate.isAcceptableOrUnknown(data['sync_date']!, _syncDateMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (data.containsKey('total_traders')) {
+      context.handle(
+        _totalTradersMeta,
+        totalTraders.isAcceptableOrUnknown(
+          data['total_traders']!,
+          _totalTradersMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_totalTradersMeta);
+    }
+    if (data.containsKey('about')) {
+      context.handle(
+        _aboutMeta,
+        about.isAcceptableOrUnknown(data['about']!, _aboutMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_aboutMeta);
+    }
+    if (data.containsKey('cover_image')) {
+      context.handle(
+        _coverImageMeta,
+        coverImage.isAcceptableOrUnknown(data['cover_image']!, _coverImageMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_coverImageMeta);
+    }
+    if (data.containsKey('roi')) {
+      context.handle(
+        _roiMeta,
+        roi.isAcceptableOrUnknown(data['roi']!, _roiMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_roiMeta);
+    }
+    if (data.containsKey('min_investment')) {
+      context.handle(
+        _minInvestmentMeta,
+        minInvestment.isAcceptableOrUnknown(
+          data['min_investment']!,
+          _minInvestmentMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_minInvestmentMeta);
+    }
+    if (data.containsKey('city')) {
+      context.handle(
+        _cityMeta,
+        city.isAcceptableOrUnknown(data['city']!, _cityMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_cityMeta);
+    }
+    if (data.containsKey('state')) {
+      context.handle(
+        _stateMeta,
+        state.isAcceptableOrUnknown(data['state']!, _stateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_stateMeta);
+    }
+    if (data.containsKey('country')) {
+      context.handle(
+        _countryMeta,
+        country.isAcceptableOrUnknown(data['country']!, _countryMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_countryMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  CollectionData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CollectionData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      syncDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}sync_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      )!,
+      totalTraders: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}total_traders'],
+      )!,
+      about: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}about'],
+      )!,
+      coverImage: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}cover_image'],
+      )!,
+      roi: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}roi'],
+      )!,
+      minInvestment: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}min_investment'],
+      )!,
+      city: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}city'],
+      )!,
+      state: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}state'],
+      )!,
+      country: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}country'],
+      )!,
+    );
+  }
+
+  @override
+  $CollectionTable createAlias(String alias) {
+    return $CollectionTable(attachedDatabase, alias);
+  }
+}
+
+class CollectionData extends DataClass implements Insertable<CollectionData> {
+  final String id;
+  final String syncStatus;
+  final DateTime? syncDate;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String name;
+  final String description;
+  final int totalTraders;
+  final String about;
+  final String coverImage;
+  final int roi;
+  final int minInvestment;
+  final String city;
+  final String state;
+  final String country;
+  const CollectionData({
+    required this.id,
+    required this.syncStatus,
+    this.syncDate,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.name,
+    required this.description,
+    required this.totalTraders,
+    required this.about,
+    required this.coverImage,
+    required this.roi,
+    required this.minInvestment,
+    required this.city,
+    required this.state,
+    required this.country,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['name'] = Variable<String>(name);
+    map['description'] = Variable<String>(description);
+    map['total_traders'] = Variable<int>(totalTraders);
+    map['about'] = Variable<String>(about);
+    map['cover_image'] = Variable<String>(coverImage);
+    map['roi'] = Variable<int>(roi);
+    map['min_investment'] = Variable<int>(minInvestment);
+    map['city'] = Variable<String>(city);
+    map['state'] = Variable<String>(state);
+    map['country'] = Variable<String>(country);
+    return map;
+  }
+
+  CollectionCompanion toCompanion(bool nullToAbsent) {
+    return CollectionCompanion(
+      id: Value(id),
+      syncStatus: Value(syncStatus),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      name: Value(name),
+      description: Value(description),
+      totalTraders: Value(totalTraders),
+      about: Value(about),
+      coverImage: Value(coverImage),
+      roi: Value(roi),
+      minInvestment: Value(minInvestment),
+      city: Value(city),
+      state: Value(state),
+      country: Value(country),
+    );
+  }
+
+  factory CollectionData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return CollectionData(
+      id: serializer.fromJson<String>(json['id']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      name: serializer.fromJson<String>(json['name']),
+      description: serializer.fromJson<String>(json['description']),
+      totalTraders: serializer.fromJson<int>(json['totalTraders']),
+      about: serializer.fromJson<String>(json['about']),
+      coverImage: serializer.fromJson<String>(json['coverImage']),
+      roi: serializer.fromJson<int>(json['roi']),
+      minInvestment: serializer.fromJson<int>(json['minInvestment']),
+      city: serializer.fromJson<String>(json['city']),
+      state: serializer.fromJson<String>(json['state']),
+      country: serializer.fromJson<String>(json['country']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'name': serializer.toJson<String>(name),
+      'description': serializer.toJson<String>(description),
+      'totalTraders': serializer.toJson<int>(totalTraders),
+      'about': serializer.toJson<String>(about),
+      'coverImage': serializer.toJson<String>(coverImage),
+      'roi': serializer.toJson<int>(roi),
+      'minInvestment': serializer.toJson<int>(minInvestment),
+      'city': serializer.toJson<String>(city),
+      'state': serializer.toJson<String>(state),
+      'country': serializer.toJson<String>(country),
+    };
+  }
+
+  CollectionData copyWith({
+    String? id,
+    String? syncStatus,
+    Value<DateTime?> syncDate = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? name,
+    String? description,
+    int? totalTraders,
+    String? about,
+    String? coverImage,
+    int? roi,
+    int? minInvestment,
+    String? city,
+    String? state,
+    String? country,
+  }) => CollectionData(
+    id: id ?? this.id,
+    syncStatus: syncStatus ?? this.syncStatus,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    name: name ?? this.name,
+    description: description ?? this.description,
+    totalTraders: totalTraders ?? this.totalTraders,
+    about: about ?? this.about,
+    coverImage: coverImage ?? this.coverImage,
+    roi: roi ?? this.roi,
+    minInvestment: minInvestment ?? this.minInvestment,
+    city: city ?? this.city,
+    state: state ?? this.state,
+    country: country ?? this.country,
+  );
+  CollectionData copyWithCompanion(CollectionCompanion data) {
+    return CollectionData(
+      id: data.id.present ? data.id.value : this.id,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      name: data.name.present ? data.name.value : this.name,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      totalTraders: data.totalTraders.present
+          ? data.totalTraders.value
+          : this.totalTraders,
+      about: data.about.present ? data.about.value : this.about,
+      coverImage: data.coverImage.present
+          ? data.coverImage.value
+          : this.coverImage,
+      roi: data.roi.present ? data.roi.value : this.roi,
+      minInvestment: data.minInvestment.present
+          ? data.minInvestment.value
+          : this.minInvestment,
+      city: data.city.present ? data.city.value : this.city,
+      state: data.state.present ? data.state.value : this.state,
+      country: data.country.present ? data.country.value : this.country,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CollectionData(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('totalTraders: $totalTraders, ')
+          ..write('about: $about, ')
+          ..write('coverImage: $coverImage, ')
+          ..write('roi: $roi, ')
+          ..write('minInvestment: $minInvestment, ')
+          ..write('city: $city, ')
+          ..write('state: $state, ')
+          ..write('country: $country')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    name,
+    description,
+    totalTraders,
+    about,
+    coverImage,
+    roi,
+    minInvestment,
+    city,
+    state,
+    country,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is CollectionData &&
+          other.id == this.id &&
+          other.syncStatus == this.syncStatus &&
+          other.syncDate == this.syncDate &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.name == this.name &&
+          other.description == this.description &&
+          other.totalTraders == this.totalTraders &&
+          other.about == this.about &&
+          other.coverImage == this.coverImage &&
+          other.roi == this.roi &&
+          other.minInvestment == this.minInvestment &&
+          other.city == this.city &&
+          other.state == this.state &&
+          other.country == this.country);
+}
+
+class CollectionCompanion extends UpdateCompanion<CollectionData> {
+  final Value<String> id;
+  final Value<String> syncStatus;
+  final Value<DateTime?> syncDate;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> name;
+  final Value<String> description;
+  final Value<int> totalTraders;
+  final Value<String> about;
+  final Value<String> coverImage;
+  final Value<int> roi;
+  final Value<int> minInvestment;
+  final Value<String> city;
+  final Value<String> state;
+  final Value<String> country;
+  final Value<int> rowid;
+  const CollectionCompanion({
+    this.id = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.name = const Value.absent(),
+    this.description = const Value.absent(),
+    this.totalTraders = const Value.absent(),
+    this.about = const Value.absent(),
+    this.coverImage = const Value.absent(),
+    this.roi = const Value.absent(),
+    this.minInvestment = const Value.absent(),
+    this.city = const Value.absent(),
+    this.state = const Value.absent(),
+    this.country = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  CollectionCompanion.insert({
+    required String id,
+    required String syncStatus,
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required String name,
+    required String description,
+    required int totalTraders,
+    required String about,
+    required String coverImage,
+    required int roi,
+    required int minInvestment,
+    required String city,
+    required String state,
+    required String country,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       syncStatus = Value(syncStatus),
+       name = Value(name),
+       description = Value(description),
+       totalTraders = Value(totalTraders),
+       about = Value(about),
+       coverImage = Value(coverImage),
+       roi = Value(roi),
+       minInvestment = Value(minInvestment),
+       city = Value(city),
+       state = Value(state),
+       country = Value(country);
+  static Insertable<CollectionData> custom({
+    Expression<String>? id,
+    Expression<String>? syncStatus,
+    Expression<DateTime>? syncDate,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? name,
+    Expression<String>? description,
+    Expression<int>? totalTraders,
+    Expression<String>? about,
+    Expression<String>? coverImage,
+    Expression<int>? roi,
+    Expression<int>? minInvestment,
+    Expression<String>? city,
+    Expression<String>? state,
+    Expression<String>? country,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (syncDate != null) 'sync_date': syncDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (name != null) 'name': name,
+      if (description != null) 'description': description,
+      if (totalTraders != null) 'total_traders': totalTraders,
+      if (about != null) 'about': about,
+      if (coverImage != null) 'cover_image': coverImage,
+      if (roi != null) 'roi': roi,
+      if (minInvestment != null) 'min_investment': minInvestment,
+      if (city != null) 'city': city,
+      if (state != null) 'state': state,
+      if (country != null) 'country': country,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  CollectionCompanion copyWith({
+    Value<String>? id,
+    Value<String>? syncStatus,
+    Value<DateTime?>? syncDate,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? name,
+    Value<String>? description,
+    Value<int>? totalTraders,
+    Value<String>? about,
+    Value<String>? coverImage,
+    Value<int>? roi,
+    Value<int>? minInvestment,
+    Value<String>? city,
+    Value<String>? state,
+    Value<String>? country,
+    Value<int>? rowid,
+  }) {
+    return CollectionCompanion(
+      id: id ?? this.id,
+      syncStatus: syncStatus ?? this.syncStatus,
+      syncDate: syncDate ?? this.syncDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      name: name ?? this.name,
+      description: description ?? this.description,
+      totalTraders: totalTraders ?? this.totalTraders,
+      about: about ?? this.about,
+      coverImage: coverImage ?? this.coverImage,
+      roi: roi ?? this.roi,
+      minInvestment: minInvestment ?? this.minInvestment,
+      city: city ?? this.city,
+      state: state ?? this.state,
+      country: country ?? this.country,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (syncDate.present) {
+      map['sync_date'] = Variable<DateTime>(syncDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (totalTraders.present) {
+      map['total_traders'] = Variable<int>(totalTraders.value);
+    }
+    if (about.present) {
+      map['about'] = Variable<String>(about.value);
+    }
+    if (coverImage.present) {
+      map['cover_image'] = Variable<String>(coverImage.value);
+    }
+    if (roi.present) {
+      map['roi'] = Variable<int>(roi.value);
+    }
+    if (minInvestment.present) {
+      map['min_investment'] = Variable<int>(minInvestment.value);
+    }
+    if (city.present) {
+      map['city'] = Variable<String>(city.value);
+    }
+    if (state.present) {
+      map['state'] = Variable<String>(state.value);
+    }
+    if (country.present) {
+      map['country'] = Variable<String>(country.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('CollectionCompanion(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('name: $name, ')
+          ..write('description: $description, ')
+          ..write('totalTraders: $totalTraders, ')
+          ..write('about: $about, ')
+          ..write('coverImage: $coverImage, ')
+          ..write('roi: $roi, ')
+          ..write('minInvestment: $minInvestment, ')
+          ..write('city: $city, ')
+          ..write('state: $state, ')
+          ..write('country: $country, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ClusterTable extends Cluster with TableInfo<$ClusterTable, ClusterData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ClusterTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncDateMeta = const VerificationMeta(
+    'syncDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
+    'sync_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _aboutMeta = const VerificationMeta('about');
+  @override
+  late final GeneratedColumn<String> about = GeneratedColumn<String>(
+    'about',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _durationMeta = const VerificationMeta(
+    'duration',
+  );
+  @override
+  late final GeneratedColumn<int> duration = GeneratedColumn<int>(
+    'duration',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _roiMeta = const VerificationMeta('roi');
+  @override
+  late final GeneratedColumn<int> roi = GeneratedColumn<int>(
+    'roi',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _totalFundsRaisedMeta = const VerificationMeta(
+    'totalFundsRaised',
+  );
+  @override
+  late final GeneratedColumn<int> totalFundsRaised = GeneratedColumn<int>(
+    'total_funds_raised',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _targetFundRaisingAmountMeta =
+      const VerificationMeta('targetFundRaisingAmount');
+  @override
+  late final GeneratedColumn<int> targetFundRaisingAmount =
+      GeneratedColumn<int>(
+        'target_fund_raising_amount',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: true,
+      );
+  static const VerificationMeta _repaymentMeta = const VerificationMeta(
+    'repayment',
+  );
+  @override
+  late final GeneratedColumn<String> repayment = GeneratedColumn<String>(
+    'repayment',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _isActiveMeta = const VerificationMeta(
+    'isActive',
+  );
+  @override
+  late final GeneratedColumn<bool> isActive = GeneratedColumn<bool>(
+    'is_active',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_active" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _coverImageMeta = const VerificationMeta(
+    'coverImage',
+  );
+  @override
+  late final GeneratedColumn<String> coverImage = GeneratedColumn<String>(
+    'cover_image',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _startDateMeta = const VerificationMeta(
+    'startDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> startDate = GeneratedColumn<DateTime>(
+    'start_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _endDateMeta = const VerificationMeta(
+    'endDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> endDate = GeneratedColumn<DateTime>(
+    'end_date',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _descriptionMeta = const VerificationMeta(
+    'description',
+  );
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+    'description',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _collectionIdMeta = const VerificationMeta(
+    'collectionId',
+  );
+  @override
+  late final GeneratedColumn<String> collectionId = GeneratedColumn<String>(
+    'collection_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES collection (id)',
+    ),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    name,
+    status,
+    about,
+    duration,
+    roi,
+    totalFundsRaised,
+    targetFundRaisingAmount,
+    repayment,
+    isActive,
+    coverImage,
+    startDate,
+    endDate,
+    description,
+    collectionId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'cluster';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ClusterData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('sync_date')) {
+      context.handle(
+        _syncDateMeta,
+        syncDate.isAcceptableOrUnknown(data['sync_date']!, _syncDateMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('about')) {
+      context.handle(
+        _aboutMeta,
+        about.isAcceptableOrUnknown(data['about']!, _aboutMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_aboutMeta);
+    }
+    if (data.containsKey('duration')) {
+      context.handle(
+        _durationMeta,
+        duration.isAcceptableOrUnknown(data['duration']!, _durationMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_durationMeta);
+    }
+    if (data.containsKey('roi')) {
+      context.handle(
+        _roiMeta,
+        roi.isAcceptableOrUnknown(data['roi']!, _roiMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_roiMeta);
+    }
+    if (data.containsKey('total_funds_raised')) {
+      context.handle(
+        _totalFundsRaisedMeta,
+        totalFundsRaised.isAcceptableOrUnknown(
+          data['total_funds_raised']!,
+          _totalFundsRaisedMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_totalFundsRaisedMeta);
+    }
+    if (data.containsKey('target_fund_raising_amount')) {
+      context.handle(
+        _targetFundRaisingAmountMeta,
+        targetFundRaisingAmount.isAcceptableOrUnknown(
+          data['target_fund_raising_amount']!,
+          _targetFundRaisingAmountMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_targetFundRaisingAmountMeta);
+    }
+    if (data.containsKey('repayment')) {
+      context.handle(
+        _repaymentMeta,
+        repayment.isAcceptableOrUnknown(data['repayment']!, _repaymentMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_repaymentMeta);
+    }
+    if (data.containsKey('is_active')) {
+      context.handle(
+        _isActiveMeta,
+        isActive.isAcceptableOrUnknown(data['is_active']!, _isActiveMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_isActiveMeta);
+    }
+    if (data.containsKey('cover_image')) {
+      context.handle(
+        _coverImageMeta,
+        coverImage.isAcceptableOrUnknown(data['cover_image']!, _coverImageMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_coverImageMeta);
+    }
+    if (data.containsKey('start_date')) {
+      context.handle(
+        _startDateMeta,
+        startDate.isAcceptableOrUnknown(data['start_date']!, _startDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_startDateMeta);
+    }
+    if (data.containsKey('end_date')) {
+      context.handle(
+        _endDateMeta,
+        endDate.isAcceptableOrUnknown(data['end_date']!, _endDateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_endDateMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+        _descriptionMeta,
+        description.isAcceptableOrUnknown(
+          data['description']!,
+          _descriptionMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (data.containsKey('collection_id')) {
+      context.handle(
+        _collectionIdMeta,
+        collectionId.isAcceptableOrUnknown(
+          data['collection_id']!,
+          _collectionIdMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  ClusterData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ClusterData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      syncDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}sync_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      about: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}about'],
+      )!,
+      duration: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}duration'],
+      )!,
+      roi: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}roi'],
+      )!,
+      totalFundsRaised: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}total_funds_raised'],
+      )!,
+      targetFundRaisingAmount: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}target_fund_raising_amount'],
+      )!,
+      repayment: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}repayment'],
+      )!,
+      isActive: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_active'],
+      )!,
+      coverImage: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}cover_image'],
+      )!,
+      startDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}start_date'],
+      )!,
+      endDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}end_date'],
+      )!,
+      description: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}description'],
+      )!,
+      collectionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}collection_id'],
+      ),
+    );
+  }
+
+  @override
+  $ClusterTable createAlias(String alias) {
+    return $ClusterTable(attachedDatabase, alias);
+  }
+}
+
+class ClusterData extends DataClass implements Insertable<ClusterData> {
+  final String id;
+  final String syncStatus;
+  final DateTime? syncDate;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String name;
+  final String status;
+  final String about;
+  final int duration;
+  final int roi;
+  final int totalFundsRaised;
+  final int targetFundRaisingAmount;
+  final String repayment;
+  final bool isActive;
+  final String coverImage;
+  final DateTime startDate;
+  final DateTime endDate;
+  final String description;
+  final String? collectionId;
+  const ClusterData({
+    required this.id,
+    required this.syncStatus,
+    this.syncDate,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.name,
+    required this.status,
+    required this.about,
+    required this.duration,
+    required this.roi,
+    required this.totalFundsRaised,
+    required this.targetFundRaisingAmount,
+    required this.repayment,
+    required this.isActive,
+    required this.coverImage,
+    required this.startDate,
+    required this.endDate,
+    required this.description,
+    this.collectionId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['name'] = Variable<String>(name);
+    map['status'] = Variable<String>(status);
+    map['about'] = Variable<String>(about);
+    map['duration'] = Variable<int>(duration);
+    map['roi'] = Variable<int>(roi);
+    map['total_funds_raised'] = Variable<int>(totalFundsRaised);
+    map['target_fund_raising_amount'] = Variable<int>(targetFundRaisingAmount);
+    map['repayment'] = Variable<String>(repayment);
+    map['is_active'] = Variable<bool>(isActive);
+    map['cover_image'] = Variable<String>(coverImage);
+    map['start_date'] = Variable<DateTime>(startDate);
+    map['end_date'] = Variable<DateTime>(endDate);
+    map['description'] = Variable<String>(description);
+    if (!nullToAbsent || collectionId != null) {
+      map['collection_id'] = Variable<String>(collectionId);
+    }
+    return map;
+  }
+
+  ClusterCompanion toCompanion(bool nullToAbsent) {
+    return ClusterCompanion(
+      id: Value(id),
+      syncStatus: Value(syncStatus),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      name: Value(name),
+      status: Value(status),
+      about: Value(about),
+      duration: Value(duration),
+      roi: Value(roi),
+      totalFundsRaised: Value(totalFundsRaised),
+      targetFundRaisingAmount: Value(targetFundRaisingAmount),
+      repayment: Value(repayment),
+      isActive: Value(isActive),
+      coverImage: Value(coverImage),
+      startDate: Value(startDate),
+      endDate: Value(endDate),
+      description: Value(description),
+      collectionId: collectionId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(collectionId),
+    );
+  }
+
+  factory ClusterData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ClusterData(
+      id: serializer.fromJson<String>(json['id']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      name: serializer.fromJson<String>(json['name']),
+      status: serializer.fromJson<String>(json['status']),
+      about: serializer.fromJson<String>(json['about']),
+      duration: serializer.fromJson<int>(json['duration']),
+      roi: serializer.fromJson<int>(json['roi']),
+      totalFundsRaised: serializer.fromJson<int>(json['totalFundsRaised']),
+      targetFundRaisingAmount: serializer.fromJson<int>(
+        json['targetFundRaisingAmount'],
+      ),
+      repayment: serializer.fromJson<String>(json['repayment']),
+      isActive: serializer.fromJson<bool>(json['isActive']),
+      coverImage: serializer.fromJson<String>(json['coverImage']),
+      startDate: serializer.fromJson<DateTime>(json['startDate']),
+      endDate: serializer.fromJson<DateTime>(json['endDate']),
+      description: serializer.fromJson<String>(json['description']),
+      collectionId: serializer.fromJson<String?>(json['collectionId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'name': serializer.toJson<String>(name),
+      'status': serializer.toJson<String>(status),
+      'about': serializer.toJson<String>(about),
+      'duration': serializer.toJson<int>(duration),
+      'roi': serializer.toJson<int>(roi),
+      'totalFundsRaised': serializer.toJson<int>(totalFundsRaised),
+      'targetFundRaisingAmount': serializer.toJson<int>(
+        targetFundRaisingAmount,
+      ),
+      'repayment': serializer.toJson<String>(repayment),
+      'isActive': serializer.toJson<bool>(isActive),
+      'coverImage': serializer.toJson<String>(coverImage),
+      'startDate': serializer.toJson<DateTime>(startDate),
+      'endDate': serializer.toJson<DateTime>(endDate),
+      'description': serializer.toJson<String>(description),
+      'collectionId': serializer.toJson<String?>(collectionId),
+    };
+  }
+
+  ClusterData copyWith({
+    String? id,
+    String? syncStatus,
+    Value<DateTime?> syncDate = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? name,
+    String? status,
+    String? about,
+    int? duration,
+    int? roi,
+    int? totalFundsRaised,
+    int? targetFundRaisingAmount,
+    String? repayment,
+    bool? isActive,
+    String? coverImage,
+    DateTime? startDate,
+    DateTime? endDate,
+    String? description,
+    Value<String?> collectionId = const Value.absent(),
+  }) => ClusterData(
+    id: id ?? this.id,
+    syncStatus: syncStatus ?? this.syncStatus,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    name: name ?? this.name,
+    status: status ?? this.status,
+    about: about ?? this.about,
+    duration: duration ?? this.duration,
+    roi: roi ?? this.roi,
+    totalFundsRaised: totalFundsRaised ?? this.totalFundsRaised,
+    targetFundRaisingAmount:
+        targetFundRaisingAmount ?? this.targetFundRaisingAmount,
+    repayment: repayment ?? this.repayment,
+    isActive: isActive ?? this.isActive,
+    coverImage: coverImage ?? this.coverImage,
+    startDate: startDate ?? this.startDate,
+    endDate: endDate ?? this.endDate,
+    description: description ?? this.description,
+    collectionId: collectionId.present ? collectionId.value : this.collectionId,
+  );
+  ClusterData copyWithCompanion(ClusterCompanion data) {
+    return ClusterData(
+      id: data.id.present ? data.id.value : this.id,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      name: data.name.present ? data.name.value : this.name,
+      status: data.status.present ? data.status.value : this.status,
+      about: data.about.present ? data.about.value : this.about,
+      duration: data.duration.present ? data.duration.value : this.duration,
+      roi: data.roi.present ? data.roi.value : this.roi,
+      totalFundsRaised: data.totalFundsRaised.present
+          ? data.totalFundsRaised.value
+          : this.totalFundsRaised,
+      targetFundRaisingAmount: data.targetFundRaisingAmount.present
+          ? data.targetFundRaisingAmount.value
+          : this.targetFundRaisingAmount,
+      repayment: data.repayment.present ? data.repayment.value : this.repayment,
+      isActive: data.isActive.present ? data.isActive.value : this.isActive,
+      coverImage: data.coverImage.present
+          ? data.coverImage.value
+          : this.coverImage,
+      startDate: data.startDate.present ? data.startDate.value : this.startDate,
+      endDate: data.endDate.present ? data.endDate.value : this.endDate,
+      description: data.description.present
+          ? data.description.value
+          : this.description,
+      collectionId: data.collectionId.present
+          ? data.collectionId.value
+          : this.collectionId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ClusterData(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('name: $name, ')
+          ..write('status: $status, ')
+          ..write('about: $about, ')
+          ..write('duration: $duration, ')
+          ..write('roi: $roi, ')
+          ..write('totalFundsRaised: $totalFundsRaised, ')
+          ..write('targetFundRaisingAmount: $targetFundRaisingAmount, ')
+          ..write('repayment: $repayment, ')
+          ..write('isActive: $isActive, ')
+          ..write('coverImage: $coverImage, ')
+          ..write('startDate: $startDate, ')
+          ..write('endDate: $endDate, ')
+          ..write('description: $description, ')
+          ..write('collectionId: $collectionId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    name,
+    status,
+    about,
+    duration,
+    roi,
+    totalFundsRaised,
+    targetFundRaisingAmount,
+    repayment,
+    isActive,
+    coverImage,
+    startDate,
+    endDate,
+    description,
+    collectionId,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ClusterData &&
+          other.id == this.id &&
+          other.syncStatus == this.syncStatus &&
+          other.syncDate == this.syncDate &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.name == this.name &&
+          other.status == this.status &&
+          other.about == this.about &&
+          other.duration == this.duration &&
+          other.roi == this.roi &&
+          other.totalFundsRaised == this.totalFundsRaised &&
+          other.targetFundRaisingAmount == this.targetFundRaisingAmount &&
+          other.repayment == this.repayment &&
+          other.isActive == this.isActive &&
+          other.coverImage == this.coverImage &&
+          other.startDate == this.startDate &&
+          other.endDate == this.endDate &&
+          other.description == this.description &&
+          other.collectionId == this.collectionId);
+}
+
+class ClusterCompanion extends UpdateCompanion<ClusterData> {
+  final Value<String> id;
+  final Value<String> syncStatus;
+  final Value<DateTime?> syncDate;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> name;
+  final Value<String> status;
+  final Value<String> about;
+  final Value<int> duration;
+  final Value<int> roi;
+  final Value<int> totalFundsRaised;
+  final Value<int> targetFundRaisingAmount;
+  final Value<String> repayment;
+  final Value<bool> isActive;
+  final Value<String> coverImage;
+  final Value<DateTime> startDate;
+  final Value<DateTime> endDate;
+  final Value<String> description;
+  final Value<String?> collectionId;
+  final Value<int> rowid;
+  const ClusterCompanion({
+    this.id = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.name = const Value.absent(),
+    this.status = const Value.absent(),
+    this.about = const Value.absent(),
+    this.duration = const Value.absent(),
+    this.roi = const Value.absent(),
+    this.totalFundsRaised = const Value.absent(),
+    this.targetFundRaisingAmount = const Value.absent(),
+    this.repayment = const Value.absent(),
+    this.isActive = const Value.absent(),
+    this.coverImage = const Value.absent(),
+    this.startDate = const Value.absent(),
+    this.endDate = const Value.absent(),
+    this.description = const Value.absent(),
+    this.collectionId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ClusterCompanion.insert({
+    required String id,
+    required String syncStatus,
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required String name,
+    required String status,
+    required String about,
+    required int duration,
+    required int roi,
+    required int totalFundsRaised,
+    required int targetFundRaisingAmount,
+    required String repayment,
+    required bool isActive,
+    required String coverImage,
+    required DateTime startDate,
+    required DateTime endDate,
+    required String description,
+    this.collectionId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       syncStatus = Value(syncStatus),
+       name = Value(name),
+       status = Value(status),
+       about = Value(about),
+       duration = Value(duration),
+       roi = Value(roi),
+       totalFundsRaised = Value(totalFundsRaised),
+       targetFundRaisingAmount = Value(targetFundRaisingAmount),
+       repayment = Value(repayment),
+       isActive = Value(isActive),
+       coverImage = Value(coverImage),
+       startDate = Value(startDate),
+       endDate = Value(endDate),
+       description = Value(description);
+  static Insertable<ClusterData> custom({
+    Expression<String>? id,
+    Expression<String>? syncStatus,
+    Expression<DateTime>? syncDate,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? name,
+    Expression<String>? status,
+    Expression<String>? about,
+    Expression<int>? duration,
+    Expression<int>? roi,
+    Expression<int>? totalFundsRaised,
+    Expression<int>? targetFundRaisingAmount,
+    Expression<String>? repayment,
+    Expression<bool>? isActive,
+    Expression<String>? coverImage,
+    Expression<DateTime>? startDate,
+    Expression<DateTime>? endDate,
+    Expression<String>? description,
+    Expression<String>? collectionId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (syncDate != null) 'sync_date': syncDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (name != null) 'name': name,
+      if (status != null) 'status': status,
+      if (about != null) 'about': about,
+      if (duration != null) 'duration': duration,
+      if (roi != null) 'roi': roi,
+      if (totalFundsRaised != null) 'total_funds_raised': totalFundsRaised,
+      if (targetFundRaisingAmount != null)
+        'target_fund_raising_amount': targetFundRaisingAmount,
+      if (repayment != null) 'repayment': repayment,
+      if (isActive != null) 'is_active': isActive,
+      if (coverImage != null) 'cover_image': coverImage,
+      if (startDate != null) 'start_date': startDate,
+      if (endDate != null) 'end_date': endDate,
+      if (description != null) 'description': description,
+      if (collectionId != null) 'collection_id': collectionId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ClusterCompanion copyWith({
+    Value<String>? id,
+    Value<String>? syncStatus,
+    Value<DateTime?>? syncDate,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? name,
+    Value<String>? status,
+    Value<String>? about,
+    Value<int>? duration,
+    Value<int>? roi,
+    Value<int>? totalFundsRaised,
+    Value<int>? targetFundRaisingAmount,
+    Value<String>? repayment,
+    Value<bool>? isActive,
+    Value<String>? coverImage,
+    Value<DateTime>? startDate,
+    Value<DateTime>? endDate,
+    Value<String>? description,
+    Value<String?>? collectionId,
+    Value<int>? rowid,
+  }) {
+    return ClusterCompanion(
+      id: id ?? this.id,
+      syncStatus: syncStatus ?? this.syncStatus,
+      syncDate: syncDate ?? this.syncDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      name: name ?? this.name,
+      status: status ?? this.status,
+      about: about ?? this.about,
+      duration: duration ?? this.duration,
+      roi: roi ?? this.roi,
+      totalFundsRaised: totalFundsRaised ?? this.totalFundsRaised,
+      targetFundRaisingAmount:
+          targetFundRaisingAmount ?? this.targetFundRaisingAmount,
+      repayment: repayment ?? this.repayment,
+      isActive: isActive ?? this.isActive,
+      coverImage: coverImage ?? this.coverImage,
+      startDate: startDate ?? this.startDate,
+      endDate: endDate ?? this.endDate,
+      description: description ?? this.description,
+      collectionId: collectionId ?? this.collectionId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (syncDate.present) {
+      map['sync_date'] = Variable<DateTime>(syncDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (about.present) {
+      map['about'] = Variable<String>(about.value);
+    }
+    if (duration.present) {
+      map['duration'] = Variable<int>(duration.value);
+    }
+    if (roi.present) {
+      map['roi'] = Variable<int>(roi.value);
+    }
+    if (totalFundsRaised.present) {
+      map['total_funds_raised'] = Variable<int>(totalFundsRaised.value);
+    }
+    if (targetFundRaisingAmount.present) {
+      map['target_fund_raising_amount'] = Variable<int>(
+        targetFundRaisingAmount.value,
+      );
+    }
+    if (repayment.present) {
+      map['repayment'] = Variable<String>(repayment.value);
+    }
+    if (isActive.present) {
+      map['is_active'] = Variable<bool>(isActive.value);
+    }
+    if (coverImage.present) {
+      map['cover_image'] = Variable<String>(coverImage.value);
+    }
+    if (startDate.present) {
+      map['start_date'] = Variable<DateTime>(startDate.value);
+    }
+    if (endDate.present) {
+      map['end_date'] = Variable<DateTime>(endDate.value);
+    }
+    if (description.present) {
+      map['description'] = Variable<String>(description.value);
+    }
+    if (collectionId.present) {
+      map['collection_id'] = Variable<String>(collectionId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ClusterCompanion(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('name: $name, ')
+          ..write('status: $status, ')
+          ..write('about: $about, ')
+          ..write('duration: $duration, ')
+          ..write('roi: $roi, ')
+          ..write('totalFundsRaised: $totalFundsRaised, ')
+          ..write('targetFundRaisingAmount: $targetFundRaisingAmount, ')
+          ..write('repayment: $repayment, ')
+          ..write('isActive: $isActive, ')
+          ..write('coverImage: $coverImage, ')
+          ..write('startDate: $startDate, ')
+          ..write('endDate: $endDate, ')
+          ..write('description: $description, ')
+          ..write('collectionId: $collectionId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $BranchTable extends Branch with TableInfo<$BranchTable, BranchData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $BranchTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncDateMeta = const VerificationMeta(
+    'syncDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
+    'sync_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
+    'name',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _isHeadOfficeMeta = const VerificationMeta(
+    'isHeadOffice',
+  );
+  @override
+  late final GeneratedColumn<bool> isHeadOffice = GeneratedColumn<bool>(
+    'is_head_office',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_head_office" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _phoneMeta = const VerificationMeta('phone');
+  @override
+  late final GeneratedColumn<String> phone = GeneratedColumn<String>(
+    'phone',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _streetAddressMeta = const VerificationMeta(
+    'streetAddress',
+  );
+  @override
+  late final GeneratedColumn<String> streetAddress = GeneratedColumn<String>(
+    'street_address',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _cityMeta = const VerificationMeta('city');
+  @override
+  late final GeneratedColumn<String> city = GeneratedColumn<String>(
+    'city',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _stateMeta = const VerificationMeta('state');
+  @override
+  late final GeneratedColumn<String> state = GeneratedColumn<String>(
+    'state',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _countryMeta = const VerificationMeta(
+    'country',
+  );
+  @override
+  late final GeneratedColumn<String> country = GeneratedColumn<String>(
+    'country',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _businessIdMeta = const VerificationMeta(
+    'businessId',
+  );
+  @override
+  late final GeneratedColumn<String> businessId = GeneratedColumn<String>(
+    'business_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'UNIQUE REFERENCES businesses (id)',
+    ),
+  );
+  static const VerificationMeta _collectionIdMeta = const VerificationMeta(
+    'collectionId',
+  );
+  @override
+  late final GeneratedColumn<String> collectionId = GeneratedColumn<String>(
+    'collection_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES collection (id)',
+    ),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    name,
+    isHeadOffice,
+    phone,
+    streetAddress,
+    city,
+    state,
+    country,
+    businessId,
+    collectionId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'branch';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<BranchData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('sync_date')) {
+      context.handle(
+        _syncDateMeta,
+        syncDate.isAcceptableOrUnknown(data['sync_date']!, _syncDateMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+        _nameMeta,
+        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('is_head_office')) {
+      context.handle(
+        _isHeadOfficeMeta,
+        isHeadOffice.isAcceptableOrUnknown(
+          data['is_head_office']!,
+          _isHeadOfficeMeta,
+        ),
+      );
+    }
+    if (data.containsKey('phone')) {
+      context.handle(
+        _phoneMeta,
+        phone.isAcceptableOrUnknown(data['phone']!, _phoneMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_phoneMeta);
+    }
+    if (data.containsKey('street_address')) {
+      context.handle(
+        _streetAddressMeta,
+        streetAddress.isAcceptableOrUnknown(
+          data['street_address']!,
+          _streetAddressMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_streetAddressMeta);
+    }
+    if (data.containsKey('city')) {
+      context.handle(
+        _cityMeta,
+        city.isAcceptableOrUnknown(data['city']!, _cityMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_cityMeta);
+    }
+    if (data.containsKey('state')) {
+      context.handle(
+        _stateMeta,
+        state.isAcceptableOrUnknown(data['state']!, _stateMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_stateMeta);
+    }
+    if (data.containsKey('country')) {
+      context.handle(
+        _countryMeta,
+        country.isAcceptableOrUnknown(data['country']!, _countryMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_countryMeta);
+    }
+    if (data.containsKey('business_id')) {
+      context.handle(
+        _businessIdMeta,
+        businessId.isAcceptableOrUnknown(data['business_id']!, _businessIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_businessIdMeta);
+    }
+    if (data.containsKey('collection_id')) {
+      context.handle(
+        _collectionIdMeta,
+        collectionId.isAcceptableOrUnknown(
+          data['collection_id']!,
+          _collectionIdMeta,
+        ),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  BranchData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return BranchData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      syncDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}sync_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      name: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}name'],
+      )!,
+      isHeadOffice: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_head_office'],
+      )!,
+      phone: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}phone'],
+      )!,
+      streetAddress: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}street_address'],
+      )!,
+      city: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}city'],
+      )!,
+      state: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}state'],
+      )!,
+      country: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}country'],
+      )!,
+      businessId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}business_id'],
+      )!,
+      collectionId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}collection_id'],
+      ),
+    );
+  }
+
+  @override
+  $BranchTable createAlias(String alias) {
+    return $BranchTable(attachedDatabase, alias);
+  }
+}
+
+class BranchData extends DataClass implements Insertable<BranchData> {
+  final String id;
+  final String syncStatus;
+  final DateTime? syncDate;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String name;
+  final bool isHeadOffice;
+  final String phone;
+  final String streetAddress;
+  final String city;
+  final String state;
+  final String country;
+  final String businessId;
+  final String? collectionId;
+  const BranchData({
+    required this.id,
+    required this.syncStatus,
+    this.syncDate,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.name,
+    required this.isHeadOffice,
+    required this.phone,
+    required this.streetAddress,
+    required this.city,
+    required this.state,
+    required this.country,
+    required this.businessId,
+    this.collectionId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['name'] = Variable<String>(name);
+    map['is_head_office'] = Variable<bool>(isHeadOffice);
+    map['phone'] = Variable<String>(phone);
+    map['street_address'] = Variable<String>(streetAddress);
+    map['city'] = Variable<String>(city);
+    map['state'] = Variable<String>(state);
+    map['country'] = Variable<String>(country);
+    map['business_id'] = Variable<String>(businessId);
+    if (!nullToAbsent || collectionId != null) {
+      map['collection_id'] = Variable<String>(collectionId);
+    }
+    return map;
+  }
+
+  BranchCompanion toCompanion(bool nullToAbsent) {
+    return BranchCompanion(
+      id: Value(id),
+      syncStatus: Value(syncStatus),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      name: Value(name),
+      isHeadOffice: Value(isHeadOffice),
+      phone: Value(phone),
+      streetAddress: Value(streetAddress),
+      city: Value(city),
+      state: Value(state),
+      country: Value(country),
+      businessId: Value(businessId),
+      collectionId: collectionId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(collectionId),
+    );
+  }
+
+  factory BranchData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return BranchData(
+      id: serializer.fromJson<String>(json['id']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      name: serializer.fromJson<String>(json['name']),
+      isHeadOffice: serializer.fromJson<bool>(json['isHeadOffice']),
+      phone: serializer.fromJson<String>(json['phone']),
+      streetAddress: serializer.fromJson<String>(json['streetAddress']),
+      city: serializer.fromJson<String>(json['city']),
+      state: serializer.fromJson<String>(json['state']),
+      country: serializer.fromJson<String>(json['country']),
+      businessId: serializer.fromJson<String>(json['businessId']),
+      collectionId: serializer.fromJson<String?>(json['collectionId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'name': serializer.toJson<String>(name),
+      'isHeadOffice': serializer.toJson<bool>(isHeadOffice),
+      'phone': serializer.toJson<String>(phone),
+      'streetAddress': serializer.toJson<String>(streetAddress),
+      'city': serializer.toJson<String>(city),
+      'state': serializer.toJson<String>(state),
+      'country': serializer.toJson<String>(country),
+      'businessId': serializer.toJson<String>(businessId),
+      'collectionId': serializer.toJson<String?>(collectionId),
+    };
+  }
+
+  BranchData copyWith({
+    String? id,
+    String? syncStatus,
+    Value<DateTime?> syncDate = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? name,
+    bool? isHeadOffice,
+    String? phone,
+    String? streetAddress,
+    String? city,
+    String? state,
+    String? country,
+    String? businessId,
+    Value<String?> collectionId = const Value.absent(),
+  }) => BranchData(
+    id: id ?? this.id,
+    syncStatus: syncStatus ?? this.syncStatus,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    name: name ?? this.name,
+    isHeadOffice: isHeadOffice ?? this.isHeadOffice,
+    phone: phone ?? this.phone,
+    streetAddress: streetAddress ?? this.streetAddress,
+    city: city ?? this.city,
+    state: state ?? this.state,
+    country: country ?? this.country,
+    businessId: businessId ?? this.businessId,
+    collectionId: collectionId.present ? collectionId.value : this.collectionId,
+  );
+  BranchData copyWithCompanion(BranchCompanion data) {
+    return BranchData(
+      id: data.id.present ? data.id.value : this.id,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      name: data.name.present ? data.name.value : this.name,
+      isHeadOffice: data.isHeadOffice.present
+          ? data.isHeadOffice.value
+          : this.isHeadOffice,
+      phone: data.phone.present ? data.phone.value : this.phone,
+      streetAddress: data.streetAddress.present
+          ? data.streetAddress.value
+          : this.streetAddress,
+      city: data.city.present ? data.city.value : this.city,
+      state: data.state.present ? data.state.value : this.state,
+      country: data.country.present ? data.country.value : this.country,
+      businessId: data.businessId.present
+          ? data.businessId.value
+          : this.businessId,
+      collectionId: data.collectionId.present
+          ? data.collectionId.value
+          : this.collectionId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BranchData(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('name: $name, ')
+          ..write('isHeadOffice: $isHeadOffice, ')
+          ..write('phone: $phone, ')
+          ..write('streetAddress: $streetAddress, ')
+          ..write('city: $city, ')
+          ..write('state: $state, ')
+          ..write('country: $country, ')
+          ..write('businessId: $businessId, ')
+          ..write('collectionId: $collectionId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    name,
+    isHeadOffice,
+    phone,
+    streetAddress,
+    city,
+    state,
+    country,
+    businessId,
+    collectionId,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is BranchData &&
+          other.id == this.id &&
+          other.syncStatus == this.syncStatus &&
+          other.syncDate == this.syncDate &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.name == this.name &&
+          other.isHeadOffice == this.isHeadOffice &&
+          other.phone == this.phone &&
+          other.streetAddress == this.streetAddress &&
+          other.city == this.city &&
+          other.state == this.state &&
+          other.country == this.country &&
+          other.businessId == this.businessId &&
+          other.collectionId == this.collectionId);
+}
+
+class BranchCompanion extends UpdateCompanion<BranchData> {
+  final Value<String> id;
+  final Value<String> syncStatus;
+  final Value<DateTime?> syncDate;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> name;
+  final Value<bool> isHeadOffice;
+  final Value<String> phone;
+  final Value<String> streetAddress;
+  final Value<String> city;
+  final Value<String> state;
+  final Value<String> country;
+  final Value<String> businessId;
+  final Value<String?> collectionId;
+  final Value<int> rowid;
+  const BranchCompanion({
+    this.id = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.name = const Value.absent(),
+    this.isHeadOffice = const Value.absent(),
+    this.phone = const Value.absent(),
+    this.streetAddress = const Value.absent(),
+    this.city = const Value.absent(),
+    this.state = const Value.absent(),
+    this.country = const Value.absent(),
+    this.businessId = const Value.absent(),
+    this.collectionId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  BranchCompanion.insert({
+    required String id,
+    required String syncStatus,
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required String name,
+    this.isHeadOffice = const Value.absent(),
+    required String phone,
+    required String streetAddress,
+    required String city,
+    required String state,
+    required String country,
+    required String businessId,
+    this.collectionId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       syncStatus = Value(syncStatus),
+       name = Value(name),
+       phone = Value(phone),
+       streetAddress = Value(streetAddress),
+       city = Value(city),
+       state = Value(state),
+       country = Value(country),
+       businessId = Value(businessId);
+  static Insertable<BranchData> custom({
+    Expression<String>? id,
+    Expression<String>? syncStatus,
+    Expression<DateTime>? syncDate,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? name,
+    Expression<bool>? isHeadOffice,
+    Expression<String>? phone,
+    Expression<String>? streetAddress,
+    Expression<String>? city,
+    Expression<String>? state,
+    Expression<String>? country,
+    Expression<String>? businessId,
+    Expression<String>? collectionId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (syncDate != null) 'sync_date': syncDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (name != null) 'name': name,
+      if (isHeadOffice != null) 'is_head_office': isHeadOffice,
+      if (phone != null) 'phone': phone,
+      if (streetAddress != null) 'street_address': streetAddress,
+      if (city != null) 'city': city,
+      if (state != null) 'state': state,
+      if (country != null) 'country': country,
+      if (businessId != null) 'business_id': businessId,
+      if (collectionId != null) 'collection_id': collectionId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  BranchCompanion copyWith({
+    Value<String>? id,
+    Value<String>? syncStatus,
+    Value<DateTime?>? syncDate,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? name,
+    Value<bool>? isHeadOffice,
+    Value<String>? phone,
+    Value<String>? streetAddress,
+    Value<String>? city,
+    Value<String>? state,
+    Value<String>? country,
+    Value<String>? businessId,
+    Value<String?>? collectionId,
+    Value<int>? rowid,
+  }) {
+    return BranchCompanion(
+      id: id ?? this.id,
+      syncStatus: syncStatus ?? this.syncStatus,
+      syncDate: syncDate ?? this.syncDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      name: name ?? this.name,
+      isHeadOffice: isHeadOffice ?? this.isHeadOffice,
+      phone: phone ?? this.phone,
+      streetAddress: streetAddress ?? this.streetAddress,
+      city: city ?? this.city,
+      state: state ?? this.state,
+      country: country ?? this.country,
+      businessId: businessId ?? this.businessId,
+      collectionId: collectionId ?? this.collectionId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (syncDate.present) {
+      map['sync_date'] = Variable<DateTime>(syncDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (isHeadOffice.present) {
+      map['is_head_office'] = Variable<bool>(isHeadOffice.value);
+    }
+    if (phone.present) {
+      map['phone'] = Variable<String>(phone.value);
+    }
+    if (streetAddress.present) {
+      map['street_address'] = Variable<String>(streetAddress.value);
+    }
+    if (city.present) {
+      map['city'] = Variable<String>(city.value);
+    }
+    if (state.present) {
+      map['state'] = Variable<String>(state.value);
+    }
+    if (country.present) {
+      map['country'] = Variable<String>(country.value);
+    }
+    if (businessId.present) {
+      map['business_id'] = Variable<String>(businessId.value);
+    }
+    if (collectionId.present) {
+      map['collection_id'] = Variable<String>(collectionId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BranchCompanion(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('name: $name, ')
+          ..write('isHeadOffice: $isHeadOffice, ')
+          ..write('phone: $phone, ')
+          ..write('streetAddress: $streetAddress, ')
+          ..write('city: $city, ')
+          ..write('state: $state, ')
+          ..write('country: $country, ')
+          ..write('businessId: $businessId, ')
+          ..write('collectionId: $collectionId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $BranchUserTable extends BranchUser
+    with TableInfo<$BranchUserTable, BranchUserData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $BranchUserTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncDateMeta = const VerificationMeta(
+    'syncDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
+    'sync_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _roleMeta = const VerificationMeta('role');
+  @override
+  late final GeneratedColumn<String> role = GeneratedColumn<String>(
+    'role',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _isActiveMeta = const VerificationMeta(
+    'isActive',
+  );
+  @override
+  late final GeneratedColumn<bool> isActive = GeneratedColumn<bool>(
+    'is_active',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_active" IN (0, 1))',
+    ),
+    defaultValue: const Constant(true),
+  );
+  static const VerificationMeta _assignedAtMeta = const VerificationMeta(
+    'assignedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> assignedAt = GeneratedColumn<DateTime>(
+    'assigned_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'UNIQUE REFERENCES user (id)',
+    ),
+  );
+  static const VerificationMeta _branchIdMeta = const VerificationMeta(
+    'branchId',
+  );
+  @override
+  late final GeneratedColumn<String> branchId = GeneratedColumn<String>(
+    'branch_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'UNIQUE REFERENCES branch (id)',
+    ),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    role,
+    isActive,
+    assignedAt,
+    userId,
+    branchId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'branch_user';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<BranchUserData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('sync_date')) {
+      context.handle(
+        _syncDateMeta,
+        syncDate.isAcceptableOrUnknown(data['sync_date']!, _syncDateMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('role')) {
+      context.handle(
+        _roleMeta,
+        role.isAcceptableOrUnknown(data['role']!, _roleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_roleMeta);
+    }
+    if (data.containsKey('is_active')) {
+      context.handle(
+        _isActiveMeta,
+        isActive.isAcceptableOrUnknown(data['is_active']!, _isActiveMeta),
+      );
+    }
+    if (data.containsKey('assigned_at')) {
+      context.handle(
+        _assignedAtMeta,
+        assignedAt.isAcceptableOrUnknown(data['assigned_at']!, _assignedAtMeta),
+      );
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('branch_id')) {
+      context.handle(
+        _branchIdMeta,
+        branchId.isAcceptableOrUnknown(data['branch_id']!, _branchIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_branchIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  BranchUserData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return BranchUserData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      syncDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}sync_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      role: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}role'],
+      )!,
+      isActive: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_active'],
+      )!,
+      assignedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}assigned_at'],
+      ),
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      branchId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}branch_id'],
+      )!,
+    );
+  }
+
+  @override
+  $BranchUserTable createAlias(String alias) {
+    return $BranchUserTable(attachedDatabase, alias);
+  }
+}
+
+class BranchUserData extends DataClass implements Insertable<BranchUserData> {
+  final String id;
+  final String syncStatus;
+  final DateTime? syncDate;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String role;
+  final bool isActive;
+  final DateTime? assignedAt;
+  final String userId;
+  final String branchId;
+  const BranchUserData({
+    required this.id,
+    required this.syncStatus,
+    this.syncDate,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.role,
+    required this.isActive,
+    this.assignedAt,
+    required this.userId,
+    required this.branchId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['role'] = Variable<String>(role);
+    map['is_active'] = Variable<bool>(isActive);
+    if (!nullToAbsent || assignedAt != null) {
+      map['assigned_at'] = Variable<DateTime>(assignedAt);
+    }
+    map['user_id'] = Variable<String>(userId);
+    map['branch_id'] = Variable<String>(branchId);
+    return map;
+  }
+
+  BranchUserCompanion toCompanion(bool nullToAbsent) {
+    return BranchUserCompanion(
+      id: Value(id),
+      syncStatus: Value(syncStatus),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      role: Value(role),
+      isActive: Value(isActive),
+      assignedAt: assignedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(assignedAt),
+      userId: Value(userId),
+      branchId: Value(branchId),
+    );
+  }
+
+  factory BranchUserData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return BranchUserData(
+      id: serializer.fromJson<String>(json['id']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      role: serializer.fromJson<String>(json['role']),
+      isActive: serializer.fromJson<bool>(json['isActive']),
+      assignedAt: serializer.fromJson<DateTime?>(json['assignedAt']),
+      userId: serializer.fromJson<String>(json['userId']),
+      branchId: serializer.fromJson<String>(json['branchId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'role': serializer.toJson<String>(role),
+      'isActive': serializer.toJson<bool>(isActive),
+      'assignedAt': serializer.toJson<DateTime?>(assignedAt),
+      'userId': serializer.toJson<String>(userId),
+      'branchId': serializer.toJson<String>(branchId),
+    };
+  }
+
+  BranchUserData copyWith({
+    String? id,
+    String? syncStatus,
+    Value<DateTime?> syncDate = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? role,
+    bool? isActive,
+    Value<DateTime?> assignedAt = const Value.absent(),
+    String? userId,
+    String? branchId,
+  }) => BranchUserData(
+    id: id ?? this.id,
+    syncStatus: syncStatus ?? this.syncStatus,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    role: role ?? this.role,
+    isActive: isActive ?? this.isActive,
+    assignedAt: assignedAt.present ? assignedAt.value : this.assignedAt,
+    userId: userId ?? this.userId,
+    branchId: branchId ?? this.branchId,
+  );
+  BranchUserData copyWithCompanion(BranchUserCompanion data) {
+    return BranchUserData(
+      id: data.id.present ? data.id.value : this.id,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      role: data.role.present ? data.role.value : this.role,
+      isActive: data.isActive.present ? data.isActive.value : this.isActive,
+      assignedAt: data.assignedAt.present
+          ? data.assignedAt.value
+          : this.assignedAt,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      branchId: data.branchId.present ? data.branchId.value : this.branchId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BranchUserData(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('role: $role, ')
+          ..write('isActive: $isActive, ')
+          ..write('assignedAt: $assignedAt, ')
+          ..write('userId: $userId, ')
+          ..write('branchId: $branchId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    role,
+    isActive,
+    assignedAt,
+    userId,
+    branchId,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is BranchUserData &&
+          other.id == this.id &&
+          other.syncStatus == this.syncStatus &&
+          other.syncDate == this.syncDate &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.role == this.role &&
+          other.isActive == this.isActive &&
+          other.assignedAt == this.assignedAt &&
+          other.userId == this.userId &&
+          other.branchId == this.branchId);
+}
+
+class BranchUserCompanion extends UpdateCompanion<BranchUserData> {
+  final Value<String> id;
+  final Value<String> syncStatus;
+  final Value<DateTime?> syncDate;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> role;
+  final Value<bool> isActive;
+  final Value<DateTime?> assignedAt;
+  final Value<String> userId;
+  final Value<String> branchId;
+  final Value<int> rowid;
+  const BranchUserCompanion({
+    this.id = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.role = const Value.absent(),
+    this.isActive = const Value.absent(),
+    this.assignedAt = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.branchId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  BranchUserCompanion.insert({
+    required String id,
+    required String syncStatus,
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required String role,
+    this.isActive = const Value.absent(),
+    this.assignedAt = const Value.absent(),
+    required String userId,
+    required String branchId,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       syncStatus = Value(syncStatus),
+       role = Value(role),
+       userId = Value(userId),
+       branchId = Value(branchId);
+  static Insertable<BranchUserData> custom({
+    Expression<String>? id,
+    Expression<String>? syncStatus,
+    Expression<DateTime>? syncDate,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? role,
+    Expression<bool>? isActive,
+    Expression<DateTime>? assignedAt,
+    Expression<String>? userId,
+    Expression<String>? branchId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (syncDate != null) 'sync_date': syncDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (role != null) 'role': role,
+      if (isActive != null) 'is_active': isActive,
+      if (assignedAt != null) 'assigned_at': assignedAt,
+      if (userId != null) 'user_id': userId,
+      if (branchId != null) 'branch_id': branchId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  BranchUserCompanion copyWith({
+    Value<String>? id,
+    Value<String>? syncStatus,
+    Value<DateTime?>? syncDate,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? role,
+    Value<bool>? isActive,
+    Value<DateTime?>? assignedAt,
+    Value<String>? userId,
+    Value<String>? branchId,
+    Value<int>? rowid,
+  }) {
+    return BranchUserCompanion(
+      id: id ?? this.id,
+      syncStatus: syncStatus ?? this.syncStatus,
+      syncDate: syncDate ?? this.syncDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      role: role ?? this.role,
+      isActive: isActive ?? this.isActive,
+      assignedAt: assignedAt ?? this.assignedAt,
+      userId: userId ?? this.userId,
+      branchId: branchId ?? this.branchId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (syncDate.present) {
+      map['sync_date'] = Variable<DateTime>(syncDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (role.present) {
+      map['role'] = Variable<String>(role.value);
+    }
+    if (isActive.present) {
+      map['is_active'] = Variable<bool>(isActive.value);
+    }
+    if (assignedAt.present) {
+      map['assigned_at'] = Variable<DateTime>(assignedAt.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (branchId.present) {
+      map['branch_id'] = Variable<String>(branchId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BranchUserCompanion(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('role: $role, ')
+          ..write('isActive: $isActive, ')
+          ..write('assignedAt: $assignedAt, ')
+          ..write('userId: $userId, ')
+          ..write('branchId: $branchId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $VerificationTokenTable extends VerificationToken
+    with TableInfo<$VerificationTokenTable, VerificationTokenData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $VerificationTokenTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncDateMeta = const VerificationMeta(
+    'syncDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
+    'sync_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _tokenMeta = const VerificationMeta('token');
+  @override
+  late final GeneratedColumn<String> token = GeneratedColumn<String>(
+    'token',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _expiresAtMeta = const VerificationMeta(
+    'expiresAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> expiresAt = GeneratedColumn<DateTime>(
+    'expires_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES user (id)',
+    ),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    type,
+    token,
+    expiresAt,
+    userId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'verification_token';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<VerificationTokenData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('sync_date')) {
+      context.handle(
+        _syncDateMeta,
+        syncDate.isAcceptableOrUnknown(data['sync_date']!, _syncDateMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('token')) {
+      context.handle(
+        _tokenMeta,
+        token.isAcceptableOrUnknown(data['token']!, _tokenMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_tokenMeta);
+    }
+    if (data.containsKey('expires_at')) {
+      context.handle(
+        _expiresAtMeta,
+        expiresAt.isAcceptableOrUnknown(data['expires_at']!, _expiresAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_expiresAtMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  VerificationTokenData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return VerificationTokenData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      syncDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}sync_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
+      token: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}token'],
+      )!,
+      expiresAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}expires_at'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+    );
+  }
+
+  @override
+  $VerificationTokenTable createAlias(String alias) {
+    return $VerificationTokenTable(attachedDatabase, alias);
+  }
+}
+
+class VerificationTokenData extends DataClass
+    implements Insertable<VerificationTokenData> {
+  final String id;
+  final String syncStatus;
+  final DateTime? syncDate;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String type;
+  final String token;
+  final DateTime expiresAt;
+  final String userId;
+  const VerificationTokenData({
+    required this.id,
+    required this.syncStatus,
+    this.syncDate,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.type,
+    required this.token,
+    required this.expiresAt,
+    required this.userId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['type'] = Variable<String>(type);
+    map['token'] = Variable<String>(token);
+    map['expires_at'] = Variable<DateTime>(expiresAt);
+    map['user_id'] = Variable<String>(userId);
+    return map;
+  }
+
+  VerificationTokenCompanion toCompanion(bool nullToAbsent) {
+    return VerificationTokenCompanion(
+      id: Value(id),
+      syncStatus: Value(syncStatus),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      type: Value(type),
+      token: Value(token),
+      expiresAt: Value(expiresAt),
+      userId: Value(userId),
+    );
+  }
+
+  factory VerificationTokenData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return VerificationTokenData(
+      id: serializer.fromJson<String>(json['id']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      type: serializer.fromJson<String>(json['type']),
+      token: serializer.fromJson<String>(json['token']),
+      expiresAt: serializer.fromJson<DateTime>(json['expiresAt']),
+      userId: serializer.fromJson<String>(json['userId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'type': serializer.toJson<String>(type),
+      'token': serializer.toJson<String>(token),
+      'expiresAt': serializer.toJson<DateTime>(expiresAt),
+      'userId': serializer.toJson<String>(userId),
+    };
+  }
+
+  VerificationTokenData copyWith({
+    String? id,
+    String? syncStatus,
+    Value<DateTime?> syncDate = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? type,
+    String? token,
+    DateTime? expiresAt,
+    String? userId,
+  }) => VerificationTokenData(
+    id: id ?? this.id,
+    syncStatus: syncStatus ?? this.syncStatus,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    type: type ?? this.type,
+    token: token ?? this.token,
+    expiresAt: expiresAt ?? this.expiresAt,
+    userId: userId ?? this.userId,
+  );
+  VerificationTokenData copyWithCompanion(VerificationTokenCompanion data) {
+    return VerificationTokenData(
+      id: data.id.present ? data.id.value : this.id,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      type: data.type.present ? data.type.value : this.type,
+      token: data.token.present ? data.token.value : this.token,
+      expiresAt: data.expiresAt.present ? data.expiresAt.value : this.expiresAt,
+      userId: data.userId.present ? data.userId.value : this.userId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('VerificationTokenData(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('type: $type, ')
+          ..write('token: $token, ')
+          ..write('expiresAt: $expiresAt, ')
+          ..write('userId: $userId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    type,
+    token,
+    expiresAt,
+    userId,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is VerificationTokenData &&
+          other.id == this.id &&
+          other.syncStatus == this.syncStatus &&
+          other.syncDate == this.syncDate &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.type == this.type &&
+          other.token == this.token &&
+          other.expiresAt == this.expiresAt &&
+          other.userId == this.userId);
+}
+
+class VerificationTokenCompanion
+    extends UpdateCompanion<VerificationTokenData> {
+  final Value<String> id;
+  final Value<String> syncStatus;
+  final Value<DateTime?> syncDate;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> type;
+  final Value<String> token;
+  final Value<DateTime> expiresAt;
+  final Value<String> userId;
+  final Value<int> rowid;
+  const VerificationTokenCompanion({
+    this.id = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.type = const Value.absent(),
+    this.token = const Value.absent(),
+    this.expiresAt = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  VerificationTokenCompanion.insert({
+    required String id,
+    required String syncStatus,
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required String type,
+    required String token,
+    required DateTime expiresAt,
+    required String userId,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       syncStatus = Value(syncStatus),
+       type = Value(type),
+       token = Value(token),
+       expiresAt = Value(expiresAt),
+       userId = Value(userId);
+  static Insertable<VerificationTokenData> custom({
+    Expression<String>? id,
+    Expression<String>? syncStatus,
+    Expression<DateTime>? syncDate,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? type,
+    Expression<String>? token,
+    Expression<DateTime>? expiresAt,
+    Expression<String>? userId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (syncDate != null) 'sync_date': syncDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (type != null) 'type': type,
+      if (token != null) 'token': token,
+      if (expiresAt != null) 'expires_at': expiresAt,
+      if (userId != null) 'user_id': userId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  VerificationTokenCompanion copyWith({
+    Value<String>? id,
+    Value<String>? syncStatus,
+    Value<DateTime?>? syncDate,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? type,
+    Value<String>? token,
+    Value<DateTime>? expiresAt,
+    Value<String>? userId,
+    Value<int>? rowid,
+  }) {
+    return VerificationTokenCompanion(
+      id: id ?? this.id,
+      syncStatus: syncStatus ?? this.syncStatus,
+      syncDate: syncDate ?? this.syncDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      type: type ?? this.type,
+      token: token ?? this.token,
+      expiresAt: expiresAt ?? this.expiresAt,
+      userId: userId ?? this.userId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (syncDate.present) {
+      map['sync_date'] = Variable<DateTime>(syncDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (token.present) {
+      map['token'] = Variable<String>(token.value);
+    }
+    if (expiresAt.present) {
+      map['expires_at'] = Variable<DateTime>(expiresAt.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('VerificationTokenCompanion(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('type: $type, ')
+          ..write('token: $token, ')
+          ..write('expiresAt: $expiresAt, ')
+          ..write('userId: $userId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $UserVerificationTable extends UserVerification
+    with TableInfo<$UserVerificationTable, UserVerificationData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UserVerificationTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncDateMeta = const VerificationMeta(
+    'syncDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
+    'sync_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+    'type',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _idNumberMeta = const VerificationMeta(
+    'idNumber',
+  );
+  @override
+  late final GeneratedColumn<String> idNumber = GeneratedColumn<String>(
+    'id_number',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _idImageFrontUrlMeta = const VerificationMeta(
+    'idImageFrontUrl',
+  );
+  @override
+  late final GeneratedColumn<String> idImageFrontUrl = GeneratedColumn<String>(
+    'id_image_front_url',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _idImageBackUrlMeta = const VerificationMeta(
+    'idImageBackUrl',
+  );
+  @override
+  late final GeneratedColumn<String> idImageBackUrl = GeneratedColumn<String>(
+    'id_image_back_url',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _statusMeta = const VerificationMeta('status');
+  @override
+  late final GeneratedColumn<String> status = GeneratedColumn<String>(
+    'status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _rejectionReasonMeta = const VerificationMeta(
+    'rejectionReason',
+  );
+  @override
+  late final GeneratedColumn<String> rejectionReason = GeneratedColumn<String>(
+    'rejection_reason',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _submittedAtMeta = const VerificationMeta(
+    'submittedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> submittedAt = GeneratedColumn<DateTime>(
+    'submitted_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _reviewedAtMeta = const VerificationMeta(
+    'reviewedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> reviewedAt = GeneratedColumn<DateTime>(
+    'reviewed_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES user (id)',
+    ),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    type,
+    idNumber,
+    idImageFrontUrl,
+    idImageBackUrl,
+    status,
+    rejectionReason,
+    submittedAt,
+    reviewedAt,
+    userId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'user_verification';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<UserVerificationData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('sync_date')) {
+      context.handle(
+        _syncDateMeta,
+        syncDate.isAcceptableOrUnknown(data['sync_date']!, _syncDateMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('type')) {
+      context.handle(
+        _typeMeta,
+        type.isAcceptableOrUnknown(data['type']!, _typeMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_typeMeta);
+    }
+    if (data.containsKey('id_number')) {
+      context.handle(
+        _idNumberMeta,
+        idNumber.isAcceptableOrUnknown(data['id_number']!, _idNumberMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_idNumberMeta);
+    }
+    if (data.containsKey('id_image_front_url')) {
+      context.handle(
+        _idImageFrontUrlMeta,
+        idImageFrontUrl.isAcceptableOrUnknown(
+          data['id_image_front_url']!,
+          _idImageFrontUrlMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_idImageFrontUrlMeta);
+    }
+    if (data.containsKey('id_image_back_url')) {
+      context.handle(
+        _idImageBackUrlMeta,
+        idImageBackUrl.isAcceptableOrUnknown(
+          data['id_image_back_url']!,
+          _idImageBackUrlMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_idImageBackUrlMeta);
+    }
+    if (data.containsKey('status')) {
+      context.handle(
+        _statusMeta,
+        status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_statusMeta);
+    }
+    if (data.containsKey('rejection_reason')) {
+      context.handle(
+        _rejectionReasonMeta,
+        rejectionReason.isAcceptableOrUnknown(
+          data['rejection_reason']!,
+          _rejectionReasonMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_rejectionReasonMeta);
+    }
+    if (data.containsKey('submitted_at')) {
+      context.handle(
+        _submittedAtMeta,
+        submittedAt.isAcceptableOrUnknown(
+          data['submitted_at']!,
+          _submittedAtMeta,
+        ),
+      );
+    } else if (isInserting) {
+      context.missing(_submittedAtMeta);
+    }
+    if (data.containsKey('reviewed_at')) {
+      context.handle(
+        _reviewedAtMeta,
+        reviewedAt.isAcceptableOrUnknown(data['reviewed_at']!, _reviewedAtMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_reviewedAtMeta);
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  UserVerificationData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UserVerificationData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      syncDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}sync_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      type: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}type'],
+      )!,
+      idNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id_number'],
+      )!,
+      idImageFrontUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id_image_front_url'],
+      )!,
+      idImageBackUrl: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id_image_back_url'],
+      )!,
+      status: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}status'],
+      )!,
+      rejectionReason: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}rejection_reason'],
+      )!,
+      submittedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}submitted_at'],
+      )!,
+      reviewedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}reviewed_at'],
+      )!,
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+    );
+  }
+
+  @override
+  $UserVerificationTable createAlias(String alias) {
+    return $UserVerificationTable(attachedDatabase, alias);
+  }
+}
+
+class UserVerificationData extends DataClass
+    implements Insertable<UserVerificationData> {
+  final String id;
+  final String syncStatus;
+  final DateTime? syncDate;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String type;
+  final String idNumber;
+  final String idImageFrontUrl;
+  final String idImageBackUrl;
+  final String status;
+  final String rejectionReason;
+  final DateTime submittedAt;
+  final DateTime reviewedAt;
+  final String userId;
+  const UserVerificationData({
+    required this.id,
+    required this.syncStatus,
+    this.syncDate,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.type,
+    required this.idNumber,
+    required this.idImageFrontUrl,
+    required this.idImageBackUrl,
+    required this.status,
+    required this.rejectionReason,
+    required this.submittedAt,
+    required this.reviewedAt,
+    required this.userId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['type'] = Variable<String>(type);
+    map['id_number'] = Variable<String>(idNumber);
+    map['id_image_front_url'] = Variable<String>(idImageFrontUrl);
+    map['id_image_back_url'] = Variable<String>(idImageBackUrl);
+    map['status'] = Variable<String>(status);
+    map['rejection_reason'] = Variable<String>(rejectionReason);
+    map['submitted_at'] = Variable<DateTime>(submittedAt);
+    map['reviewed_at'] = Variable<DateTime>(reviewedAt);
+    map['user_id'] = Variable<String>(userId);
+    return map;
+  }
+
+  UserVerificationCompanion toCompanion(bool nullToAbsent) {
+    return UserVerificationCompanion(
+      id: Value(id),
+      syncStatus: Value(syncStatus),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      type: Value(type),
+      idNumber: Value(idNumber),
+      idImageFrontUrl: Value(idImageFrontUrl),
+      idImageBackUrl: Value(idImageBackUrl),
+      status: Value(status),
+      rejectionReason: Value(rejectionReason),
+      submittedAt: Value(submittedAt),
+      reviewedAt: Value(reviewedAt),
+      userId: Value(userId),
+    );
+  }
+
+  factory UserVerificationData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UserVerificationData(
+      id: serializer.fromJson<String>(json['id']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      type: serializer.fromJson<String>(json['type']),
+      idNumber: serializer.fromJson<String>(json['idNumber']),
+      idImageFrontUrl: serializer.fromJson<String>(json['idImageFrontUrl']),
+      idImageBackUrl: serializer.fromJson<String>(json['idImageBackUrl']),
+      status: serializer.fromJson<String>(json['status']),
+      rejectionReason: serializer.fromJson<String>(json['rejectionReason']),
+      submittedAt: serializer.fromJson<DateTime>(json['submittedAt']),
+      reviewedAt: serializer.fromJson<DateTime>(json['reviewedAt']),
+      userId: serializer.fromJson<String>(json['userId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'type': serializer.toJson<String>(type),
+      'idNumber': serializer.toJson<String>(idNumber),
+      'idImageFrontUrl': serializer.toJson<String>(idImageFrontUrl),
+      'idImageBackUrl': serializer.toJson<String>(idImageBackUrl),
+      'status': serializer.toJson<String>(status),
+      'rejectionReason': serializer.toJson<String>(rejectionReason),
+      'submittedAt': serializer.toJson<DateTime>(submittedAt),
+      'reviewedAt': serializer.toJson<DateTime>(reviewedAt),
+      'userId': serializer.toJson<String>(userId),
+    };
+  }
+
+  UserVerificationData copyWith({
+    String? id,
+    String? syncStatus,
+    Value<DateTime?> syncDate = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? type,
+    String? idNumber,
+    String? idImageFrontUrl,
+    String? idImageBackUrl,
+    String? status,
+    String? rejectionReason,
+    DateTime? submittedAt,
+    DateTime? reviewedAt,
+    String? userId,
+  }) => UserVerificationData(
+    id: id ?? this.id,
+    syncStatus: syncStatus ?? this.syncStatus,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    type: type ?? this.type,
+    idNumber: idNumber ?? this.idNumber,
+    idImageFrontUrl: idImageFrontUrl ?? this.idImageFrontUrl,
+    idImageBackUrl: idImageBackUrl ?? this.idImageBackUrl,
+    status: status ?? this.status,
+    rejectionReason: rejectionReason ?? this.rejectionReason,
+    submittedAt: submittedAt ?? this.submittedAt,
+    reviewedAt: reviewedAt ?? this.reviewedAt,
+    userId: userId ?? this.userId,
+  );
+  UserVerificationData copyWithCompanion(UserVerificationCompanion data) {
+    return UserVerificationData(
+      id: data.id.present ? data.id.value : this.id,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      type: data.type.present ? data.type.value : this.type,
+      idNumber: data.idNumber.present ? data.idNumber.value : this.idNumber,
+      idImageFrontUrl: data.idImageFrontUrl.present
+          ? data.idImageFrontUrl.value
+          : this.idImageFrontUrl,
+      idImageBackUrl: data.idImageBackUrl.present
+          ? data.idImageBackUrl.value
+          : this.idImageBackUrl,
+      status: data.status.present ? data.status.value : this.status,
+      rejectionReason: data.rejectionReason.present
+          ? data.rejectionReason.value
+          : this.rejectionReason,
+      submittedAt: data.submittedAt.present
+          ? data.submittedAt.value
+          : this.submittedAt,
+      reviewedAt: data.reviewedAt.present
+          ? data.reviewedAt.value
+          : this.reviewedAt,
+      userId: data.userId.present ? data.userId.value : this.userId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserVerificationData(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('type: $type, ')
+          ..write('idNumber: $idNumber, ')
+          ..write('idImageFrontUrl: $idImageFrontUrl, ')
+          ..write('idImageBackUrl: $idImageBackUrl, ')
+          ..write('status: $status, ')
+          ..write('rejectionReason: $rejectionReason, ')
+          ..write('submittedAt: $submittedAt, ')
+          ..write('reviewedAt: $reviewedAt, ')
+          ..write('userId: $userId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    type,
+    idNumber,
+    idImageFrontUrl,
+    idImageBackUrl,
+    status,
+    rejectionReason,
+    submittedAt,
+    reviewedAt,
+    userId,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserVerificationData &&
+          other.id == this.id &&
+          other.syncStatus == this.syncStatus &&
+          other.syncDate == this.syncDate &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.type == this.type &&
+          other.idNumber == this.idNumber &&
+          other.idImageFrontUrl == this.idImageFrontUrl &&
+          other.idImageBackUrl == this.idImageBackUrl &&
+          other.status == this.status &&
+          other.rejectionReason == this.rejectionReason &&
+          other.submittedAt == this.submittedAt &&
+          other.reviewedAt == this.reviewedAt &&
+          other.userId == this.userId);
+}
+
+class UserVerificationCompanion extends UpdateCompanion<UserVerificationData> {
+  final Value<String> id;
+  final Value<String> syncStatus;
+  final Value<DateTime?> syncDate;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> type;
+  final Value<String> idNumber;
+  final Value<String> idImageFrontUrl;
+  final Value<String> idImageBackUrl;
+  final Value<String> status;
+  final Value<String> rejectionReason;
+  final Value<DateTime> submittedAt;
+  final Value<DateTime> reviewedAt;
+  final Value<String> userId;
+  final Value<int> rowid;
+  const UserVerificationCompanion({
+    this.id = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.type = const Value.absent(),
+    this.idNumber = const Value.absent(),
+    this.idImageFrontUrl = const Value.absent(),
+    this.idImageBackUrl = const Value.absent(),
+    this.status = const Value.absent(),
+    this.rejectionReason = const Value.absent(),
+    this.submittedAt = const Value.absent(),
+    this.reviewedAt = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  UserVerificationCompanion.insert({
+    required String id,
+    required String syncStatus,
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required String type,
+    required String idNumber,
+    required String idImageFrontUrl,
+    required String idImageBackUrl,
+    required String status,
+    required String rejectionReason,
+    required DateTime submittedAt,
+    required DateTime reviewedAt,
+    required String userId,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       syncStatus = Value(syncStatus),
+       type = Value(type),
+       idNumber = Value(idNumber),
+       idImageFrontUrl = Value(idImageFrontUrl),
+       idImageBackUrl = Value(idImageBackUrl),
+       status = Value(status),
+       rejectionReason = Value(rejectionReason),
+       submittedAt = Value(submittedAt),
+       reviewedAt = Value(reviewedAt),
+       userId = Value(userId);
+  static Insertable<UserVerificationData> custom({
+    Expression<String>? id,
+    Expression<String>? syncStatus,
+    Expression<DateTime>? syncDate,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? type,
+    Expression<String>? idNumber,
+    Expression<String>? idImageFrontUrl,
+    Expression<String>? idImageBackUrl,
+    Expression<String>? status,
+    Expression<String>? rejectionReason,
+    Expression<DateTime>? submittedAt,
+    Expression<DateTime>? reviewedAt,
+    Expression<String>? userId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (syncDate != null) 'sync_date': syncDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (type != null) 'type': type,
+      if (idNumber != null) 'id_number': idNumber,
+      if (idImageFrontUrl != null) 'id_image_front_url': idImageFrontUrl,
+      if (idImageBackUrl != null) 'id_image_back_url': idImageBackUrl,
+      if (status != null) 'status': status,
+      if (rejectionReason != null) 'rejection_reason': rejectionReason,
+      if (submittedAt != null) 'submitted_at': submittedAt,
+      if (reviewedAt != null) 'reviewed_at': reviewedAt,
+      if (userId != null) 'user_id': userId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  UserVerificationCompanion copyWith({
+    Value<String>? id,
+    Value<String>? syncStatus,
+    Value<DateTime?>? syncDate,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? type,
+    Value<String>? idNumber,
+    Value<String>? idImageFrontUrl,
+    Value<String>? idImageBackUrl,
+    Value<String>? status,
+    Value<String>? rejectionReason,
+    Value<DateTime>? submittedAt,
+    Value<DateTime>? reviewedAt,
+    Value<String>? userId,
+    Value<int>? rowid,
+  }) {
+    return UserVerificationCompanion(
+      id: id ?? this.id,
+      syncStatus: syncStatus ?? this.syncStatus,
+      syncDate: syncDate ?? this.syncDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      type: type ?? this.type,
+      idNumber: idNumber ?? this.idNumber,
+      idImageFrontUrl: idImageFrontUrl ?? this.idImageFrontUrl,
+      idImageBackUrl: idImageBackUrl ?? this.idImageBackUrl,
+      status: status ?? this.status,
+      rejectionReason: rejectionReason ?? this.rejectionReason,
+      submittedAt: submittedAt ?? this.submittedAt,
+      reviewedAt: reviewedAt ?? this.reviewedAt,
+      userId: userId ?? this.userId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (syncDate.present) {
+      map['sync_date'] = Variable<DateTime>(syncDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
+    if (idNumber.present) {
+      map['id_number'] = Variable<String>(idNumber.value);
+    }
+    if (idImageFrontUrl.present) {
+      map['id_image_front_url'] = Variable<String>(idImageFrontUrl.value);
+    }
+    if (idImageBackUrl.present) {
+      map['id_image_back_url'] = Variable<String>(idImageBackUrl.value);
+    }
+    if (status.present) {
+      map['status'] = Variable<String>(status.value);
+    }
+    if (rejectionReason.present) {
+      map['rejection_reason'] = Variable<String>(rejectionReason.value);
+    }
+    if (submittedAt.present) {
+      map['submitted_at'] = Variable<DateTime>(submittedAt.value);
+    }
+    if (reviewedAt.present) {
+      map['reviewed_at'] = Variable<DateTime>(reviewedAt.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UserVerificationCompanion(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('type: $type, ')
+          ..write('idNumber: $idNumber, ')
+          ..write('idImageFrontUrl: $idImageFrontUrl, ')
+          ..write('idImageBackUrl: $idImageBackUrl, ')
+          ..write('status: $status, ')
+          ..write('rejectionReason: $rejectionReason, ')
+          ..write('submittedAt: $submittedAt, ')
+          ..write('reviewedAt: $reviewedAt, ')
+          ..write('userId: $userId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $InvitesTable extends Invites with TableInfo<$InvitesTable, Invite> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $InvitesTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncDateMeta = const VerificationMeta(
+    'syncDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
+    'sync_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _emailMeta = const VerificationMeta('email');
+  @override
+  late final GeneratedColumn<String> email = GeneratedColumn<String>(
+    'email',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _roleMeta = const VerificationMeta('role');
+  @override
+  late final GeneratedColumn<String> role = GeneratedColumn<String>(
+    'role',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _branchIdMeta = const VerificationMeta(
+    'branchId',
+  );
+  @override
+  late final GeneratedColumn<String> branchId = GeneratedColumn<String>(
+    'branch_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES branch (id)',
+    ),
+  );
+  static const VerificationMeta _tokenMeta = const VerificationMeta('token');
+  @override
+  late final GeneratedColumn<String> token = GeneratedColumn<String>(
+    'token',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _acceptedMeta = const VerificationMeta(
+    'accepted',
+  );
+  @override
+  late final GeneratedColumn<bool> accepted = GeneratedColumn<bool>(
+    'accepted',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("accepted" IN (0, 1))',
+    ),
+  );
+  static const VerificationMeta _businessIdMeta = const VerificationMeta(
+    'businessId',
+  );
+  @override
+  late final GeneratedColumn<String> businessId = GeneratedColumn<String>(
+    'business_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    email,
+    role,
+    branchId,
+    token,
+    accepted,
+    businessId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'invites';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<Invite> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('sync_date')) {
+      context.handle(
+        _syncDateMeta,
+        syncDate.isAcceptableOrUnknown(data['sync_date']!, _syncDateMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('email')) {
+      context.handle(
+        _emailMeta,
+        email.isAcceptableOrUnknown(data['email']!, _emailMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_emailMeta);
+    }
+    if (data.containsKey('role')) {
+      context.handle(
+        _roleMeta,
+        role.isAcceptableOrUnknown(data['role']!, _roleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_roleMeta);
+    }
+    if (data.containsKey('branch_id')) {
+      context.handle(
+        _branchIdMeta,
+        branchId.isAcceptableOrUnknown(data['branch_id']!, _branchIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_branchIdMeta);
+    }
+    if (data.containsKey('token')) {
+      context.handle(
+        _tokenMeta,
+        token.isAcceptableOrUnknown(data['token']!, _tokenMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_tokenMeta);
+    }
+    if (data.containsKey('accepted')) {
+      context.handle(
+        _acceptedMeta,
+        accepted.isAcceptableOrUnknown(data['accepted']!, _acceptedMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_acceptedMeta);
+    }
+    if (data.containsKey('business_id')) {
+      context.handle(
+        _businessIdMeta,
+        businessId.isAcceptableOrUnknown(data['business_id']!, _businessIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_businessIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  Invite map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return Invite(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      syncDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}sync_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      email: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}email'],
+      )!,
+      role: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}role'],
+      )!,
+      branchId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}branch_id'],
+      )!,
+      token: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}token'],
+      )!,
+      accepted: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}accepted'],
+      )!,
+      businessId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}business_id'],
+      )!,
+    );
+  }
+
+  @override
+  $InvitesTable createAlias(String alias) {
+    return $InvitesTable(attachedDatabase, alias);
+  }
+}
+
+class Invite extends DataClass implements Insertable<Invite> {
+  final String id;
+  final String syncStatus;
+  final DateTime? syncDate;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String email;
+  final String role;
+  final String branchId;
+  final String token;
+  final bool accepted;
+  final String businessId;
+  const Invite({
+    required this.id,
+    required this.syncStatus,
+    this.syncDate,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.email,
+    required this.role,
+    required this.branchId,
+    required this.token,
+    required this.accepted,
+    required this.businessId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['email'] = Variable<String>(email);
+    map['role'] = Variable<String>(role);
+    map['branch_id'] = Variable<String>(branchId);
+    map['token'] = Variable<String>(token);
+    map['accepted'] = Variable<bool>(accepted);
+    map['business_id'] = Variable<String>(businessId);
+    return map;
+  }
+
+  InvitesCompanion toCompanion(bool nullToAbsent) {
+    return InvitesCompanion(
+      id: Value(id),
+      syncStatus: Value(syncStatus),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      email: Value(email),
+      role: Value(role),
+      branchId: Value(branchId),
+      token: Value(token),
+      accepted: Value(accepted),
+      businessId: Value(businessId),
+    );
+  }
+
+  factory Invite.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return Invite(
+      id: serializer.fromJson<String>(json['id']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      email: serializer.fromJson<String>(json['email']),
+      role: serializer.fromJson<String>(json['role']),
+      branchId: serializer.fromJson<String>(json['branchId']),
+      token: serializer.fromJson<String>(json['token']),
+      accepted: serializer.fromJson<bool>(json['accepted']),
+      businessId: serializer.fromJson<String>(json['businessId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'email': serializer.toJson<String>(email),
+      'role': serializer.toJson<String>(role),
+      'branchId': serializer.toJson<String>(branchId),
+      'token': serializer.toJson<String>(token),
+      'accepted': serializer.toJson<bool>(accepted),
+      'businessId': serializer.toJson<String>(businessId),
+    };
+  }
+
+  Invite copyWith({
+    String? id,
+    String? syncStatus,
+    Value<DateTime?> syncDate = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? email,
+    String? role,
+    String? branchId,
+    String? token,
+    bool? accepted,
+    String? businessId,
+  }) => Invite(
+    id: id ?? this.id,
+    syncStatus: syncStatus ?? this.syncStatus,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    email: email ?? this.email,
+    role: role ?? this.role,
+    branchId: branchId ?? this.branchId,
+    token: token ?? this.token,
+    accepted: accepted ?? this.accepted,
+    businessId: businessId ?? this.businessId,
+  );
+  Invite copyWithCompanion(InvitesCompanion data) {
+    return Invite(
+      id: data.id.present ? data.id.value : this.id,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      email: data.email.present ? data.email.value : this.email,
+      role: data.role.present ? data.role.value : this.role,
+      branchId: data.branchId.present ? data.branchId.value : this.branchId,
+      token: data.token.present ? data.token.value : this.token,
+      accepted: data.accepted.present ? data.accepted.value : this.accepted,
+      businessId: data.businessId.present
+          ? data.businessId.value
+          : this.businessId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('Invite(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('email: $email, ')
+          ..write('role: $role, ')
+          ..write('branchId: $branchId, ')
+          ..write('token: $token, ')
+          ..write('accepted: $accepted, ')
+          ..write('businessId: $businessId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    email,
+    role,
+    branchId,
+    token,
+    accepted,
+    businessId,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Invite &&
+          other.id == this.id &&
+          other.syncStatus == this.syncStatus &&
+          other.syncDate == this.syncDate &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.email == this.email &&
+          other.role == this.role &&
+          other.branchId == this.branchId &&
+          other.token == this.token &&
+          other.accepted == this.accepted &&
+          other.businessId == this.businessId);
+}
+
+class InvitesCompanion extends UpdateCompanion<Invite> {
+  final Value<String> id;
+  final Value<String> syncStatus;
+  final Value<DateTime?> syncDate;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> email;
+  final Value<String> role;
+  final Value<String> branchId;
+  final Value<String> token;
+  final Value<bool> accepted;
+  final Value<String> businessId;
+  final Value<int> rowid;
+  const InvitesCompanion({
+    this.id = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.email = const Value.absent(),
+    this.role = const Value.absent(),
+    this.branchId = const Value.absent(),
+    this.token = const Value.absent(),
+    this.accepted = const Value.absent(),
+    this.businessId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  InvitesCompanion.insert({
+    required String id,
+    required String syncStatus,
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required String email,
+    required String role,
+    required String branchId,
+    required String token,
+    required bool accepted,
+    required String businessId,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       syncStatus = Value(syncStatus),
+       email = Value(email),
+       role = Value(role),
+       branchId = Value(branchId),
+       token = Value(token),
+       accepted = Value(accepted),
+       businessId = Value(businessId);
+  static Insertable<Invite> custom({
+    Expression<String>? id,
+    Expression<String>? syncStatus,
+    Expression<DateTime>? syncDate,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? email,
+    Expression<String>? role,
+    Expression<String>? branchId,
+    Expression<String>? token,
+    Expression<bool>? accepted,
+    Expression<String>? businessId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (syncDate != null) 'sync_date': syncDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (email != null) 'email': email,
+      if (role != null) 'role': role,
+      if (branchId != null) 'branch_id': branchId,
+      if (token != null) 'token': token,
+      if (accepted != null) 'accepted': accepted,
+      if (businessId != null) 'business_id': businessId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  InvitesCompanion copyWith({
+    Value<String>? id,
+    Value<String>? syncStatus,
+    Value<DateTime?>? syncDate,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? email,
+    Value<String>? role,
+    Value<String>? branchId,
+    Value<String>? token,
+    Value<bool>? accepted,
+    Value<String>? businessId,
+    Value<int>? rowid,
+  }) {
+    return InvitesCompanion(
+      id: id ?? this.id,
+      syncStatus: syncStatus ?? this.syncStatus,
+      syncDate: syncDate ?? this.syncDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      email: email ?? this.email,
+      role: role ?? this.role,
+      branchId: branchId ?? this.branchId,
+      token: token ?? this.token,
+      accepted: accepted ?? this.accepted,
+      businessId: businessId ?? this.businessId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (syncDate.present) {
+      map['sync_date'] = Variable<DateTime>(syncDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (email.present) {
+      map['email'] = Variable<String>(email.value);
+    }
+    if (role.present) {
+      map['role'] = Variable<String>(role.value);
+    }
+    if (branchId.present) {
+      map['branch_id'] = Variable<String>(branchId.value);
+    }
+    if (token.present) {
+      map['token'] = Variable<String>(token.value);
+    }
+    if (accepted.present) {
+      map['accepted'] = Variable<bool>(accepted.value);
+    }
+    if (businessId.present) {
+      map['business_id'] = Variable<String>(businessId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('InvitesCompanion(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('email: $email, ')
+          ..write('role: $role, ')
+          ..write('branchId: $branchId, ')
+          ..write('token: $token, ')
+          ..write('accepted: $accepted, ')
+          ..write('businessId: $businessId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $BankDetailsTable extends BankDetails
     with TableInfo<$BankDetailsTable, BankDetail> {
   @override
@@ -13872,6 +19638,7 @@ class BankDetailsCompanion extends UpdateCompanion<BankDetail> {
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
+  late final $UserTable user = $UserTable(this);
   late final $BusinessVerificationTable businessVerification =
       $BusinessVerificationTable(this);
   late final $BusinessesTable businesses = $BusinessesTable(this);
@@ -13883,7 +19650,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $SpineBatchTable spineBatch = $SpineBatchTable(this);
   late final $InventoryTable inventory = $InventoryTable(this);
   late final $CustomerTable customer = $CustomerTable(this);
-  late final $UserTable user = $UserTable(this);
   late final $SalesTable sales = $SalesTable(this);
   late final $PaymentsTable payments = $PaymentsTable(this);
   late final $ProductImageTable productImage = $ProductImageTable(this);
@@ -13896,12 +19662,23 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $StockTransferTable stockTransfer = $StockTransferTable(this);
   late final $StockTransferItemTable stockTransferItem =
       $StockTransferItemTable(this);
+  late final $CollectionTable collection = $CollectionTable(this);
+  late final $ClusterTable cluster = $ClusterTable(this);
+  late final $BranchTable branch = $BranchTable(this);
+  late final $BranchUserTable branchUser = $BranchUserTable(this);
+  late final $VerificationTokenTable verificationToken =
+      $VerificationTokenTable(this);
+  late final $UserVerificationTable userVerification = $UserVerificationTable(
+    this,
+  );
+  late final $InvitesTable invites = $InvitesTable(this);
   late final $BankDetailsTable bankDetails = $BankDetailsTable(this);
   @override
   Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
+    user,
     businessVerification,
     businesses,
     productCategory,
@@ -13910,7 +19687,6 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     spineBatch,
     inventory,
     customer,
-    user,
     sales,
     payments,
     productImage,
@@ -13920,6 +19696,13 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     stockMovement,
     stockTransfer,
     stockTransferItem,
+    collection,
+    cluster,
+    branch,
+    branchUser,
+    verificationToken,
+    userVerification,
+    invites,
     bankDetails,
   ];
   @override
@@ -13927,6 +19710,1203 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       const DriftDatabaseOptions(storeDateTimeAsText: true);
 }
 
+typedef $$UserTableCreateCompanionBuilder =
+    UserCompanion Function({
+      required String id,
+      required String syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String?> userName,
+      required String firstName,
+      required String lastName,
+      required String email,
+      required String password,
+      required String role,
+      required bool isEmailVerified,
+      required bool isVerified,
+      Value<String?> avatar,
+      required int creditScore,
+      required String creditScoreStatus,
+      Value<int> rowid,
+    });
+typedef $$UserTableUpdateCompanionBuilder =
+    UserCompanion Function({
+      Value<String> id,
+      Value<String> syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String?> userName,
+      Value<String> firstName,
+      Value<String> lastName,
+      Value<String> email,
+      Value<String> password,
+      Value<String> role,
+      Value<bool> isEmailVerified,
+      Value<bool> isVerified,
+      Value<String?> avatar,
+      Value<int> creditScore,
+      Value<String> creditScoreStatus,
+      Value<int> rowid,
+    });
+
+final class $$UserTableReferences
+    extends BaseReferences<_$AppDatabase, $UserTable, UserData> {
+  $$UserTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$SalesTable, List<Sale>> _salesRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.sales,
+    aliasName: $_aliasNameGenerator(db.user.id, db.sales.createdBy),
+  );
+
+  $$SalesTableProcessedTableManager get salesRefs {
+    final manager = $$SalesTableTableManager(
+      $_db,
+      $_db.sales,
+    ).filter((f) => f.createdBy.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_salesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$BusinessUserTable, List<BusinessUserData>>
+  _businessUserRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.businessUser,
+    aliasName: $_aliasNameGenerator(db.user.id, db.businessUser.userId),
+  );
+
+  $$BusinessUserTableProcessedTableManager get businessUserRefs {
+    final manager = $$BusinessUserTableTableManager(
+      $_db,
+      $_db.businessUser,
+    ).filter((f) => f.userId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_businessUserRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$StockAdjustmentTable, List<StockAdjustmentData>>
+  _stockAdjustmentRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.stockAdjustment,
+    aliasName: $_aliasNameGenerator(db.user.id, db.stockAdjustment.createdBy),
+  );
+
+  $$StockAdjustmentTableProcessedTableManager get stockAdjustmentRefs {
+    final manager = $$StockAdjustmentTableTableManager(
+      $_db,
+      $_db.stockAdjustment,
+    ).filter((f) => f.createdBy.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _stockAdjustmentRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$StockMovementTable, List<StockMovementData>>
+  _stockMovementRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.stockMovement,
+    aliasName: $_aliasNameGenerator(db.user.id, db.stockMovement.createdBy),
+  );
+
+  $$StockMovementTableProcessedTableManager get stockMovementRefs {
+    final manager = $$StockMovementTableTableManager(
+      $_db,
+      $_db.stockMovement,
+    ).filter((f) => f.createdBy.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_stockMovementRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$StockTransferTable, List<StockTransferData>>
+  _stockTransferRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.stockTransfer,
+    aliasName: $_aliasNameGenerator(db.user.id, db.stockTransfer.createdBy),
+  );
+
+  $$StockTransferTableProcessedTableManager get stockTransferRefs {
+    final manager = $$StockTransferTableTableManager(
+      $_db,
+      $_db.stockTransfer,
+    ).filter((f) => f.createdBy.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_stockTransferRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$BranchUserTable, List<BranchUserData>>
+  _branchUserRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.branchUser,
+    aliasName: $_aliasNameGenerator(db.user.id, db.branchUser.userId),
+  );
+
+  $$BranchUserTableProcessedTableManager get branchUserRefs {
+    final manager = $$BranchUserTableTableManager(
+      $_db,
+      $_db.branchUser,
+    ).filter((f) => f.userId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_branchUserRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<
+    $VerificationTokenTable,
+    List<VerificationTokenData>
+  >
+  _verificationTokenRefsTable(_$AppDatabase db) =>
+      MultiTypedResultKey.fromTable(
+        db.verificationToken,
+        aliasName: $_aliasNameGenerator(
+          db.user.id,
+          db.verificationToken.userId,
+        ),
+      );
+
+  $$VerificationTokenTableProcessedTableManager get verificationTokenRefs {
+    final manager = $$VerificationTokenTableTableManager(
+      $_db,
+      $_db.verificationToken,
+    ).filter((f) => f.userId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _verificationTokenRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$UserVerificationTable, List<UserVerificationData>>
+  _userVerificationRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.userVerification,
+    aliasName: $_aliasNameGenerator(db.user.id, db.userVerification.userId),
+  );
+
+  $$UserVerificationTableProcessedTableManager get userVerificationRefs {
+    final manager = $$UserVerificationTableTableManager(
+      $_db,
+      $_db.userVerification,
+    ).filter((f) => f.userId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _userVerificationRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$UserTableFilterComposer extends Composer<_$AppDatabase, $UserTable> {
+  $$UserTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get userName => $composableBuilder(
+    column: $table.userName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get firstName => $composableBuilder(
+    column: $table.firstName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lastName => $composableBuilder(
+    column: $table.lastName,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get email => $composableBuilder(
+    column: $table.email,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get password => $composableBuilder(
+    column: $table.password,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isEmailVerified => $composableBuilder(
+    column: $table.isEmailVerified,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isVerified => $composableBuilder(
+    column: $table.isVerified,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get avatar => $composableBuilder(
+    column: $table.avatar,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get creditScore => $composableBuilder(
+    column: $table.creditScore,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get creditScoreStatus => $composableBuilder(
+    column: $table.creditScoreStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  Expression<bool> salesRefs(
+    Expression<bool> Function($$SalesTableFilterComposer f) f,
+  ) {
+    final $$SalesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.sales,
+      getReferencedColumn: (t) => t.createdBy,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SalesTableFilterComposer(
+            $db: $db,
+            $table: $db.sales,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> businessUserRefs(
+    Expression<bool> Function($$BusinessUserTableFilterComposer f) f,
+  ) {
+    final $$BusinessUserTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.businessUser,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BusinessUserTableFilterComposer(
+            $db: $db,
+            $table: $db.businessUser,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> stockAdjustmentRefs(
+    Expression<bool> Function($$StockAdjustmentTableFilterComposer f) f,
+  ) {
+    final $$StockAdjustmentTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.stockAdjustment,
+      getReferencedColumn: (t) => t.createdBy,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StockAdjustmentTableFilterComposer(
+            $db: $db,
+            $table: $db.stockAdjustment,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> stockMovementRefs(
+    Expression<bool> Function($$StockMovementTableFilterComposer f) f,
+  ) {
+    final $$StockMovementTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.stockMovement,
+      getReferencedColumn: (t) => t.createdBy,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StockMovementTableFilterComposer(
+            $db: $db,
+            $table: $db.stockMovement,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> stockTransferRefs(
+    Expression<bool> Function($$StockTransferTableFilterComposer f) f,
+  ) {
+    final $$StockTransferTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.stockTransfer,
+      getReferencedColumn: (t) => t.createdBy,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StockTransferTableFilterComposer(
+            $db: $db,
+            $table: $db.stockTransfer,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> branchUserRefs(
+    Expression<bool> Function($$BranchUserTableFilterComposer f) f,
+  ) {
+    final $$BranchUserTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.branchUser,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BranchUserTableFilterComposer(
+            $db: $db,
+            $table: $db.branchUser,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> verificationTokenRefs(
+    Expression<bool> Function($$VerificationTokenTableFilterComposer f) f,
+  ) {
+    final $$VerificationTokenTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.verificationToken,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$VerificationTokenTableFilterComposer(
+            $db: $db,
+            $table: $db.verificationToken,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> userVerificationRefs(
+    Expression<bool> Function($$UserVerificationTableFilterComposer f) f,
+  ) {
+    final $$UserVerificationTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.userVerification,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserVerificationTableFilterComposer(
+            $db: $db,
+            $table: $db.userVerification,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$UserTableOrderingComposer extends Composer<_$AppDatabase, $UserTable> {
+  $$UserTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get userName => $composableBuilder(
+    column: $table.userName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get firstName => $composableBuilder(
+    column: $table.firstName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lastName => $composableBuilder(
+    column: $table.lastName,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get email => $composableBuilder(
+    column: $table.email,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get password => $composableBuilder(
+    column: $table.password,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isEmailVerified => $composableBuilder(
+    column: $table.isEmailVerified,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isVerified => $composableBuilder(
+    column: $table.isVerified,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get avatar => $composableBuilder(
+    column: $table.avatar,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get creditScore => $composableBuilder(
+    column: $table.creditScore,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get creditScoreStatus => $composableBuilder(
+    column: $table.creditScoreStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$UserTableAnnotationComposer
+    extends Composer<_$AppDatabase, $UserTable> {
+  $$UserTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get syncDate =>
+      $composableBuilder(column: $table.syncDate, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get userName =>
+      $composableBuilder(column: $table.userName, builder: (column) => column);
+
+  GeneratedColumn<String> get firstName =>
+      $composableBuilder(column: $table.firstName, builder: (column) => column);
+
+  GeneratedColumn<String> get lastName =>
+      $composableBuilder(column: $table.lastName, builder: (column) => column);
+
+  GeneratedColumn<String> get email =>
+      $composableBuilder(column: $table.email, builder: (column) => column);
+
+  GeneratedColumn<String> get password =>
+      $composableBuilder(column: $table.password, builder: (column) => column);
+
+  GeneratedColumn<String> get role =>
+      $composableBuilder(column: $table.role, builder: (column) => column);
+
+  GeneratedColumn<bool> get isEmailVerified => $composableBuilder(
+    column: $table.isEmailVerified,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<bool> get isVerified => $composableBuilder(
+    column: $table.isVerified,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get avatar =>
+      $composableBuilder(column: $table.avatar, builder: (column) => column);
+
+  GeneratedColumn<int> get creditScore => $composableBuilder(
+    column: $table.creditScore,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get creditScoreStatus => $composableBuilder(
+    column: $table.creditScoreStatus,
+    builder: (column) => column,
+  );
+
+  Expression<T> salesRefs<T extends Object>(
+    Expression<T> Function($$SalesTableAnnotationComposer a) f,
+  ) {
+    final $$SalesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.sales,
+      getReferencedColumn: (t) => t.createdBy,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$SalesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.sales,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> businessUserRefs<T extends Object>(
+    Expression<T> Function($$BusinessUserTableAnnotationComposer a) f,
+  ) {
+    final $$BusinessUserTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.businessUser,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BusinessUserTableAnnotationComposer(
+            $db: $db,
+            $table: $db.businessUser,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> stockAdjustmentRefs<T extends Object>(
+    Expression<T> Function($$StockAdjustmentTableAnnotationComposer a) f,
+  ) {
+    final $$StockAdjustmentTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.stockAdjustment,
+      getReferencedColumn: (t) => t.createdBy,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StockAdjustmentTableAnnotationComposer(
+            $db: $db,
+            $table: $db.stockAdjustment,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> stockMovementRefs<T extends Object>(
+    Expression<T> Function($$StockMovementTableAnnotationComposer a) f,
+  ) {
+    final $$StockMovementTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.stockMovement,
+      getReferencedColumn: (t) => t.createdBy,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StockMovementTableAnnotationComposer(
+            $db: $db,
+            $table: $db.stockMovement,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> stockTransferRefs<T extends Object>(
+    Expression<T> Function($$StockTransferTableAnnotationComposer a) f,
+  ) {
+    final $$StockTransferTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.stockTransfer,
+      getReferencedColumn: (t) => t.createdBy,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$StockTransferTableAnnotationComposer(
+            $db: $db,
+            $table: $db.stockTransfer,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> branchUserRefs<T extends Object>(
+    Expression<T> Function($$BranchUserTableAnnotationComposer a) f,
+  ) {
+    final $$BranchUserTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.branchUser,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BranchUserTableAnnotationComposer(
+            $db: $db,
+            $table: $db.branchUser,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> verificationTokenRefs<T extends Object>(
+    Expression<T> Function($$VerificationTokenTableAnnotationComposer a) f,
+  ) {
+    final $$VerificationTokenTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.verificationToken,
+          getReferencedColumn: (t) => t.userId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$VerificationTokenTableAnnotationComposer(
+                $db: $db,
+                $table: $db.verificationToken,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return f(composer);
+  }
+
+  Expression<T> userVerificationRefs<T extends Object>(
+    Expression<T> Function($$UserVerificationTableAnnotationComposer a) f,
+  ) {
+    final $$UserVerificationTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.userVerification,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserVerificationTableAnnotationComposer(
+            $db: $db,
+            $table: $db.userVerification,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$UserTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $UserTable,
+          UserData,
+          $$UserTableFilterComposer,
+          $$UserTableOrderingComposer,
+          $$UserTableAnnotationComposer,
+          $$UserTableCreateCompanionBuilder,
+          $$UserTableUpdateCompanionBuilder,
+          (UserData, $$UserTableReferences),
+          UserData,
+          PrefetchHooks Function({
+            bool salesRefs,
+            bool businessUserRefs,
+            bool stockAdjustmentRefs,
+            bool stockMovementRefs,
+            bool stockTransferRefs,
+            bool branchUserRefs,
+            bool verificationTokenRefs,
+            bool userVerificationRefs,
+          })
+        > {
+  $$UserTableTableManager(_$AppDatabase db, $UserTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UserTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$UserTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$UserTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String?> userName = const Value.absent(),
+                Value<String> firstName = const Value.absent(),
+                Value<String> lastName = const Value.absent(),
+                Value<String> email = const Value.absent(),
+                Value<String> password = const Value.absent(),
+                Value<String> role = const Value.absent(),
+                Value<bool> isEmailVerified = const Value.absent(),
+                Value<bool> isVerified = const Value.absent(),
+                Value<String?> avatar = const Value.absent(),
+                Value<int> creditScore = const Value.absent(),
+                Value<String> creditScoreStatus = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => UserCompanion(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                userName: userName,
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: password,
+                role: role,
+                isEmailVerified: isEmailVerified,
+                isVerified: isVerified,
+                avatar: avatar,
+                creditScore: creditScore,
+                creditScoreStatus: creditScoreStatus,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String syncStatus,
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String?> userName = const Value.absent(),
+                required String firstName,
+                required String lastName,
+                required String email,
+                required String password,
+                required String role,
+                required bool isEmailVerified,
+                required bool isVerified,
+                Value<String?> avatar = const Value.absent(),
+                required int creditScore,
+                required String creditScoreStatus,
+                Value<int> rowid = const Value.absent(),
+              }) => UserCompanion.insert(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                userName: userName,
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: password,
+                role: role,
+                isEmailVerified: isEmailVerified,
+                isVerified: isVerified,
+                avatar: avatar,
+                creditScore: creditScore,
+                creditScoreStatus: creditScoreStatus,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) =>
+                    (e.readTable(table), $$UserTableReferences(db, table, e)),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({
+                salesRefs = false,
+                businessUserRefs = false,
+                stockAdjustmentRefs = false,
+                stockMovementRefs = false,
+                stockTransferRefs = false,
+                branchUserRefs = false,
+                verificationTokenRefs = false,
+                userVerificationRefs = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (salesRefs) db.sales,
+                    if (businessUserRefs) db.businessUser,
+                    if (stockAdjustmentRefs) db.stockAdjustment,
+                    if (stockMovementRefs) db.stockMovement,
+                    if (stockTransferRefs) db.stockTransfer,
+                    if (branchUserRefs) db.branchUser,
+                    if (verificationTokenRefs) db.verificationToken,
+                    if (userVerificationRefs) db.userVerification,
+                  ],
+                  addJoins: null,
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (salesRefs)
+                        await $_getPrefetchedData<UserData, $UserTable, Sale>(
+                          currentTable: table,
+                          referencedTable: $$UserTableReferences
+                              ._salesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$UserTableReferences(db, table, p0).salesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.createdBy == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (businessUserRefs)
+                        await $_getPrefetchedData<
+                          UserData,
+                          $UserTable,
+                          BusinessUserData
+                        >(
+                          currentTable: table,
+                          referencedTable: $$UserTableReferences
+                              ._businessUserRefsTable(db),
+                          managerFromTypedResult: (p0) => $$UserTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).businessUserRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.userId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (stockAdjustmentRefs)
+                        await $_getPrefetchedData<
+                          UserData,
+                          $UserTable,
+                          StockAdjustmentData
+                        >(
+                          currentTable: table,
+                          referencedTable: $$UserTableReferences
+                              ._stockAdjustmentRefsTable(db),
+                          managerFromTypedResult: (p0) => $$UserTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).stockAdjustmentRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.createdBy == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (stockMovementRefs)
+                        await $_getPrefetchedData<
+                          UserData,
+                          $UserTable,
+                          StockMovementData
+                        >(
+                          currentTable: table,
+                          referencedTable: $$UserTableReferences
+                              ._stockMovementRefsTable(db),
+                          managerFromTypedResult: (p0) => $$UserTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).stockMovementRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.createdBy == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (stockTransferRefs)
+                        await $_getPrefetchedData<
+                          UserData,
+                          $UserTable,
+                          StockTransferData
+                        >(
+                          currentTable: table,
+                          referencedTable: $$UserTableReferences
+                              ._stockTransferRefsTable(db),
+                          managerFromTypedResult: (p0) => $$UserTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).stockTransferRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.createdBy == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (branchUserRefs)
+                        await $_getPrefetchedData<
+                          UserData,
+                          $UserTable,
+                          BranchUserData
+                        >(
+                          currentTable: table,
+                          referencedTable: $$UserTableReferences
+                              ._branchUserRefsTable(db),
+                          managerFromTypedResult: (p0) => $$UserTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).branchUserRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.userId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (verificationTokenRefs)
+                        await $_getPrefetchedData<
+                          UserData,
+                          $UserTable,
+                          VerificationTokenData
+                        >(
+                          currentTable: table,
+                          referencedTable: $$UserTableReferences
+                              ._verificationTokenRefsTable(db),
+                          managerFromTypedResult: (p0) => $$UserTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).verificationTokenRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.userId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (userVerificationRefs)
+                        await $_getPrefetchedData<
+                          UserData,
+                          $UserTable,
+                          UserVerificationData
+                        >(
+                          currentTable: table,
+                          referencedTable: $$UserTableReferences
+                              ._userVerificationRefsTable(db),
+                          managerFromTypedResult: (p0) => $$UserTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).userVerificationRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.userId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$UserTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $UserTable,
+      UserData,
+      $$UserTableFilterComposer,
+      $$UserTableOrderingComposer,
+      $$UserTableAnnotationComposer,
+      $$UserTableCreateCompanionBuilder,
+      $$UserTableUpdateCompanionBuilder,
+      (UserData, $$UserTableReferences),
+      UserData,
+      PrefetchHooks Function({
+        bool salesRefs,
+        bool businessUserRefs,
+        bool stockAdjustmentRefs,
+        bool stockMovementRefs,
+        bool stockTransferRefs,
+        bool branchUserRefs,
+        bool verificationTokenRefs,
+        bool userVerificationRefs,
+      })
+    >;
 typedef $$BusinessVerificationTableCreateCompanionBuilder =
     BusinessVerificationCompanion Function({
       required String id,
@@ -13935,12 +20915,14 @@ typedef $$BusinessVerificationTableCreateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
-      required String businessId,
+      required String type,
+      required String docUrl,
       required String status,
       required String rejectionReason,
-      required String cacDocument,
-      required String reviewedById,
-      required String reviewedAt,
+      required DateTime reviewedAt,
+      required String businessId,
+      required String submittedBy,
+      required String reviewedBy,
       Value<int> rowid,
     });
 typedef $$BusinessVerificationTableUpdateCompanionBuilder =
@@ -13951,12 +20933,14 @@ typedef $$BusinessVerificationTableUpdateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
-      Value<String> businessId,
+      Value<String> type,
+      Value<String> docUrl,
       Value<String> status,
       Value<String> rejectionReason,
-      Value<String> cacDocument,
-      Value<String> reviewedById,
-      Value<String> reviewedAt,
+      Value<DateTime> reviewedAt,
+      Value<String> businessId,
+      Value<String> submittedBy,
+      Value<String> reviewedBy,
       Value<int> rowid,
     });
 
@@ -13972,6 +20956,42 @@ final class $$BusinessVerificationTableReferences
     super.$_table,
     super.$_typedResult,
   );
+
+  static $UserTable _submittedByTable(_$AppDatabase db) => db.user.createAlias(
+    $_aliasNameGenerator(db.businessVerification.submittedBy, db.user.id),
+  );
+
+  $$UserTableProcessedTableManager get submittedBy {
+    final $_column = $_itemColumn<String>('submitted_by')!;
+
+    final manager = $$UserTableTableManager(
+      $_db,
+      $_db.user,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_submittedByTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $UserTable _reviewedByTable(_$AppDatabase db) => db.user.createAlias(
+    $_aliasNameGenerator(db.businessVerification.reviewedBy, db.user.id),
+  );
+
+  $$UserTableProcessedTableManager get reviewedBy {
+    final $_column = $_itemColumn<String>('reviewed_by')!;
+
+    final manager = $$UserTableTableManager(
+      $_db,
+      $_db.user,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_reviewedByTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
 
   static MultiTypedResultKey<$BusinessesTable, List<BusinessesData>>
   _businessesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
@@ -14034,8 +21054,13 @@ class $$BusinessVerificationTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get businessId => $composableBuilder(
-    column: $table.businessId,
+  ColumnFilters<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get docUrl => $composableBuilder(
+    column: $table.docUrl,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -14049,20 +21074,61 @@ class $$BusinessVerificationTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get cacDocument => $composableBuilder(
-    column: $table.cacDocument,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get reviewedById => $composableBuilder(
-    column: $table.reviewedById,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get reviewedAt => $composableBuilder(
+  ColumnFilters<DateTime> get reviewedAt => $composableBuilder(
     column: $table.reviewedAt,
     builder: (column) => ColumnFilters(column),
   );
+
+  ColumnFilters<String> get businessId => $composableBuilder(
+    column: $table.businessId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$UserTableFilterComposer get submittedBy {
+    final $$UserTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.submittedBy,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableFilterComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$UserTableFilterComposer get reviewedBy {
+    final $$UserTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.reviewedBy,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableFilterComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 
   Expression<bool> businessesRefs(
     Expression<bool> Function($$BusinessesTableFilterComposer f) f,
@@ -14129,8 +21195,13 @@ class $$BusinessVerificationTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get businessId => $composableBuilder(
-    column: $table.businessId,
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get docUrl => $composableBuilder(
+    column: $table.docUrl,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -14144,20 +21215,61 @@ class $$BusinessVerificationTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get cacDocument => $composableBuilder(
-    column: $table.cacDocument,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get reviewedById => $composableBuilder(
-    column: $table.reviewedById,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get reviewedAt => $composableBuilder(
+  ColumnOrderings<DateTime> get reviewedAt => $composableBuilder(
     column: $table.reviewedAt,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get businessId => $composableBuilder(
+    column: $table.businessId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$UserTableOrderingComposer get submittedBy {
+    final $$UserTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.submittedBy,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableOrderingComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$UserTableOrderingComposer get reviewedBy {
+    final $$UserTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.reviewedBy,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableOrderingComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 }
 
 class $$BusinessVerificationTableAnnotationComposer
@@ -14189,10 +21301,11 @@ class $$BusinessVerificationTableAnnotationComposer
   GeneratedColumn<DateTime> get deletedAt =>
       $composableBuilder(column: $table.deletedAt, builder: (column) => column);
 
-  GeneratedColumn<String> get businessId => $composableBuilder(
-    column: $table.businessId,
-    builder: (column) => column,
-  );
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<String> get docUrl =>
+      $composableBuilder(column: $table.docUrl, builder: (column) => column);
 
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
@@ -14202,20 +21315,61 @@ class $$BusinessVerificationTableAnnotationComposer
     builder: (column) => column,
   );
 
-  GeneratedColumn<String> get cacDocument => $composableBuilder(
-    column: $table.cacDocument,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get reviewedById => $composableBuilder(
-    column: $table.reviewedById,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get reviewedAt => $composableBuilder(
+  GeneratedColumn<DateTime> get reviewedAt => $composableBuilder(
     column: $table.reviewedAt,
     builder: (column) => column,
   );
+
+  GeneratedColumn<String> get businessId => $composableBuilder(
+    column: $table.businessId,
+    builder: (column) => column,
+  );
+
+  $$UserTableAnnotationComposer get submittedBy {
+    final $$UserTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.submittedBy,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableAnnotationComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$UserTableAnnotationComposer get reviewedBy {
+    final $$UserTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.reviewedBy,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableAnnotationComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
 
   Expression<T> businessesRefs<T extends Object>(
     Expression<T> Function($$BusinessesTableAnnotationComposer a) f,
@@ -14256,7 +21410,11 @@ class $$BusinessVerificationTableTableManager
           $$BusinessVerificationTableUpdateCompanionBuilder,
           (BusinessVerificationData, $$BusinessVerificationTableReferences),
           BusinessVerificationData,
-          PrefetchHooks Function({bool businessesRefs})
+          PrefetchHooks Function({
+            bool submittedBy,
+            bool reviewedBy,
+            bool businessesRefs,
+          })
         > {
   $$BusinessVerificationTableTableManager(
     _$AppDatabase db,
@@ -14285,12 +21443,14 @@ class $$BusinessVerificationTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
-                Value<String> businessId = const Value.absent(),
+                Value<String> type = const Value.absent(),
+                Value<String> docUrl = const Value.absent(),
                 Value<String> status = const Value.absent(),
                 Value<String> rejectionReason = const Value.absent(),
-                Value<String> cacDocument = const Value.absent(),
-                Value<String> reviewedById = const Value.absent(),
-                Value<String> reviewedAt = const Value.absent(),
+                Value<DateTime> reviewedAt = const Value.absent(),
+                Value<String> businessId = const Value.absent(),
+                Value<String> submittedBy = const Value.absent(),
+                Value<String> reviewedBy = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => BusinessVerificationCompanion(
                 id: id,
@@ -14299,12 +21459,14 @@ class $$BusinessVerificationTableTableManager
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
-                businessId: businessId,
+                type: type,
+                docUrl: docUrl,
                 status: status,
                 rejectionReason: rejectionReason,
-                cacDocument: cacDocument,
-                reviewedById: reviewedById,
                 reviewedAt: reviewedAt,
+                businessId: businessId,
+                submittedBy: submittedBy,
+                reviewedBy: reviewedBy,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -14315,12 +21477,14 @@ class $$BusinessVerificationTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
-                required String businessId,
+                required String type,
+                required String docUrl,
                 required String status,
                 required String rejectionReason,
-                required String cacDocument,
-                required String reviewedById,
-                required String reviewedAt,
+                required DateTime reviewedAt,
+                required String businessId,
+                required String submittedBy,
+                required String reviewedBy,
                 Value<int> rowid = const Value.absent(),
               }) => BusinessVerificationCompanion.insert(
                 id: id,
@@ -14329,12 +21493,14 @@ class $$BusinessVerificationTableTableManager
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
-                businessId: businessId,
+                type: type,
+                docUrl: docUrl,
                 status: status,
                 rejectionReason: rejectionReason,
-                cacDocument: cacDocument,
-                reviewedById: reviewedById,
                 reviewedAt: reviewedAt,
+                businessId: businessId,
+                submittedBy: submittedBy,
+                reviewedBy: reviewedBy,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -14345,38 +21511,91 @@ class $$BusinessVerificationTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({businessesRefs = false}) {
-            return PrefetchHooks(
-              db: db,
-              explicitlyWatchedTables: [if (businessesRefs) db.businesses],
-              addJoins: null,
-              getPrefetchedDataCallback: (items) async {
-                return [
-                  if (businessesRefs)
-                    await $_getPrefetchedData<
-                      BusinessVerificationData,
-                      $BusinessVerificationTable,
-                      BusinessesData
-                    >(
-                      currentTable: table,
-                      referencedTable: $$BusinessVerificationTableReferences
-                          ._businessesRefsTable(db),
-                      managerFromTypedResult: (p0) =>
-                          $$BusinessVerificationTableReferences(
-                            db,
-                            table,
-                            p0,
-                          ).businessesRefs,
-                      referencedItemsForCurrentItem: (item, referencedItems) =>
-                          referencedItems.where(
-                            (e) => e.verification == item.id,
-                          ),
-                      typedResults: items,
-                    ),
-                ];
+          prefetchHooksCallback:
+              ({
+                submittedBy = false,
+                reviewedBy = false,
+                businessesRefs = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [if (businessesRefs) db.businesses],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (submittedBy) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.submittedBy,
+                                    referencedTable:
+                                        $$BusinessVerificationTableReferences
+                                            ._submittedByTable(db),
+                                    referencedColumn:
+                                        $$BusinessVerificationTableReferences
+                                            ._submittedByTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+                        if (reviewedBy) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.reviewedBy,
+                                    referencedTable:
+                                        $$BusinessVerificationTableReferences
+                                            ._reviewedByTable(db),
+                                    referencedColumn:
+                                        $$BusinessVerificationTableReferences
+                                            ._reviewedByTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (businessesRefs)
+                        await $_getPrefetchedData<
+                          BusinessVerificationData,
+                          $BusinessVerificationTable,
+                          BusinessesData
+                        >(
+                          currentTable: table,
+                          referencedTable: $$BusinessVerificationTableReferences
+                              ._businessesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$BusinessVerificationTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).businessesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.verification == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
               },
-            );
-          },
         ),
       );
 }
@@ -14393,7 +21612,11 @@ typedef $$BusinessVerificationTableProcessedTableManager =
       $$BusinessVerificationTableUpdateCompanionBuilder,
       (BusinessVerificationData, $$BusinessVerificationTableReferences),
       BusinessVerificationData,
-      PrefetchHooks Function({bool businessesRefs})
+      PrefetchHooks Function({
+        bool submittedBy,
+        bool reviewedBy,
+        bool businessesRefs,
+      })
     >;
 typedef $$BusinessesTableCreateCompanionBuilder =
     BusinessesCompanion Function({
@@ -14403,7 +21626,6 @@ typedef $$BusinessesTableCreateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
-      required String collectionId,
       required String name,
       required String type,
       required String phone,
@@ -14411,6 +21633,7 @@ typedef $$BusinessesTableCreateCompanionBuilder =
       required String city,
       required String state,
       required String country,
+      required bool isVerified,
       required String verification,
       Value<int> rowid,
     });
@@ -14422,7 +21645,6 @@ typedef $$BusinessesTableUpdateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
-      Value<String> collectionId,
       Value<String> name,
       Value<String> type,
       Value<String> phone,
@@ -14430,6 +21652,7 @@ typedef $$BusinessesTableUpdateCompanionBuilder =
       Value<String> city,
       Value<String> state,
       Value<String> country,
+      Value<bool> isVerified,
       Value<String> verification,
       Value<int> rowid,
     });
@@ -14658,6 +21881,25 @@ final class $$BusinessesTableReferences
     );
   }
 
+  static MultiTypedResultKey<$BranchTable, List<BranchData>> _branchRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.branch,
+    aliasName: $_aliasNameGenerator(db.businesses.id, db.branch.businessId),
+  );
+
+  $$BranchTableProcessedTableManager get branchRefs {
+    final manager = $$BranchTableTableManager(
+      $_db,
+      $_db.branch,
+    ).filter((f) => f.businessId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_branchRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
   static MultiTypedResultKey<$BankDetailsTable, List<BankDetail>>
   _bankDetailsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.bankDetails,
@@ -14719,11 +21961,6 @@ class $$BusinessesTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get collectionId => $composableBuilder(
-    column: $table.collectionId,
-    builder: (column) => ColumnFilters(column),
-  );
-
   ColumnFilters<String> get name => $composableBuilder(
     column: $table.name,
     builder: (column) => ColumnFilters(column),
@@ -14756,6 +21993,11 @@ class $$BusinessesTableFilterComposer
 
   ColumnFilters<String> get country => $composableBuilder(
     column: $table.country,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isVerified => $composableBuilder(
+    column: $table.isVerified,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -15032,6 +22274,31 @@ class $$BusinessesTableFilterComposer
     return f(composer);
   }
 
+  Expression<bool> branchRefs(
+    Expression<bool> Function($$BranchTableFilterComposer f) f,
+  ) {
+    final $$BranchTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.branch,
+      getReferencedColumn: (t) => t.businessId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BranchTableFilterComposer(
+            $db: $db,
+            $table: $db.branch,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
   Expression<bool> bankDetailsRefs(
     Expression<bool> Function($$BankDetailsTableFilterComposer f) f,
   ) {
@@ -15097,11 +22364,6 @@ class $$BusinessesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get collectionId => $composableBuilder(
-    column: $table.collectionId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<String> get name => $composableBuilder(
     column: $table.name,
     builder: (column) => ColumnOrderings(column),
@@ -15134,6 +22396,11 @@ class $$BusinessesTableOrderingComposer
 
   ColumnOrderings<String> get country => $composableBuilder(
     column: $table.country,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isVerified => $composableBuilder(
+    column: $table.isVerified,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -15191,11 +22458,6 @@ class $$BusinessesTableAnnotationComposer
   GeneratedColumn<DateTime> get deletedAt =>
       $composableBuilder(column: $table.deletedAt, builder: (column) => column);
 
-  GeneratedColumn<String> get collectionId => $composableBuilder(
-    column: $table.collectionId,
-    builder: (column) => column,
-  );
-
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
 
@@ -15218,6 +22480,11 @@ class $$BusinessesTableAnnotationComposer
 
   GeneratedColumn<String> get country =>
       $composableBuilder(column: $table.country, builder: (column) => column);
+
+  GeneratedColumn<bool> get isVerified => $composableBuilder(
+    column: $table.isVerified,
+    builder: (column) => column,
+  );
 
   $$BusinessVerificationTableAnnotationComposer get verification {
     final $$BusinessVerificationTableAnnotationComposer composer =
@@ -15493,6 +22760,31 @@ class $$BusinessesTableAnnotationComposer
     return f(composer);
   }
 
+  Expression<T> branchRefs<T extends Object>(
+    Expression<T> Function($$BranchTableAnnotationComposer a) f,
+  ) {
+    final $$BranchTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.branch,
+      getReferencedColumn: (t) => t.businessId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BranchTableAnnotationComposer(
+            $db: $db,
+            $table: $db.branch,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
   Expression<T> bankDetailsRefs<T extends Object>(
     Expression<T> Function($$BankDetailsTableAnnotationComposer a) f,
   ) {
@@ -15544,6 +22836,7 @@ class $$BusinessesTableTableManager
             bool stockMovementRefs,
             bool outgoingTransfers,
             bool incomingTransfers,
+            bool branchRefs,
             bool bankDetailsRefs,
           })
         > {
@@ -15566,7 +22859,6 @@ class $$BusinessesTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
-                Value<String> collectionId = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String> type = const Value.absent(),
                 Value<String> phone = const Value.absent(),
@@ -15574,6 +22866,7 @@ class $$BusinessesTableTableManager
                 Value<String> city = const Value.absent(),
                 Value<String> state = const Value.absent(),
                 Value<String> country = const Value.absent(),
+                Value<bool> isVerified = const Value.absent(),
                 Value<String> verification = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => BusinessesCompanion(
@@ -15583,7 +22876,6 @@ class $$BusinessesTableTableManager
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
-                collectionId: collectionId,
                 name: name,
                 type: type,
                 phone: phone,
@@ -15591,6 +22883,7 @@ class $$BusinessesTableTableManager
                 city: city,
                 state: state,
                 country: country,
+                isVerified: isVerified,
                 verification: verification,
                 rowid: rowid,
               ),
@@ -15602,7 +22895,6 @@ class $$BusinessesTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
-                required String collectionId,
                 required String name,
                 required String type,
                 required String phone,
@@ -15610,6 +22902,7 @@ class $$BusinessesTableTableManager
                 required String city,
                 required String state,
                 required String country,
+                required bool isVerified,
                 required String verification,
                 Value<int> rowid = const Value.absent(),
               }) => BusinessesCompanion.insert(
@@ -15619,7 +22912,6 @@ class $$BusinessesTableTableManager
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
-                collectionId: collectionId,
                 name: name,
                 type: type,
                 phone: phone,
@@ -15627,6 +22919,7 @@ class $$BusinessesTableTableManager
                 city: city,
                 state: state,
                 country: country,
+                isVerified: isVerified,
                 verification: verification,
                 rowid: rowid,
               ),
@@ -15651,6 +22944,7 @@ class $$BusinessesTableTableManager
                 stockMovementRefs = false,
                 outgoingTransfers = false,
                 incomingTransfers = false,
+                branchRefs = false,
                 bankDetailsRefs = false,
               }) {
                 return PrefetchHooks(
@@ -15666,6 +22960,7 @@ class $$BusinessesTableTableManager
                     if (stockMovementRefs) db.stockMovement,
                     if (outgoingTransfers) db.stockTransfer,
                     if (incomingTransfers) db.stockTransfer,
+                    if (branchRefs) db.branch,
                     if (bankDetailsRefs) db.bankDetails,
                   ],
                   addJoins:
@@ -15913,6 +23208,27 @@ class $$BusinessesTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (branchRefs)
+                        await $_getPrefetchedData<
+                          BusinessesData,
+                          $BusinessesTable,
+                          BranchData
+                        >(
+                          currentTable: table,
+                          referencedTable: $$BusinessesTableReferences
+                              ._branchRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$BusinessesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).branchRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.businessId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                       if (bankDetailsRefs)
                         await $_getPrefetchedData<
                           BusinessesData,
@@ -15966,6 +23282,7 @@ typedef $$BusinessesTableProcessedTableManager =
         bool stockMovementRefs,
         bool outgoingTransfers,
         bool incomingTransfers,
+        bool branchRefs,
         bool bankDetailsRefs,
       })
     >;
@@ -20133,955 +27450,6 @@ typedef $$CustomerTableProcessedTableManager =
       CustomerData,
       PrefetchHooks Function({bool businessId, bool salesRefs})
     >;
-typedef $$UserTableCreateCompanionBuilder =
-    UserCompanion Function({
-      required String id,
-      required String syncStatus,
-      Value<DateTime?> syncDate,
-      Value<DateTime> createdAt,
-      Value<DateTime> updatedAt,
-      Value<DateTime?> deletedAt,
-      Value<String?> image,
-      Value<String?> userName,
-      required String firstName,
-      required String lastName,
-      required String email,
-      required String password,
-      required String role,
-      required bool isEmailVerified,
-      required int creditScore,
-      required String creditScoreStatus,
-      Value<String?> verification,
-      Value<String?> businessVerification,
-      Value<String?> trader,
-      Value<int> rowid,
-    });
-typedef $$UserTableUpdateCompanionBuilder =
-    UserCompanion Function({
-      Value<String> id,
-      Value<String> syncStatus,
-      Value<DateTime?> syncDate,
-      Value<DateTime> createdAt,
-      Value<DateTime> updatedAt,
-      Value<DateTime?> deletedAt,
-      Value<String?> image,
-      Value<String?> userName,
-      Value<String> firstName,
-      Value<String> lastName,
-      Value<String> email,
-      Value<String> password,
-      Value<String> role,
-      Value<bool> isEmailVerified,
-      Value<int> creditScore,
-      Value<String> creditScoreStatus,
-      Value<String?> verification,
-      Value<String?> businessVerification,
-      Value<String?> trader,
-      Value<int> rowid,
-    });
-
-final class $$UserTableReferences
-    extends BaseReferences<_$AppDatabase, $UserTable, UserData> {
-  $$UserTableReferences(super.$_db, super.$_table, super.$_typedResult);
-
-  static MultiTypedResultKey<$SalesTable, List<Sale>> _salesRefsTable(
-    _$AppDatabase db,
-  ) => MultiTypedResultKey.fromTable(
-    db.sales,
-    aliasName: $_aliasNameGenerator(db.user.id, db.sales.createdBy),
-  );
-
-  $$SalesTableProcessedTableManager get salesRefs {
-    final manager = $$SalesTableTableManager(
-      $_db,
-      $_db.sales,
-    ).filter((f) => f.createdBy.id.sqlEquals($_itemColumn<String>('id')!));
-
-    final cache = $_typedResult.readTableOrNull(_salesRefsTable($_db));
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: cache),
-    );
-  }
-
-  static MultiTypedResultKey<$BusinessUserTable, List<BusinessUserData>>
-  _businessUserRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
-    db.businessUser,
-    aliasName: $_aliasNameGenerator(db.user.id, db.businessUser.userId),
-  );
-
-  $$BusinessUserTableProcessedTableManager get businessUserRefs {
-    final manager = $$BusinessUserTableTableManager(
-      $_db,
-      $_db.businessUser,
-    ).filter((f) => f.userId.id.sqlEquals($_itemColumn<String>('id')!));
-
-    final cache = $_typedResult.readTableOrNull(_businessUserRefsTable($_db));
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: cache),
-    );
-  }
-
-  static MultiTypedResultKey<$StockAdjustmentTable, List<StockAdjustmentData>>
-  _stockAdjustmentRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
-    db.stockAdjustment,
-    aliasName: $_aliasNameGenerator(db.user.id, db.stockAdjustment.createdBy),
-  );
-
-  $$StockAdjustmentTableProcessedTableManager get stockAdjustmentRefs {
-    final manager = $$StockAdjustmentTableTableManager(
-      $_db,
-      $_db.stockAdjustment,
-    ).filter((f) => f.createdBy.id.sqlEquals($_itemColumn<String>('id')!));
-
-    final cache = $_typedResult.readTableOrNull(
-      _stockAdjustmentRefsTable($_db),
-    );
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: cache),
-    );
-  }
-
-  static MultiTypedResultKey<$StockMovementTable, List<StockMovementData>>
-  _stockMovementRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
-    db.stockMovement,
-    aliasName: $_aliasNameGenerator(db.user.id, db.stockMovement.createdBy),
-  );
-
-  $$StockMovementTableProcessedTableManager get stockMovementRefs {
-    final manager = $$StockMovementTableTableManager(
-      $_db,
-      $_db.stockMovement,
-    ).filter((f) => f.createdBy.id.sqlEquals($_itemColumn<String>('id')!));
-
-    final cache = $_typedResult.readTableOrNull(_stockMovementRefsTable($_db));
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: cache),
-    );
-  }
-
-  static MultiTypedResultKey<$StockTransferTable, List<StockTransferData>>
-  _stockTransferRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
-    db.stockTransfer,
-    aliasName: $_aliasNameGenerator(db.user.id, db.stockTransfer.createdBy),
-  );
-
-  $$StockTransferTableProcessedTableManager get stockTransferRefs {
-    final manager = $$StockTransferTableTableManager(
-      $_db,
-      $_db.stockTransfer,
-    ).filter((f) => f.createdBy.id.sqlEquals($_itemColumn<String>('id')!));
-
-    final cache = $_typedResult.readTableOrNull(_stockTransferRefsTable($_db));
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: cache),
-    );
-  }
-}
-
-class $$UserTableFilterComposer extends Composer<_$AppDatabase, $UserTable> {
-  $$UserTableFilterComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnFilters<String> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get syncStatus => $composableBuilder(
-    column: $table.syncStatus,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get syncDate => $composableBuilder(
-    column: $table.syncDate,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get createdAt => $composableBuilder(
-    column: $table.createdAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
-    column: $table.updatedAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
-    column: $table.deletedAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get image => $composableBuilder(
-    column: $table.image,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get userName => $composableBuilder(
-    column: $table.userName,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get firstName => $composableBuilder(
-    column: $table.firstName,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get lastName => $composableBuilder(
-    column: $table.lastName,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get email => $composableBuilder(
-    column: $table.email,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get password => $composableBuilder(
-    column: $table.password,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get role => $composableBuilder(
-    column: $table.role,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<bool> get isEmailVerified => $composableBuilder(
-    column: $table.isEmailVerified,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get creditScore => $composableBuilder(
-    column: $table.creditScore,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get creditScoreStatus => $composableBuilder(
-    column: $table.creditScoreStatus,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get verification => $composableBuilder(
-    column: $table.verification,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get businessVerification => $composableBuilder(
-    column: $table.businessVerification,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get trader => $composableBuilder(
-    column: $table.trader,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  Expression<bool> salesRefs(
-    Expression<bool> Function($$SalesTableFilterComposer f) f,
-  ) {
-    final $$SalesTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.sales,
-      getReferencedColumn: (t) => t.createdBy,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$SalesTableFilterComposer(
-            $db: $db,
-            $table: $db.sales,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-
-  Expression<bool> businessUserRefs(
-    Expression<bool> Function($$BusinessUserTableFilterComposer f) f,
-  ) {
-    final $$BusinessUserTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.businessUser,
-      getReferencedColumn: (t) => t.userId,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$BusinessUserTableFilterComposer(
-            $db: $db,
-            $table: $db.businessUser,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-
-  Expression<bool> stockAdjustmentRefs(
-    Expression<bool> Function($$StockAdjustmentTableFilterComposer f) f,
-  ) {
-    final $$StockAdjustmentTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.stockAdjustment,
-      getReferencedColumn: (t) => t.createdBy,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$StockAdjustmentTableFilterComposer(
-            $db: $db,
-            $table: $db.stockAdjustment,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-
-  Expression<bool> stockMovementRefs(
-    Expression<bool> Function($$StockMovementTableFilterComposer f) f,
-  ) {
-    final $$StockMovementTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.stockMovement,
-      getReferencedColumn: (t) => t.createdBy,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$StockMovementTableFilterComposer(
-            $db: $db,
-            $table: $db.stockMovement,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-
-  Expression<bool> stockTransferRefs(
-    Expression<bool> Function($$StockTransferTableFilterComposer f) f,
-  ) {
-    final $$StockTransferTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.stockTransfer,
-      getReferencedColumn: (t) => t.createdBy,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$StockTransferTableFilterComposer(
-            $db: $db,
-            $table: $db.stockTransfer,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-}
-
-class $$UserTableOrderingComposer extends Composer<_$AppDatabase, $UserTable> {
-  $$UserTableOrderingComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnOrderings<String> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get syncStatus => $composableBuilder(
-    column: $table.syncStatus,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get syncDate => $composableBuilder(
-    column: $table.syncDate,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
-    column: $table.createdAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
-    column: $table.updatedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
-    column: $table.deletedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get image => $composableBuilder(
-    column: $table.image,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get userName => $composableBuilder(
-    column: $table.userName,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get firstName => $composableBuilder(
-    column: $table.firstName,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get lastName => $composableBuilder(
-    column: $table.lastName,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get email => $composableBuilder(
-    column: $table.email,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get password => $composableBuilder(
-    column: $table.password,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get role => $composableBuilder(
-    column: $table.role,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<bool> get isEmailVerified => $composableBuilder(
-    column: $table.isEmailVerified,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get creditScore => $composableBuilder(
-    column: $table.creditScore,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get creditScoreStatus => $composableBuilder(
-    column: $table.creditScoreStatus,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get verification => $composableBuilder(
-    column: $table.verification,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get businessVerification => $composableBuilder(
-    column: $table.businessVerification,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get trader => $composableBuilder(
-    column: $table.trader,
-    builder: (column) => ColumnOrderings(column),
-  );
-}
-
-class $$UserTableAnnotationComposer
-    extends Composer<_$AppDatabase, $UserTable> {
-  $$UserTableAnnotationComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  GeneratedColumn<String> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
-
-  GeneratedColumn<String> get syncStatus => $composableBuilder(
-    column: $table.syncStatus,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<DateTime> get syncDate =>
-      $composableBuilder(column: $table.syncDate, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get deletedAt =>
-      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
-
-  GeneratedColumn<String> get image =>
-      $composableBuilder(column: $table.image, builder: (column) => column);
-
-  GeneratedColumn<String> get userName =>
-      $composableBuilder(column: $table.userName, builder: (column) => column);
-
-  GeneratedColumn<String> get firstName =>
-      $composableBuilder(column: $table.firstName, builder: (column) => column);
-
-  GeneratedColumn<String> get lastName =>
-      $composableBuilder(column: $table.lastName, builder: (column) => column);
-
-  GeneratedColumn<String> get email =>
-      $composableBuilder(column: $table.email, builder: (column) => column);
-
-  GeneratedColumn<String> get password =>
-      $composableBuilder(column: $table.password, builder: (column) => column);
-
-  GeneratedColumn<String> get role =>
-      $composableBuilder(column: $table.role, builder: (column) => column);
-
-  GeneratedColumn<bool> get isEmailVerified => $composableBuilder(
-    column: $table.isEmailVerified,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<int> get creditScore => $composableBuilder(
-    column: $table.creditScore,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get creditScoreStatus => $composableBuilder(
-    column: $table.creditScoreStatus,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get verification => $composableBuilder(
-    column: $table.verification,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get businessVerification => $composableBuilder(
-    column: $table.businessVerification,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get trader =>
-      $composableBuilder(column: $table.trader, builder: (column) => column);
-
-  Expression<T> salesRefs<T extends Object>(
-    Expression<T> Function($$SalesTableAnnotationComposer a) f,
-  ) {
-    final $$SalesTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.sales,
-      getReferencedColumn: (t) => t.createdBy,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$SalesTableAnnotationComposer(
-            $db: $db,
-            $table: $db.sales,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-
-  Expression<T> businessUserRefs<T extends Object>(
-    Expression<T> Function($$BusinessUserTableAnnotationComposer a) f,
-  ) {
-    final $$BusinessUserTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.businessUser,
-      getReferencedColumn: (t) => t.userId,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$BusinessUserTableAnnotationComposer(
-            $db: $db,
-            $table: $db.businessUser,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-
-  Expression<T> stockAdjustmentRefs<T extends Object>(
-    Expression<T> Function($$StockAdjustmentTableAnnotationComposer a) f,
-  ) {
-    final $$StockAdjustmentTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.stockAdjustment,
-      getReferencedColumn: (t) => t.createdBy,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$StockAdjustmentTableAnnotationComposer(
-            $db: $db,
-            $table: $db.stockAdjustment,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-
-  Expression<T> stockMovementRefs<T extends Object>(
-    Expression<T> Function($$StockMovementTableAnnotationComposer a) f,
-  ) {
-    final $$StockMovementTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.stockMovement,
-      getReferencedColumn: (t) => t.createdBy,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$StockMovementTableAnnotationComposer(
-            $db: $db,
-            $table: $db.stockMovement,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-
-  Expression<T> stockTransferRefs<T extends Object>(
-    Expression<T> Function($$StockTransferTableAnnotationComposer a) f,
-  ) {
-    final $$StockTransferTableAnnotationComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.stockTransfer,
-      getReferencedColumn: (t) => t.createdBy,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$StockTransferTableAnnotationComposer(
-            $db: $db,
-            $table: $db.stockTransfer,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return f(composer);
-  }
-}
-
-class $$UserTableTableManager
-    extends
-        RootTableManager<
-          _$AppDatabase,
-          $UserTable,
-          UserData,
-          $$UserTableFilterComposer,
-          $$UserTableOrderingComposer,
-          $$UserTableAnnotationComposer,
-          $$UserTableCreateCompanionBuilder,
-          $$UserTableUpdateCompanionBuilder,
-          (UserData, $$UserTableReferences),
-          UserData,
-          PrefetchHooks Function({
-            bool salesRefs,
-            bool businessUserRefs,
-            bool stockAdjustmentRefs,
-            bool stockMovementRefs,
-            bool stockTransferRefs,
-          })
-        > {
-  $$UserTableTableManager(_$AppDatabase db, $UserTable table)
-    : super(
-        TableManagerState(
-          db: db,
-          table: table,
-          createFilteringComposer: () =>
-              $$UserTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$UserTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () =>
-              $$UserTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback:
-              ({
-                Value<String> id = const Value.absent(),
-                Value<String> syncStatus = const Value.absent(),
-                Value<DateTime?> syncDate = const Value.absent(),
-                Value<DateTime> createdAt = const Value.absent(),
-                Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime?> deletedAt = const Value.absent(),
-                Value<String?> image = const Value.absent(),
-                Value<String?> userName = const Value.absent(),
-                Value<String> firstName = const Value.absent(),
-                Value<String> lastName = const Value.absent(),
-                Value<String> email = const Value.absent(),
-                Value<String> password = const Value.absent(),
-                Value<String> role = const Value.absent(),
-                Value<bool> isEmailVerified = const Value.absent(),
-                Value<int> creditScore = const Value.absent(),
-                Value<String> creditScoreStatus = const Value.absent(),
-                Value<String?> verification = const Value.absent(),
-                Value<String?> businessVerification = const Value.absent(),
-                Value<String?> trader = const Value.absent(),
-                Value<int> rowid = const Value.absent(),
-              }) => UserCompanion(
-                id: id,
-                syncStatus: syncStatus,
-                syncDate: syncDate,
-                createdAt: createdAt,
-                updatedAt: updatedAt,
-                deletedAt: deletedAt,
-                image: image,
-                userName: userName,
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                password: password,
-                role: role,
-                isEmailVerified: isEmailVerified,
-                creditScore: creditScore,
-                creditScoreStatus: creditScoreStatus,
-                verification: verification,
-                businessVerification: businessVerification,
-                trader: trader,
-                rowid: rowid,
-              ),
-          createCompanionCallback:
-              ({
-                required String id,
-                required String syncStatus,
-                Value<DateTime?> syncDate = const Value.absent(),
-                Value<DateTime> createdAt = const Value.absent(),
-                Value<DateTime> updatedAt = const Value.absent(),
-                Value<DateTime?> deletedAt = const Value.absent(),
-                Value<String?> image = const Value.absent(),
-                Value<String?> userName = const Value.absent(),
-                required String firstName,
-                required String lastName,
-                required String email,
-                required String password,
-                required String role,
-                required bool isEmailVerified,
-                required int creditScore,
-                required String creditScoreStatus,
-                Value<String?> verification = const Value.absent(),
-                Value<String?> businessVerification = const Value.absent(),
-                Value<String?> trader = const Value.absent(),
-                Value<int> rowid = const Value.absent(),
-              }) => UserCompanion.insert(
-                id: id,
-                syncStatus: syncStatus,
-                syncDate: syncDate,
-                createdAt: createdAt,
-                updatedAt: updatedAt,
-                deletedAt: deletedAt,
-                image: image,
-                userName: userName,
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                password: password,
-                role: role,
-                isEmailVerified: isEmailVerified,
-                creditScore: creditScore,
-                creditScoreStatus: creditScoreStatus,
-                verification: verification,
-                businessVerification: businessVerification,
-                trader: trader,
-                rowid: rowid,
-              ),
-          withReferenceMapper: (p0) => p0
-              .map(
-                (e) =>
-                    (e.readTable(table), $$UserTableReferences(db, table, e)),
-              )
-              .toList(),
-          prefetchHooksCallback:
-              ({
-                salesRefs = false,
-                businessUserRefs = false,
-                stockAdjustmentRefs = false,
-                stockMovementRefs = false,
-                stockTransferRefs = false,
-              }) {
-                return PrefetchHooks(
-                  db: db,
-                  explicitlyWatchedTables: [
-                    if (salesRefs) db.sales,
-                    if (businessUserRefs) db.businessUser,
-                    if (stockAdjustmentRefs) db.stockAdjustment,
-                    if (stockMovementRefs) db.stockMovement,
-                    if (stockTransferRefs) db.stockTransfer,
-                  ],
-                  addJoins: null,
-                  getPrefetchedDataCallback: (items) async {
-                    return [
-                      if (salesRefs)
-                        await $_getPrefetchedData<UserData, $UserTable, Sale>(
-                          currentTable: table,
-                          referencedTable: $$UserTableReferences
-                              ._salesRefsTable(db),
-                          managerFromTypedResult: (p0) =>
-                              $$UserTableReferences(db, table, p0).salesRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.createdBy == item.id,
-                              ),
-                          typedResults: items,
-                        ),
-                      if (businessUserRefs)
-                        await $_getPrefetchedData<
-                          UserData,
-                          $UserTable,
-                          BusinessUserData
-                        >(
-                          currentTable: table,
-                          referencedTable: $$UserTableReferences
-                              ._businessUserRefsTable(db),
-                          managerFromTypedResult: (p0) => $$UserTableReferences(
-                            db,
-                            table,
-                            p0,
-                          ).businessUserRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.userId == item.id,
-                              ),
-                          typedResults: items,
-                        ),
-                      if (stockAdjustmentRefs)
-                        await $_getPrefetchedData<
-                          UserData,
-                          $UserTable,
-                          StockAdjustmentData
-                        >(
-                          currentTable: table,
-                          referencedTable: $$UserTableReferences
-                              ._stockAdjustmentRefsTable(db),
-                          managerFromTypedResult: (p0) => $$UserTableReferences(
-                            db,
-                            table,
-                            p0,
-                          ).stockAdjustmentRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.createdBy == item.id,
-                              ),
-                          typedResults: items,
-                        ),
-                      if (stockMovementRefs)
-                        await $_getPrefetchedData<
-                          UserData,
-                          $UserTable,
-                          StockMovementData
-                        >(
-                          currentTable: table,
-                          referencedTable: $$UserTableReferences
-                              ._stockMovementRefsTable(db),
-                          managerFromTypedResult: (p0) => $$UserTableReferences(
-                            db,
-                            table,
-                            p0,
-                          ).stockMovementRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.createdBy == item.id,
-                              ),
-                          typedResults: items,
-                        ),
-                      if (stockTransferRefs)
-                        await $_getPrefetchedData<
-                          UserData,
-                          $UserTable,
-                          StockTransferData
-                        >(
-                          currentTable: table,
-                          referencedTable: $$UserTableReferences
-                              ._stockTransferRefsTable(db),
-                          managerFromTypedResult: (p0) => $$UserTableReferences(
-                            db,
-                            table,
-                            p0,
-                          ).stockTransferRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.createdBy == item.id,
-                              ),
-                          typedResults: items,
-                        ),
-                    ];
-                  },
-                );
-              },
-        ),
-      );
-}
-
-typedef $$UserTableProcessedTableManager =
-    ProcessedTableManager<
-      _$AppDatabase,
-      $UserTable,
-      UserData,
-      $$UserTableFilterComposer,
-      $$UserTableOrderingComposer,
-      $$UserTableAnnotationComposer,
-      $$UserTableCreateCompanionBuilder,
-      $$UserTableUpdateCompanionBuilder,
-      (UserData, $$UserTableReferences),
-      UserData,
-      PrefetchHooks Function({
-        bool salesRefs,
-        bool businessUserRefs,
-        bool stockAdjustmentRefs,
-        bool stockMovementRefs,
-        bool stockTransferRefs,
-      })
-    >;
 typedef $$SalesTableCreateCompanionBuilder =
     SalesCompanion Function({
       required String id,
@@ -23495,6 +29863,7 @@ typedef $$BusinessUserTableCreateCompanionBuilder =
       Value<DateTime?> deletedAt,
       required String role,
       Value<bool> isActive,
+      Value<bool> hasFullAccess,
       Value<DateTime?> joinedAt,
       required String userId,
       required String businessId,
@@ -23510,6 +29879,7 @@ typedef $$BusinessUserTableUpdateCompanionBuilder =
       Value<DateTime?> deletedAt,
       Value<String> role,
       Value<bool> isActive,
+      Value<bool> hasFullAccess,
       Value<DateTime?> joinedAt,
       Value<String> userId,
       Value<String> businessId,
@@ -23605,6 +29975,11 @@ class $$BusinessUserTableFilterComposer
 
   ColumnFilters<bool> get isActive => $composableBuilder(
     column: $table.isActive,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get hasFullAccess => $composableBuilder(
+    column: $table.hasFullAccess,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -23709,6 +30084,11 @@ class $$BusinessUserTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<bool> get hasFullAccess => $composableBuilder(
+    column: $table.hasFullAccess,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get joinedAt => $composableBuilder(
     column: $table.joinedAt,
     builder: (column) => ColumnOrderings(column),
@@ -23796,6 +30176,11 @@ class $$BusinessUserTableAnnotationComposer
   GeneratedColumn<bool> get isActive =>
       $composableBuilder(column: $table.isActive, builder: (column) => column);
 
+  GeneratedColumn<bool> get hasFullAccess => $composableBuilder(
+    column: $table.hasFullAccess,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<DateTime> get joinedAt =>
       $composableBuilder(column: $table.joinedAt, builder: (column) => column);
 
@@ -23882,6 +30267,7 @@ class $$BusinessUserTableTableManager
                 Value<DateTime?> deletedAt = const Value.absent(),
                 Value<String> role = const Value.absent(),
                 Value<bool> isActive = const Value.absent(),
+                Value<bool> hasFullAccess = const Value.absent(),
                 Value<DateTime?> joinedAt = const Value.absent(),
                 Value<String> userId = const Value.absent(),
                 Value<String> businessId = const Value.absent(),
@@ -23895,6 +30281,7 @@ class $$BusinessUserTableTableManager
                 deletedAt: deletedAt,
                 role: role,
                 isActive: isActive,
+                hasFullAccess: hasFullAccess,
                 joinedAt: joinedAt,
                 userId: userId,
                 businessId: businessId,
@@ -23910,6 +30297,7 @@ class $$BusinessUserTableTableManager
                 Value<DateTime?> deletedAt = const Value.absent(),
                 required String role,
                 Value<bool> isActive = const Value.absent(),
+                Value<bool> hasFullAccess = const Value.absent(),
                 Value<DateTime?> joinedAt = const Value.absent(),
                 required String userId,
                 required String businessId,
@@ -23923,6 +30311,7 @@ class $$BusinessUserTableTableManager
                 deletedAt: deletedAt,
                 role: role,
                 isActive: isActive,
+                hasFullAccess: hasFullAccess,
                 joinedAt: joinedAt,
                 userId: userId,
                 businessId: businessId,
@@ -26538,6 +32927,3973 @@ typedef $$StockTransferItemTableProcessedTableManager =
       StockTransferItemData,
       PrefetchHooks Function({bool transferId, bool productId})
     >;
+typedef $$CollectionTableCreateCompanionBuilder =
+    CollectionCompanion Function({
+      required String id,
+      required String syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      required String name,
+      required String description,
+      required int totalTraders,
+      required String about,
+      required String coverImage,
+      required int roi,
+      required int minInvestment,
+      required String city,
+      required String state,
+      required String country,
+      Value<int> rowid,
+    });
+typedef $$CollectionTableUpdateCompanionBuilder =
+    CollectionCompanion Function({
+      Value<String> id,
+      Value<String> syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> name,
+      Value<String> description,
+      Value<int> totalTraders,
+      Value<String> about,
+      Value<String> coverImage,
+      Value<int> roi,
+      Value<int> minInvestment,
+      Value<String> city,
+      Value<String> state,
+      Value<String> country,
+      Value<int> rowid,
+    });
+
+final class $$CollectionTableReferences
+    extends BaseReferences<_$AppDatabase, $CollectionTable, CollectionData> {
+  $$CollectionTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static MultiTypedResultKey<$ClusterTable, List<ClusterData>>
+  _clusterRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.cluster,
+    aliasName: $_aliasNameGenerator(db.collection.id, db.cluster.collectionId),
+  );
+
+  $$ClusterTableProcessedTableManager get clusterRefs {
+    final manager = $$ClusterTableTableManager(
+      $_db,
+      $_db.cluster,
+    ).filter((f) => f.collectionId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_clusterRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$BranchTable, List<BranchData>> _branchRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.branch,
+    aliasName: $_aliasNameGenerator(db.collection.id, db.branch.collectionId),
+  );
+
+  $$BranchTableProcessedTableManager get branchRefs {
+    final manager = $$BranchTableTableManager(
+      $_db,
+      $_db.branch,
+    ).filter((f) => f.collectionId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_branchRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$CollectionTableFilterComposer
+    extends Composer<_$AppDatabase, $CollectionTable> {
+  $$CollectionTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get totalTraders => $composableBuilder(
+    column: $table.totalTraders,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get about => $composableBuilder(
+    column: $table.about,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get coverImage => $composableBuilder(
+    column: $table.coverImage,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get roi => $composableBuilder(
+    column: $table.roi,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get minInvestment => $composableBuilder(
+    column: $table.minInvestment,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get city => $composableBuilder(
+    column: $table.city,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get country => $composableBuilder(
+    column: $table.country,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  Expression<bool> clusterRefs(
+    Expression<bool> Function($$ClusterTableFilterComposer f) f,
+  ) {
+    final $$ClusterTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.cluster,
+      getReferencedColumn: (t) => t.collectionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ClusterTableFilterComposer(
+            $db: $db,
+            $table: $db.cluster,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> branchRefs(
+    Expression<bool> Function($$BranchTableFilterComposer f) f,
+  ) {
+    final $$BranchTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.branch,
+      getReferencedColumn: (t) => t.collectionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BranchTableFilterComposer(
+            $db: $db,
+            $table: $db.branch,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$CollectionTableOrderingComposer
+    extends Composer<_$AppDatabase, $CollectionTable> {
+  $$CollectionTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get totalTraders => $composableBuilder(
+    column: $table.totalTraders,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get about => $composableBuilder(
+    column: $table.about,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get coverImage => $composableBuilder(
+    column: $table.coverImage,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get roi => $composableBuilder(
+    column: $table.roi,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get minInvestment => $composableBuilder(
+    column: $table.minInvestment,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get city => $composableBuilder(
+    column: $table.city,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get country => $composableBuilder(
+    column: $table.country,
+    builder: (column) => ColumnOrderings(column),
+  );
+}
+
+class $$CollectionTableAnnotationComposer
+    extends Composer<_$AppDatabase, $CollectionTable> {
+  $$CollectionTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get syncDate =>
+      $composableBuilder(column: $table.syncDate, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get totalTraders => $composableBuilder(
+    column: $table.totalTraders,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get about =>
+      $composableBuilder(column: $table.about, builder: (column) => column);
+
+  GeneratedColumn<String> get coverImage => $composableBuilder(
+    column: $table.coverImage,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get roi =>
+      $composableBuilder(column: $table.roi, builder: (column) => column);
+
+  GeneratedColumn<int> get minInvestment => $composableBuilder(
+    column: $table.minInvestment,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get city =>
+      $composableBuilder(column: $table.city, builder: (column) => column);
+
+  GeneratedColumn<String> get state =>
+      $composableBuilder(column: $table.state, builder: (column) => column);
+
+  GeneratedColumn<String> get country =>
+      $composableBuilder(column: $table.country, builder: (column) => column);
+
+  Expression<T> clusterRefs<T extends Object>(
+    Expression<T> Function($$ClusterTableAnnotationComposer a) f,
+  ) {
+    final $$ClusterTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.cluster,
+      getReferencedColumn: (t) => t.collectionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ClusterTableAnnotationComposer(
+            $db: $db,
+            $table: $db.cluster,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> branchRefs<T extends Object>(
+    Expression<T> Function($$BranchTableAnnotationComposer a) f,
+  ) {
+    final $$BranchTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.branch,
+      getReferencedColumn: (t) => t.collectionId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BranchTableAnnotationComposer(
+            $db: $db,
+            $table: $db.branch,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$CollectionTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $CollectionTable,
+          CollectionData,
+          $$CollectionTableFilterComposer,
+          $$CollectionTableOrderingComposer,
+          $$CollectionTableAnnotationComposer,
+          $$CollectionTableCreateCompanionBuilder,
+          $$CollectionTableUpdateCompanionBuilder,
+          (CollectionData, $$CollectionTableReferences),
+          CollectionData,
+          PrefetchHooks Function({bool clusterRefs, bool branchRefs})
+        > {
+  $$CollectionTableTableManager(_$AppDatabase db, $CollectionTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$CollectionTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CollectionTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CollectionTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> description = const Value.absent(),
+                Value<int> totalTraders = const Value.absent(),
+                Value<String> about = const Value.absent(),
+                Value<String> coverImage = const Value.absent(),
+                Value<int> roi = const Value.absent(),
+                Value<int> minInvestment = const Value.absent(),
+                Value<String> city = const Value.absent(),
+                Value<String> state = const Value.absent(),
+                Value<String> country = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => CollectionCompanion(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                name: name,
+                description: description,
+                totalTraders: totalTraders,
+                about: about,
+                coverImage: coverImage,
+                roi: roi,
+                minInvestment: minInvestment,
+                city: city,
+                state: state,
+                country: country,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String syncStatus,
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String name,
+                required String description,
+                required int totalTraders,
+                required String about,
+                required String coverImage,
+                required int roi,
+                required int minInvestment,
+                required String city,
+                required String state,
+                required String country,
+                Value<int> rowid = const Value.absent(),
+              }) => CollectionCompanion.insert(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                name: name,
+                description: description,
+                totalTraders: totalTraders,
+                about: about,
+                coverImage: coverImage,
+                roi: roi,
+                minInvestment: minInvestment,
+                city: city,
+                state: state,
+                country: country,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$CollectionTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({clusterRefs = false, branchRefs = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [
+                if (clusterRefs) db.cluster,
+                if (branchRefs) db.branch,
+              ],
+              addJoins: null,
+              getPrefetchedDataCallback: (items) async {
+                return [
+                  if (clusterRefs)
+                    await $_getPrefetchedData<
+                      CollectionData,
+                      $CollectionTable,
+                      ClusterData
+                    >(
+                      currentTable: table,
+                      referencedTable: $$CollectionTableReferences
+                          ._clusterRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$CollectionTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).clusterRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where(
+                            (e) => e.collectionId == item.id,
+                          ),
+                      typedResults: items,
+                    ),
+                  if (branchRefs)
+                    await $_getPrefetchedData<
+                      CollectionData,
+                      $CollectionTable,
+                      BranchData
+                    >(
+                      currentTable: table,
+                      referencedTable: $$CollectionTableReferences
+                          ._branchRefsTable(db),
+                      managerFromTypedResult: (p0) =>
+                          $$CollectionTableReferences(db, table, p0).branchRefs,
+                      referencedItemsForCurrentItem: (item, referencedItems) =>
+                          referencedItems.where(
+                            (e) => e.collectionId == item.id,
+                          ),
+                      typedResults: items,
+                    ),
+                ];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$CollectionTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $CollectionTable,
+      CollectionData,
+      $$CollectionTableFilterComposer,
+      $$CollectionTableOrderingComposer,
+      $$CollectionTableAnnotationComposer,
+      $$CollectionTableCreateCompanionBuilder,
+      $$CollectionTableUpdateCompanionBuilder,
+      (CollectionData, $$CollectionTableReferences),
+      CollectionData,
+      PrefetchHooks Function({bool clusterRefs, bool branchRefs})
+    >;
+typedef $$ClusterTableCreateCompanionBuilder =
+    ClusterCompanion Function({
+      required String id,
+      required String syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      required String name,
+      required String status,
+      required String about,
+      required int duration,
+      required int roi,
+      required int totalFundsRaised,
+      required int targetFundRaisingAmount,
+      required String repayment,
+      required bool isActive,
+      required String coverImage,
+      required DateTime startDate,
+      required DateTime endDate,
+      required String description,
+      Value<String?> collectionId,
+      Value<int> rowid,
+    });
+typedef $$ClusterTableUpdateCompanionBuilder =
+    ClusterCompanion Function({
+      Value<String> id,
+      Value<String> syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> name,
+      Value<String> status,
+      Value<String> about,
+      Value<int> duration,
+      Value<int> roi,
+      Value<int> totalFundsRaised,
+      Value<int> targetFundRaisingAmount,
+      Value<String> repayment,
+      Value<bool> isActive,
+      Value<String> coverImage,
+      Value<DateTime> startDate,
+      Value<DateTime> endDate,
+      Value<String> description,
+      Value<String?> collectionId,
+      Value<int> rowid,
+    });
+
+final class $$ClusterTableReferences
+    extends BaseReferences<_$AppDatabase, $ClusterTable, ClusterData> {
+  $$ClusterTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $CollectionTable _collectionIdTable(_$AppDatabase db) =>
+      db.collection.createAlias(
+        $_aliasNameGenerator(db.cluster.collectionId, db.collection.id),
+      );
+
+  $$CollectionTableProcessedTableManager? get collectionId {
+    final $_column = $_itemColumn<String>('collection_id');
+    if ($_column == null) return null;
+    final manager = $$CollectionTableTableManager(
+      $_db,
+      $_db.collection,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_collectionIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$ClusterTableFilterComposer
+    extends Composer<_$AppDatabase, $ClusterTable> {
+  $$ClusterTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get about => $composableBuilder(
+    column: $table.about,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get duration => $composableBuilder(
+    column: $table.duration,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get roi => $composableBuilder(
+    column: $table.roi,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get totalFundsRaised => $composableBuilder(
+    column: $table.totalFundsRaised,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get targetFundRaisingAmount => $composableBuilder(
+    column: $table.targetFundRaisingAmount,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get repayment => $composableBuilder(
+    column: $table.repayment,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isActive => $composableBuilder(
+    column: $table.isActive,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get coverImage => $composableBuilder(
+    column: $table.coverImage,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get endDate => $composableBuilder(
+    column: $table.endDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$CollectionTableFilterComposer get collectionId {
+    final $$CollectionTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.collectionId,
+      referencedTable: $db.collection,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CollectionTableFilterComposer(
+            $db: $db,
+            $table: $db.collection,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ClusterTableOrderingComposer
+    extends Composer<_$AppDatabase, $ClusterTable> {
+  $$ClusterTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get about => $composableBuilder(
+    column: $table.about,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get duration => $composableBuilder(
+    column: $table.duration,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get roi => $composableBuilder(
+    column: $table.roi,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get totalFundsRaised => $composableBuilder(
+    column: $table.totalFundsRaised,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get targetFundRaisingAmount => $composableBuilder(
+    column: $table.targetFundRaisingAmount,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get repayment => $composableBuilder(
+    column: $table.repayment,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isActive => $composableBuilder(
+    column: $table.isActive,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get coverImage => $composableBuilder(
+    column: $table.coverImage,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get startDate => $composableBuilder(
+    column: $table.startDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get endDate => $composableBuilder(
+    column: $table.endDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$CollectionTableOrderingComposer get collectionId {
+    final $$CollectionTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.collectionId,
+      referencedTable: $db.collection,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CollectionTableOrderingComposer(
+            $db: $db,
+            $table: $db.collection,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ClusterTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ClusterTable> {
+  $$ClusterTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get syncDate =>
+      $composableBuilder(column: $table.syncDate, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get about =>
+      $composableBuilder(column: $table.about, builder: (column) => column);
+
+  GeneratedColumn<int> get duration =>
+      $composableBuilder(column: $table.duration, builder: (column) => column);
+
+  GeneratedColumn<int> get roi =>
+      $composableBuilder(column: $table.roi, builder: (column) => column);
+
+  GeneratedColumn<int> get totalFundsRaised => $composableBuilder(
+    column: $table.totalFundsRaised,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<int> get targetFundRaisingAmount => $composableBuilder(
+    column: $table.targetFundRaisingAmount,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get repayment =>
+      $composableBuilder(column: $table.repayment, builder: (column) => column);
+
+  GeneratedColumn<bool> get isActive =>
+      $composableBuilder(column: $table.isActive, builder: (column) => column);
+
+  GeneratedColumn<String> get coverImage => $composableBuilder(
+    column: $table.coverImage,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get startDate =>
+      $composableBuilder(column: $table.startDate, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get endDate =>
+      $composableBuilder(column: $table.endDate, builder: (column) => column);
+
+  GeneratedColumn<String> get description => $composableBuilder(
+    column: $table.description,
+    builder: (column) => column,
+  );
+
+  $$CollectionTableAnnotationComposer get collectionId {
+    final $$CollectionTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.collectionId,
+      referencedTable: $db.collection,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CollectionTableAnnotationComposer(
+            $db: $db,
+            $table: $db.collection,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$ClusterTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ClusterTable,
+          ClusterData,
+          $$ClusterTableFilterComposer,
+          $$ClusterTableOrderingComposer,
+          $$ClusterTableAnnotationComposer,
+          $$ClusterTableCreateCompanionBuilder,
+          $$ClusterTableUpdateCompanionBuilder,
+          (ClusterData, $$ClusterTableReferences),
+          ClusterData,
+          PrefetchHooks Function({bool collectionId})
+        > {
+  $$ClusterTableTableManager(_$AppDatabase db, $ClusterTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ClusterTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ClusterTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ClusterTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> about = const Value.absent(),
+                Value<int> duration = const Value.absent(),
+                Value<int> roi = const Value.absent(),
+                Value<int> totalFundsRaised = const Value.absent(),
+                Value<int> targetFundRaisingAmount = const Value.absent(),
+                Value<String> repayment = const Value.absent(),
+                Value<bool> isActive = const Value.absent(),
+                Value<String> coverImage = const Value.absent(),
+                Value<DateTime> startDate = const Value.absent(),
+                Value<DateTime> endDate = const Value.absent(),
+                Value<String> description = const Value.absent(),
+                Value<String?> collectionId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ClusterCompanion(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                name: name,
+                status: status,
+                about: about,
+                duration: duration,
+                roi: roi,
+                totalFundsRaised: totalFundsRaised,
+                targetFundRaisingAmount: targetFundRaisingAmount,
+                repayment: repayment,
+                isActive: isActive,
+                coverImage: coverImage,
+                startDate: startDate,
+                endDate: endDate,
+                description: description,
+                collectionId: collectionId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String syncStatus,
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String name,
+                required String status,
+                required String about,
+                required int duration,
+                required int roi,
+                required int totalFundsRaised,
+                required int targetFundRaisingAmount,
+                required String repayment,
+                required bool isActive,
+                required String coverImage,
+                required DateTime startDate,
+                required DateTime endDate,
+                required String description,
+                Value<String?> collectionId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ClusterCompanion.insert(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                name: name,
+                status: status,
+                about: about,
+                duration: duration,
+                roi: roi,
+                totalFundsRaised: totalFundsRaised,
+                targetFundRaisingAmount: targetFundRaisingAmount,
+                repayment: repayment,
+                isActive: isActive,
+                coverImage: coverImage,
+                startDate: startDate,
+                endDate: endDate,
+                description: description,
+                collectionId: collectionId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$ClusterTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({collectionId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (collectionId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.collectionId,
+                                referencedTable: $$ClusterTableReferences
+                                    ._collectionIdTable(db),
+                                referencedColumn: $$ClusterTableReferences
+                                    ._collectionIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$ClusterTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ClusterTable,
+      ClusterData,
+      $$ClusterTableFilterComposer,
+      $$ClusterTableOrderingComposer,
+      $$ClusterTableAnnotationComposer,
+      $$ClusterTableCreateCompanionBuilder,
+      $$ClusterTableUpdateCompanionBuilder,
+      (ClusterData, $$ClusterTableReferences),
+      ClusterData,
+      PrefetchHooks Function({bool collectionId})
+    >;
+typedef $$BranchTableCreateCompanionBuilder =
+    BranchCompanion Function({
+      required String id,
+      required String syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      required String name,
+      Value<bool> isHeadOffice,
+      required String phone,
+      required String streetAddress,
+      required String city,
+      required String state,
+      required String country,
+      required String businessId,
+      Value<String?> collectionId,
+      Value<int> rowid,
+    });
+typedef $$BranchTableUpdateCompanionBuilder =
+    BranchCompanion Function({
+      Value<String> id,
+      Value<String> syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> name,
+      Value<bool> isHeadOffice,
+      Value<String> phone,
+      Value<String> streetAddress,
+      Value<String> city,
+      Value<String> state,
+      Value<String> country,
+      Value<String> businessId,
+      Value<String?> collectionId,
+      Value<int> rowid,
+    });
+
+final class $$BranchTableReferences
+    extends BaseReferences<_$AppDatabase, $BranchTable, BranchData> {
+  $$BranchTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $BusinessesTable _businessIdTable(_$AppDatabase db) =>
+      db.businesses.createAlias(
+        $_aliasNameGenerator(db.branch.businessId, db.businesses.id),
+      );
+
+  $$BusinessesTableProcessedTableManager get businessId {
+    final $_column = $_itemColumn<String>('business_id')!;
+
+    final manager = $$BusinessesTableTableManager(
+      $_db,
+      $_db.businesses,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_businessIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $CollectionTable _collectionIdTable(_$AppDatabase db) =>
+      db.collection.createAlias(
+        $_aliasNameGenerator(db.branch.collectionId, db.collection.id),
+      );
+
+  $$CollectionTableProcessedTableManager? get collectionId {
+    final $_column = $_itemColumn<String>('collection_id');
+    if ($_column == null) return null;
+    final manager = $$CollectionTableTableManager(
+      $_db,
+      $_db.collection,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_collectionIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$BranchUserTable, List<BranchUserData>>
+  _branchUserRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.branchUser,
+    aliasName: $_aliasNameGenerator(db.branch.id, db.branchUser.branchId),
+  );
+
+  $$BranchUserTableProcessedTableManager get branchUserRefs {
+    final manager = $$BranchUserTableTableManager(
+      $_db,
+      $_db.branchUser,
+    ).filter((f) => f.branchId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_branchUserRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$InvitesTable, List<Invite>> _invitesRefsTable(
+    _$AppDatabase db,
+  ) => MultiTypedResultKey.fromTable(
+    db.invites,
+    aliasName: $_aliasNameGenerator(db.branch.id, db.invites.branchId),
+  );
+
+  $$InvitesTableProcessedTableManager get invitesRefs {
+    final manager = $$InvitesTableTableManager(
+      $_db,
+      $_db.invites,
+    ).filter((f) => f.branchId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_invitesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+}
+
+class $$BranchTableFilterComposer
+    extends Composer<_$AppDatabase, $BranchTable> {
+  $$BranchTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isHeadOffice => $composableBuilder(
+    column: $table.isHeadOffice,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get phone => $composableBuilder(
+    column: $table.phone,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get streetAddress => $composableBuilder(
+    column: $table.streetAddress,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get city => $composableBuilder(
+    column: $table.city,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get country => $composableBuilder(
+    column: $table.country,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$BusinessesTableFilterComposer get businessId {
+    final $$BusinessesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.businessId,
+      referencedTable: $db.businesses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BusinessesTableFilterComposer(
+            $db: $db,
+            $table: $db.businesses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$CollectionTableFilterComposer get collectionId {
+    final $$CollectionTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.collectionId,
+      referencedTable: $db.collection,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CollectionTableFilterComposer(
+            $db: $db,
+            $table: $db.collection,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<bool> branchUserRefs(
+    Expression<bool> Function($$BranchUserTableFilterComposer f) f,
+  ) {
+    final $$BranchUserTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.branchUser,
+      getReferencedColumn: (t) => t.branchId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BranchUserTableFilterComposer(
+            $db: $db,
+            $table: $db.branchUser,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> invitesRefs(
+    Expression<bool> Function($$InvitesTableFilterComposer f) f,
+  ) {
+    final $$InvitesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.invites,
+      getReferencedColumn: (t) => t.branchId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$InvitesTableFilterComposer(
+            $db: $db,
+            $table: $db.invites,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$BranchTableOrderingComposer
+    extends Composer<_$AppDatabase, $BranchTable> {
+  $$BranchTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get name => $composableBuilder(
+    column: $table.name,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isHeadOffice => $composableBuilder(
+    column: $table.isHeadOffice,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get phone => $composableBuilder(
+    column: $table.phone,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get streetAddress => $composableBuilder(
+    column: $table.streetAddress,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get city => $composableBuilder(
+    column: $table.city,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get country => $composableBuilder(
+    column: $table.country,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$BusinessesTableOrderingComposer get businessId {
+    final $$BusinessesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.businessId,
+      referencedTable: $db.businesses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BusinessesTableOrderingComposer(
+            $db: $db,
+            $table: $db.businesses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$CollectionTableOrderingComposer get collectionId {
+    final $$CollectionTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.collectionId,
+      referencedTable: $db.collection,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CollectionTableOrderingComposer(
+            $db: $db,
+            $table: $db.collection,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$BranchTableAnnotationComposer
+    extends Composer<_$AppDatabase, $BranchTable> {
+  $$BranchTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get syncDate =>
+      $composableBuilder(column: $table.syncDate, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get name =>
+      $composableBuilder(column: $table.name, builder: (column) => column);
+
+  GeneratedColumn<bool> get isHeadOffice => $composableBuilder(
+    column: $table.isHeadOffice,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get phone =>
+      $composableBuilder(column: $table.phone, builder: (column) => column);
+
+  GeneratedColumn<String> get streetAddress => $composableBuilder(
+    column: $table.streetAddress,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get city =>
+      $composableBuilder(column: $table.city, builder: (column) => column);
+
+  GeneratedColumn<String> get state =>
+      $composableBuilder(column: $table.state, builder: (column) => column);
+
+  GeneratedColumn<String> get country =>
+      $composableBuilder(column: $table.country, builder: (column) => column);
+
+  $$BusinessesTableAnnotationComposer get businessId {
+    final $$BusinessesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.businessId,
+      referencedTable: $db.businesses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BusinessesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.businesses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$CollectionTableAnnotationComposer get collectionId {
+    final $$CollectionTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.collectionId,
+      referencedTable: $db.collection,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$CollectionTableAnnotationComposer(
+            $db: $db,
+            $table: $db.collection,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  Expression<T> branchUserRefs<T extends Object>(
+    Expression<T> Function($$BranchUserTableAnnotationComposer a) f,
+  ) {
+    final $$BranchUserTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.branchUser,
+      getReferencedColumn: (t) => t.branchId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BranchUserTableAnnotationComposer(
+            $db: $db,
+            $table: $db.branchUser,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<T> invitesRefs<T extends Object>(
+    Expression<T> Function($$InvitesTableAnnotationComposer a) f,
+  ) {
+    final $$InvitesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.invites,
+      getReferencedColumn: (t) => t.branchId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$InvitesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.invites,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+}
+
+class $$BranchTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $BranchTable,
+          BranchData,
+          $$BranchTableFilterComposer,
+          $$BranchTableOrderingComposer,
+          $$BranchTableAnnotationComposer,
+          $$BranchTableCreateCompanionBuilder,
+          $$BranchTableUpdateCompanionBuilder,
+          (BranchData, $$BranchTableReferences),
+          BranchData,
+          PrefetchHooks Function({
+            bool businessId,
+            bool collectionId,
+            bool branchUserRefs,
+            bool invitesRefs,
+          })
+        > {
+  $$BranchTableTableManager(_$AppDatabase db, $BranchTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$BranchTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$BranchTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$BranchTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> name = const Value.absent(),
+                Value<bool> isHeadOffice = const Value.absent(),
+                Value<String> phone = const Value.absent(),
+                Value<String> streetAddress = const Value.absent(),
+                Value<String> city = const Value.absent(),
+                Value<String> state = const Value.absent(),
+                Value<String> country = const Value.absent(),
+                Value<String> businessId = const Value.absent(),
+                Value<String?> collectionId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => BranchCompanion(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                name: name,
+                isHeadOffice: isHeadOffice,
+                phone: phone,
+                streetAddress: streetAddress,
+                city: city,
+                state: state,
+                country: country,
+                businessId: businessId,
+                collectionId: collectionId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String syncStatus,
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String name,
+                Value<bool> isHeadOffice = const Value.absent(),
+                required String phone,
+                required String streetAddress,
+                required String city,
+                required String state,
+                required String country,
+                required String businessId,
+                Value<String?> collectionId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => BranchCompanion.insert(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                name: name,
+                isHeadOffice: isHeadOffice,
+                phone: phone,
+                streetAddress: streetAddress,
+                city: city,
+                state: state,
+                country: country,
+                businessId: businessId,
+                collectionId: collectionId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) =>
+                    (e.readTable(table), $$BranchTableReferences(db, table, e)),
+              )
+              .toList(),
+          prefetchHooksCallback:
+              ({
+                businessId = false,
+                collectionId = false,
+                branchUserRefs = false,
+                invitesRefs = false,
+              }) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (branchUserRefs) db.branchUser,
+                    if (invitesRefs) db.invites,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (businessId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.businessId,
+                                    referencedTable: $$BranchTableReferences
+                                        ._businessIdTable(db),
+                                    referencedColumn: $$BranchTableReferences
+                                        ._businessIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
+                        if (collectionId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.collectionId,
+                                    referencedTable: $$BranchTableReferences
+                                        ._collectionIdTable(db),
+                                    referencedColumn: $$BranchTableReferences
+                                        ._collectionIdTable(db)
+                                        .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (branchUserRefs)
+                        await $_getPrefetchedData<
+                          BranchData,
+                          $BranchTable,
+                          BranchUserData
+                        >(
+                          currentTable: table,
+                          referencedTable: $$BranchTableReferences
+                              ._branchUserRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$BranchTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).branchUserRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.branchId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (invitesRefs)
+                        await $_getPrefetchedData<
+                          BranchData,
+                          $BranchTable,
+                          Invite
+                        >(
+                          currentTable: table,
+                          referencedTable: $$BranchTableReferences
+                              ._invitesRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$BranchTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).invitesRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.branchId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$BranchTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $BranchTable,
+      BranchData,
+      $$BranchTableFilterComposer,
+      $$BranchTableOrderingComposer,
+      $$BranchTableAnnotationComposer,
+      $$BranchTableCreateCompanionBuilder,
+      $$BranchTableUpdateCompanionBuilder,
+      (BranchData, $$BranchTableReferences),
+      BranchData,
+      PrefetchHooks Function({
+        bool businessId,
+        bool collectionId,
+        bool branchUserRefs,
+        bool invitesRefs,
+      })
+    >;
+typedef $$BranchUserTableCreateCompanionBuilder =
+    BranchUserCompanion Function({
+      required String id,
+      required String syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      required String role,
+      Value<bool> isActive,
+      Value<DateTime?> assignedAt,
+      required String userId,
+      required String branchId,
+      Value<int> rowid,
+    });
+typedef $$BranchUserTableUpdateCompanionBuilder =
+    BranchUserCompanion Function({
+      Value<String> id,
+      Value<String> syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> role,
+      Value<bool> isActive,
+      Value<DateTime?> assignedAt,
+      Value<String> userId,
+      Value<String> branchId,
+      Value<int> rowid,
+    });
+
+final class $$BranchUserTableReferences
+    extends BaseReferences<_$AppDatabase, $BranchUserTable, BranchUserData> {
+  $$BranchUserTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $UserTable _userIdTable(_$AppDatabase db) => db.user.createAlias(
+    $_aliasNameGenerator(db.branchUser.userId, db.user.id),
+  );
+
+  $$UserTableProcessedTableManager get userId {
+    final $_column = $_itemColumn<String>('user_id')!;
+
+    final manager = $$UserTableTableManager(
+      $_db,
+      $_db.user,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $BranchTable _branchIdTable(_$AppDatabase db) => db.branch.createAlias(
+    $_aliasNameGenerator(db.branchUser.branchId, db.branch.id),
+  );
+
+  $$BranchTableProcessedTableManager get branchId {
+    final $_column = $_itemColumn<String>('branch_id')!;
+
+    final manager = $$BranchTableTableManager(
+      $_db,
+      $_db.branch,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_branchIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$BranchUserTableFilterComposer
+    extends Composer<_$AppDatabase, $BranchUserTable> {
+  $$BranchUserTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isActive => $composableBuilder(
+    column: $table.isActive,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get assignedAt => $composableBuilder(
+    column: $table.assignedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$UserTableFilterComposer get userId {
+    final $$UserTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableFilterComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$BranchTableFilterComposer get branchId {
+    final $$BranchTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.branchId,
+      referencedTable: $db.branch,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BranchTableFilterComposer(
+            $db: $db,
+            $table: $db.branch,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$BranchUserTableOrderingComposer
+    extends Composer<_$AppDatabase, $BranchUserTable> {
+  $$BranchUserTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isActive => $composableBuilder(
+    column: $table.isActive,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get assignedAt => $composableBuilder(
+    column: $table.assignedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$UserTableOrderingComposer get userId {
+    final $$UserTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableOrderingComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$BranchTableOrderingComposer get branchId {
+    final $$BranchTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.branchId,
+      referencedTable: $db.branch,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BranchTableOrderingComposer(
+            $db: $db,
+            $table: $db.branch,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$BranchUserTableAnnotationComposer
+    extends Composer<_$AppDatabase, $BranchUserTable> {
+  $$BranchUserTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get syncDate =>
+      $composableBuilder(column: $table.syncDate, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get role =>
+      $composableBuilder(column: $table.role, builder: (column) => column);
+
+  GeneratedColumn<bool> get isActive =>
+      $composableBuilder(column: $table.isActive, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get assignedAt => $composableBuilder(
+    column: $table.assignedAt,
+    builder: (column) => column,
+  );
+
+  $$UserTableAnnotationComposer get userId {
+    final $$UserTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableAnnotationComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$BranchTableAnnotationComposer get branchId {
+    final $$BranchTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.branchId,
+      referencedTable: $db.branch,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BranchTableAnnotationComposer(
+            $db: $db,
+            $table: $db.branch,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$BranchUserTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $BranchUserTable,
+          BranchUserData,
+          $$BranchUserTableFilterComposer,
+          $$BranchUserTableOrderingComposer,
+          $$BranchUserTableAnnotationComposer,
+          $$BranchUserTableCreateCompanionBuilder,
+          $$BranchUserTableUpdateCompanionBuilder,
+          (BranchUserData, $$BranchUserTableReferences),
+          BranchUserData,
+          PrefetchHooks Function({bool userId, bool branchId})
+        > {
+  $$BranchUserTableTableManager(_$AppDatabase db, $BranchUserTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$BranchUserTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$BranchUserTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$BranchUserTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> role = const Value.absent(),
+                Value<bool> isActive = const Value.absent(),
+                Value<DateTime?> assignedAt = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<String> branchId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => BranchUserCompanion(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                role: role,
+                isActive: isActive,
+                assignedAt: assignedAt,
+                userId: userId,
+                branchId: branchId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String syncStatus,
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String role,
+                Value<bool> isActive = const Value.absent(),
+                Value<DateTime?> assignedAt = const Value.absent(),
+                required String userId,
+                required String branchId,
+                Value<int> rowid = const Value.absent(),
+              }) => BranchUserCompanion.insert(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                role: role,
+                isActive: isActive,
+                assignedAt: assignedAt,
+                userId: userId,
+                branchId: branchId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$BranchUserTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({userId = false, branchId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (userId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.userId,
+                                referencedTable: $$BranchUserTableReferences
+                                    ._userIdTable(db),
+                                referencedColumn: $$BranchUserTableReferences
+                                    ._userIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+                    if (branchId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.branchId,
+                                referencedTable: $$BranchUserTableReferences
+                                    ._branchIdTable(db),
+                                referencedColumn: $$BranchUserTableReferences
+                                    ._branchIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$BranchUserTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $BranchUserTable,
+      BranchUserData,
+      $$BranchUserTableFilterComposer,
+      $$BranchUserTableOrderingComposer,
+      $$BranchUserTableAnnotationComposer,
+      $$BranchUserTableCreateCompanionBuilder,
+      $$BranchUserTableUpdateCompanionBuilder,
+      (BranchUserData, $$BranchUserTableReferences),
+      BranchUserData,
+      PrefetchHooks Function({bool userId, bool branchId})
+    >;
+typedef $$VerificationTokenTableCreateCompanionBuilder =
+    VerificationTokenCompanion Function({
+      required String id,
+      required String syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      required String type,
+      required String token,
+      required DateTime expiresAt,
+      required String userId,
+      Value<int> rowid,
+    });
+typedef $$VerificationTokenTableUpdateCompanionBuilder =
+    VerificationTokenCompanion Function({
+      Value<String> id,
+      Value<String> syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> type,
+      Value<String> token,
+      Value<DateTime> expiresAt,
+      Value<String> userId,
+      Value<int> rowid,
+    });
+
+final class $$VerificationTokenTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $VerificationTokenTable,
+          VerificationTokenData
+        > {
+  $$VerificationTokenTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $UserTable _userIdTable(_$AppDatabase db) => db.user.createAlias(
+    $_aliasNameGenerator(db.verificationToken.userId, db.user.id),
+  );
+
+  $$UserTableProcessedTableManager get userId {
+    final $_column = $_itemColumn<String>('user_id')!;
+
+    final manager = $$UserTableTableManager(
+      $_db,
+      $_db.user,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$VerificationTokenTableFilterComposer
+    extends Composer<_$AppDatabase, $VerificationTokenTable> {
+  $$VerificationTokenTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get token => $composableBuilder(
+    column: $table.token,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get expiresAt => $composableBuilder(
+    column: $table.expiresAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$UserTableFilterComposer get userId {
+    final $$UserTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableFilterComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$VerificationTokenTableOrderingComposer
+    extends Composer<_$AppDatabase, $VerificationTokenTable> {
+  $$VerificationTokenTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get token => $composableBuilder(
+    column: $table.token,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get expiresAt => $composableBuilder(
+    column: $table.expiresAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$UserTableOrderingComposer get userId {
+    final $$UserTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableOrderingComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$VerificationTokenTableAnnotationComposer
+    extends Composer<_$AppDatabase, $VerificationTokenTable> {
+  $$VerificationTokenTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get syncDate =>
+      $composableBuilder(column: $table.syncDate, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<String> get token =>
+      $composableBuilder(column: $table.token, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get expiresAt =>
+      $composableBuilder(column: $table.expiresAt, builder: (column) => column);
+
+  $$UserTableAnnotationComposer get userId {
+    final $$UserTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableAnnotationComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$VerificationTokenTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $VerificationTokenTable,
+          VerificationTokenData,
+          $$VerificationTokenTableFilterComposer,
+          $$VerificationTokenTableOrderingComposer,
+          $$VerificationTokenTableAnnotationComposer,
+          $$VerificationTokenTableCreateCompanionBuilder,
+          $$VerificationTokenTableUpdateCompanionBuilder,
+          (VerificationTokenData, $$VerificationTokenTableReferences),
+          VerificationTokenData,
+          PrefetchHooks Function({bool userId})
+        > {
+  $$VerificationTokenTableTableManager(
+    _$AppDatabase db,
+    $VerificationTokenTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$VerificationTokenTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$VerificationTokenTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$VerificationTokenTableAnnotationComposer(
+                $db: db,
+                $table: table,
+              ),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> type = const Value.absent(),
+                Value<String> token = const Value.absent(),
+                Value<DateTime> expiresAt = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => VerificationTokenCompanion(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                type: type,
+                token: token,
+                expiresAt: expiresAt,
+                userId: userId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String syncStatus,
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String type,
+                required String token,
+                required DateTime expiresAt,
+                required String userId,
+                Value<int> rowid = const Value.absent(),
+              }) => VerificationTokenCompanion.insert(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                type: type,
+                token: token,
+                expiresAt: expiresAt,
+                userId: userId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$VerificationTokenTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({userId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (userId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.userId,
+                                referencedTable:
+                                    $$VerificationTokenTableReferences
+                                        ._userIdTable(db),
+                                referencedColumn:
+                                    $$VerificationTokenTableReferences
+                                        ._userIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$VerificationTokenTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $VerificationTokenTable,
+      VerificationTokenData,
+      $$VerificationTokenTableFilterComposer,
+      $$VerificationTokenTableOrderingComposer,
+      $$VerificationTokenTableAnnotationComposer,
+      $$VerificationTokenTableCreateCompanionBuilder,
+      $$VerificationTokenTableUpdateCompanionBuilder,
+      (VerificationTokenData, $$VerificationTokenTableReferences),
+      VerificationTokenData,
+      PrefetchHooks Function({bool userId})
+    >;
+typedef $$UserVerificationTableCreateCompanionBuilder =
+    UserVerificationCompanion Function({
+      required String id,
+      required String syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      required String type,
+      required String idNumber,
+      required String idImageFrontUrl,
+      required String idImageBackUrl,
+      required String status,
+      required String rejectionReason,
+      required DateTime submittedAt,
+      required DateTime reviewedAt,
+      required String userId,
+      Value<int> rowid,
+    });
+typedef $$UserVerificationTableUpdateCompanionBuilder =
+    UserVerificationCompanion Function({
+      Value<String> id,
+      Value<String> syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> type,
+      Value<String> idNumber,
+      Value<String> idImageFrontUrl,
+      Value<String> idImageBackUrl,
+      Value<String> status,
+      Value<String> rejectionReason,
+      Value<DateTime> submittedAt,
+      Value<DateTime> reviewedAt,
+      Value<String> userId,
+      Value<int> rowid,
+    });
+
+final class $$UserVerificationTableReferences
+    extends
+        BaseReferences<
+          _$AppDatabase,
+          $UserVerificationTable,
+          UserVerificationData
+        > {
+  $$UserVerificationTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $UserTable _userIdTable(_$AppDatabase db) => db.user.createAlias(
+    $_aliasNameGenerator(db.userVerification.userId, db.user.id),
+  );
+
+  $$UserTableProcessedTableManager get userId {
+    final $_column = $_itemColumn<String>('user_id')!;
+
+    final manager = $$UserTableTableManager(
+      $_db,
+      $_db.user,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$UserVerificationTableFilterComposer
+    extends Composer<_$AppDatabase, $UserVerificationTable> {
+  $$UserVerificationTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get idNumber => $composableBuilder(
+    column: $table.idNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get idImageFrontUrl => $composableBuilder(
+    column: $table.idImageFrontUrl,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get idImageBackUrl => $composableBuilder(
+    column: $table.idImageBackUrl,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get rejectionReason => $composableBuilder(
+    column: $table.rejectionReason,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get submittedAt => $composableBuilder(
+    column: $table.submittedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get reviewedAt => $composableBuilder(
+    column: $table.reviewedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$UserTableFilterComposer get userId {
+    final $$UserTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableFilterComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$UserVerificationTableOrderingComposer
+    extends Composer<_$AppDatabase, $UserVerificationTable> {
+  $$UserVerificationTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get type => $composableBuilder(
+    column: $table.type,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get idNumber => $composableBuilder(
+    column: $table.idNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get idImageFrontUrl => $composableBuilder(
+    column: $table.idImageFrontUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get idImageBackUrl => $composableBuilder(
+    column: $table.idImageBackUrl,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get status => $composableBuilder(
+    column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get rejectionReason => $composableBuilder(
+    column: $table.rejectionReason,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get submittedAt => $composableBuilder(
+    column: $table.submittedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get reviewedAt => $composableBuilder(
+    column: $table.reviewedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$UserTableOrderingComposer get userId {
+    final $$UserTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableOrderingComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$UserVerificationTableAnnotationComposer
+    extends Composer<_$AppDatabase, $UserVerificationTable> {
+  $$UserVerificationTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get syncDate =>
+      $composableBuilder(column: $table.syncDate, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
+
+  GeneratedColumn<String> get idNumber =>
+      $composableBuilder(column: $table.idNumber, builder: (column) => column);
+
+  GeneratedColumn<String> get idImageFrontUrl => $composableBuilder(
+    column: $table.idImageFrontUrl,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get idImageBackUrl => $composableBuilder(
+    column: $table.idImageBackUrl,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get status =>
+      $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get rejectionReason => $composableBuilder(
+    column: $table.rejectionReason,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get submittedAt => $composableBuilder(
+    column: $table.submittedAt,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get reviewedAt => $composableBuilder(
+    column: $table.reviewedAt,
+    builder: (column) => column,
+  );
+
+  $$UserTableAnnotationComposer get userId {
+    final $$UserTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableAnnotationComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$UserVerificationTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $UserVerificationTable,
+          UserVerificationData,
+          $$UserVerificationTableFilterComposer,
+          $$UserVerificationTableOrderingComposer,
+          $$UserVerificationTableAnnotationComposer,
+          $$UserVerificationTableCreateCompanionBuilder,
+          $$UserVerificationTableUpdateCompanionBuilder,
+          (UserVerificationData, $$UserVerificationTableReferences),
+          UserVerificationData,
+          PrefetchHooks Function({bool userId})
+        > {
+  $$UserVerificationTableTableManager(
+    _$AppDatabase db,
+    $UserVerificationTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$UserVerificationTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$UserVerificationTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$UserVerificationTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> type = const Value.absent(),
+                Value<String> idNumber = const Value.absent(),
+                Value<String> idImageFrontUrl = const Value.absent(),
+                Value<String> idImageBackUrl = const Value.absent(),
+                Value<String> status = const Value.absent(),
+                Value<String> rejectionReason = const Value.absent(),
+                Value<DateTime> submittedAt = const Value.absent(),
+                Value<DateTime> reviewedAt = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => UserVerificationCompanion(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                type: type,
+                idNumber: idNumber,
+                idImageFrontUrl: idImageFrontUrl,
+                idImageBackUrl: idImageBackUrl,
+                status: status,
+                rejectionReason: rejectionReason,
+                submittedAt: submittedAt,
+                reviewedAt: reviewedAt,
+                userId: userId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String syncStatus,
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String type,
+                required String idNumber,
+                required String idImageFrontUrl,
+                required String idImageBackUrl,
+                required String status,
+                required String rejectionReason,
+                required DateTime submittedAt,
+                required DateTime reviewedAt,
+                required String userId,
+                Value<int> rowid = const Value.absent(),
+              }) => UserVerificationCompanion.insert(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                type: type,
+                idNumber: idNumber,
+                idImageFrontUrl: idImageFrontUrl,
+                idImageBackUrl: idImageBackUrl,
+                status: status,
+                rejectionReason: rejectionReason,
+                submittedAt: submittedAt,
+                reviewedAt: reviewedAt,
+                userId: userId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$UserVerificationTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({userId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (userId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.userId,
+                                referencedTable:
+                                    $$UserVerificationTableReferences
+                                        ._userIdTable(db),
+                                referencedColumn:
+                                    $$UserVerificationTableReferences
+                                        ._userIdTable(db)
+                                        .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$UserVerificationTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $UserVerificationTable,
+      UserVerificationData,
+      $$UserVerificationTableFilterComposer,
+      $$UserVerificationTableOrderingComposer,
+      $$UserVerificationTableAnnotationComposer,
+      $$UserVerificationTableCreateCompanionBuilder,
+      $$UserVerificationTableUpdateCompanionBuilder,
+      (UserVerificationData, $$UserVerificationTableReferences),
+      UserVerificationData,
+      PrefetchHooks Function({bool userId})
+    >;
+typedef $$InvitesTableCreateCompanionBuilder =
+    InvitesCompanion Function({
+      required String id,
+      required String syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      required String email,
+      required String role,
+      required String branchId,
+      required String token,
+      required bool accepted,
+      required String businessId,
+      Value<int> rowid,
+    });
+typedef $$InvitesTableUpdateCompanionBuilder =
+    InvitesCompanion Function({
+      Value<String> id,
+      Value<String> syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> email,
+      Value<String> role,
+      Value<String> branchId,
+      Value<String> token,
+      Value<bool> accepted,
+      Value<String> businessId,
+      Value<int> rowid,
+    });
+
+final class $$InvitesTableReferences
+    extends BaseReferences<_$AppDatabase, $InvitesTable, Invite> {
+  $$InvitesTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $BranchTable _branchIdTable(_$AppDatabase db) => db.branch.createAlias(
+    $_aliasNameGenerator(db.invites.branchId, db.branch.id),
+  );
+
+  $$BranchTableProcessedTableManager get branchId {
+    final $_column = $_itemColumn<String>('branch_id')!;
+
+    final manager = $$BranchTableTableManager(
+      $_db,
+      $_db.branch,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_branchIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$InvitesTableFilterComposer
+    extends Composer<_$AppDatabase, $InvitesTable> {
+  $$InvitesTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get email => $composableBuilder(
+    column: $table.email,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get token => $composableBuilder(
+    column: $table.token,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get accepted => $composableBuilder(
+    column: $table.accepted,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get businessId => $composableBuilder(
+    column: $table.businessId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$BranchTableFilterComposer get branchId {
+    final $$BranchTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.branchId,
+      referencedTable: $db.branch,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BranchTableFilterComposer(
+            $db: $db,
+            $table: $db.branch,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$InvitesTableOrderingComposer
+    extends Composer<_$AppDatabase, $InvitesTable> {
+  $$InvitesTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get email => $composableBuilder(
+    column: $table.email,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get token => $composableBuilder(
+    column: $table.token,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get accepted => $composableBuilder(
+    column: $table.accepted,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get businessId => $composableBuilder(
+    column: $table.businessId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$BranchTableOrderingComposer get branchId {
+    final $$BranchTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.branchId,
+      referencedTable: $db.branch,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BranchTableOrderingComposer(
+            $db: $db,
+            $table: $db.branch,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$InvitesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $InvitesTable> {
+  $$InvitesTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get syncDate =>
+      $composableBuilder(column: $table.syncDate, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get email =>
+      $composableBuilder(column: $table.email, builder: (column) => column);
+
+  GeneratedColumn<String> get role =>
+      $composableBuilder(column: $table.role, builder: (column) => column);
+
+  GeneratedColumn<String> get token =>
+      $composableBuilder(column: $table.token, builder: (column) => column);
+
+  GeneratedColumn<bool> get accepted =>
+      $composableBuilder(column: $table.accepted, builder: (column) => column);
+
+  GeneratedColumn<String> get businessId => $composableBuilder(
+    column: $table.businessId,
+    builder: (column) => column,
+  );
+
+  $$BranchTableAnnotationComposer get branchId {
+    final $$BranchTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.branchId,
+      referencedTable: $db.branch,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BranchTableAnnotationComposer(
+            $db: $db,
+            $table: $db.branch,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$InvitesTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $InvitesTable,
+          Invite,
+          $$InvitesTableFilterComposer,
+          $$InvitesTableOrderingComposer,
+          $$InvitesTableAnnotationComposer,
+          $$InvitesTableCreateCompanionBuilder,
+          $$InvitesTableUpdateCompanionBuilder,
+          (Invite, $$InvitesTableReferences),
+          Invite,
+          PrefetchHooks Function({bool branchId})
+        > {
+  $$InvitesTableTableManager(_$AppDatabase db, $InvitesTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$InvitesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$InvitesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$InvitesTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> email = const Value.absent(),
+                Value<String> role = const Value.absent(),
+                Value<String> branchId = const Value.absent(),
+                Value<String> token = const Value.absent(),
+                Value<bool> accepted = const Value.absent(),
+                Value<String> businessId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => InvitesCompanion(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                email: email,
+                role: role,
+                branchId: branchId,
+                token: token,
+                accepted: accepted,
+                businessId: businessId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String syncStatus,
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String email,
+                required String role,
+                required String branchId,
+                required String token,
+                required bool accepted,
+                required String businessId,
+                Value<int> rowid = const Value.absent(),
+              }) => InvitesCompanion.insert(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                email: email,
+                role: role,
+                branchId: branchId,
+                token: token,
+                accepted: accepted,
+                businessId: businessId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$InvitesTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({branchId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (branchId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.branchId,
+                                referencedTable: $$InvitesTableReferences
+                                    ._branchIdTable(db),
+                                referencedColumn: $$InvitesTableReferences
+                                    ._branchIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$InvitesTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $InvitesTable,
+      Invite,
+      $$InvitesTableFilterComposer,
+      $$InvitesTableOrderingComposer,
+      $$InvitesTableAnnotationComposer,
+      $$InvitesTableCreateCompanionBuilder,
+      $$InvitesTableUpdateCompanionBuilder,
+      (Invite, $$InvitesTableReferences),
+      Invite,
+      PrefetchHooks Function({bool branchId})
+    >;
 typedef $$BankDetailsTableCreateCompanionBuilder =
     BankDetailsCompanion Function({
       required String id,
@@ -26962,6 +37318,7 @@ typedef $$BankDetailsTableProcessedTableManager =
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
+  $$UserTableTableManager get user => $$UserTableTableManager(_db, _db.user);
   $$BusinessVerificationTableTableManager get businessVerification =>
       $$BusinessVerificationTableTableManager(_db, _db.businessVerification);
   $$BusinessesTableTableManager get businesses =>
@@ -26978,7 +37335,6 @@ class $AppDatabaseManager {
       $$InventoryTableTableManager(_db, _db.inventory);
   $$CustomerTableTableManager get customer =>
       $$CustomerTableTableManager(_db, _db.customer);
-  $$UserTableTableManager get user => $$UserTableTableManager(_db, _db.user);
   $$SalesTableTableManager get sales =>
       $$SalesTableTableManager(_db, _db.sales);
   $$PaymentsTableTableManager get payments =>
@@ -26997,6 +37353,20 @@ class $AppDatabaseManager {
       $$StockTransferTableTableManager(_db, _db.stockTransfer);
   $$StockTransferItemTableTableManager get stockTransferItem =>
       $$StockTransferItemTableTableManager(_db, _db.stockTransferItem);
+  $$CollectionTableTableManager get collection =>
+      $$CollectionTableTableManager(_db, _db.collection);
+  $$ClusterTableTableManager get cluster =>
+      $$ClusterTableTableManager(_db, _db.cluster);
+  $$BranchTableTableManager get branch =>
+      $$BranchTableTableManager(_db, _db.branch);
+  $$BranchUserTableTableManager get branchUser =>
+      $$BranchUserTableTableManager(_db, _db.branchUser);
+  $$VerificationTokenTableTableManager get verificationToken =>
+      $$VerificationTokenTableTableManager(_db, _db.verificationToken);
+  $$UserVerificationTableTableManager get userVerification =>
+      $$UserVerificationTableTableManager(_db, _db.userVerification);
+  $$InvitesTableTableManager get invites =>
+      $$InvitesTableTableManager(_db, _db.invites);
   $$BankDetailsTableTableManager get bankDetails =>
       $$BankDetailsTableTableManager(_db, _db.bankDetails);
 }

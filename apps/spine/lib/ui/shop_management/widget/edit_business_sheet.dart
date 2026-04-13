@@ -190,7 +190,6 @@ class _EditBusinessSheetState extends ConsumerState<EditBusinessSheet> {
                   } else {
                     final companion = BusinessesCompanion(
                       id: drift.Value(const Uuid().v4()),
-                      collectionId: const drift.Value('1'),
                       name: drift.Value(_nameController.text),
                       type: const drift.Value('business'),
                       phone: drift.Value(_phoneController.text),

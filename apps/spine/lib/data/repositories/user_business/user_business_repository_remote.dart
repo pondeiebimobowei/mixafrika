@@ -21,7 +21,6 @@ class BusinessesRepositoryRemote implements BusinessesRepositoryAbstract {
   ) async {
     BusinessesData businesses = BusinessesData(
       id: Uuid().v4(),
-      collectionId: Uuid().v4(),
       name: 'Trader Business',
       type: 'business',
       phone: '08023467856',
@@ -30,6 +29,7 @@ class BusinessesRepositoryRemote implements BusinessesRepositoryAbstract {
       state: 'Abuja',
       country: 'Nigeria',
       verification: '',
+      isVerified: true,
 
       syncStatus: '',
       syncDate: DateTime.now(),
