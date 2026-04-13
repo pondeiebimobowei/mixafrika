@@ -21,7 +21,6 @@ class BusinessesRepositoryRemote implements BusinessesRepositoryAbstract {
   ) async {
     BusinessesData businesses = BusinessesData(
       id: Uuid().v4(),
-      userId: 'userId',
       collectionId: Uuid().v4(),
       name: 'Trader Business',
       type: 'business',

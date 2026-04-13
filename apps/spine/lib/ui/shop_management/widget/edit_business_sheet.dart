@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/drift/database.dart';
-import 'package:spine/theme/app-theme.dart';
 import 'package:uuid/uuid.dart';
 import 'package:drift/drift.dart' as drift;
 
@@ -191,7 +190,6 @@ class _EditBusinessSheetState extends ConsumerState<EditBusinessSheet> {
                   } else {
                     final companion = BusinessesCompanion(
                       id: drift.Value(const Uuid().v4()),
-                      userId: const drift.Value('1'), // Hardcoded for now
                       collectionId: const drift.Value('1'),
                       name: drift.Value(_nameController.text),
                       type: const drift.Value('business'),

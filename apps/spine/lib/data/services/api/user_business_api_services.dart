@@ -35,8 +35,6 @@ class BusinessesApiServices {
         '/user_business',
         data: {
           'id': businesses.id,
-
-          'userId': businesses.userId,
           'collectionId': businesses.collectionId,
           'name': businesses.name,
           'type': businesses.type,

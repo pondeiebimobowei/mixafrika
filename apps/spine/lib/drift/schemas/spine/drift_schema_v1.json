@@ -212,16 +212,6 @@
             "dsl_features": []
           },
           {
-            "name": "user_id",
-            "getter_name": "userId",
-            "moor_type": "string",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
             "name": "collection_id",
             "getter_name": "collectionId",
             "moor_type": "string",
@@ -2220,6 +2210,171 @@
     {
       "id": 13,
       "references": [
+        8,
+        1
+      ],
+      "type": "table",
+      "data": {
+        "name": "business_user",
+        "was_declared_in_moor": false,
+        "columns": [
+          {
+            "name": "id",
+            "getter_name": "id",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "sync_status",
+            "getter_name": "syncStatus",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "sync_date",
+            "getter_name": "syncDate",
+            "moor_type": "dateTime",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "created_at",
+            "getter_name": "createdAt",
+            "moor_type": "dateTime",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('CURRENT_TIMESTAMP')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "updated_at",
+            "getter_name": "updatedAt",
+            "moor_type": "dateTime",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": "const CustomExpression('CURRENT_TIMESTAMP')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "deleted_at",
+            "getter_name": "deletedAt",
+            "moor_type": "dateTime",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "role",
+            "getter_name": "role",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "is_active",
+            "getter_name": "isActive",
+            "moor_type": "bool",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "CHECK (\"is_active\" IN (0, 1))",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "CHECK (\"is_active\" IN (0, 1))"
+            },
+            "default_dart": "const CustomExpression('0')",
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "joined_at",
+            "getter_name": "joinedAt",
+            "moor_type": "dateTime",
+            "nullable": true,
+            "customConstraints": null,
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": []
+          },
+          {
+            "name": "user_id",
+            "getter_name": "userId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "UNIQUE REFERENCES user (id)",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "UNIQUE REFERENCES user (id)"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "user",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": null
+                }
+              },
+              "unique"
+            ]
+          },
+          {
+            "name": "business_id",
+            "getter_name": "businessId",
+            "moor_type": "string",
+            "nullable": false,
+            "customConstraints": null,
+            "defaultConstraints": "UNIQUE REFERENCES businesses (id)",
+            "dialectAwareDefaultConstraints": {
+              "sqlite": "UNIQUE REFERENCES businesses (id)"
+            },
+            "default_dart": null,
+            "default_client_dart": null,
+            "dsl_features": [
+              {
+                "foreign_key": {
+                  "to": {
+                    "table": "businesses",
+                    "column": "id"
+                  },
+                  "initially_deferred": false,
+                  "on_update": null,
+                  "on_delete": null
+                }
+              },
+              "unique"
+            ]
+          }
+        ],
+        "is_virtual": false,
+        "without_rowid": false,
+        "constraints": []
+      }
+    },
+    {
+      "id": 14,
+      "references": [
         1,
         8
       ],
@@ -2357,7 +2512,7 @@
       }
     },
     {
-      "id": 14,
+      "id": 15,
       "references": [
         4,
         1,
@@ -2580,7 +2735,7 @@
       }
     },
     {
-      "id": 15,
+      "id": 16,
       "references": [
         1,
         8
@@ -2755,9 +2910,9 @@
       }
     },
     {
-      "id": 16,
+      "id": 17,
       "references": [
-        15,
+        16,
         4
       ],
       "type": "table",
@@ -2894,7 +3049,7 @@
       }
     },
     {
-      "id": 17,
+      "id": 18,
       "references": [
         1
       ],
@@ -3041,7 +3196,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"businesses\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"user_id\" TEXT NOT NULL, \"collection_id\" TEXT NOT NULL, \"name\" TEXT NOT NULL, \"type\" TEXT NOT NULL, \"phone\" TEXT NOT NULL, \"street_address\" TEXT NOT NULL, \"city\" TEXT NOT NULL, \"state\" TEXT NOT NULL, \"country\" TEXT NOT NULL, \"verification\" TEXT NOT NULL REFERENCES business_verification (id));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"businesses\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"collection_id\" TEXT NOT NULL, \"name\" TEXT NOT NULL, \"type\" TEXT NOT NULL, \"phone\" TEXT NOT NULL, \"street_address\" TEXT NOT NULL, \"city\" TEXT NOT NULL, \"state\" TEXT NOT NULL, \"country\" TEXT NOT NULL, \"verification\" TEXT NOT NULL REFERENCES business_verification (id));"
         }
       ]
     },
@@ -3141,6 +3296,15 @@
         {
           "dialect": "sqlite",
           "sql": "CREATE TABLE IF NOT EXISTS \"sales_item\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"name\" TEXT NOT NULL, \"quantity\" INTEGER NOT NULL DEFAULT 1, \"type\" TEXT NOT NULL, \"unit_price\" INTEGER NOT NULL, \"cost_price\" INTEGER NOT NULL, \"total\" INTEGER NOT NULL, \"sale_id\" TEXT NOT NULL REFERENCES sales (id), \"product_id\" TEXT NULL REFERENCES product (id), \"batch_id\" TEXT NULL REFERENCES spine_batch (id), \"description\" TEXT NULL);"
+        }
+      ]
+    },
+    {
+      "name": "business_user",
+      "sql": [
+        {
+          "dialect": "sqlite",
+          "sql": "CREATE TABLE IF NOT EXISTS \"business_user\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"role\" TEXT NOT NULL, \"is_active\" INTEGER NOT NULL DEFAULT 0 CHECK (\"is_active\" IN (0, 1)), \"joined_at\" TEXT NULL, \"user_id\" TEXT NOT NULL UNIQUE REFERENCES user (id), \"business_id\" TEXT NOT NULL UNIQUE REFERENCES businesses (id));"
         }
       ]
     },

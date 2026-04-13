@@ -21,6 +21,7 @@ import 'package:spine/drift/model/global_product.model.dart';
 import 'package:spine/drift/model/product_category.model.dart';
 import 'package:spine/drift/model/bank_details.model.dart';
 import 'package:spine/drift/model/customer.model.dart';
+import 'package:spine/drift/model/business_user.model.dart';
 
 import 'package:spine/drift/seed.dart';
 
@@ -37,6 +38,7 @@ part 'database.g.dart';
     ProductCategory,
     SalesItem,
     Sales,
+    BusinessUser,
     GlobalProduct,
     StockAdjustment,
     StockMovement,

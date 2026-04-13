@@ -803,15 +803,6 @@ class $BusinessesTable extends Businesses
     type: DriftSqlType.dateTime,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
-  @override
-  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
-    'user_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
   static const VerificationMeta _collectionIdMeta = const VerificationMeta(
     'collectionId',
   );
@@ -912,7 +903,6 @@ class $BusinessesTable extends Businesses
     createdAt,
     updatedAt,
     deletedAt,
-    userId,
     collectionId,
     name,
     type,
@@ -971,14 +961,6 @@ class $BusinessesTable extends Businesses
         _deletedAtMeta,
         deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
       );
-    }
-    if (data.containsKey('user_id')) {
-      context.handle(
-        _userIdMeta,
-        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_userIdMeta);
     }
     if (data.containsKey('collection_id')) {
       context.handle(
@@ -1094,10 +1076,6 @@ class $BusinessesTable extends Businesses
         DriftSqlType.dateTime,
         data['${effectivePrefix}deleted_at'],
       ),
-      userId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}user_id'],
-      )!,
       collectionId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}collection_id'],
@@ -1150,7 +1128,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
   final DateTime createdAt;
   final DateTime updatedAt;
   final DateTime? deletedAt;
-  final String userId;
   final String collectionId;
   final String name;
   final String type;
@@ -1167,7 +1144,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
     required this.createdAt,
     required this.updatedAt,
     this.deletedAt,
-    required this.userId,
     required this.collectionId,
     required this.name,
     required this.type,
@@ -1191,7 +1167,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
     if (!nullToAbsent || deletedAt != null) {
       map['deleted_at'] = Variable<DateTime>(deletedAt);
     }
-    map['user_id'] = Variable<String>(userId);
     map['collection_id'] = Variable<String>(collectionId);
     map['name'] = Variable<String>(name);
     map['type'] = Variable<String>(type);
@@ -1216,7 +1191,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
       deletedAt: deletedAt == null && nullToAbsent
           ? const Value.absent()
           : Value(deletedAt),
-      userId: Value(userId),
       collectionId: Value(collectionId),
       name: Value(name),
       type: Value(type),
@@ -1241,7 +1215,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
       updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
-      userId: serializer.fromJson<String>(json['userId']),
       collectionId: serializer.fromJson<String>(json['collectionId']),
       name: serializer.fromJson<String>(json['name']),
       type: serializer.fromJson<String>(json['type']),
@@ -1263,7 +1236,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
       'createdAt': serializer.toJson<DateTime>(createdAt),
       'updatedAt': serializer.toJson<DateTime>(updatedAt),
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
-      'userId': serializer.toJson<String>(userId),
       'collectionId': serializer.toJson<String>(collectionId),
       'name': serializer.toJson<String>(name),
       'type': serializer.toJson<String>(type),
@@ -1283,7 +1255,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
     DateTime? createdAt,
     DateTime? updatedAt,
     Value<DateTime?> deletedAt = const Value.absent(),
-    String? userId,
     String? collectionId,
     String? name,
     String? type,
@@ -1300,7 +1271,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
     createdAt: createdAt ?? this.createdAt,
     updatedAt: updatedAt ?? this.updatedAt,
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
-    userId: userId ?? this.userId,
     collectionId: collectionId ?? this.collectionId,
     name: name ?? this.name,
     type: type ?? this.type,
@@ -1321,7 +1291,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
-      userId: data.userId.present ? data.userId.value : this.userId,
       collectionId: data.collectionId.present
           ? data.collectionId.value
           : this.collectionId,
@@ -1349,7 +1318,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
-          ..write('userId: $userId, ')
           ..write('collectionId: $collectionId, ')
           ..write('name: $name, ')
           ..write('type: $type, ')
@@ -1371,7 +1339,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
     createdAt,
     updatedAt,
     deletedAt,
-    userId,
     collectionId,
     name,
     type,
@@ -1392,7 +1359,6 @@ class BusinessesData extends DataClass implements Insertable<BusinessesData> {
           other.createdAt == this.createdAt &&
           other.updatedAt == this.updatedAt &&
           other.deletedAt == this.deletedAt &&
-          other.userId == this.userId &&
           other.collectionId == this.collectionId &&
           other.name == this.name &&
           other.type == this.type &&
@@ -1411,7 +1377,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
   final Value<DateTime> createdAt;
   final Value<DateTime> updatedAt;
   final Value<DateTime?> deletedAt;
-  final Value<String> userId;
   final Value<String> collectionId;
   final Value<String> name;
   final Value<String> type;
@@ -1429,7 +1394,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
-    this.userId = const Value.absent(),
     this.collectionId = const Value.absent(),
     this.name = const Value.absent(),
     this.type = const Value.absent(),
@@ -1448,7 +1412,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
     this.createdAt = const Value.absent(),
     this.updatedAt = const Value.absent(),
     this.deletedAt = const Value.absent(),
-    required String userId,
     required String collectionId,
     required String name,
     required String type,
@@ -1461,7 +1424,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        syncStatus = Value(syncStatus),
-       userId = Value(userId),
        collectionId = Value(collectionId),
        name = Value(name),
        type = Value(type),
@@ -1478,7 +1440,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
     Expression<DateTime>? createdAt,
     Expression<DateTime>? updatedAt,
     Expression<DateTime>? deletedAt,
-    Expression<String>? userId,
     Expression<String>? collectionId,
     Expression<String>? name,
     Expression<String>? type,
@@ -1497,7 +1458,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
       if (createdAt != null) 'created_at': createdAt,
       if (updatedAt != null) 'updated_at': updatedAt,
       if (deletedAt != null) 'deleted_at': deletedAt,
-      if (userId != null) 'user_id': userId,
       if (collectionId != null) 'collection_id': collectionId,
       if (name != null) 'name': name,
       if (type != null) 'type': type,
@@ -1518,7 +1478,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
     Value<DateTime>? createdAt,
     Value<DateTime>? updatedAt,
     Value<DateTime?>? deletedAt,
-    Value<String>? userId,
     Value<String>? collectionId,
     Value<String>? name,
     Value<String>? type,
@@ -1537,7 +1496,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       deletedAt: deletedAt ?? this.deletedAt,
-      userId: userId ?? this.userId,
       collectionId: collectionId ?? this.collectionId,
       name: name ?? this.name,
       type: type ?? this.type,
@@ -1571,9 +1529,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
     }
     if (deletedAt.present) {
       map['deleted_at'] = Variable<DateTime>(deletedAt.value);
-    }
-    if (userId.present) {
-      map['user_id'] = Variable<String>(userId.value);
     }
     if (collectionId.present) {
       map['collection_id'] = Variable<String>(collectionId.value);
@@ -1617,7 +1572,6 @@ class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
           ..write('createdAt: $createdAt, ')
           ..write('updatedAt: $updatedAt, ')
           ..write('deletedAt: $deletedAt, ')
-          ..write('userId: $userId, ')
           ..write('collectionId: $collectionId, ')
           ..write('name: $name, ')
           ..write('type: $type, ')
@@ -10000,6 +9954,669 @@ class SalesItemCompanion extends UpdateCompanion<SalesItemData> {
   }
 }
 
+class $BusinessUserTable extends BusinessUser
+    with TableInfo<$BusinessUserTable, BusinessUserData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $BusinessUserTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncStatusMeta = const VerificationMeta(
+    'syncStatus',
+  );
+  @override
+  late final GeneratedColumn<String> syncStatus = GeneratedColumn<String>(
+    'sync_status',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _syncDateMeta = const VerificationMeta(
+    'syncDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> syncDate = GeneratedColumn<DateTime>(
+    'sync_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+    'created_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _updatedAtMeta = const VerificationMeta(
+    'updatedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> updatedAt = GeneratedColumn<DateTime>(
+    'updated_at',
+    aliasedName,
+    false,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+    defaultValue: currentDateAndTime,
+  );
+  static const VerificationMeta _deletedAtMeta = const VerificationMeta(
+    'deletedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> deletedAt = GeneratedColumn<DateTime>(
+    'deleted_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _roleMeta = const VerificationMeta('role');
+  @override
+  late final GeneratedColumn<String> role = GeneratedColumn<String>(
+    'role',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _isActiveMeta = const VerificationMeta(
+    'isActive',
+  );
+  @override
+  late final GeneratedColumn<bool> isActive = GeneratedColumn<bool>(
+    'is_active',
+    aliasedName,
+    false,
+    type: DriftSqlType.bool,
+    requiredDuringInsert: false,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'CHECK ("is_active" IN (0, 1))',
+    ),
+    defaultValue: const Constant(false),
+  );
+  static const VerificationMeta _joinedAtMeta = const VerificationMeta(
+    'joinedAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> joinedAt = GeneratedColumn<DateTime>(
+    'joined_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
+    'user_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'UNIQUE REFERENCES user (id)',
+    ),
+  );
+  static const VerificationMeta _businessIdMeta = const VerificationMeta(
+    'businessId',
+  );
+  @override
+  late final GeneratedColumn<String> businessId = GeneratedColumn<String>(
+    'business_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'UNIQUE REFERENCES businesses (id)',
+    ),
+  );
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    role,
+    isActive,
+    joinedAt,
+    userId,
+    businessId,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'business_user';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<BusinessUserData> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('sync_status')) {
+      context.handle(
+        _syncStatusMeta,
+        syncStatus.isAcceptableOrUnknown(data['sync_status']!, _syncStatusMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_syncStatusMeta);
+    }
+    if (data.containsKey('sync_date')) {
+      context.handle(
+        _syncDateMeta,
+        syncDate.isAcceptableOrUnknown(data['sync_date']!, _syncDateMeta),
+      );
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
+    }
+    if (data.containsKey('updated_at')) {
+      context.handle(
+        _updatedAtMeta,
+        updatedAt.isAcceptableOrUnknown(data['updated_at']!, _updatedAtMeta),
+      );
+    }
+    if (data.containsKey('deleted_at')) {
+      context.handle(
+        _deletedAtMeta,
+        deletedAt.isAcceptableOrUnknown(data['deleted_at']!, _deletedAtMeta),
+      );
+    }
+    if (data.containsKey('role')) {
+      context.handle(
+        _roleMeta,
+        role.isAcceptableOrUnknown(data['role']!, _roleMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_roleMeta);
+    }
+    if (data.containsKey('is_active')) {
+      context.handle(
+        _isActiveMeta,
+        isActive.isAcceptableOrUnknown(data['is_active']!, _isActiveMeta),
+      );
+    }
+    if (data.containsKey('joined_at')) {
+      context.handle(
+        _joinedAtMeta,
+        joinedAt.isAcceptableOrUnknown(data['joined_at']!, _joinedAtMeta),
+      );
+    }
+    if (data.containsKey('user_id')) {
+      context.handle(
+        _userIdMeta,
+        userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('business_id')) {
+      context.handle(
+        _businessIdMeta,
+        businessId.isAcceptableOrUnknown(data['business_id']!, _businessIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_businessIdMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => const {};
+  @override
+  BusinessUserData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return BusinessUserData(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      syncStatus: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}sync_status'],
+      )!,
+      syncDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}sync_date'],
+      ),
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}created_at'],
+      )!,
+      updatedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}updated_at'],
+      )!,
+      deletedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}deleted_at'],
+      ),
+      role: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}role'],
+      )!,
+      isActive: attachedDatabase.typeMapping.read(
+        DriftSqlType.bool,
+        data['${effectivePrefix}is_active'],
+      )!,
+      joinedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}joined_at'],
+      ),
+      userId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}user_id'],
+      )!,
+      businessId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}business_id'],
+      )!,
+    );
+  }
+
+  @override
+  $BusinessUserTable createAlias(String alias) {
+    return $BusinessUserTable(attachedDatabase, alias);
+  }
+}
+
+class BusinessUserData extends DataClass
+    implements Insertable<BusinessUserData> {
+  final String id;
+  final String syncStatus;
+  final DateTime? syncDate;
+  final DateTime createdAt;
+  final DateTime updatedAt;
+  final DateTime? deletedAt;
+  final String role;
+  final bool isActive;
+  final DateTime? joinedAt;
+  final String userId;
+  final String businessId;
+  const BusinessUserData({
+    required this.id,
+    required this.syncStatus,
+    this.syncDate,
+    required this.createdAt,
+    required this.updatedAt,
+    this.deletedAt,
+    required this.role,
+    required this.isActive,
+    this.joinedAt,
+    required this.userId,
+    required this.businessId,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['sync_status'] = Variable<String>(syncStatus);
+    if (!nullToAbsent || syncDate != null) {
+      map['sync_date'] = Variable<DateTime>(syncDate);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    map['updated_at'] = Variable<DateTime>(updatedAt);
+    if (!nullToAbsent || deletedAt != null) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt);
+    }
+    map['role'] = Variable<String>(role);
+    map['is_active'] = Variable<bool>(isActive);
+    if (!nullToAbsent || joinedAt != null) {
+      map['joined_at'] = Variable<DateTime>(joinedAt);
+    }
+    map['user_id'] = Variable<String>(userId);
+    map['business_id'] = Variable<String>(businessId);
+    return map;
+  }
+
+  BusinessUserCompanion toCompanion(bool nullToAbsent) {
+    return BusinessUserCompanion(
+      id: Value(id),
+      syncStatus: Value(syncStatus),
+      syncDate: syncDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(syncDate),
+      createdAt: Value(createdAt),
+      updatedAt: Value(updatedAt),
+      deletedAt: deletedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(deletedAt),
+      role: Value(role),
+      isActive: Value(isActive),
+      joinedAt: joinedAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(joinedAt),
+      userId: Value(userId),
+      businessId: Value(businessId),
+    );
+  }
+
+  factory BusinessUserData.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return BusinessUserData(
+      id: serializer.fromJson<String>(json['id']),
+      syncStatus: serializer.fromJson<String>(json['syncStatus']),
+      syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      updatedAt: serializer.fromJson<DateTime>(json['updatedAt']),
+      deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
+      role: serializer.fromJson<String>(json['role']),
+      isActive: serializer.fromJson<bool>(json['isActive']),
+      joinedAt: serializer.fromJson<DateTime?>(json['joinedAt']),
+      userId: serializer.fromJson<String>(json['userId']),
+      businessId: serializer.fromJson<String>(json['businessId']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'syncStatus': serializer.toJson<String>(syncStatus),
+      'syncDate': serializer.toJson<DateTime?>(syncDate),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'updatedAt': serializer.toJson<DateTime>(updatedAt),
+      'deletedAt': serializer.toJson<DateTime?>(deletedAt),
+      'role': serializer.toJson<String>(role),
+      'isActive': serializer.toJson<bool>(isActive),
+      'joinedAt': serializer.toJson<DateTime?>(joinedAt),
+      'userId': serializer.toJson<String>(userId),
+      'businessId': serializer.toJson<String>(businessId),
+    };
+  }
+
+  BusinessUserData copyWith({
+    String? id,
+    String? syncStatus,
+    Value<DateTime?> syncDate = const Value.absent(),
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    Value<DateTime?> deletedAt = const Value.absent(),
+    String? role,
+    bool? isActive,
+    Value<DateTime?> joinedAt = const Value.absent(),
+    String? userId,
+    String? businessId,
+  }) => BusinessUserData(
+    id: id ?? this.id,
+    syncStatus: syncStatus ?? this.syncStatus,
+    syncDate: syncDate.present ? syncDate.value : this.syncDate,
+    createdAt: createdAt ?? this.createdAt,
+    updatedAt: updatedAt ?? this.updatedAt,
+    deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
+    role: role ?? this.role,
+    isActive: isActive ?? this.isActive,
+    joinedAt: joinedAt.present ? joinedAt.value : this.joinedAt,
+    userId: userId ?? this.userId,
+    businessId: businessId ?? this.businessId,
+  );
+  BusinessUserData copyWithCompanion(BusinessUserCompanion data) {
+    return BusinessUserData(
+      id: data.id.present ? data.id.value : this.id,
+      syncStatus: data.syncStatus.present
+          ? data.syncStatus.value
+          : this.syncStatus,
+      syncDate: data.syncDate.present ? data.syncDate.value : this.syncDate,
+      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
+      updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
+      deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
+      role: data.role.present ? data.role.value : this.role,
+      isActive: data.isActive.present ? data.isActive.value : this.isActive,
+      joinedAt: data.joinedAt.present ? data.joinedAt.value : this.joinedAt,
+      userId: data.userId.present ? data.userId.value : this.userId,
+      businessId: data.businessId.present
+          ? data.businessId.value
+          : this.businessId,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BusinessUserData(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('role: $role, ')
+          ..write('isActive: $isActive, ')
+          ..write('joinedAt: $joinedAt, ')
+          ..write('userId: $userId, ')
+          ..write('businessId: $businessId')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    syncStatus,
+    syncDate,
+    createdAt,
+    updatedAt,
+    deletedAt,
+    role,
+    isActive,
+    joinedAt,
+    userId,
+    businessId,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is BusinessUserData &&
+          other.id == this.id &&
+          other.syncStatus == this.syncStatus &&
+          other.syncDate == this.syncDate &&
+          other.createdAt == this.createdAt &&
+          other.updatedAt == this.updatedAt &&
+          other.deletedAt == this.deletedAt &&
+          other.role == this.role &&
+          other.isActive == this.isActive &&
+          other.joinedAt == this.joinedAt &&
+          other.userId == this.userId &&
+          other.businessId == this.businessId);
+}
+
+class BusinessUserCompanion extends UpdateCompanion<BusinessUserData> {
+  final Value<String> id;
+  final Value<String> syncStatus;
+  final Value<DateTime?> syncDate;
+  final Value<DateTime> createdAt;
+  final Value<DateTime> updatedAt;
+  final Value<DateTime?> deletedAt;
+  final Value<String> role;
+  final Value<bool> isActive;
+  final Value<DateTime?> joinedAt;
+  final Value<String> userId;
+  final Value<String> businessId;
+  final Value<int> rowid;
+  const BusinessUserCompanion({
+    this.id = const Value.absent(),
+    this.syncStatus = const Value.absent(),
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    this.role = const Value.absent(),
+    this.isActive = const Value.absent(),
+    this.joinedAt = const Value.absent(),
+    this.userId = const Value.absent(),
+    this.businessId = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  BusinessUserCompanion.insert({
+    required String id,
+    required String syncStatus,
+    this.syncDate = const Value.absent(),
+    this.createdAt = const Value.absent(),
+    this.updatedAt = const Value.absent(),
+    this.deletedAt = const Value.absent(),
+    required String role,
+    this.isActive = const Value.absent(),
+    this.joinedAt = const Value.absent(),
+    required String userId,
+    required String businessId,
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       syncStatus = Value(syncStatus),
+       role = Value(role),
+       userId = Value(userId),
+       businessId = Value(businessId);
+  static Insertable<BusinessUserData> custom({
+    Expression<String>? id,
+    Expression<String>? syncStatus,
+    Expression<DateTime>? syncDate,
+    Expression<DateTime>? createdAt,
+    Expression<DateTime>? updatedAt,
+    Expression<DateTime>? deletedAt,
+    Expression<String>? role,
+    Expression<bool>? isActive,
+    Expression<DateTime>? joinedAt,
+    Expression<String>? userId,
+    Expression<String>? businessId,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (syncStatus != null) 'sync_status': syncStatus,
+      if (syncDate != null) 'sync_date': syncDate,
+      if (createdAt != null) 'created_at': createdAt,
+      if (updatedAt != null) 'updated_at': updatedAt,
+      if (deletedAt != null) 'deleted_at': deletedAt,
+      if (role != null) 'role': role,
+      if (isActive != null) 'is_active': isActive,
+      if (joinedAt != null) 'joined_at': joinedAt,
+      if (userId != null) 'user_id': userId,
+      if (businessId != null) 'business_id': businessId,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  BusinessUserCompanion copyWith({
+    Value<String>? id,
+    Value<String>? syncStatus,
+    Value<DateTime?>? syncDate,
+    Value<DateTime>? createdAt,
+    Value<DateTime>? updatedAt,
+    Value<DateTime?>? deletedAt,
+    Value<String>? role,
+    Value<bool>? isActive,
+    Value<DateTime?>? joinedAt,
+    Value<String>? userId,
+    Value<String>? businessId,
+    Value<int>? rowid,
+  }) {
+    return BusinessUserCompanion(
+      id: id ?? this.id,
+      syncStatus: syncStatus ?? this.syncStatus,
+      syncDate: syncDate ?? this.syncDate,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
+      role: role ?? this.role,
+      isActive: isActive ?? this.isActive,
+      joinedAt: joinedAt ?? this.joinedAt,
+      userId: userId ?? this.userId,
+      businessId: businessId ?? this.businessId,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (syncStatus.present) {
+      map['sync_status'] = Variable<String>(syncStatus.value);
+    }
+    if (syncDate.present) {
+      map['sync_date'] = Variable<DateTime>(syncDate.value);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    if (updatedAt.present) {
+      map['updated_at'] = Variable<DateTime>(updatedAt.value);
+    }
+    if (deletedAt.present) {
+      map['deleted_at'] = Variable<DateTime>(deletedAt.value);
+    }
+    if (role.present) {
+      map['role'] = Variable<String>(role.value);
+    }
+    if (isActive.present) {
+      map['is_active'] = Variable<bool>(isActive.value);
+    }
+    if (joinedAt.present) {
+      map['joined_at'] = Variable<DateTime>(joinedAt.value);
+    }
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (businessId.present) {
+      map['business_id'] = Variable<String>(businessId.value);
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BusinessUserCompanion(')
+          ..write('id: $id, ')
+          ..write('syncStatus: $syncStatus, ')
+          ..write('syncDate: $syncDate, ')
+          ..write('createdAt: $createdAt, ')
+          ..write('updatedAt: $updatedAt, ')
+          ..write('deletedAt: $deletedAt, ')
+          ..write('role: $role, ')
+          ..write('isActive: $isActive, ')
+          ..write('joinedAt: $joinedAt, ')
+          ..write('userId: $userId, ')
+          ..write('businessId: $businessId, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
 class $StockAdjustmentTable extends StockAdjustment
     with TableInfo<$StockAdjustmentTable, StockAdjustmentData> {
   @override
@@ -13271,6 +13888,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $PaymentsTable payments = $PaymentsTable(this);
   late final $ProductImageTable productImage = $ProductImageTable(this);
   late final $SalesItemTable salesItem = $SalesItemTable(this);
+  late final $BusinessUserTable businessUser = $BusinessUserTable(this);
   late final $StockAdjustmentTable stockAdjustment = $StockAdjustmentTable(
     this,
   );
@@ -13297,6 +13915,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     payments,
     productImage,
     salesItem,
+    businessUser,
     stockAdjustment,
     stockMovement,
     stockTransfer,
@@ -13784,7 +14403,6 @@ typedef $$BusinessesTableCreateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
-      required String userId,
       required String collectionId,
       required String name,
       required String type,
@@ -13804,7 +14422,6 @@ typedef $$BusinessesTableUpdateCompanionBuilder =
       Value<DateTime> createdAt,
       Value<DateTime> updatedAt,
       Value<DateTime?> deletedAt,
-      Value<String> userId,
       Value<String> collectionId,
       Value<String> name,
       Value<String> type,
@@ -13929,6 +14546,27 @@ final class $$BusinessesTableReferences
     ).filter((f) => f.businessId.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_salesRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
+  static MultiTypedResultKey<$BusinessUserTable, List<BusinessUserData>>
+  _businessUserRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.businessUser,
+    aliasName: $_aliasNameGenerator(
+      db.businesses.id,
+      db.businessUser.businessId,
+    ),
+  );
+
+  $$BusinessUserTableProcessedTableManager get businessUserRefs {
+    final manager = $$BusinessUserTableTableManager(
+      $_db,
+      $_db.businessUser,
+    ).filter((f) => f.businessId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_businessUserRefsTable($_db));
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -14078,11 +14716,6 @@ class $$BusinessesTableFilterComposer
 
   ColumnFilters<DateTime> get deletedAt => $composableBuilder(
     column: $table.deletedAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get userId => $composableBuilder(
-    column: $table.userId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -14274,6 +14907,31 @@ class $$BusinessesTableFilterComposer
     return f(composer);
   }
 
+  Expression<bool> businessUserRefs(
+    Expression<bool> Function($$BusinessUserTableFilterComposer f) f,
+  ) {
+    final $$BusinessUserTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.businessUser,
+      getReferencedColumn: (t) => t.businessId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BusinessUserTableFilterComposer(
+            $db: $db,
+            $table: $db.businessUser,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
   Expression<bool> stockAdjustmentRefs(
     Expression<bool> Function($$StockAdjustmentTableFilterComposer f) f,
   ) {
@@ -14439,11 +15097,6 @@ class $$BusinessesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get userId => $composableBuilder(
-    column: $table.userId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<String> get collectionId => $composableBuilder(
     column: $table.collectionId,
     builder: (column) => ColumnOrderings(column),
@@ -14537,9 +15190,6 @@ class $$BusinessesTableAnnotationComposer
 
   GeneratedColumn<DateTime> get deletedAt =>
       $composableBuilder(column: $table.deletedAt, builder: (column) => column);
-
-  GeneratedColumn<String> get userId =>
-      $composableBuilder(column: $table.userId, builder: (column) => column);
 
   GeneratedColumn<String> get collectionId => $composableBuilder(
     column: $table.collectionId,
@@ -14718,6 +15368,31 @@ class $$BusinessesTableAnnotationComposer
     return f(composer);
   }
 
+  Expression<T> businessUserRefs<T extends Object>(
+    Expression<T> Function($$BusinessUserTableAnnotationComposer a) f,
+  ) {
+    final $$BusinessUserTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.businessUser,
+      getReferencedColumn: (t) => t.businessId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BusinessUserTableAnnotationComposer(
+            $db: $db,
+            $table: $db.businessUser,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
   Expression<T> stockAdjustmentRefs<T extends Object>(
     Expression<T> Function($$StockAdjustmentTableAnnotationComposer a) f,
   ) {
@@ -14864,6 +15539,7 @@ class $$BusinessesTableTableManager
             bool inventoryRefs,
             bool customerRefs,
             bool salesRefs,
+            bool businessUserRefs,
             bool stockAdjustmentRefs,
             bool stockMovementRefs,
             bool outgoingTransfers,
@@ -14890,7 +15566,6 @@ class $$BusinessesTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
-                Value<String> userId = const Value.absent(),
                 Value<String> collectionId = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String> type = const Value.absent(),
@@ -14908,7 +15583,6 @@ class $$BusinessesTableTableManager
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
-                userId: userId,
                 collectionId: collectionId,
                 name: name,
                 type: type,
@@ -14928,7 +15602,6 @@ class $$BusinessesTableTableManager
                 Value<DateTime> createdAt = const Value.absent(),
                 Value<DateTime> updatedAt = const Value.absent(),
                 Value<DateTime?> deletedAt = const Value.absent(),
-                required String userId,
                 required String collectionId,
                 required String name,
                 required String type,
@@ -14946,7 +15619,6 @@ class $$BusinessesTableTableManager
                 createdAt: createdAt,
                 updatedAt: updatedAt,
                 deletedAt: deletedAt,
-                userId: userId,
                 collectionId: collectionId,
                 name: name,
                 type: type,
@@ -14974,6 +15646,7 @@ class $$BusinessesTableTableManager
                 inventoryRefs = false,
                 customerRefs = false,
                 salesRefs = false,
+                businessUserRefs = false,
                 stockAdjustmentRefs = false,
                 stockMovementRefs = false,
                 outgoingTransfers = false,
@@ -14988,6 +15661,7 @@ class $$BusinessesTableTableManager
                     if (inventoryRefs) db.inventory,
                     if (customerRefs) db.customer,
                     if (salesRefs) db.sales,
+                    if (businessUserRefs) db.businessUser,
                     if (stockAdjustmentRefs) db.stockAdjustment,
                     if (stockMovementRefs) db.stockMovement,
                     if (outgoingTransfers) db.stockTransfer,
@@ -15134,6 +15808,27 @@ class $$BusinessesTableTableManager
                               ),
                           typedResults: items,
                         ),
+                      if (businessUserRefs)
+                        await $_getPrefetchedData<
+                          BusinessesData,
+                          $BusinessesTable,
+                          BusinessUserData
+                        >(
+                          currentTable: table,
+                          referencedTable: $$BusinessesTableReferences
+                              ._businessUserRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$BusinessesTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).businessUserRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.businessId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
                       if (stockAdjustmentRefs)
                         await $_getPrefetchedData<
                           BusinessesData,
@@ -15266,6 +15961,7 @@ typedef $$BusinessesTableProcessedTableManager =
         bool inventoryRefs,
         bool customerRefs,
         bool salesRefs,
+        bool businessUserRefs,
         bool stockAdjustmentRefs,
         bool stockMovementRefs,
         bool outgoingTransfers,
@@ -19507,6 +20203,24 @@ final class $$UserTableReferences
     );
   }
 
+  static MultiTypedResultKey<$BusinessUserTable, List<BusinessUserData>>
+  _businessUserRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.businessUser,
+    aliasName: $_aliasNameGenerator(db.user.id, db.businessUser.userId),
+  );
+
+  $$BusinessUserTableProcessedTableManager get businessUserRefs {
+    final manager = $$BusinessUserTableTableManager(
+      $_db,
+      $_db.businessUser,
+    ).filter((f) => f.userId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(_businessUserRefsTable($_db));
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
+    );
+  }
+
   static MultiTypedResultKey<$StockAdjustmentTable, List<StockAdjustmentData>>
   _stockAdjustmentRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.stockAdjustment,
@@ -19683,6 +20397,31 @@ class $$UserTableFilterComposer extends Composer<_$AppDatabase, $UserTable> {
           }) => $$SalesTableFilterComposer(
             $db: $db,
             $table: $db.sales,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
+  Expression<bool> businessUserRefs(
+    Expression<bool> Function($$BusinessUserTableFilterComposer f) f,
+  ) {
+    final $$BusinessUserTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.businessUser,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BusinessUserTableFilterComposer(
+            $db: $db,
+            $table: $db.businessUser,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -19975,6 +20714,31 @@ class $$UserTableAnnotationComposer
     return f(composer);
   }
 
+  Expression<T> businessUserRefs<T extends Object>(
+    Expression<T> Function($$BusinessUserTableAnnotationComposer a) f,
+  ) {
+    final $$BusinessUserTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.businessUser,
+      getReferencedColumn: (t) => t.userId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BusinessUserTableAnnotationComposer(
+            $db: $db,
+            $table: $db.businessUser,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
+  }
+
   Expression<T> stockAdjustmentRefs<T extends Object>(
     Expression<T> Function($$StockAdjustmentTableAnnotationComposer a) f,
   ) {
@@ -20066,6 +20830,7 @@ class $$UserTableTableManager
           UserData,
           PrefetchHooks Function({
             bool salesRefs,
+            bool businessUserRefs,
             bool stockAdjustmentRefs,
             bool stockMovementRefs,
             bool stockTransferRefs,
@@ -20179,6 +20944,7 @@ class $$UserTableTableManager
           prefetchHooksCallback:
               ({
                 salesRefs = false,
+                businessUserRefs = false,
                 stockAdjustmentRefs = false,
                 stockMovementRefs = false,
                 stockTransferRefs = false,
@@ -20187,6 +20953,7 @@ class $$UserTableTableManager
                   db: db,
                   explicitlyWatchedTables: [
                     if (salesRefs) db.sales,
+                    if (businessUserRefs) db.businessUser,
                     if (stockAdjustmentRefs) db.stockAdjustment,
                     if (stockMovementRefs) db.stockMovement,
                     if (stockTransferRefs) db.stockTransfer,
@@ -20204,6 +20971,26 @@ class $$UserTableTableManager
                           referencedItemsForCurrentItem:
                               (item, referencedItems) => referencedItems.where(
                                 (e) => e.createdBy == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                      if (businessUserRefs)
+                        await $_getPrefetchedData<
+                          UserData,
+                          $UserTable,
+                          BusinessUserData
+                        >(
+                          currentTable: table,
+                          referencedTable: $$UserTableReferences
+                              ._businessUserRefsTable(db),
+                          managerFromTypedResult: (p0) => $$UserTableReferences(
+                            db,
+                            table,
+                            p0,
+                          ).businessUserRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.userId == item.id,
                               ),
                           typedResults: items,
                         ),
@@ -20289,6 +21076,7 @@ typedef $$UserTableProcessedTableManager =
       UserData,
       PrefetchHooks Function({
         bool salesRefs,
+        bool businessUserRefs,
         bool stockAdjustmentRefs,
         bool stockMovementRefs,
         bool stockTransferRefs,
@@ -22696,6 +23484,529 @@ typedef $$SalesItemTableProcessedTableManager =
       (SalesItemData, $$SalesItemTableReferences),
       SalesItemData,
       PrefetchHooks Function({bool saleId, bool productId, bool batchId})
+    >;
+typedef $$BusinessUserTableCreateCompanionBuilder =
+    BusinessUserCompanion Function({
+      required String id,
+      required String syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      required String role,
+      Value<bool> isActive,
+      Value<DateTime?> joinedAt,
+      required String userId,
+      required String businessId,
+      Value<int> rowid,
+    });
+typedef $$BusinessUserTableUpdateCompanionBuilder =
+    BusinessUserCompanion Function({
+      Value<String> id,
+      Value<String> syncStatus,
+      Value<DateTime?> syncDate,
+      Value<DateTime> createdAt,
+      Value<DateTime> updatedAt,
+      Value<DateTime?> deletedAt,
+      Value<String> role,
+      Value<bool> isActive,
+      Value<DateTime?> joinedAt,
+      Value<String> userId,
+      Value<String> businessId,
+      Value<int> rowid,
+    });
+
+final class $$BusinessUserTableReferences
+    extends
+        BaseReferences<_$AppDatabase, $BusinessUserTable, BusinessUserData> {
+  $$BusinessUserTableReferences(super.$_db, super.$_table, super.$_typedResult);
+
+  static $UserTable _userIdTable(_$AppDatabase db) => db.user.createAlias(
+    $_aliasNameGenerator(db.businessUser.userId, db.user.id),
+  );
+
+  $$UserTableProcessedTableManager get userId {
+    final $_column = $_itemColumn<String>('user_id')!;
+
+    final manager = $$UserTableTableManager(
+      $_db,
+      $_db.user,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_userIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static $BusinessesTable _businessIdTable(_$AppDatabase db) =>
+      db.businesses.createAlias(
+        $_aliasNameGenerator(db.businessUser.businessId, db.businesses.id),
+      );
+
+  $$BusinessesTableProcessedTableManager get businessId {
+    final $_column = $_itemColumn<String>('business_id')!;
+
+    final manager = $$BusinessesTableTableManager(
+      $_db,
+      $_db.businesses,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_businessIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$BusinessUserTableFilterComposer
+    extends Composer<_$AppDatabase, $BusinessUserTable> {
+  $$BusinessUserTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<bool> get isActive => $composableBuilder(
+    column: $table.isActive,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get joinedAt => $composableBuilder(
+    column: $table.joinedAt,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  $$UserTableFilterComposer get userId {
+    final $$UserTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableFilterComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$BusinessesTableFilterComposer get businessId {
+    final $$BusinessesTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.businessId,
+      referencedTable: $db.businesses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BusinessesTableFilterComposer(
+            $db: $db,
+            $table: $db.businesses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$BusinessUserTableOrderingComposer
+    extends Composer<_$AppDatabase, $BusinessUserTable> {
+  $$BusinessUserTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get syncDate => $composableBuilder(
+    column: $table.syncDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get updatedAt => $composableBuilder(
+    column: $table.updatedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get deletedAt => $composableBuilder(
+    column: $table.deletedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get role => $composableBuilder(
+    column: $table.role,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<bool> get isActive => $composableBuilder(
+    column: $table.isActive,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<DateTime> get joinedAt => $composableBuilder(
+    column: $table.joinedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$UserTableOrderingComposer get userId {
+    final $$UserTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableOrderingComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$BusinessesTableOrderingComposer get businessId {
+    final $$BusinessesTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.businessId,
+      referencedTable: $db.businesses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BusinessesTableOrderingComposer(
+            $db: $db,
+            $table: $db.businesses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$BusinessUserTableAnnotationComposer
+    extends Composer<_$AppDatabase, $BusinessUserTable> {
+  $$BusinessUserTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<String> get syncStatus => $composableBuilder(
+    column: $table.syncStatus,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<DateTime> get syncDate =>
+      $composableBuilder(column: $table.syncDate, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get updatedAt =>
+      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get deletedAt =>
+      $composableBuilder(column: $table.deletedAt, builder: (column) => column);
+
+  GeneratedColumn<String> get role =>
+      $composableBuilder(column: $table.role, builder: (column) => column);
+
+  GeneratedColumn<bool> get isActive =>
+      $composableBuilder(column: $table.isActive, builder: (column) => column);
+
+  GeneratedColumn<DateTime> get joinedAt =>
+      $composableBuilder(column: $table.joinedAt, builder: (column) => column);
+
+  $$UserTableAnnotationComposer get userId {
+    final $$UserTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.userId,
+      referencedTable: $db.user,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$UserTableAnnotationComposer(
+            $db: $db,
+            $table: $db.user,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+
+  $$BusinessesTableAnnotationComposer get businessId {
+    final $$BusinessesTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.businessId,
+      referencedTable: $db.businesses,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$BusinessesTableAnnotationComposer(
+            $db: $db,
+            $table: $db.businesses,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return composer;
+  }
+}
+
+class $$BusinessUserTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $BusinessUserTable,
+          BusinessUserData,
+          $$BusinessUserTableFilterComposer,
+          $$BusinessUserTableOrderingComposer,
+          $$BusinessUserTableAnnotationComposer,
+          $$BusinessUserTableCreateCompanionBuilder,
+          $$BusinessUserTableUpdateCompanionBuilder,
+          (BusinessUserData, $$BusinessUserTableReferences),
+          BusinessUserData,
+          PrefetchHooks Function({bool userId, bool businessId})
+        > {
+  $$BusinessUserTableTableManager(_$AppDatabase db, $BusinessUserTable table)
+    : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$BusinessUserTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$BusinessUserTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$BusinessUserTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> syncStatus = const Value.absent(),
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                Value<String> role = const Value.absent(),
+                Value<bool> isActive = const Value.absent(),
+                Value<DateTime?> joinedAt = const Value.absent(),
+                Value<String> userId = const Value.absent(),
+                Value<String> businessId = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => BusinessUserCompanion(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                role: role,
+                isActive: isActive,
+                joinedAt: joinedAt,
+                userId: userId,
+                businessId: businessId,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String syncStatus,
+                Value<DateTime?> syncDate = const Value.absent(),
+                Value<DateTime> createdAt = const Value.absent(),
+                Value<DateTime> updatedAt = const Value.absent(),
+                Value<DateTime?> deletedAt = const Value.absent(),
+                required String role,
+                Value<bool> isActive = const Value.absent(),
+                Value<DateTime?> joinedAt = const Value.absent(),
+                required String userId,
+                required String businessId,
+                Value<int> rowid = const Value.absent(),
+              }) => BusinessUserCompanion.insert(
+                id: id,
+                syncStatus: syncStatus,
+                syncDate: syncDate,
+                createdAt: createdAt,
+                updatedAt: updatedAt,
+                deletedAt: deletedAt,
+                role: role,
+                isActive: isActive,
+                joinedAt: joinedAt,
+                userId: userId,
+                businessId: businessId,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$BusinessUserTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({userId = false, businessId = false}) {
+            return PrefetchHooks(
+              db: db,
+              explicitlyWatchedTables: [],
+              addJoins:
+                  <
+                    T extends TableManagerState<
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic,
+                      dynamic
+                    >
+                  >(state) {
+                    if (userId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.userId,
+                                referencedTable: $$BusinessUserTableReferences
+                                    ._userIdTable(db),
+                                referencedColumn: $$BusinessUserTableReferences
+                                    ._userIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+                    if (businessId) {
+                      state =
+                          state.withJoin(
+                                currentTable: table,
+                                currentColumn: table.businessId,
+                                referencedTable: $$BusinessUserTableReferences
+                                    ._businessIdTable(db),
+                                referencedColumn: $$BusinessUserTableReferences
+                                    ._businessIdTable(db)
+                                    .id,
+                              )
+                              as T;
+                    }
+
+                    return state;
+                  },
+              getPrefetchedDataCallback: (items) async {
+                return [];
+              },
+            );
+          },
+        ),
+      );
+}
+
+typedef $$BusinessUserTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $BusinessUserTable,
+      BusinessUserData,
+      $$BusinessUserTableFilterComposer,
+      $$BusinessUserTableOrderingComposer,
+      $$BusinessUserTableAnnotationComposer,
+      $$BusinessUserTableCreateCompanionBuilder,
+      $$BusinessUserTableUpdateCompanionBuilder,
+      (BusinessUserData, $$BusinessUserTableReferences),
+      BusinessUserData,
+      PrefetchHooks Function({bool userId, bool businessId})
     >;
 typedef $$StockAdjustmentTableCreateCompanionBuilder =
     StockAdjustmentCompanion Function({
@@ -25676,6 +26987,8 @@ class $AppDatabaseManager {
       $$ProductImageTableTableManager(_db, _db.productImage);
   $$SalesItemTableTableManager get salesItem =>
       $$SalesItemTableTableManager(_db, _db.salesItem);
+  $$BusinessUserTableTableManager get businessUser =>
+      $$BusinessUserTableTableManager(_db, _db.businessUser);
   $$StockAdjustmentTableTableManager get stockAdjustment =>
       $$StockAdjustmentTableTableManager(_db, _db.stockAdjustment);
   $$StockMovementTableTableManager get stockMovement =>

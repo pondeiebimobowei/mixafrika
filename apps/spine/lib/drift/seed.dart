@@ -4,7 +4,6 @@ import 'package:uuid/uuid.dart';
 
 final userBiz1 = BusinessesData(
   id: Uuid().v4(),
-  userId: 'sdedede',
   collectionId: '1',
   name: 'Chicken Republic',
   type: 'business',
@@ -25,7 +24,6 @@ final userBiz1 = BusinessesData(
 
 final userBiz2 = BusinessesData(
   id: Uuid().v4(),
-  userId: '1',
   collectionId: '1',
   name: 'Blessed Obaino',
   type: 'business',
