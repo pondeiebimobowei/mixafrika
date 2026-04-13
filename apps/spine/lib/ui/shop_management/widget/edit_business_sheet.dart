@@ -7,7 +7,7 @@ import 'package:uuid/uuid.dart';
 import 'package:drift/drift.dart' as drift;
 
 class EditBusinessSheet extends ConsumerStatefulWidget {
-  final UserBusinessData? business;
+  final BusinessesData? business;
 
   const EditBusinessSheet({super.key, this.business});
 
@@ -26,10 +26,16 @@ class _EditBusinessSheetState extends ConsumerState<EditBusinessSheet> {
   void initState() {
     super.initState();
     _nameController = TextEditingController(text: widget.business?.name ?? '');
-    _phoneController = TextEditingController(text: widget.business?.phone ?? '');
-    _addressController = TextEditingController(text: widget.business?.streetAddress ?? '');
+    _phoneController = TextEditingController(
+      text: widget.business?.phone ?? '',
+    );
+    _addressController = TextEditingController(
+      text: widget.business?.streetAddress ?? '',
+    );
     _cityController = TextEditingController(text: widget.business?.city ?? '');
-    _stateController = TextEditingController(text: widget.business?.state ?? '');
+    _stateController = TextEditingController(
+      text: widget.business?.state ?? '',
+    );
   }
 
   @override
@@ -75,31 +81,36 @@ class _EditBusinessSheetState extends ConsumerState<EditBusinessSheet> {
                 ),
               ),
             ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                isEditing ? 'Edit Shop Profile' : 'Add New Shop',
-                style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800, letterSpacing: -0.5),
-              ),
-              GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: colors.primaryForeground.withValues(alpha: 0.05),
-                    shape: BoxShape.circle,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  isEditing ? 'Edit Shop Profile' : 'Add New Shop',
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.5,
                   ),
-                  child: Icon(Icons.close, size: 18, color: colors.primaryForeground.withValues(alpha: 0.4)),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 32),
-          _buildFormSection(
-            context,
-            'SHOP IDENTITY',
-            [
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    padding: const EdgeInsets.all(6),
+                    decoration: BoxDecoration(
+                      color: colors.primaryForeground.withValues(alpha: 0.05),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.close,
+                      size: 18,
+                      color: colors.primaryForeground.withValues(alpha: 0.4),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 32),
+            _buildFormSection(context, 'SHOP IDENTITY', [
               _buildLabel('SHOP NAME'),
               const SizedBox(height: 10),
               _buildTextField(
@@ -116,13 +127,9 @@ class _EditBusinessSheetState extends ConsumerState<EditBusinessSheet> {
                 prefixIcon: Icons.phone_outlined,
                 keyboardType: TextInputType.phone,
               ),
-            ],
-          ),
-          const SizedBox(height: 32),
-          _buildFormSection(
-            context,
-            'LOCATION DETAILS',
-            [
+            ]),
+            const SizedBox(height: 32),
+            _buildFormSection(context, 'LOCATION DETAILS', [
               _buildLabel('STREET ADDRESS'),
               const SizedBox(height: 10),
               _buildTextField(
@@ -162,55 +169,58 @@ class _EditBusinessSheetState extends ConsumerState<EditBusinessSheet> {
                   ),
                 ],
               ),
-            ],
-          ),
-          const SizedBox(height: 48),
-          SizedBox(
-            width: double.infinity,
-            child: FButton(
-              child: Text(isEditing ? 'Save Changes' : 'Create Shop'),
-              onPress: () {
-                if (_nameController.text.isEmpty) return;
+            ]),
+            const SizedBox(height: 48),
+            SizedBox(
+              width: double.infinity,
+              child: FButton(
+                child: Text(isEditing ? 'Save Changes' : 'Create Shop'),
+                onPress: () {
+                  if (_nameController.text.isEmpty) return;
 
-                if (isEditing) {
-                  final updated = widget.business!.copyWith(
-                    name: _nameController.text,
-                    phone: _phoneController.text,
-                    streetAddress: _addressController.text,
-                    city: _cityController.text,
-                    state: _stateController.text,
-                    updatedAt: DateTime.now(),
-                  );
-                  Navigator.pop(context, updated);
-                } else {
-                  final companion = UserBusinessCompanion(
-                    id: drift.Value(const Uuid().v4()),
-                    userId: const drift.Value('1'), // Hardcoded for now
-                    collectionId: const drift.Value('1'),
-                    name: drift.Value(_nameController.text),
-                    type: const drift.Value('business'),
-                    phone: drift.Value(_phoneController.text),
-                    streetAddress: drift.Value(_addressController.text),
-                    city: drift.Value(_cityController.text),
-                    state: drift.Value(_stateController.text),
-                    country: const drift.Value('Nigeria'),
-                    verification: const drift.Value(''),
-                    syncStatus: const drift.Value('pending'),
-                    createdAt: drift.Value(DateTime.now()),
-                    updatedAt: drift.Value(DateTime.now()),
-                  );
-                  Navigator.pop(context, companion);
-                }
-              },
+                  if (isEditing) {
+                    final updated = widget.business!.copyWith(
+                      name: _nameController.text,
+                      phone: _phoneController.text,
+                      streetAddress: _addressController.text,
+                      city: _cityController.text,
+                      state: _stateController.text,
+                      updatedAt: DateTime.now(),
+                    );
+                    Navigator.pop(context, updated);
+                  } else {
+                    final companion = BusinessesCompanion(
+                      id: drift.Value(const Uuid().v4()),
+                      userId: const drift.Value('1'), // Hardcoded for now
+                      collectionId: const drift.Value('1'),
+                      name: drift.Value(_nameController.text),
+                      type: const drift.Value('business'),
+                      phone: drift.Value(_phoneController.text),
+                      streetAddress: drift.Value(_addressController.text),
+                      city: drift.Value(_cityController.text),
+                      state: drift.Value(_stateController.text),
+                      country: const drift.Value('Nigeria'),
+                      verification: const drift.Value(''),
+                      syncStatus: const drift.Value('pending'),
+                      createdAt: drift.Value(DateTime.now()),
+                      updatedAt: drift.Value(DateTime.now()),
+                    );
+                    Navigator.pop(context, companion);
+                  }
+                },
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
-  Widget _buildFormSection(BuildContext context, String title, List<Widget> fields) {
+  Widget _buildFormSection(
+    BuildContext context,
+    String title,
+    List<Widget> fields,
+  ) {
     final colors = context.theme.colors;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -242,6 +252,7 @@ class _EditBusinessSheetState extends ConsumerState<EditBusinessSheet> {
       ],
     );
   }
+
   Widget _buildLabel(String text) {
     return Text(
       text,
@@ -269,12 +280,15 @@ class _EditBusinessSheetState extends ConsumerState<EditBusinessSheet> {
       child: TextField(
         controller: controller,
         keyboardType: keyboardType,
-        style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+          fontWeight: FontWeight.w500,
+        ),
         decoration: InputDecoration(
-          prefixIcon:
-              prefixIcon != null
-                  ? Icon(prefixIcon, color: Colors.white38, size: 20)
-                  : null,
+          prefixIcon: prefixIcon != null
+              ? Icon(prefixIcon, color: Colors.white38, size: 20)
+              : null,
           hintText: hint,
           hintStyle: const TextStyle(
             color: Colors.white24,

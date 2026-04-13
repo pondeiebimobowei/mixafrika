@@ -3,7 +3,7 @@ import 'package:spine/drift/model/base.dart';
 import 'package:spine/drift/model/business_verification.model.dart';
 
 
-class UserBusiness extends Table with TableMixin {
+class Businesses extends Table with TableMixin {
     late final userId = text()();
     late final collectionId = text()();
     late final name = text()();

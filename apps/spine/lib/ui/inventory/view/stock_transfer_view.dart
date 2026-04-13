@@ -22,10 +22,15 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(stockTransferViewModelProvider(widget.productId));
-    final viewModel = ref.read(stockTransferViewModelProvider(widget.productId).notifier);
+    final viewModel = ref.read(
+      stockTransferViewModelProvider(widget.productId).notifier,
+    );
     final FColors colors = context.theme.colors;
 
-    ref.listen(stockTransferViewModelProvider(widget.productId), (previous, next) {
+    ref.listen(stockTransferViewModelProvider(widget.productId), (
+      previous,
+      next,
+    ) {
       if (next.isSuccess && (previous == null || !previous.isSuccess)) {
         context.push(
           '${Routes.inventory}/${Routes.productDetails}/${widget.productId}/${Routes.stockTransferSuccess}',
@@ -36,7 +41,8 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
           },
         );
       }
-      if (next.errorMessage != null && (previous == null || previous.errorMessage != next.errorMessage)) {
+      if (next.errorMessage != null &&
+          (previous == null || previous.errorMessage != next.errorMessage)) {
         print(next.errorMessage);
       }
     });
@@ -68,7 +74,10 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
               child: Stack(
                 children: [
                   SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 24,
+                    ),
                     child: Form(
                       key: _formKey,
                       child: Column(
@@ -107,7 +116,12 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildBranchNode(context, 'CURRENT STORE', 'Main Warehouse', Icons.storefront),
+              _buildBranchNode(
+                context,
+                'CURRENT STORE',
+                'Main Warehouse',
+                Icons.storefront,
+              ),
               _buildTransferArrow(context),
               _buildBranchNode(
                 context,
@@ -159,7 +173,13 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
     );
   }
 
-  Widget _buildBranchNode(BuildContext context, String label, String name, IconData icon, {bool isActive = false}) {
+  Widget _buildBranchNode(
+    BuildContext context,
+    String label,
+    String name,
+    IconData icon, {
+    bool isActive = false,
+  }) {
     final colors = context.theme.colors;
     return Expanded(
       child: Column(
@@ -177,15 +197,21 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: isActive 
-                ? colors.primary.withValues(alpha: 0.1) 
-                : colors.secondaryForeground,
+              color: isActive
+                  ? colors.primary.withValues(alpha: 0.1)
+                  : colors.secondaryForeground,
               shape: BoxShape.circle,
               border: Border.all(
-                color: isActive ? colors.primary : Colors.white.withValues(alpha: 0.05),
+                color: isActive
+                    ? colors.primary
+                    : Colors.white.withValues(alpha: 0.05),
               ),
             ),
-            child: Icon(icon, color: isActive ? colors.primary : Colors.grey, size: 24),
+            child: Icon(
+              icon,
+              color: isActive ? colors.primary : Colors.grey,
+              size: 24,
+            ),
           ),
           const SizedBox(height: 12),
           Text(
@@ -207,11 +233,19 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
   Widget _buildTransferArrow(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: Icon(Icons.arrow_forward, color: Colors.white.withValues(alpha: 0.2), size: 20),
+      child: Icon(
+        Icons.arrow_forward,
+        color: Colors.white.withValues(alpha: 0.2),
+        size: 20,
+      ),
     );
   }
 
-  Widget _buildBranchSelection(BuildContext context, StockTransferState state, StockTransferViewModel viewModel) {
+  Widget _buildBranchSelection(
+    BuildContext context,
+    StockTransferState state,
+    StockTransferViewModel viewModel,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -225,7 +259,7 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
           ),
         ),
         const SizedBox(height: 16),
-        FSelect<UserBusinessData>.rich(
+        FSelect<BusinessesData>.rich(
           format: (value) => value.name,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (v) => v == null ? 'Please select a branch' : null,
@@ -233,7 +267,7 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
           control: FSelectControl.managed(
             onChange: (val) => viewModel.selectBranch(val!),
           ),
-          children: state.branches.map<FSelectItem<UserBusinessData>>((branch) {
+          children: state.branches.map<FSelectItem<BusinessesData>>((branch) {
             return FSelectItem(
               value: branch,
               title: Text(branch.name),
@@ -245,7 +279,11 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
     );
   }
 
-  Widget _buildQuantityInput(BuildContext context, StockTransferState state, StockTransferViewModel viewModel) {
+  Widget _buildQuantityInput(
+    BuildContext context,
+    StockTransferState state,
+    StockTransferViewModel viewModel,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -270,7 +308,10 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
     );
   }
 
-  Widget _buildReasonInput(BuildContext context, StockTransferViewModel viewModel) {
+  Widget _buildReasonInput(
+    BuildContext context,
+    StockTransferViewModel viewModel,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -295,7 +336,11 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
     );
   }
 
-  Widget _buildBottomButton(BuildContext context, StockTransferState state, StockTransferViewModel viewModel) {
+  Widget _buildBottomButton(
+    BuildContext context,
+    StockTransferState state,
+    StockTransferViewModel viewModel,
+  ) {
     final colors = context.theme.colors;
     return Align(
       alignment: Alignment.bottomCenter,
@@ -303,7 +348,9 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
           color: colors.background,
-          border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
+          border: Border(
+            top: BorderSide(color: Colors.white.withValues(alpha: 0.05)),
+          ),
         ),
         child: SizedBox(
           width: double.infinity,
@@ -311,15 +358,18 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
           child: FButton(
             onPress: state.isLoading ? null : () => viewModel.submit(),
             child: state.isLoading
-              ? const SizedBox(
-                  height: 24,
-                  width: 24,
-                  child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                )
-              : const Text(
-                  'Initiate Movement',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
+                ? const SizedBox(
+                    height: 24,
+                    width: 24,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
+                : const Text(
+                    'Initiate Movement',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
           ),
         ),
       ),
@@ -358,7 +408,11 @@ class StockTransferSuccessView extends StatelessWidget {
                   shape: BoxShape.circle,
                 ),
                 child: const Center(
-                  child: Icon(Icons.check_circle, color: Color(0xFF1DB978), size: 80),
+                  child: Icon(
+                    Icons.check_circle,
+                    color: Color(0xFF1DB978),
+                    size: 80,
+                  ),
                 ),
               ),
               const SizedBox(height: 40),
@@ -374,22 +428,35 @@ class StockTransferSuccessView extends StatelessWidget {
               RichText(
                 textAlign: TextAlign.center,
                 text: TextSpan(
-                  style: const TextStyle(color: Colors.grey, fontSize: 16, height: 1.5),
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16,
+                    height: 1.5,
+                  ),
                   children: [
                     const TextSpan(text: 'Successfully moved '),
                     TextSpan(
                       text: '$quantity units',
-                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const TextSpan(text: ' of '),
                     TextSpan(
                       text: productName,
-                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const TextSpan(text: ' to '),
                     TextSpan(
                       text: destination,
-                      style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     const TextSpan(text: '.'),
                   ],

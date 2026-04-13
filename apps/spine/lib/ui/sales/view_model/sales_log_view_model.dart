@@ -14,7 +14,7 @@ class SalesLogViewModel extends StateNotifier<SalesLogState> {
     state = state.copyWith(isLoading: true, errorMessage: null);
 
     try {
-      final activeBusiness = ref.read(activeUserBusinessProvider);
+      final activeBusiness = ref.read(activeBusinessesProvider);
       if (activeBusiness == null) {
         state = state.copyWith(
           isLoading: false,

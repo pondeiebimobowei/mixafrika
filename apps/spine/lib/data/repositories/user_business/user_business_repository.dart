@@ -4,13 +4,12 @@ import 'package:spine/drift/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
-class UserBusinessRepository implements UserBusinessRepositoryAbstract {
-  UserBusinessRepository({required AppDatabase database})
-    : _database = database;
+class BusinessesRepository implements BusinessesRepositoryAbstract {
+  BusinessesRepository({required AppDatabase database}) : _database = database;
 
   final AppDatabase _database;
 
-  final userBiz1 = UserBusinessData(
+  final userBiz1 = BusinessesData(
     id: Uuid().v4(),
     userId: '1',
     collectionId: '1',
@@ -30,7 +29,7 @@ class UserBusinessRepository implements UserBusinessRepositoryAbstract {
     updatedAt: DateTime.now(),
   );
 
-  final userBiz2 = UserBusinessData(
+  final userBiz2 = BusinessesData(
     id: Uuid().v4(),
     userId: '1',
     collectionId: '1',
@@ -51,11 +50,11 @@ class UserBusinessRepository implements UserBusinessRepositoryAbstract {
   );
 
   @override
-  Future<ApiResponse<void>> createUserBusiness(
-    UserBusinessCompanion business,
+  Future<ApiResponse<void>> createBusinesses(
+    BusinessesCompanion business,
   ) async {
     try {
-      await _database.into(_database.userBusiness).insert(business);
+      await _database.into(_database.businesses).insert(business);
       return ApiResponse(
         data: null,
         message: 'Business created successfully',
@@ -71,9 +70,9 @@ class UserBusinessRepository implements UserBusinessRepositoryAbstract {
   }
 
   @override
-  Future<ApiResponse<void>> updateUserBusiness(UserBusinessData business) async {
+  Future<ApiResponse<void>> updateBusinesses(BusinessesData business) async {
     try {
-      await _database.update(_database.userBusiness).replace(business);
+      await _database.update(_database.businesses).replace(business);
       return ApiResponse(
         data: null,
         message: 'Business updated successfully',
@@ -89,8 +88,8 @@ class UserBusinessRepository implements UserBusinessRepositoryAbstract {
   }
 
   @override
-  Future<UserBusinessData> getUserBusinessById(String id) async {
-    final query = _database.select(_database.userBusiness)
+  Future<BusinessesData> getBusinessesById(String id) async {
+    final query = _database.select(_database.businesses)
       ..where((t) => t.id.equals(id));
     final res = await query.getSingle();
 
@@ -98,29 +97,29 @@ class UserBusinessRepository implements UserBusinessRepositoryAbstract {
   }
 
   @override
-  Future<List<UserBusinessData>> getUserBusiness() async {
-    List<UserBusinessData> allItems = await _database
-        .select(_database.userBusiness)
+  Future<List<BusinessesData>> getBusinesses() async {
+    List<BusinessesData> allItems = await _database
+        .select(_database.businesses)
         .get();
 
-    return allItems.map((e) => UserBusinessData.fromJson(e.toJson())).toList();
+    return allItems.map((e) => BusinessesData.fromJson(e.toJson())).toList();
   }
 
   @override
-  Future<void> deleteUserBusiness(String id) async {
+  Future<void> deleteBusinesses(String id) async {
     await (_database.delete(
-      _database.userBusiness,
+      _database.businesses,
     )..where((p) => p.id.equals(id))).go();
   }
 
   @override
   Future<List<BankDetail>> getBankDetailsByBusinessId(String businessId) async {
-    return await (_database.select(_database.bankDetails)
-          ..where((t) => t.businessId.equals(businessId)))
-        .get();
+    return await (_database.select(
+      _database.bankDetails,
+    )..where((t) => t.businessId.equals(businessId))).get();
   }
 }
 
-final userBusinessRepositoryProvider = Provider(
-  (ref) => UserBusinessRepository(database: ref.watch(databaseProvider)),
+final businessesRepositoryProvider = Provider(
+  (ref) => BusinessesRepository(database: ref.watch(databaseProvider)),
 );

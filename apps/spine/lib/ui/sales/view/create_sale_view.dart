@@ -164,7 +164,7 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
                   // ],
 
                   // Cart Label
-                  const SizedBox( height: 24,),
+                  const SizedBox(height: 24),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
@@ -573,14 +573,20 @@ class _SearchSheetState extends ConsumerState<_SearchSheet> {
   }
 
   Future<void> _loadAllProducts() async {
-    final activeBusiness = ref.read(activeUserBusinessProvider);
-    final inventoryProvider = await ref.read(inventoryRepositoryProvider).getInventoryItems(activeBusiness?.id ?? '');
-    setState(() => _searchResults = inventoryProvider.map((e) => e.product).toList());
+    final activeBusiness = ref.read(activeBusinessesProvider);
+    final inventoryProvider = await ref
+        .read(inventoryRepositoryProvider)
+        .getInventoryItems(activeBusiness?.id ?? '');
+    setState(
+      () => _searchResults = inventoryProvider.map((e) => e.product).toList(),
+    );
   }
 
   void _onSearchChanged(String query) async {
-    final activeBusinessProvider = ref.read(activeUserBusinessProvider);
-    final inventoryProvider = await ref.read(inventoryRepositoryProvider).getInventoryItems(activeBusinessProvider?.id ?? '');
+    final activeBusinessProvider = ref.read(activeBusinessesProvider);
+    final inventoryProvider = await ref
+        .read(inventoryRepositoryProvider)
+        .getInventoryItems(activeBusinessProvider?.id ?? '');
     final products = inventoryProvider.map((e) => e.product).toList();
 
     setState(() {

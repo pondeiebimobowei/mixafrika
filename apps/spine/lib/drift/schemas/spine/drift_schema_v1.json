@@ -148,7 +148,7 @@
       ],
       "type": "table",
       "data": {
-        "name": "user_business",
+        "name": "businesses",
         "was_declared_in_moor": false,
         "columns": [
           {
@@ -768,9 +768,9 @@
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
-            "defaultConstraints": "REFERENCES user_business (id)",
+            "defaultConstraints": "REFERENCES businesses (id)",
             "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES user_business (id)"
+              "sqlite": "REFERENCES businesses (id)"
             },
             "default_dart": null,
             "default_client_dart": null,
@@ -778,7 +778,7 @@
               {
                 "foreign_key": {
                   "to": {
-                    "table": "user_business",
+                    "table": "businesses",
                     "column": "id"
                   },
                   "initially_deferred": false,
@@ -999,9 +999,9 @@
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
-            "defaultConstraints": "REFERENCES user_business (id)",
+            "defaultConstraints": "REFERENCES businesses (id)",
             "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES user_business (id)"
+              "sqlite": "REFERENCES businesses (id)"
             },
             "default_dart": null,
             "default_client_dart": null,
@@ -1009,7 +1009,7 @@
               {
                 "foreign_key": {
                   "to": {
-                    "table": "user_business",
+                    "table": "businesses",
                     "column": "id"
                   },
                   "initially_deferred": false,
@@ -1139,9 +1139,9 @@
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
-            "defaultConstraints": "REFERENCES user_business (id)",
+            "defaultConstraints": "REFERENCES businesses (id)",
             "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES user_business (id)"
+              "sqlite": "REFERENCES businesses (id)"
             },
             "default_dart": null,
             "default_client_dart": null,
@@ -1149,7 +1149,7 @@
               {
                 "foreign_key": {
                   "to": {
-                    "table": "user_business",
+                    "table": "businesses",
                     "column": "id"
                   },
                   "initially_deferred": false,
@@ -1287,9 +1287,9 @@
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
-            "defaultConstraints": "REFERENCES user_business (id)",
+            "defaultConstraints": "REFERENCES businesses (id)",
             "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES user_business (id)"
+              "sqlite": "REFERENCES businesses (id)"
             },
             "default_dart": null,
             "default_client_dart": null,
@@ -1297,7 +1297,7 @@
               {
                 "foreign_key": {
                   "to": {
-                    "table": "user_business",
+                    "table": "businesses",
                     "column": "id"
                   },
                   "initially_deferred": false,
@@ -1685,9 +1685,9 @@
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
-            "defaultConstraints": "REFERENCES user_business (id)",
+            "defaultConstraints": "REFERENCES businesses (id)",
             "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES user_business (id)"
+              "sqlite": "REFERENCES businesses (id)"
             },
             "default_dart": null,
             "default_client_dart": null,
@@ -1695,7 +1695,7 @@
               {
                 "foreign_key": {
                   "to": {
-                    "table": "user_business",
+                    "table": "businesses",
                     "column": "id"
                   },
                   "initially_deferred": false,
@@ -2294,9 +2294,9 @@
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
-            "defaultConstraints": "REFERENCES user_business (id)",
+            "defaultConstraints": "REFERENCES businesses (id)",
             "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES user_business (id)"
+              "sqlite": "REFERENCES businesses (id)"
             },
             "default_dart": null,
             "default_client_dart": null,
@@ -2304,7 +2304,7 @@
               {
                 "foreign_key": {
                   "to": {
-                    "table": "user_business",
+                    "table": "businesses",
                     "column": "id"
                   },
                   "initially_deferred": false,
@@ -2461,9 +2461,9 @@
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
-            "defaultConstraints": "REFERENCES user_business (id)",
+            "defaultConstraints": "REFERENCES businesses (id)",
             "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES user_business (id)"
+              "sqlite": "REFERENCES businesses (id)"
             },
             "default_dart": null,
             "default_client_dart": null,
@@ -2471,7 +2471,7 @@
               {
                 "foreign_key": {
                   "to": {
-                    "table": "user_business",
+                    "table": "businesses",
                     "column": "id"
                   },
                   "initially_deferred": false,
@@ -2656,9 +2656,9 @@
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
-            "defaultConstraints": "REFERENCES user_business (id)",
+            "defaultConstraints": "REFERENCES businesses (id)",
             "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES user_business (id)"
+              "sqlite": "REFERENCES businesses (id)"
             },
             "default_dart": null,
             "default_client_dart": null,
@@ -2666,7 +2666,7 @@
               {
                 "foreign_key": {
                   "to": {
-                    "table": "user_business",
+                    "table": "businesses",
                     "column": "id"
                   },
                   "initially_deferred": false,
@@ -2682,9 +2682,9 @@
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
-            "defaultConstraints": "REFERENCES user_business (id)",
+            "defaultConstraints": "REFERENCES businesses (id)",
             "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES user_business (id)"
+              "sqlite": "REFERENCES businesses (id)"
             },
             "default_dart": null,
             "default_client_dart": null,
@@ -2692,7 +2692,7 @@
               {
                 "foreign_key": {
                   "to": {
-                    "table": "user_business",
+                    "table": "businesses",
                     "column": "id"
                   },
                   "initially_deferred": false,
@@ -2969,9 +2969,9 @@
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
-            "defaultConstraints": "REFERENCES user_business (id)",
+            "defaultConstraints": "REFERENCES businesses (id)",
             "dialectAwareDefaultConstraints": {
-              "sqlite": "REFERENCES user_business (id)"
+              "sqlite": "REFERENCES businesses (id)"
             },
             "default_dart": null,
             "default_client_dart": null,
@@ -2979,7 +2979,7 @@
               {
                 "foreign_key": {
                   "to": {
-                    "table": "user_business",
+                    "table": "businesses",
                     "column": "id"
                   },
                   "initially_deferred": false,
@@ -3037,11 +3037,11 @@
       ]
     },
     {
-      "name": "user_business",
+      "name": "businesses",
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"user_business\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"user_id\" TEXT NOT NULL, \"collection_id\" TEXT NOT NULL, \"name\" TEXT NOT NULL, \"type\" TEXT NOT NULL, \"phone\" TEXT NOT NULL, \"street_address\" TEXT NOT NULL, \"city\" TEXT NOT NULL, \"state\" TEXT NOT NULL, \"country\" TEXT NOT NULL, \"verification\" TEXT NOT NULL REFERENCES business_verification (id));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"businesses\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"user_id\" TEXT NOT NULL, \"collection_id\" TEXT NOT NULL, \"name\" TEXT NOT NULL, \"type\" TEXT NOT NULL, \"phone\" TEXT NOT NULL, \"street_address\" TEXT NOT NULL, \"city\" TEXT NOT NULL, \"state\" TEXT NOT NULL, \"country\" TEXT NOT NULL, \"verification\" TEXT NOT NULL REFERENCES business_verification (id));"
         }
       ]
     },
@@ -3068,7 +3068,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"product\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"name\" TEXT NOT NULL, \"description\" TEXT NOT NULL, \"bulk_unit_name\" TEXT NOT NULL, \"piece_unit_name\" TEXT NOT NULL, \"units_per_bulk\" INTEGER NOT NULL DEFAULT 0, \"cost_price_per_unit\" INTEGER NOT NULL, \"selling_price_per_piece\" INTEGER NOT NULL, \"selling_price_per_bulk\" INTEGER NOT NULL, \"category\" TEXT NOT NULL, \"image_url\" TEXT NOT NULL, \"reviews\" TEXT NOT NULL, \"business_id\" TEXT NOT NULL REFERENCES user_business (id), \"global_product_id\" TEXT NOT NULL REFERENCES global_product (id));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"product\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"name\" TEXT NOT NULL, \"description\" TEXT NOT NULL, \"bulk_unit_name\" TEXT NOT NULL, \"piece_unit_name\" TEXT NOT NULL, \"units_per_bulk\" INTEGER NOT NULL DEFAULT 0, \"cost_price_per_unit\" INTEGER NOT NULL, \"selling_price_per_piece\" INTEGER NOT NULL, \"selling_price_per_bulk\" INTEGER NOT NULL, \"category\" TEXT NOT NULL, \"image_url\" TEXT NOT NULL, \"reviews\" TEXT NOT NULL, \"business_id\" TEXT NOT NULL REFERENCES businesses (id), \"global_product_id\" TEXT NOT NULL REFERENCES global_product (id));"
         }
       ]
     },
@@ -3077,7 +3077,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"spine_batch\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"expiry_date\" TEXT NULL, \"batch_number\" TEXT NOT NULL UNIQUE, \"cost_price_per_unit\" INTEGER NOT NULL, \"selling_price_per_piece\" INTEGER NOT NULL, \"selling_price_per_bulk\" INTEGER NOT NULL, \"initial_quantity\" INTEGER NOT NULL, \"remaining_quantity\" INTEGER NOT NULL, \"product_id\" TEXT NOT NULL REFERENCES product (id), \"business_id\" TEXT NOT NULL REFERENCES user_business (id));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"spine_batch\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"expiry_date\" TEXT NULL, \"batch_number\" TEXT NOT NULL UNIQUE, \"cost_price_per_unit\" INTEGER NOT NULL, \"selling_price_per_piece\" INTEGER NOT NULL, \"selling_price_per_bulk\" INTEGER NOT NULL, \"initial_quantity\" INTEGER NOT NULL, \"remaining_quantity\" INTEGER NOT NULL, \"product_id\" TEXT NOT NULL REFERENCES product (id), \"business_id\" TEXT NOT NULL REFERENCES businesses (id));"
         }
       ]
     },
@@ -3086,7 +3086,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"inventory\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"quantity\" INTEGER NOT NULL, \"product_id\" TEXT NOT NULL REFERENCES product (id), \"business_id\" TEXT NOT NULL REFERENCES user_business (id), \"batch_id\" TEXT NULL REFERENCES spine_batch (id));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"inventory\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"quantity\" INTEGER NOT NULL, \"product_id\" TEXT NOT NULL REFERENCES product (id), \"business_id\" TEXT NOT NULL REFERENCES businesses (id), \"batch_id\" TEXT NULL REFERENCES spine_batch (id));"
         }
       ]
     },
@@ -3095,7 +3095,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"customer\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"name\" TEXT NOT NULL, \"phone\" TEXT NULL, \"business_id\" TEXT NOT NULL REFERENCES user_business (id));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"customer\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"name\" TEXT NOT NULL, \"phone\" TEXT NULL, \"business_id\" TEXT NOT NULL REFERENCES businesses (id));"
         }
       ]
     },
@@ -3113,7 +3113,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"sales\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"customer_id\" TEXT NULL REFERENCES customer (id), \"total_amount\" INTEGER NOT NULL, \"amount_paid\" INTEGER NOT NULL DEFAULT 0, \"balance\" INTEGER NOT NULL DEFAULT 0, \"payment_method\" TEXT NOT NULL, \"status\" TEXT NOT NULL, \"note\" TEXT NULL, \"business_id\" TEXT NOT NULL REFERENCES user_business (id), \"created_by\" TEXT NULL REFERENCES user (id));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"sales\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"customer_id\" TEXT NULL REFERENCES customer (id), \"total_amount\" INTEGER NOT NULL, \"amount_paid\" INTEGER NOT NULL DEFAULT 0, \"balance\" INTEGER NOT NULL DEFAULT 0, \"payment_method\" TEXT NOT NULL, \"status\" TEXT NOT NULL, \"note\" TEXT NULL, \"business_id\" TEXT NOT NULL REFERENCES businesses (id), \"created_by\" TEXT NULL REFERENCES user (id));"
         }
       ]
     },
@@ -3149,7 +3149,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"stock_adjustment\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"business_id\" TEXT NOT NULL REFERENCES user_business (id), \"reason\" TEXT NOT NULL, \"created_by\" TEXT NOT NULL REFERENCES user (id));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"stock_adjustment\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"business_id\" TEXT NOT NULL REFERENCES businesses (id), \"reason\" TEXT NOT NULL, \"created_by\" TEXT NOT NULL REFERENCES user (id));"
         }
       ]
     },
@@ -3158,7 +3158,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"stock_movement\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"product_id\" TEXT NOT NULL REFERENCES product (id), \"business_id\" TEXT NOT NULL REFERENCES user_business (id), \"batch_id\" TEXT NULL REFERENCES spine_batch (id), \"type\" TEXT NOT NULL, \"quantity\" INTEGER NOT NULL, \"reference_id\" TEXT NULL, \"notes\" TEXT NULL, \"created_by\" TEXT NULL REFERENCES user (id));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"stock_movement\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"product_id\" TEXT NOT NULL REFERENCES product (id), \"business_id\" TEXT NOT NULL REFERENCES businesses (id), \"batch_id\" TEXT NULL REFERENCES spine_batch (id), \"type\" TEXT NOT NULL, \"quantity\" INTEGER NOT NULL, \"reference_id\" TEXT NULL, \"notes\" TEXT NULL, \"created_by\" TEXT NULL REFERENCES user (id));"
         }
       ]
     },
@@ -3167,7 +3167,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"stock_transfer\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"from_branch_id\" TEXT NOT NULL REFERENCES user_business (id), \"to_branch_id\" TEXT NOT NULL REFERENCES user_business (id), \"reason\" TEXT NOT NULL, \"status\" TEXT NOT NULL, \"created_by\" TEXT NOT NULL REFERENCES user (id));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"stock_transfer\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"from_branch_id\" TEXT NOT NULL REFERENCES businesses (id), \"to_branch_id\" TEXT NOT NULL REFERENCES businesses (id), \"reason\" TEXT NOT NULL, \"status\" TEXT NOT NULL, \"created_by\" TEXT NOT NULL REFERENCES user (id));"
         }
       ]
     },
@@ -3185,7 +3185,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"bank_details\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"business_id\" TEXT NOT NULL REFERENCES user_business (id), \"bank_name\" TEXT NOT NULL, \"account_name\" TEXT NOT NULL, \"account_number\" TEXT NOT NULL);"
+          "sql": "CREATE TABLE IF NOT EXISTS \"bank_details\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"business_id\" TEXT NOT NULL REFERENCES businesses (id), \"bank_name\" TEXT NOT NULL, \"account_name\" TEXT NOT NULL, \"account_number\" TEXT NOT NULL);"
         }
       ]
     }

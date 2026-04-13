@@ -4,8 +4,8 @@ import 'package:spine/ui/inventory/state/inventory_state.dart';
 class StockTransferState {
   final ProductData? product;
   final InventoryItemData? inventoryItem;
-  final List<UserBusinessData> branches;
-  final UserBusinessData? selectedBranch;
+  final List<BusinessesData> branches;
+  final BusinessesData? selectedBranch;
   final bool isLoading;
   final bool isSuccess;
   final String? errorMessage;
@@ -27,8 +27,8 @@ class StockTransferState {
   StockTransferState copyWith({
     ProductData? product,
     InventoryItemData? inventoryItem,
-    List<UserBusinessData>? branches,
-    UserBusinessData? selectedBranch,
+    List<BusinessesData>? branches,
+    BusinessesData? selectedBranch,
     bool? isLoading,
     bool? isSuccess,
     String? errorMessage,

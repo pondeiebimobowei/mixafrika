@@ -17,7 +17,6 @@ class HomeView extends ConsumerWidget {
   void _showShopSelectionSheet(BuildContext context, WidgetRef ref) {
     final homeState = ref.read(homeViewModelProvider).value;
     final FColors colors = context.theme.colors;
-    
 
     showModalBottomSheet(
       context: context,
@@ -37,7 +36,7 @@ class HomeView extends ConsumerWidget {
               expand: false,
               builder: (context, scrollController) {
                 final filteredShops =
-                    homeState?.userBusiness.value
+                    homeState?.businesses.value
                         ?.where(
                           (shop) => shop.name.toLowerCase().contains(
                             searchQuery.toLowerCase(),
@@ -111,14 +110,14 @@ class HomeView extends ConsumerWidget {
                           itemBuilder: (context, index) {
                             final shop = filteredShops[index];
                             final isSelected =
-                                shop == homeState?.activeUserBusiness;
+                                shop == homeState?.activeBusinesses;
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 8.0),
                               child: ListTile(
                                 onTap: () {
                                   ref
                                           .read(
-                                            activeUserBusinessProvider.notifier,
+                                            activeBusinessesProvider.notifier,
                                           )
                                           .state =
                                       shop;
@@ -234,7 +233,7 @@ class HomeView extends ConsumerWidget {
 
   Widget _buildTopBar(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeViewModelProvider).value;
-    final activeBusiness = homeState?.activeUserBusiness;
+    final activeBusiness = homeState?.activeBusinesses;
     final FColors colors = context.theme.colors;
 
     return Row(
@@ -370,11 +369,7 @@ class HomeView extends ConsumerWidget {
           const SizedBox(height: 8),
           Row(
             children: [
-              _buildStatusIndicator(
-                context,
-                '500 REALIZED',
-                colors.primary,
-              ),
+              _buildStatusIndicator(context, '500 REALIZED', colors.primary),
               const SizedBox(width: 12),
               _buildStatusIndicator(context, 'NO PENDING', colors.destructive),
             ],
@@ -844,10 +839,7 @@ class HomeView extends ConsumerWidget {
               children: [
                 const Text(
                   'CRITICAL EXPIRATION ALERT',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 12),
                 ),
                 Text(
                   '$count items expire within 7 days!',
@@ -917,14 +909,18 @@ class HomeView extends ConsumerWidget {
             ),
           ),
           GestureDetector(
-            onTap: () => context.go('${Routes.inventory}/${Routes.productDetails}/${product.id}'),
+            onTap: () => context.go(
+              '${Routes.inventory}/${Routes.productDetails}/${product.id}',
+            ),
             child: SizedBox(
               width: 80,
               height: 24,
               child: FBadge(
                 style: FBadgeStyleDelta.delta(
                   decoration: BoxDecorationDelta.delta(
-                    color: context.theme.colors.destructive.withValues(alpha: .2),
+                    color: context.theme.colors.destructive.withValues(
+                      alpha: .2,
+                    ),
                     borderRadius: BorderRadius.circular(24),
                   ),
                 ),

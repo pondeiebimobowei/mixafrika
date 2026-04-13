@@ -5,12 +5,11 @@ import 'package:spine/ui/inventory/state/inventory_state.dart';
 import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
 
 class InventoryViewModel extends AutoDisposeAsyncNotifier<InventoryState> {
-
   Timer? _debounce;
 
   @override
   FutureOr<InventoryState> build() async {
-    final activeBusiness = ref.watch(activeUserBusinessProvider);
+    final activeBusiness = ref.watch(activeBusinessesProvider);
     if (activeBusiness == null) return InventoryState();
 
     final repository = ref.read(inventoryRepositoryProvider);
@@ -47,7 +46,7 @@ class InventoryViewModel extends AutoDisposeAsyncNotifier<InventoryState> {
   }
 
   Future<void> _performSearch(String query) async {
-  final activeBusiness = ref.read(activeUserBusinessProvider);
+    final activeBusiness = ref.read(activeBusinessesProvider);
     if (activeBusiness == null) return;
 
     final repository = ref.read(inventoryRepositoryProvider);
@@ -57,18 +56,11 @@ class InventoryViewModel extends AutoDisposeAsyncNotifier<InventoryState> {
 
       final items = query.isEmpty
           ? await repository.getInventoryItems(activeBusiness.id)
-          : await repository.searchInventoryItems(
-              activeBusiness.id,
-              query,
-            );
+          : await repository.searchInventoryItems(activeBusiness.id, query);
 
       final current = state.value;
 
-      state = AsyncData(
-        (current ?? InventoryState()).copyWith(
-          items: items,
-        ),
-      );
+      state = AsyncData((current ?? InventoryState()).copyWith(items: items));
     } catch (e, st) {
       state = AsyncError(e, st);
     }

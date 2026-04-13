@@ -7,7 +7,7 @@ import 'package:spine/drift/model/product.model.dart';
 import 'package:spine/drift/model/inventory.model.dart';
 import 'package:spine/drift/model/batch.model.dart';
 import 'package:spine/drift/model/user.model.dart';
-import 'package:spine/drift/model/user_business.dart';
+import 'package:spine/drift/model/businesses.dart';
 import 'package:spine/drift/model/business_verification.model.dart';
 import 'package:spine/drift/model/sales.model.dart';
 import 'package:spine/drift/model/product_image_model.dart';
@@ -42,7 +42,7 @@ part 'database.g.dart';
     StockMovement,
     StockTransferItem,
     StockTransfer,
-    UserBusiness,
+    Businesses,
     Customer,
     User,
     BankDetails,
@@ -102,8 +102,8 @@ class AppDatabase extends _$AppDatabase {
   }
 
   Future<void> _insertSeedData(AppDatabase db) async {
-    await db.into(db.userBusiness).insert(userBiz1);
-    await db.into(db.userBusiness).insert(userBiz2);
+    await db.into(db.businesses).insert(userBiz1);
+    await db.into(db.businesses).insert(userBiz2);
 
     await db.into(db.bankDetails).insert(bankDetail1);
     await db.into(db.bankDetails).insert(bankDetail2);

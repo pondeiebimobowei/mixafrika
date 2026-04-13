@@ -8,7 +8,6 @@ import 'package:uuid/uuid.dart';
 import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 
-
 class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {
   @override
   AddProductState build() {
@@ -35,11 +34,10 @@ class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {
   }
 
   Future<ApiResponse<void>> submitProduct() async {
-
     state = state.copyWith(isLoading: true, errorMessage: null);
 
     try {
-      final business = ref.read(activeUserBusinessProvider);
+      final business = ref.read(activeBusinessesProvider);
       final businessId = business?.id ?? '';
 
       final newGlobalProduct = GlobalProductData(
@@ -51,15 +49,11 @@ class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {
         normalizedName: normalizeName(state.name),
         category: '',
 
-
         syncStatus: 'pending',
         syncDate: DateTime.now(),
 
-
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
-
-        
       );
 
       final newProduct = ProductData(
@@ -82,19 +76,22 @@ class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {
         syncStatus: 'pending',
         syncDate: DateTime.now(),
 
-
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       );
 
       final productRepository = ref.read(productRepositoryProvider);
       final inventoryRepository = ref.read(inventoryRepositoryProvider);
-      final productResponse = await productRepository.createProduct(newProduct, newGlobalProduct);
-      final inventoryResponse =await inventoryRepository.addInventoryItem(newProduct);
+      final productResponse = await productRepository.createProduct(
+        newProduct,
+        newGlobalProduct,
+      );
+      final inventoryResponse = await inventoryRepository.addInventoryItem(
+        newProduct,
+      );
 
       if (productResponse.success) {
         state = state.copyWith(isLoading: false, isSuccess: true);
-
       } else {
         state = state.copyWith(
           isLoading: false,
@@ -104,7 +101,6 @@ class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {
 
       if (inventoryResponse.success) {
         state = state.copyWith(isLoading: false, isSuccess: true);
-
       } else {
         state = state.copyWith(
           isLoading: false,

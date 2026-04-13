@@ -10,7 +10,7 @@ class ProductsViewModel extends AsyncNotifier<List<ProductData>> {
   @override
   FutureOr<List<ProductData>> build() {
     // Initial state: fetch the username from the repository
-    final business = ref.watch(activeUserBusinessProvider);
+    final business = ref.watch(activeBusinessesProvider);
     if (business == null) return [];
     return ref.read(productRepositoryProvider).getProducts();
   }
@@ -19,8 +19,13 @@ class ProductsViewModel extends AsyncNotifier<List<ProductData>> {
     return ref.read(productRepositoryProvider).getProducts();
   }
 
-  Future<ApiResponse<void>> createProduct(ProductData product, GlobalProductData globalProduct ) async {
-    return ref.read(productRepositoryProvider).createProduct(product, globalProduct);
+  Future<ApiResponse<void>> createProduct(
+    ProductData product,
+    GlobalProductData globalProduct,
+  ) async {
+    return ref
+        .read(productRepositoryProvider)
+        .createProduct(product, globalProduct);
   }
 
   Future<void> deleteProduct(String id) async {

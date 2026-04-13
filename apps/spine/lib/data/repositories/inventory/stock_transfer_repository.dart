@@ -10,8 +10,8 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
   StockTransferRepository(this._db);
 
   @override
-  Future<List<UserBusinessData>> getOtherBranches(currentBusinessId) async {
-    return (await _db.select(_db.userBusiness).get())
+  Future<List<BusinessesData>> getOtherBranches(currentBusinessId) async {
+    return (await _db.select(_db.businesses).get())
         .where((b) => b.id != currentBusinessId)
         .toList();
   }
@@ -41,22 +41,23 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
         ..where((t) => t.id.equals(productId));
       final product = await productQuery.getSingleOrNull();
 
-      if(product == null){
+      if (product == null) {
         throw Exception('Product does not exist');
       }
 
       final globalProductId = product.globalProductId;
-      
-      final sourceBatches = await (_db.select(_db.spineBatch)
-            ..where((t) => t.businessId.equals(fromBranchId))
-            ..where((t) => t.productId.equals(productId))
-            ..where((t) => t.remainingQuantity.isBiggerThanValue(0))
-            ..orderBy([
-              (t) => OrderingTerm.asc(t.expiryDate),
-              (t) => OrderingTerm.asc(t.createdAt),
-            ]))
-          .get();
-      
+
+      final sourceBatches =
+          await (_db.select(_db.spineBatch)
+                ..where((t) => t.businessId.equals(fromBranchId))
+                ..where((t) => t.productId.equals(productId))
+                ..where((t) => t.remainingQuantity.isBiggerThanValue(0))
+                ..orderBy([
+                  (t) => OrderingTerm.asc(t.expiryDate),
+                  (t) => OrderingTerm.asc(t.createdAt),
+                ]))
+              .get();
+
       final totalAvailable = sourceBatches.fold<int>(
         0,
         (sum, b) => sum + b.remainingQuantity,
@@ -69,77 +70,57 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
       final updatedRows = await _db.customUpdate(
         'UPDATE inventory SET quantity = quantity - ? WHERE product_id = ? AND business_id = ? AND quantity >= ?',
         variables: [
-          Variable.withInt(quantity), 
-          Variable.withString(productId), 
+          Variable.withInt(quantity),
+          Variable.withString(productId),
           Variable.withString(fromBranchId),
           Variable.withInt(quantity),
         ],
-        updates: {_db.inventory}, // This tells Drift which table changed so watchers/streams update
+        updates: {
+          _db.inventory,
+        }, // This tells Drift which table changed so watchers/streams update
       );
 
       if (updatedRows == 0) {
         throw Exception('Insufficient inventory or inventory record missing!');
       }
-      
 
       final destProductQuery = _db.select(_db.product)
-      ..where((t) => t.globalProductId.equals(globalProductId))
-      ..where((t) => t.businessId.equals(toBranchId));
-    final destProduct = await destProductQuery.getSingleOrNull();
+        ..where((t) => t.globalProductId.equals(globalProductId))
+        ..where((t) => t.businessId.equals(toBranchId));
+      final destProduct = await destProductQuery.getSingleOrNull();
 
-    final newProductId;
+      final newProductId;
 
-    if(destProduct == null){
-     newProductId = const Uuid().v4();
+      if (destProduct == null) {
+        newProductId = const Uuid().v4();
 
-     await _db.into(_db.product).insert(
-        ProductCompanion.insert(
-          id: newProductId,
-          bulkUnitName: product.bulkUnitName,
-          businessId: toBranchId,
-          globalProductId: globalProductId,
-          name: product.name,
-          pieceUnitName: product.pieceUnitName,
-          sellingPricePerBulk: product.sellingPricePerBulk,
-          sellingPricePerPiece: product.sellingPricePerPiece,
-          unitsPerBulk: Value(product.unitsPerBulk),
-          syncStatus: 'pending',
-          createdAt: Value(now),
-          updatedAt: Value(now), 
-          costPricePerUnit: product.costPricePerUnit,
-          category: product.category,
-          description: product.description,
-          imageUrl: product.imageUrl,
-          reviews: product.reviews,           
-        ));
+        await _db
+            .into(_db.product)
+            .insert(
+              ProductCompanion.insert(
+                id: newProductId,
+                bulkUnitName: product.bulkUnitName,
+                businessId: toBranchId,
+                globalProductId: globalProductId,
+                name: product.name,
+                pieceUnitName: product.pieceUnitName,
+                sellingPricePerBulk: product.sellingPricePerBulk,
+                sellingPricePerPiece: product.sellingPricePerPiece,
+                unitsPerBulk: Value(product.unitsPerBulk),
+                syncStatus: 'pending',
+                createdAt: Value(now),
+                updatedAt: Value(now),
+                costPricePerUnit: product.costPricePerUnit,
+                category: product.category,
+                description: product.description,
+                imageUrl: product.imageUrl,
+                reviews: product.reviews,
+              ),
+            );
 
-     await _db.into(_db.inventory).insert(
-      InventoryCompanion.insert(
-        id: const Uuid().v4(),
-        productId: newProductId,
-        businessId: toBranchId,
-        quantity: quantity,
-        syncStatus: 'pending',
-        createdAt: Value(now),
-        updatedAt: Value(now),
-      ));     
-    }else {
-
-      newProductId = destProduct.id;
-      
-      final rows = await _db.customUpdate(
-        'UPDATE inventory SET quantity = quantity + ? WHERE product_id = ? AND business_id = ?',
-        variables: [
-          Variable.withInt(quantity), 
-          Variable.withString(destProduct.id), 
-          Variable.withString(toBranchId)
-        ],
-        updates: {_db.inventory}, // This tells Drift which table changed so watchers/streams update
-      );
-
-      if (rows == 0) {
-        // fallback insert (safety)
-        await _db.into(_db.inventory).insert(
+        await _db
+            .into(_db.inventory)
+            .insert(
               InventoryCompanion.insert(
                 id: const Uuid().v4(),
                 productId: newProductId,
@@ -150,12 +131,42 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
                 updatedAt: Value(now),
               ),
             );
+      } else {
+        newProductId = destProduct.id;
+
+        final rows = await _db.customUpdate(
+          'UPDATE inventory SET quantity = quantity + ? WHERE product_id = ? AND business_id = ?',
+          variables: [
+            Variable.withInt(quantity),
+            Variable.withString(destProduct.id),
+            Variable.withString(toBranchId),
+          ],
+          updates: {
+            _db.inventory,
+          }, // This tells Drift which table changed so watchers/streams update
+        );
+
+        if (rows == 0) {
+          // fallback insert (safety)
+          await _db
+              .into(_db.inventory)
+              .insert(
+                InventoryCompanion.insert(
+                  id: const Uuid().v4(),
+                  productId: newProductId,
+                  businessId: toBranchId,
+                  quantity: quantity,
+                  syncStatus: 'pending',
+                  createdAt: Value(now),
+                  updatedAt: Value(now),
+                ),
+              );
+        }
       }
 
-    }
-
-
-      await _db.into(_db.stockTransfer).insert(
+      await _db
+          .into(_db.stockTransfer)
+          .insert(
             StockTransferCompanion.insert(
               id: transferId,
               syncStatus: 'pending',
@@ -167,7 +178,9 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
             ),
           );
 
-      await _db.into(_db.stockTransferItem).insert(
+      await _db
+          .into(_db.stockTransferItem)
+          .insert(
             StockTransferItemCompanion.insert(
               id: const Uuid().v4(),
               syncStatus: 'pending',
@@ -179,9 +192,6 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
 
       int remainingToTransfer = quantity;
 
-
-
-
       for (final batch in sourceBatches) {
         if (remainingToTransfer <= 0) break;
 
@@ -190,9 +200,9 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
             : batch.remainingQuantity;
 
         // Deduct from source batch
-        await (_db.update(_db.spineBatch)
-              ..where((t) => t.id.equals(batch.id)))
-            .write(
+        await (_db.update(
+          _db.spineBatch,
+        )..where((t) => t.id.equals(batch.id))).write(
           SpineBatchCompanion(
             remainingQuantity: Value(batch.remainingQuantity - take),
             updatedAt: Value(now),
@@ -200,45 +210,52 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
         );
 
         // Track movement OUT
-        await _db.into(_db.stockMovement).insert(
-          StockMovementCompanion.insert(
-            id: const Uuid().v4(),
-            syncStatus: 'pending',
-            productId: productId,
-            businessId: fromBranchId,
-            type: 'transfer_out',
-            quantity: take,
-            batchId: Value(batch.id),
-            referenceId: Value(transferId),
-            notes: Value(reason),
-            createdBy: Value(userId),
-          ),
-        );
+        await _db
+            .into(_db.stockMovement)
+            .insert(
+              StockMovementCompanion.insert(
+                id: const Uuid().v4(),
+                syncStatus: 'pending',
+                productId: productId,
+                businessId: fromBranchId,
+                type: 'transfer_out',
+                quantity: take,
+                batchId: Value(batch.id),
+                referenceId: Value(transferId),
+                notes: Value(reason),
+                createdBy: Value(userId),
+              ),
+            );
 
-
-        final existingDestBatch = await (_db.select(_db.spineBatch)
-          ..where((t) => t.businessId.equals(toBranchId))
-          ..where((t) => t.productId.equals(destProduct?.id ?? newProductId))
-          ..where((t) => t.costPricePerUnit.equals(batch.costPricePerUnit))
-          ..where((t) {
-            if (batch.expiryDate != null) {
-              return t.expiryDate.equals(batch.expiryDate!);
-            } else {
-              return t.expiryDate.isNull();
-            }
-          }))
-        .getSingleOrNull();
+        final existingDestBatch =
+            await (_db.select(_db.spineBatch)
+                  ..where((t) => t.businessId.equals(toBranchId))
+                  ..where(
+                    (t) => t.productId.equals(destProduct?.id ?? newProductId),
+                  )
+                  ..where(
+                    (t) => t.costPricePerUnit.equals(batch.costPricePerUnit),
+                  )
+                  ..where((t) {
+                    if (batch.expiryDate != null) {
+                      return t.expiryDate.equals(batch.expiryDate!);
+                    } else {
+                      return t.expiryDate.isNull();
+                    }
+                  }))
+                .getSingleOrNull();
 
         String destinationBatchId;
 
         if (existingDestBatch != null) {
           // ✅ Merge
-          await (_db.update(_db.spineBatch)
-                ..where((t) => t.id.equals(existingDestBatch.id)))
-              .write(
+          await (_db.update(
+            _db.spineBatch,
+          )..where((t) => t.id.equals(existingDestBatch.id))).write(
             SpineBatchCompanion(
-              remainingQuantity:
-                  Value(existingDestBatch.remainingQuantity + take),
+              remainingQuantity: Value(
+                existingDestBatch.remainingQuantity + take,
+              ),
               updatedAt: Value(now),
             ),
           );
@@ -248,7 +265,9 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
           // ✅ Create new batch
           destinationBatchId = const Uuid().v4();
 
-          await _db.into(_db.spineBatch).insert(
+          await _db
+              .into(_db.spineBatch)
+              .insert(
                 SpineBatchCompanion.insert(
                   id: destinationBatchId,
                   productId: newProductId,
@@ -268,7 +287,9 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
         }
 
         //  Track movement IN
-        await _db.into(_db.stockMovement).insert(
+        await _db
+            .into(_db.stockMovement)
+            .insert(
               StockMovementCompanion.insert(
                 id: const Uuid().v4(),
                 syncStatus: 'pending',
@@ -285,13 +306,12 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
 
         remainingToTransfer -= take;
       }
-    
-    
-
-      });
+    });
   }
 }
 
-final stockTransferRepositoryProvider = Provider<StockTransferRepository>((ref) {
+final stockTransferRepositoryProvider = Provider<StockTransferRepository>((
+  ref,
+) {
   return StockTransferRepository(ref.watch(databaseProvider));
 });

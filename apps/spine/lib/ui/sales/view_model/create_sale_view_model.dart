@@ -12,21 +12,21 @@ import 'package:uuid/uuid.dart';
 class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
   final ProductRepository _productRepository;
   final SalesRepository _salesRepository;
-  final UserBusinessRepository _userBusinessRepository;
+  final BusinessesRepository _businessesRepository;
   final CustomerRepository _customerRepository;
-  final UserBusinessData? _activeUserBusiness;
+  final BusinessesData? _activeBusinesses;
 
   CreateSaleViewModel({
     required ProductRepository productRepository,
     required SalesRepository salesRepository,
-    required UserBusinessRepository userBusinessRepository,
+    required BusinessesRepository businessesRepository,
     required CustomerRepository customerRepository,
-    required UserBusinessData? activeUserBusiness
+    required BusinessesData? activeBusinesses,
   }) : _productRepository = productRepository,
        _salesRepository = salesRepository,
-       _userBusinessRepository = userBusinessRepository,
+       _businessesRepository = businessesRepository,
        _customerRepository = customerRepository,
-       _activeUserBusiness = activeUserBusiness,
+       _activeBusinesses = activeBusinesses,
        super(CreateSaleState()) {
     _loadInitialData();
   }
@@ -34,10 +34,15 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
   Future<void> _loadInitialData() async {
     state = state.copyWith(isLoading: true);
     try {
-      final products = await _productRepository.getProductsByBusinessId(_activeUserBusiness?.id ?? '');
-      final bankDetails = await _userBusinessRepository.getBankDetailsByBusinessId(_activeUserBusiness?.id ?? '');
-      final customers = await _customerRepository.getCustomers(_activeUserBusiness?.id ?? '');
-      
+      final products = await _productRepository.getProductsByBusinessId(
+        _activeBusinesses?.id ?? '',
+      );
+      final bankDetails = await _businessesRepository
+          .getBankDetailsByBusinessId(_activeBusinesses?.id ?? '');
+      final customers = await _customerRepository.getCustomers(
+        _activeBusinesses?.id ?? '',
+      );
+
       // For demo, take first 5 as quick picks
       state = state.copyWith(
         quickPicks: products.take(5).toList(),
@@ -71,7 +76,13 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
     state = state.copyWith(
       cartItems: [
         ...state.cartItems,
-        CartItem(id: Uuid().v4(), manualName: name, type: 'manual', manualPrice: amount, quantity: 1),
+        CartItem(
+          id: Uuid().v4(),
+          manualName: name,
+          type: 'manual',
+          manualPrice: amount,
+          quantity: 1,
+        ),
       ],
     );
   }
@@ -102,9 +113,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
 
   void removeFromCart(String productId) {
     state = state.copyWith(
-      cartItems: state.cartItems
-          .where((item) => item.id != productId)
-          .toList(),
+      cartItems: state.cartItems.where((item) => item.id != productId).toList(),
     );
   }
 
@@ -120,10 +129,13 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
     }
 
     BankDetail? selectedBank = state.selectedBankDetail;
-    final hasTransfer = method == PaymentMethodType.transfer || 
-                       initialPayments.any((p) => p.method == PaymentMethodType.transfer);
+    final hasTransfer =
+        method == PaymentMethodType.transfer ||
+        initialPayments.any((p) => p.method == PaymentMethodType.transfer);
 
-    if (hasTransfer && selectedBank == null && state.businessBankDetails.isNotEmpty) {
+    if (hasTransfer &&
+        selectedBank == null &&
+        state.businessBankDetails.isNotEmpty) {
       selectedBank = state.businessBankDetails.first;
     }
 
@@ -166,8 +178,12 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
         ),
       );
 
-      if (method == PaymentMethodType.transfer && state.selectedBankDetail == null && state.businessBankDetails.isNotEmpty) {
-        state = state.copyWith(selectedBankDetail: state.businessBankDetails.first);
+      if (method == PaymentMethodType.transfer &&
+          state.selectedBankDetail == null &&
+          state.businessBankDetails.isNotEmpty) {
+        state = state.copyWith(
+          selectedBankDetail: state.businessBankDetails.first,
+        );
       }
     }
   }
@@ -198,8 +214,13 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
       ),
     );
 
-    if (availableMethods.isNotEmpty && availableMethods.first == PaymentMethodType.transfer && state.selectedBankDetail == null && state.businessBankDetails.isNotEmpty) {
-      state = state.copyWith(selectedBankDetail: state.businessBankDetails.first);
+    if (availableMethods.isNotEmpty &&
+        availableMethods.first == PaymentMethodType.transfer &&
+        state.selectedBankDetail == null &&
+        state.businessBankDetails.isNotEmpty) {
+      state = state.copyWith(
+        selectedBankDetail: state.businessBankDetails.first,
+      );
     }
   }
 
@@ -217,7 +238,10 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
   }
 
   void searchCustomers(String query) async {
-    final customers = await _customerRepository.searchCustomers(_activeUserBusiness?.id ?? '', query);
+    final customers = await _customerRepository.searchCustomers(
+      _activeBusinesses?.id ?? '',
+      query,
+    );
     state = state.copyWith(customers: customers);
   }
 
@@ -231,19 +255,23 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
       id: Value(const Uuid().v4()),
       name: Value(name),
       phone: Value(phone),
-      businessId: Value(_activeUserBusiness?.id ?? ''),
+      businessId: Value(_activeBusinesses?.id ?? ''),
       syncStatus: const Value('pending'),
       createdAt: Value(DateTime.now()),
       updatedAt: Value(DateTime.now()),
     );
     await _customerRepository.addCustomer(customer);
-    final customers = await _customerRepository.getCustomers(_activeUserBusiness?.id ?? '');
+    final customers = await _customerRepository.getCustomers(
+      _activeBusinesses?.id ?? '',
+    );
     state = state.copyWith(customers: customers);
   }
 
   void deleteCustomer(String id) async {
     await _customerRepository.deleteCustomer(id);
-    final customers = await _customerRepository.getCustomers(_activeUserBusiness?.id ?? '');
+    final customers = await _customerRepository.getCustomers(
+      _activeBusinesses?.id ?? '',
+    );
     state = state.copyWith(customers: customers);
   }
 
@@ -263,12 +291,11 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
         amountPaid: state.totalPaid,
         balance: state.balance,
         customerId: state.selectedCustomer?.id,
-        businessId: _activeUserBusiness?.id ?? '',
+        businessId: _activeBusinesses?.id ?? '',
         syncStatus: 'pending',
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       );
-
 
       final items = state.cartItems.map((item) {
         return SalesItemData(
@@ -312,13 +339,12 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
 }
 
 final createSaleViewModelProvider =
-  StateNotifierProvider<CreateSaleViewModel, CreateSaleState>((ref) {
-    return CreateSaleViewModel(
-      productRepository: ref.watch(productRepositoryProvider),
-      salesRepository: ref.watch(salesRepositoryProvider),
-      userBusinessRepository: ref.watch(userBusinessRepositoryProvider),
-      customerRepository: ref.watch(customerRepositoryProvider),
-      activeUserBusiness: ref.read(activeUserBusinessProvider),
-    );
-  }
-);
+    StateNotifierProvider<CreateSaleViewModel, CreateSaleState>((ref) {
+      return CreateSaleViewModel(
+        productRepository: ref.watch(productRepositoryProvider),
+        salesRepository: ref.watch(salesRepositoryProvider),
+        businessesRepository: ref.watch(businessesRepositoryProvider),
+        customerRepository: ref.watch(customerRepositoryProvider),
+        activeBusinesses: ref.read(activeBusinessesProvider),
+      );
+    });

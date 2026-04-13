@@ -2,7 +2,7 @@ import 'package:spine/drift/database.dart';
 import 'package:uuid/uuid.dart';
 
 
-final userBiz1 = UserBusinessData(
+final userBiz1 = BusinessesData(
   id: Uuid().v4(),
   userId: 'sdedede',
   collectionId: '1',
@@ -23,7 +23,7 @@ final userBiz1 = UserBusinessData(
   updatedAt: DateTime.now(),
 );
 
-final userBiz2 = UserBusinessData(
+final userBiz2 = BusinessesData(
   id: Uuid().v4(),
   userId: '1',
   collectionId: '1',

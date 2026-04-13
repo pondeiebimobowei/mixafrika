@@ -731,12 +731,12 @@ class BusinessVerificationCompanion
   }
 }
 
-class $UserBusinessTable extends UserBusiness
-    with TableInfo<$UserBusinessTable, UserBusinessData> {
+class $BusinessesTable extends Businesses
+    with TableInfo<$BusinessesTable, BusinessesData> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $UserBusinessTable(this.attachedDatabase, [this._alias]);
+  $BusinessesTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
@@ -927,10 +927,10 @@ class $UserBusinessTable extends UserBusiness
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'user_business';
+  static const String $name = 'businesses';
   @override
   VerificationContext validateIntegrity(
-    Insertable<UserBusinessData> instance, {
+    Insertable<BusinessesData> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -1067,9 +1067,9 @@ class $UserBusinessTable extends UserBusiness
   @override
   Set<GeneratedColumn> get $primaryKey => const {};
   @override
-  UserBusinessData map(Map<String, dynamic> data, {String? tablePrefix}) {
+  BusinessesData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return UserBusinessData(
+    return BusinessesData(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
@@ -1138,13 +1138,12 @@ class $UserBusinessTable extends UserBusiness
   }
 
   @override
-  $UserBusinessTable createAlias(String alias) {
-    return $UserBusinessTable(attachedDatabase, alias);
+  $BusinessesTable createAlias(String alias) {
+    return $BusinessesTable(attachedDatabase, alias);
   }
 }
 
-class UserBusinessData extends DataClass
-    implements Insertable<UserBusinessData> {
+class BusinessesData extends DataClass implements Insertable<BusinessesData> {
   final String id;
   final String syncStatus;
   final DateTime? syncDate;
@@ -1161,7 +1160,7 @@ class UserBusinessData extends DataClass
   final String state;
   final String country;
   final String verification;
-  const UserBusinessData({
+  const BusinessesData({
     required this.id,
     required this.syncStatus,
     this.syncDate,
@@ -1205,8 +1204,8 @@ class UserBusinessData extends DataClass
     return map;
   }
 
-  UserBusinessCompanion toCompanion(bool nullToAbsent) {
-    return UserBusinessCompanion(
+  BusinessesCompanion toCompanion(bool nullToAbsent) {
+    return BusinessesCompanion(
       id: Value(id),
       syncStatus: Value(syncStatus),
       syncDate: syncDate == null && nullToAbsent
@@ -1230,12 +1229,12 @@ class UserBusinessData extends DataClass
     );
   }
 
-  factory UserBusinessData.fromJson(
+  factory BusinessesData.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return UserBusinessData(
+    return BusinessesData(
       id: serializer.fromJson<String>(json['id']),
       syncStatus: serializer.fromJson<String>(json['syncStatus']),
       syncDate: serializer.fromJson<DateTime?>(json['syncDate']),
@@ -1277,7 +1276,7 @@ class UserBusinessData extends DataClass
     };
   }
 
-  UserBusinessData copyWith({
+  BusinessesData copyWith({
     String? id,
     String? syncStatus,
     Value<DateTime?> syncDate = const Value.absent(),
@@ -1294,7 +1293,7 @@ class UserBusinessData extends DataClass
     String? state,
     String? country,
     String? verification,
-  }) => UserBusinessData(
+  }) => BusinessesData(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
     syncDate: syncDate.present ? syncDate.value : this.syncDate,
@@ -1312,8 +1311,8 @@ class UserBusinessData extends DataClass
     country: country ?? this.country,
     verification: verification ?? this.verification,
   );
-  UserBusinessData copyWithCompanion(UserBusinessCompanion data) {
-    return UserBusinessData(
+  BusinessesData copyWithCompanion(BusinessesCompanion data) {
+    return BusinessesData(
       id: data.id.present ? data.id.value : this.id,
       syncStatus: data.syncStatus.present
           ? data.syncStatus.value
@@ -1343,7 +1342,7 @@ class UserBusinessData extends DataClass
 
   @override
   String toString() {
-    return (StringBuffer('UserBusinessData(')
+    return (StringBuffer('BusinessesData(')
           ..write('id: $id, ')
           ..write('syncStatus: $syncStatus, ')
           ..write('syncDate: $syncDate, ')
@@ -1386,7 +1385,7 @@ class UserBusinessData extends DataClass
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is UserBusinessData &&
+      (other is BusinessesData &&
           other.id == this.id &&
           other.syncStatus == this.syncStatus &&
           other.syncDate == this.syncDate &&
@@ -1405,7 +1404,7 @@ class UserBusinessData extends DataClass
           other.verification == this.verification);
 }
 
-class UserBusinessCompanion extends UpdateCompanion<UserBusinessData> {
+class BusinessesCompanion extends UpdateCompanion<BusinessesData> {
   final Value<String> id;
   final Value<String> syncStatus;
   final Value<DateTime?> syncDate;
@@ -1423,7 +1422,7 @@ class UserBusinessCompanion extends UpdateCompanion<UserBusinessData> {
   final Value<String> country;
   final Value<String> verification;
   final Value<int> rowid;
-  const UserBusinessCompanion({
+  const BusinessesCompanion({
     this.id = const Value.absent(),
     this.syncStatus = const Value.absent(),
     this.syncDate = const Value.absent(),
@@ -1442,7 +1441,7 @@ class UserBusinessCompanion extends UpdateCompanion<UserBusinessData> {
     this.verification = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  UserBusinessCompanion.insert({
+  BusinessesCompanion.insert({
     required String id,
     required String syncStatus,
     this.syncDate = const Value.absent(),
@@ -1472,7 +1471,7 @@ class UserBusinessCompanion extends UpdateCompanion<UserBusinessData> {
        state = Value(state),
        country = Value(country),
        verification = Value(verification);
-  static Insertable<UserBusinessData> custom({
+  static Insertable<BusinessesData> custom({
     Expression<String>? id,
     Expression<String>? syncStatus,
     Expression<DateTime>? syncDate,
@@ -1512,7 +1511,7 @@ class UserBusinessCompanion extends UpdateCompanion<UserBusinessData> {
     });
   }
 
-  UserBusinessCompanion copyWith({
+  BusinessesCompanion copyWith({
     Value<String>? id,
     Value<String>? syncStatus,
     Value<DateTime?>? syncDate,
@@ -1531,7 +1530,7 @@ class UserBusinessCompanion extends UpdateCompanion<UserBusinessData> {
     Value<String>? verification,
     Value<int>? rowid,
   }) {
-    return UserBusinessCompanion(
+    return BusinessesCompanion(
       id: id ?? this.id,
       syncStatus: syncStatus ?? this.syncStatus,
       syncDate: syncDate ?? this.syncDate,
@@ -1611,7 +1610,7 @@ class UserBusinessCompanion extends UpdateCompanion<UserBusinessData> {
 
   @override
   String toString() {
-    return (StringBuffer('UserBusinessCompanion(')
+    return (StringBuffer('BusinessesCompanion(')
           ..write('id: $id, ')
           ..write('syncStatus: $syncStatus, ')
           ..write('syncDate: $syncDate, ')
@@ -3016,7 +3015,7 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES user_business (id)',
+      'REFERENCES businesses (id)',
     ),
   );
   static const VerificationMeta _globalProductIdMeta = const VerificationMeta(
@@ -4078,7 +4077,7 @@ class $SpineBatchTable extends SpineBatch
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES user_business (id)',
+      'REFERENCES businesses (id)',
     ),
   );
   @override
@@ -4909,7 +4908,7 @@ class $InventoryTable extends Inventory
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES user_business (id)',
+      'REFERENCES businesses (id)',
     ),
   );
   static const VerificationMeta _batchIdMeta = const VerificationMeta(
@@ -5522,7 +5521,7 @@ class $CustomerTable extends Customer
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES user_business (id)',
+      'REFERENCES businesses (id)',
     ),
   );
   @override
@@ -7215,7 +7214,7 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES user_business (id)',
+      'REFERENCES businesses (id)',
     ),
   );
   static const VerificationMeta _createdByMeta = const VerificationMeta(
@@ -10084,7 +10083,7 @@ class $StockAdjustmentTable extends StockAdjustment
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES user_business (id)',
+      'REFERENCES businesses (id)',
     ),
   );
   static const VerificationMeta _reasonMeta = const VerificationMeta('reason');
@@ -10665,7 +10664,7 @@ class $StockMovementTable extends StockMovement
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES user_business (id)',
+      'REFERENCES businesses (id)',
     ),
   );
   static const VerificationMeta _batchIdMeta = const VerificationMeta(
@@ -11471,7 +11470,7 @@ class $StockTransferTable extends StockTransfer
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES user_business (id)',
+      'REFERENCES businesses (id)',
     ),
   );
   static const VerificationMeta _toBranchIdMeta = const VerificationMeta(
@@ -11485,7 +11484,7 @@ class $StockTransferTable extends StockTransfer
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES user_business (id)',
+      'REFERENCES businesses (id)',
     ),
   );
   static const VerificationMeta _reasonMeta = const VerificationMeta('reason');
@@ -12713,7 +12712,7 @@ class $BankDetailsTable extends BankDetails
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES user_business (id)',
+      'REFERENCES businesses (id)',
     ),
   );
   static const VerificationMeta _bankNameMeta = const VerificationMeta(
@@ -13258,7 +13257,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
   late final $BusinessVerificationTable businessVerification =
       $BusinessVerificationTable(this);
-  late final $UserBusinessTable userBusiness = $UserBusinessTable(this);
+  late final $BusinessesTable businesses = $BusinessesTable(this);
   late final $ProductCategoryTable productCategory = $ProductCategoryTable(
     this,
   );
@@ -13286,7 +13285,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     businessVerification,
-    userBusiness,
+    businesses,
     productCategory,
     globalProduct,
     product,
@@ -13355,22 +13354,22 @@ final class $$BusinessVerificationTableReferences
     super.$_typedResult,
   );
 
-  static MultiTypedResultKey<$UserBusinessTable, List<UserBusinessData>>
-  _userBusinessRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
-    db.userBusiness,
+  static MultiTypedResultKey<$BusinessesTable, List<BusinessesData>>
+  _businessesRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.businesses,
     aliasName: $_aliasNameGenerator(
       db.businessVerification.id,
-      db.userBusiness.verification,
+      db.businesses.verification,
     ),
   );
 
-  $$UserBusinessTableProcessedTableManager get userBusinessRefs {
-    final manager = $$UserBusinessTableTableManager(
+  $$BusinessesTableProcessedTableManager get businessesRefs {
+    final manager = $$BusinessesTableTableManager(
       $_db,
-      $_db.userBusiness,
+      $_db.businesses,
     ).filter((f) => f.verification.id.sqlEquals($_itemColumn<String>('id')!));
 
-    final cache = $_typedResult.readTableOrNull(_userBusinessRefsTable($_db));
+    final cache = $_typedResult.readTableOrNull(_businessesRefsTable($_db));
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
     );
@@ -13446,22 +13445,22 @@ class $$BusinessVerificationTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  Expression<bool> userBusinessRefs(
-    Expression<bool> Function($$UserBusinessTableFilterComposer f) f,
+  Expression<bool> businessesRefs(
+    Expression<bool> Function($$BusinessesTableFilterComposer f) f,
   ) {
-    final $$UserBusinessTableFilterComposer composer = $composerBuilder(
+    final $$BusinessesTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.id,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.verification,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableFilterComposer(
+          }) => $$BusinessesTableFilterComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -13599,22 +13598,22 @@ class $$BusinessVerificationTableAnnotationComposer
     builder: (column) => column,
   );
 
-  Expression<T> userBusinessRefs<T extends Object>(
-    Expression<T> Function($$UserBusinessTableAnnotationComposer a) f,
+  Expression<T> businessesRefs<T extends Object>(
+    Expression<T> Function($$BusinessesTableAnnotationComposer a) f,
   ) {
-    final $$UserBusinessTableAnnotationComposer composer = $composerBuilder(
+    final $$BusinessesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.id,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.verification,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableAnnotationComposer(
+          }) => $$BusinessesTableAnnotationComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -13638,7 +13637,7 @@ class $$BusinessVerificationTableTableManager
           $$BusinessVerificationTableUpdateCompanionBuilder,
           (BusinessVerificationData, $$BusinessVerificationTableReferences),
           BusinessVerificationData,
-          PrefetchHooks Function({bool userBusinessRefs})
+          PrefetchHooks Function({bool businessesRefs})
         > {
   $$BusinessVerificationTableTableManager(
     _$AppDatabase db,
@@ -13727,28 +13726,28 @@ class $$BusinessVerificationTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({userBusinessRefs = false}) {
+          prefetchHooksCallback: ({businessesRefs = false}) {
             return PrefetchHooks(
               db: db,
-              explicitlyWatchedTables: [if (userBusinessRefs) db.userBusiness],
+              explicitlyWatchedTables: [if (businessesRefs) db.businesses],
               addJoins: null,
               getPrefetchedDataCallback: (items) async {
                 return [
-                  if (userBusinessRefs)
+                  if (businessesRefs)
                     await $_getPrefetchedData<
                       BusinessVerificationData,
                       $BusinessVerificationTable,
-                      UserBusinessData
+                      BusinessesData
                     >(
                       currentTable: table,
                       referencedTable: $$BusinessVerificationTableReferences
-                          ._userBusinessRefsTable(db),
+                          ._businessesRefsTable(db),
                       managerFromTypedResult: (p0) =>
                           $$BusinessVerificationTableReferences(
                             db,
                             table,
                             p0,
-                          ).userBusinessRefs,
+                          ).businessesRefs,
                       referencedItemsForCurrentItem: (item, referencedItems) =>
                           referencedItems.where(
                             (e) => e.verification == item.id,
@@ -13775,10 +13774,10 @@ typedef $$BusinessVerificationTableProcessedTableManager =
       $$BusinessVerificationTableUpdateCompanionBuilder,
       (BusinessVerificationData, $$BusinessVerificationTableReferences),
       BusinessVerificationData,
-      PrefetchHooks Function({bool userBusinessRefs})
+      PrefetchHooks Function({bool businessesRefs})
     >;
-typedef $$UserBusinessTableCreateCompanionBuilder =
-    UserBusinessCompanion Function({
+typedef $$BusinessesTableCreateCompanionBuilder =
+    BusinessesCompanion Function({
       required String id,
       required String syncStatus,
       Value<DateTime?> syncDate,
@@ -13797,8 +13796,8 @@ typedef $$UserBusinessTableCreateCompanionBuilder =
       required String verification,
       Value<int> rowid,
     });
-typedef $$UserBusinessTableUpdateCompanionBuilder =
-    UserBusinessCompanion Function({
+typedef $$BusinessesTableUpdateCompanionBuilder =
+    BusinessesCompanion Function({
       Value<String> id,
       Value<String> syncStatus,
       Value<DateTime?> syncDate,
@@ -13818,15 +13817,14 @@ typedef $$UserBusinessTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
-final class $$UserBusinessTableReferences
-    extends
-        BaseReferences<_$AppDatabase, $UserBusinessTable, UserBusinessData> {
-  $$UserBusinessTableReferences(super.$_db, super.$_table, super.$_typedResult);
+final class $$BusinessesTableReferences
+    extends BaseReferences<_$AppDatabase, $BusinessesTable, BusinessesData> {
+  $$BusinessesTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
   static $BusinessVerificationTable _verificationTable(_$AppDatabase db) =>
       db.businessVerification.createAlias(
         $_aliasNameGenerator(
-          db.userBusiness.verification,
+          db.businesses.verification,
           db.businessVerification.id,
         ),
       );
@@ -13848,7 +13846,7 @@ final class $$UserBusinessTableReferences
   static MultiTypedResultKey<$ProductTable, List<ProductData>>
   _productRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.product,
-    aliasName: $_aliasNameGenerator(db.userBusiness.id, db.product.businessId),
+    aliasName: $_aliasNameGenerator(db.businesses.id, db.product.businessId),
   );
 
   $$ProductTableProcessedTableManager get productRefs {
@@ -13866,10 +13864,7 @@ final class $$UserBusinessTableReferences
   static MultiTypedResultKey<$SpineBatchTable, List<SpineBatchData>>
   _spineBatchRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.spineBatch,
-    aliasName: $_aliasNameGenerator(
-      db.userBusiness.id,
-      db.spineBatch.businessId,
-    ),
+    aliasName: $_aliasNameGenerator(db.businesses.id, db.spineBatch.businessId),
   );
 
   $$SpineBatchTableProcessedTableManager get spineBatchRefs {
@@ -13887,10 +13882,7 @@ final class $$UserBusinessTableReferences
   static MultiTypedResultKey<$InventoryTable, List<InventoryData>>
   _inventoryRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.inventory,
-    aliasName: $_aliasNameGenerator(
-      db.userBusiness.id,
-      db.inventory.businessId,
-    ),
+    aliasName: $_aliasNameGenerator(db.businesses.id, db.inventory.businessId),
   );
 
   $$InventoryTableProcessedTableManager get inventoryRefs {
@@ -13908,7 +13900,7 @@ final class $$UserBusinessTableReferences
   static MultiTypedResultKey<$CustomerTable, List<CustomerData>>
   _customerRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.customer,
-    aliasName: $_aliasNameGenerator(db.userBusiness.id, db.customer.businessId),
+    aliasName: $_aliasNameGenerator(db.businesses.id, db.customer.businessId),
   );
 
   $$CustomerTableProcessedTableManager get customerRefs {
@@ -13927,7 +13919,7 @@ final class $$UserBusinessTableReferences
     _$AppDatabase db,
   ) => MultiTypedResultKey.fromTable(
     db.sales,
-    aliasName: $_aliasNameGenerator(db.userBusiness.id, db.sales.businessId),
+    aliasName: $_aliasNameGenerator(db.businesses.id, db.sales.businessId),
   );
 
   $$SalesTableProcessedTableManager get salesRefs {
@@ -13946,7 +13938,7 @@ final class $$UserBusinessTableReferences
   _stockAdjustmentRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.stockAdjustment,
     aliasName: $_aliasNameGenerator(
-      db.userBusiness.id,
+      db.businesses.id,
       db.stockAdjustment.businessId,
     ),
   );
@@ -13969,7 +13961,7 @@ final class $$UserBusinessTableReferences
   _stockMovementRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.stockMovement,
     aliasName: $_aliasNameGenerator(
-      db.userBusiness.id,
+      db.businesses.id,
       db.stockMovement.businessId,
     ),
   );
@@ -13990,7 +13982,7 @@ final class $$UserBusinessTableReferences
   _outgoingTransfersTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.stockTransfer,
     aliasName: $_aliasNameGenerator(
-      db.userBusiness.id,
+      db.businesses.id,
       db.stockTransfer.fromBranchId,
     ),
   );
@@ -14011,7 +14003,7 @@ final class $$UserBusinessTableReferences
   _incomingTransfersTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.stockTransfer,
     aliasName: $_aliasNameGenerator(
-      db.userBusiness.id,
+      db.businesses.id,
       db.stockTransfer.toBranchId,
     ),
   );
@@ -14032,7 +14024,7 @@ final class $$UserBusinessTableReferences
   _bankDetailsRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.bankDetails,
     aliasName: $_aliasNameGenerator(
-      db.userBusiness.id,
+      db.businesses.id,
       db.bankDetails.businessId,
     ),
   );
@@ -14050,9 +14042,9 @@ final class $$UserBusinessTableReferences
   }
 }
 
-class $$UserBusinessTableFilterComposer
-    extends Composer<_$AppDatabase, $UserBusinessTable> {
-  $$UserBusinessTableFilterComposer({
+class $$BusinessesTableFilterComposer
+    extends Composer<_$AppDatabase, $BusinessesTable> {
+  $$BusinessesTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -14408,9 +14400,9 @@ class $$UserBusinessTableFilterComposer
   }
 }
 
-class $$UserBusinessTableOrderingComposer
-    extends Composer<_$AppDatabase, $UserBusinessTable> {
-  $$UserBusinessTableOrderingComposer({
+class $$BusinessesTableOrderingComposer
+    extends Composer<_$AppDatabase, $BusinessesTable> {
+  $$BusinessesTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -14517,9 +14509,9 @@ class $$UserBusinessTableOrderingComposer
   }
 }
 
-class $$UserBusinessTableAnnotationComposer
-    extends Composer<_$AppDatabase, $UserBusinessTable> {
-  $$UserBusinessTableAnnotationComposer({
+class $$BusinessesTableAnnotationComposer
+    extends Composer<_$AppDatabase, $BusinessesTable> {
+  $$BusinessesTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -14852,19 +14844,19 @@ class $$UserBusinessTableAnnotationComposer
   }
 }
 
-class $$UserBusinessTableTableManager
+class $$BusinessesTableTableManager
     extends
         RootTableManager<
           _$AppDatabase,
-          $UserBusinessTable,
-          UserBusinessData,
-          $$UserBusinessTableFilterComposer,
-          $$UserBusinessTableOrderingComposer,
-          $$UserBusinessTableAnnotationComposer,
-          $$UserBusinessTableCreateCompanionBuilder,
-          $$UserBusinessTableUpdateCompanionBuilder,
-          (UserBusinessData, $$UserBusinessTableReferences),
-          UserBusinessData,
+          $BusinessesTable,
+          BusinessesData,
+          $$BusinessesTableFilterComposer,
+          $$BusinessesTableOrderingComposer,
+          $$BusinessesTableAnnotationComposer,
+          $$BusinessesTableCreateCompanionBuilder,
+          $$BusinessesTableUpdateCompanionBuilder,
+          (BusinessesData, $$BusinessesTableReferences),
+          BusinessesData,
           PrefetchHooks Function({
             bool verification,
             bool productRefs,
@@ -14879,17 +14871,17 @@ class $$UserBusinessTableTableManager
             bool bankDetailsRefs,
           })
         > {
-  $$UserBusinessTableTableManager(_$AppDatabase db, $UserBusinessTable table)
+  $$BusinessesTableTableManager(_$AppDatabase db, $BusinessesTable table)
     : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$UserBusinessTableFilterComposer($db: db, $table: table),
+              $$BusinessesTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$UserBusinessTableOrderingComposer($db: db, $table: table),
+              $$BusinessesTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$UserBusinessTableAnnotationComposer($db: db, $table: table),
+              $$BusinessesTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
@@ -14909,7 +14901,7 @@ class $$UserBusinessTableTableManager
                 Value<String> country = const Value.absent(),
                 Value<String> verification = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => UserBusinessCompanion(
+              }) => BusinessesCompanion(
                 id: id,
                 syncStatus: syncStatus,
                 syncDate: syncDate,
@@ -14947,7 +14939,7 @@ class $$UserBusinessTableTableManager
                 required String country,
                 required String verification,
                 Value<int> rowid = const Value.absent(),
-              }) => UserBusinessCompanion.insert(
+              }) => BusinessesCompanion.insert(
                 id: id,
                 syncStatus: syncStatus,
                 syncDate: syncDate,
@@ -14970,7 +14962,7 @@ class $$UserBusinessTableTableManager
               .map(
                 (e) => (
                   e.readTable(table),
-                  $$UserBusinessTableReferences(db, table, e),
+                  $$BusinessesTableReferences(db, table, e),
                 ),
               )
               .toList(),
@@ -15023,11 +15015,10 @@ class $$UserBusinessTableTableManager
                               state.withJoin(
                                     currentTable: table,
                                     currentColumn: table.verification,
-                                    referencedTable:
-                                        $$UserBusinessTableReferences
-                                            ._verificationTable(db),
+                                    referencedTable: $$BusinessesTableReferences
+                                        ._verificationTable(db),
                                     referencedColumn:
-                                        $$UserBusinessTableReferences
+                                        $$BusinessesTableReferences
                                             ._verificationTable(db)
                                             .id,
                                   )
@@ -15040,15 +15031,15 @@ class $$UserBusinessTableTableManager
                     return [
                       if (productRefs)
                         await $_getPrefetchedData<
-                          UserBusinessData,
-                          $UserBusinessTable,
+                          BusinessesData,
+                          $BusinessesTable,
                           ProductData
                         >(
                           currentTable: table,
-                          referencedTable: $$UserBusinessTableReferences
+                          referencedTable: $$BusinessesTableReferences
                               ._productRefsTable(db),
                           managerFromTypedResult: (p0) =>
-                              $$UserBusinessTableReferences(
+                              $$BusinessesTableReferences(
                                 db,
                                 table,
                                 p0,
@@ -15061,15 +15052,15 @@ class $$UserBusinessTableTableManager
                         ),
                       if (spineBatchRefs)
                         await $_getPrefetchedData<
-                          UserBusinessData,
-                          $UserBusinessTable,
+                          BusinessesData,
+                          $BusinessesTable,
                           SpineBatchData
                         >(
                           currentTable: table,
-                          referencedTable: $$UserBusinessTableReferences
+                          referencedTable: $$BusinessesTableReferences
                               ._spineBatchRefsTable(db),
                           managerFromTypedResult: (p0) =>
-                              $$UserBusinessTableReferences(
+                              $$BusinessesTableReferences(
                                 db,
                                 table,
                                 p0,
@@ -15082,15 +15073,15 @@ class $$UserBusinessTableTableManager
                         ),
                       if (inventoryRefs)
                         await $_getPrefetchedData<
-                          UserBusinessData,
-                          $UserBusinessTable,
+                          BusinessesData,
+                          $BusinessesTable,
                           InventoryData
                         >(
                           currentTable: table,
-                          referencedTable: $$UserBusinessTableReferences
+                          referencedTable: $$BusinessesTableReferences
                               ._inventoryRefsTable(db),
                           managerFromTypedResult: (p0) =>
-                              $$UserBusinessTableReferences(
+                              $$BusinessesTableReferences(
                                 db,
                                 table,
                                 p0,
@@ -15103,15 +15094,15 @@ class $$UserBusinessTableTableManager
                         ),
                       if (customerRefs)
                         await $_getPrefetchedData<
-                          UserBusinessData,
-                          $UserBusinessTable,
+                          BusinessesData,
+                          $BusinessesTable,
                           CustomerData
                         >(
                           currentTable: table,
-                          referencedTable: $$UserBusinessTableReferences
+                          referencedTable: $$BusinessesTableReferences
                               ._customerRefsTable(db),
                           managerFromTypedResult: (p0) =>
-                              $$UserBusinessTableReferences(
+                              $$BusinessesTableReferences(
                                 db,
                                 table,
                                 p0,
@@ -15124,15 +15115,15 @@ class $$UserBusinessTableTableManager
                         ),
                       if (salesRefs)
                         await $_getPrefetchedData<
-                          UserBusinessData,
-                          $UserBusinessTable,
+                          BusinessesData,
+                          $BusinessesTable,
                           Sale
                         >(
                           currentTable: table,
-                          referencedTable: $$UserBusinessTableReferences
+                          referencedTable: $$BusinessesTableReferences
                               ._salesRefsTable(db),
                           managerFromTypedResult: (p0) =>
-                              $$UserBusinessTableReferences(
+                              $$BusinessesTableReferences(
                                 db,
                                 table,
                                 p0,
@@ -15145,15 +15136,15 @@ class $$UserBusinessTableTableManager
                         ),
                       if (stockAdjustmentRefs)
                         await $_getPrefetchedData<
-                          UserBusinessData,
-                          $UserBusinessTable,
+                          BusinessesData,
+                          $BusinessesTable,
                           StockAdjustmentData
                         >(
                           currentTable: table,
-                          referencedTable: $$UserBusinessTableReferences
+                          referencedTable: $$BusinessesTableReferences
                               ._stockAdjustmentRefsTable(db),
                           managerFromTypedResult: (p0) =>
-                              $$UserBusinessTableReferences(
+                              $$BusinessesTableReferences(
                                 db,
                                 table,
                                 p0,
@@ -15166,15 +15157,15 @@ class $$UserBusinessTableTableManager
                         ),
                       if (stockMovementRefs)
                         await $_getPrefetchedData<
-                          UserBusinessData,
-                          $UserBusinessTable,
+                          BusinessesData,
+                          $BusinessesTable,
                           StockMovementData
                         >(
                           currentTable: table,
-                          referencedTable: $$UserBusinessTableReferences
+                          referencedTable: $$BusinessesTableReferences
                               ._stockMovementRefsTable(db),
                           managerFromTypedResult: (p0) =>
-                              $$UserBusinessTableReferences(
+                              $$BusinessesTableReferences(
                                 db,
                                 table,
                                 p0,
@@ -15187,15 +15178,15 @@ class $$UserBusinessTableTableManager
                         ),
                       if (outgoingTransfers)
                         await $_getPrefetchedData<
-                          UserBusinessData,
-                          $UserBusinessTable,
+                          BusinessesData,
+                          $BusinessesTable,
                           StockTransferData
                         >(
                           currentTable: table,
-                          referencedTable: $$UserBusinessTableReferences
+                          referencedTable: $$BusinessesTableReferences
                               ._outgoingTransfersTable(db),
                           managerFromTypedResult: (p0) =>
-                              $$UserBusinessTableReferences(
+                              $$BusinessesTableReferences(
                                 db,
                                 table,
                                 p0,
@@ -15208,15 +15199,15 @@ class $$UserBusinessTableTableManager
                         ),
                       if (incomingTransfers)
                         await $_getPrefetchedData<
-                          UserBusinessData,
-                          $UserBusinessTable,
+                          BusinessesData,
+                          $BusinessesTable,
                           StockTransferData
                         >(
                           currentTable: table,
-                          referencedTable: $$UserBusinessTableReferences
+                          referencedTable: $$BusinessesTableReferences
                               ._incomingTransfersTable(db),
                           managerFromTypedResult: (p0) =>
-                              $$UserBusinessTableReferences(
+                              $$BusinessesTableReferences(
                                 db,
                                 table,
                                 p0,
@@ -15229,15 +15220,15 @@ class $$UserBusinessTableTableManager
                         ),
                       if (bankDetailsRefs)
                         await $_getPrefetchedData<
-                          UserBusinessData,
-                          $UserBusinessTable,
+                          BusinessesData,
+                          $BusinessesTable,
                           BankDetail
                         >(
                           currentTable: table,
-                          referencedTable: $$UserBusinessTableReferences
+                          referencedTable: $$BusinessesTableReferences
                               ._bankDetailsRefsTable(db),
                           managerFromTypedResult: (p0) =>
-                              $$UserBusinessTableReferences(
+                              $$BusinessesTableReferences(
                                 db,
                                 table,
                                 p0,
@@ -15256,18 +15247,18 @@ class $$UserBusinessTableTableManager
       );
 }
 
-typedef $$UserBusinessTableProcessedTableManager =
+typedef $$BusinessesTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $UserBusinessTable,
-      UserBusinessData,
-      $$UserBusinessTableFilterComposer,
-      $$UserBusinessTableOrderingComposer,
-      $$UserBusinessTableAnnotationComposer,
-      $$UserBusinessTableCreateCompanionBuilder,
-      $$UserBusinessTableUpdateCompanionBuilder,
-      (UserBusinessData, $$UserBusinessTableReferences),
-      UserBusinessData,
+      $BusinessesTable,
+      BusinessesData,
+      $$BusinessesTableFilterComposer,
+      $$BusinessesTableOrderingComposer,
+      $$BusinessesTableAnnotationComposer,
+      $$BusinessesTableCreateCompanionBuilder,
+      $$BusinessesTableUpdateCompanionBuilder,
+      (BusinessesData, $$BusinessesTableReferences),
+      BusinessesData,
       PrefetchHooks Function({
         bool verification,
         bool productRefs,
@@ -16245,17 +16236,17 @@ final class $$ProductTableReferences
     extends BaseReferences<_$AppDatabase, $ProductTable, ProductData> {
   $$ProductTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static $UserBusinessTable _businessIdTable(_$AppDatabase db) =>
-      db.userBusiness.createAlias(
-        $_aliasNameGenerator(db.product.businessId, db.userBusiness.id),
+  static $BusinessesTable _businessIdTable(_$AppDatabase db) =>
+      db.businesses.createAlias(
+        $_aliasNameGenerator(db.product.businessId, db.businesses.id),
       );
 
-  $$UserBusinessTableProcessedTableManager get businessId {
+  $$BusinessesTableProcessedTableManager get businessId {
     final $_column = $_itemColumn<String>('business_id')!;
 
-    final manager = $$UserBusinessTableTableManager(
+    final manager = $$BusinessesTableTableManager(
       $_db,
-      $_db.userBusiness,
+      $_db.businesses,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_businessIdTable($_db));
     if (item == null) return manager;
@@ -16495,20 +16486,20 @@ class $$ProductTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  $$UserBusinessTableFilterComposer get businessId {
-    final $$UserBusinessTableFilterComposer composer = $composerBuilder(
+  $$BusinessesTableFilterComposer get businessId {
+    final $$BusinessesTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableFilterComposer(
+          }) => $$BusinessesTableFilterComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -16786,20 +16777,20 @@ class $$ProductTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  $$UserBusinessTableOrderingComposer get businessId {
-    final $$UserBusinessTableOrderingComposer composer = $composerBuilder(
+  $$BusinessesTableOrderingComposer get businessId {
+    final $$BusinessesTableOrderingComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableOrderingComposer(
+          }) => $$BusinessesTableOrderingComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -16909,20 +16900,20 @@ class $$ProductTableAnnotationComposer
   GeneratedColumn<String> get reviews =>
       $composableBuilder(column: $table.reviews, builder: (column) => column);
 
-  $$UserBusinessTableAnnotationComposer get businessId {
-    final $$UserBusinessTableAnnotationComposer composer = $composerBuilder(
+  $$BusinessesTableAnnotationComposer get businessId {
+    final $$BusinessesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableAnnotationComposer(
+          }) => $$BusinessesTableAnnotationComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -17525,17 +17516,17 @@ final class $$SpineBatchTableReferences
     );
   }
 
-  static $UserBusinessTable _businessIdTable(_$AppDatabase db) =>
-      db.userBusiness.createAlias(
-        $_aliasNameGenerator(db.spineBatch.businessId, db.userBusiness.id),
+  static $BusinessesTable _businessIdTable(_$AppDatabase db) =>
+      db.businesses.createAlias(
+        $_aliasNameGenerator(db.spineBatch.businessId, db.businesses.id),
       );
 
-  $$UserBusinessTableProcessedTableManager get businessId {
+  $$BusinessesTableProcessedTableManager get businessId {
     final $_column = $_itemColumn<String>('business_id')!;
 
-    final manager = $$UserBusinessTableTableManager(
+    final manager = $$BusinessesTableTableManager(
       $_db,
-      $_db.userBusiness,
+      $_db.businesses,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_businessIdTable($_db));
     if (item == null) return manager;
@@ -17696,20 +17687,20 @@ class $$SpineBatchTableFilterComposer
     return composer;
   }
 
-  $$UserBusinessTableFilterComposer get businessId {
-    final $$UserBusinessTableFilterComposer composer = $composerBuilder(
+  $$BusinessesTableFilterComposer get businessId {
+    final $$BusinessesTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableFilterComposer(
+          }) => $$BusinessesTableFilterComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -17892,20 +17883,20 @@ class $$SpineBatchTableOrderingComposer
     return composer;
   }
 
-  $$UserBusinessTableOrderingComposer get businessId {
-    final $$UserBusinessTableOrderingComposer composer = $composerBuilder(
+  $$BusinessesTableOrderingComposer get businessId {
+    final $$BusinessesTableOrderingComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableOrderingComposer(
+          }) => $$BusinessesTableOrderingComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -18003,20 +17994,20 @@ class $$SpineBatchTableAnnotationComposer
     return composer;
   }
 
-  $$UserBusinessTableAnnotationComposer get businessId {
-    final $$UserBusinessTableAnnotationComposer composer = $composerBuilder(
+  $$BusinessesTableAnnotationComposer get businessId {
+    final $$BusinessesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableAnnotationComposer(
+          }) => $$BusinessesTableAnnotationComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -18419,17 +18410,17 @@ final class $$InventoryTableReferences
     );
   }
 
-  static $UserBusinessTable _businessIdTable(_$AppDatabase db) =>
-      db.userBusiness.createAlias(
-        $_aliasNameGenerator(db.inventory.businessId, db.userBusiness.id),
+  static $BusinessesTable _businessIdTable(_$AppDatabase db) =>
+      db.businesses.createAlias(
+        $_aliasNameGenerator(db.inventory.businessId, db.businesses.id),
       );
 
-  $$UserBusinessTableProcessedTableManager get businessId {
+  $$BusinessesTableProcessedTableManager get businessId {
     final $_column = $_itemColumn<String>('business_id')!;
 
-    final manager = $$UserBusinessTableTableManager(
+    final manager = $$BusinessesTableTableManager(
       $_db,
-      $_db.userBusiness,
+      $_db.businesses,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_businessIdTable($_db));
     if (item == null) return manager;
@@ -18525,20 +18516,20 @@ class $$InventoryTableFilterComposer
     return composer;
   }
 
-  $$UserBusinessTableFilterComposer get businessId {
-    final $$UserBusinessTableFilterComposer composer = $composerBuilder(
+  $$BusinessesTableFilterComposer get businessId {
+    final $$BusinessesTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableFilterComposer(
+          }) => $$BusinessesTableFilterComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -18639,20 +18630,20 @@ class $$InventoryTableOrderingComposer
     return composer;
   }
 
-  $$UserBusinessTableOrderingComposer get businessId {
-    final $$UserBusinessTableOrderingComposer composer = $composerBuilder(
+  $$BusinessesTableOrderingComposer get businessId {
+    final $$BusinessesTableOrderingComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableOrderingComposer(
+          }) => $$BusinessesTableOrderingComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -18741,20 +18732,20 @@ class $$InventoryTableAnnotationComposer
     return composer;
   }
 
-  $$UserBusinessTableAnnotationComposer get businessId {
-    final $$UserBusinessTableAnnotationComposer composer = $composerBuilder(
+  $$BusinessesTableAnnotationComposer get businessId {
+    final $$BusinessesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableAnnotationComposer(
+          }) => $$BusinessesTableAnnotationComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -18995,17 +18986,17 @@ final class $$CustomerTableReferences
     extends BaseReferences<_$AppDatabase, $CustomerTable, CustomerData> {
   $$CustomerTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static $UserBusinessTable _businessIdTable(_$AppDatabase db) =>
-      db.userBusiness.createAlias(
-        $_aliasNameGenerator(db.customer.businessId, db.userBusiness.id),
+  static $BusinessesTable _businessIdTable(_$AppDatabase db) =>
+      db.businesses.createAlias(
+        $_aliasNameGenerator(db.customer.businessId, db.businesses.id),
       );
 
-  $$UserBusinessTableProcessedTableManager get businessId {
+  $$BusinessesTableProcessedTableManager get businessId {
     final $_column = $_itemColumn<String>('business_id')!;
 
-    final manager = $$UserBusinessTableTableManager(
+    final manager = $$BusinessesTableTableManager(
       $_db,
-      $_db.userBusiness,
+      $_db.businesses,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_businessIdTable($_db));
     if (item == null) return manager;
@@ -19083,20 +19074,20 @@ class $$CustomerTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  $$UserBusinessTableFilterComposer get businessId {
-    final $$UserBusinessTableFilterComposer composer = $composerBuilder(
+  $$BusinessesTableFilterComposer get businessId {
+    final $$BusinessesTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableFilterComposer(
+          }) => $$BusinessesTableFilterComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -19181,20 +19172,20 @@ class $$CustomerTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  $$UserBusinessTableOrderingComposer get businessId {
-    final $$UserBusinessTableOrderingComposer composer = $composerBuilder(
+  $$BusinessesTableOrderingComposer get businessId {
+    final $$BusinessesTableOrderingComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableOrderingComposer(
+          }) => $$BusinessesTableOrderingComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -19240,20 +19231,20 @@ class $$CustomerTableAnnotationComposer
   GeneratedColumn<String> get phone =>
       $composableBuilder(column: $table.phone, builder: (column) => column);
 
-  $$UserBusinessTableAnnotationComposer get businessId {
-    final $$UserBusinessTableAnnotationComposer composer = $composerBuilder(
+  $$BusinessesTableAnnotationComposer get businessId {
+    final $$BusinessesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableAnnotationComposer(
+          }) => $$BusinessesTableAnnotationComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -20363,17 +20354,15 @@ final class $$SalesTableReferences
     );
   }
 
-  static $UserBusinessTable _businessIdTable(_$AppDatabase db) =>
-      db.userBusiness.createAlias(
-        $_aliasNameGenerator(db.sales.businessId, db.userBusiness.id),
-      );
+  static $BusinessesTable _businessIdTable(_$AppDatabase db) => db.businesses
+      .createAlias($_aliasNameGenerator(db.sales.businessId, db.businesses.id));
 
-  $$UserBusinessTableProcessedTableManager get businessId {
+  $$BusinessesTableProcessedTableManager get businessId {
     final $_column = $_itemColumn<String>('business_id')!;
 
-    final manager = $$UserBusinessTableTableManager(
+    final manager = $$BusinessesTableTableManager(
       $_db,
-      $_db.userBusiness,
+      $_db.businesses,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_businessIdTable($_db));
     if (item == null) return manager;
@@ -20528,20 +20517,20 @@ class $$SalesTableFilterComposer extends Composer<_$AppDatabase, $SalesTable> {
     return composer;
   }
 
-  $$UserBusinessTableFilterComposer get businessId {
-    final $$UserBusinessTableFilterComposer composer = $composerBuilder(
+  $$BusinessesTableFilterComposer get businessId {
+    final $$BusinessesTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableFilterComposer(
+          }) => $$BusinessesTableFilterComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -20717,20 +20706,20 @@ class $$SalesTableOrderingComposer
     return composer;
   }
 
-  $$UserBusinessTableOrderingComposer get businessId {
-    final $$UserBusinessTableOrderingComposer composer = $composerBuilder(
+  $$BusinessesTableOrderingComposer get businessId {
+    final $$BusinessesTableOrderingComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableOrderingComposer(
+          }) => $$BusinessesTableOrderingComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -20840,20 +20829,20 @@ class $$SalesTableAnnotationComposer
     return composer;
   }
 
-  $$UserBusinessTableAnnotationComposer get businessId {
-    final $$UserBusinessTableAnnotationComposer composer = $composerBuilder(
+  $$BusinessesTableAnnotationComposer get businessId {
+    final $$BusinessesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableAnnotationComposer(
+          }) => $$BusinessesTableAnnotationComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -22748,17 +22737,17 @@ final class $$StockAdjustmentTableReferences
     super.$_typedResult,
   );
 
-  static $UserBusinessTable _businessIdTable(_$AppDatabase db) =>
-      db.userBusiness.createAlias(
-        $_aliasNameGenerator(db.stockAdjustment.businessId, db.userBusiness.id),
+  static $BusinessesTable _businessIdTable(_$AppDatabase db) =>
+      db.businesses.createAlias(
+        $_aliasNameGenerator(db.stockAdjustment.businessId, db.businesses.id),
       );
 
-  $$UserBusinessTableProcessedTableManager get businessId {
+  $$BusinessesTableProcessedTableManager get businessId {
     final $_column = $_itemColumn<String>('business_id')!;
 
-    final manager = $$UserBusinessTableTableManager(
+    final manager = $$BusinessesTableTableManager(
       $_db,
-      $_db.userBusiness,
+      $_db.businesses,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_businessIdTable($_db));
     if (item == null) return manager;
@@ -22830,20 +22819,20 @@ class $$StockAdjustmentTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  $$UserBusinessTableFilterComposer get businessId {
-    final $$UserBusinessTableFilterComposer composer = $composerBuilder(
+  $$BusinessesTableFilterComposer get businessId {
+    final $$BusinessesTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableFilterComposer(
+          }) => $$BusinessesTableFilterComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -22921,20 +22910,20 @@ class $$StockAdjustmentTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  $$UserBusinessTableOrderingComposer get businessId {
-    final $$UserBusinessTableOrderingComposer composer = $composerBuilder(
+  $$BusinessesTableOrderingComposer get businessId {
+    final $$BusinessesTableOrderingComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableOrderingComposer(
+          }) => $$BusinessesTableOrderingComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -23000,20 +22989,20 @@ class $$StockAdjustmentTableAnnotationComposer
   GeneratedColumn<String> get reason =>
       $composableBuilder(column: $table.reason, builder: (column) => column);
 
-  $$UserBusinessTableAnnotationComposer get businessId {
-    final $$UserBusinessTableAnnotationComposer composer = $composerBuilder(
+  $$BusinessesTableAnnotationComposer get businessId {
+    final $$BusinessesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableAnnotationComposer(
+          }) => $$BusinessesTableAnnotationComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -23272,17 +23261,17 @@ final class $$StockMovementTableReferences
     );
   }
 
-  static $UserBusinessTable _businessIdTable(_$AppDatabase db) =>
-      db.userBusiness.createAlias(
-        $_aliasNameGenerator(db.stockMovement.businessId, db.userBusiness.id),
+  static $BusinessesTable _businessIdTable(_$AppDatabase db) =>
+      db.businesses.createAlias(
+        $_aliasNameGenerator(db.stockMovement.businessId, db.businesses.id),
       );
 
-  $$UserBusinessTableProcessedTableManager get businessId {
+  $$BusinessesTableProcessedTableManager get businessId {
     final $_column = $_itemColumn<String>('business_id')!;
 
-    final manager = $$UserBusinessTableTableManager(
+    final manager = $$BusinessesTableTableManager(
       $_db,
-      $_db.userBusiness,
+      $_db.businesses,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_businessIdTable($_db));
     if (item == null) return manager;
@@ -23411,20 +23400,20 @@ class $$StockMovementTableFilterComposer
     return composer;
   }
 
-  $$UserBusinessTableFilterComposer get businessId {
-    final $$UserBusinessTableFilterComposer composer = $composerBuilder(
+  $$BusinessesTableFilterComposer get businessId {
+    final $$BusinessesTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableFilterComposer(
+          }) => $$BusinessesTableFilterComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -23563,20 +23552,20 @@ class $$StockMovementTableOrderingComposer
     return composer;
   }
 
-  $$UserBusinessTableOrderingComposer get businessId {
-    final $$UserBusinessTableOrderingComposer composer = $composerBuilder(
+  $$BusinessesTableOrderingComposer get businessId {
+    final $$BusinessesTableOrderingComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableOrderingComposer(
+          }) => $$BusinessesTableOrderingComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -23699,20 +23688,20 @@ class $$StockMovementTableAnnotationComposer
     return composer;
   }
 
-  $$UserBusinessTableAnnotationComposer get businessId {
-    final $$UserBusinessTableAnnotationComposer composer = $composerBuilder(
+  $$BusinessesTableAnnotationComposer get businessId {
+    final $$BusinessesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableAnnotationComposer(
+          }) => $$BusinessesTableAnnotationComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -24033,17 +24022,17 @@ final class $$StockTransferTableReferences
     super.$_typedResult,
   );
 
-  static $UserBusinessTable _fromBranchIdTable(_$AppDatabase db) =>
-      db.userBusiness.createAlias(
-        $_aliasNameGenerator(db.stockTransfer.fromBranchId, db.userBusiness.id),
+  static $BusinessesTable _fromBranchIdTable(_$AppDatabase db) =>
+      db.businesses.createAlias(
+        $_aliasNameGenerator(db.stockTransfer.fromBranchId, db.businesses.id),
       );
 
-  $$UserBusinessTableProcessedTableManager get fromBranchId {
+  $$BusinessesTableProcessedTableManager get fromBranchId {
     final $_column = $_itemColumn<String>('from_branch_id')!;
 
-    final manager = $$UserBusinessTableTableManager(
+    final manager = $$BusinessesTableTableManager(
       $_db,
-      $_db.userBusiness,
+      $_db.businesses,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_fromBranchIdTable($_db));
     if (item == null) return manager;
@@ -24052,17 +24041,17 @@ final class $$StockTransferTableReferences
     );
   }
 
-  static $UserBusinessTable _toBranchIdTable(_$AppDatabase db) =>
-      db.userBusiness.createAlias(
-        $_aliasNameGenerator(db.stockTransfer.toBranchId, db.userBusiness.id),
+  static $BusinessesTable _toBranchIdTable(_$AppDatabase db) =>
+      db.businesses.createAlias(
+        $_aliasNameGenerator(db.stockTransfer.toBranchId, db.businesses.id),
       );
 
-  $$UserBusinessTableProcessedTableManager get toBranchId {
+  $$BusinessesTableProcessedTableManager get toBranchId {
     final $_column = $_itemColumn<String>('to_branch_id')!;
 
-    final manager = $$UserBusinessTableTableManager(
+    final manager = $$BusinessesTableTableManager(
       $_db,
-      $_db.userBusiness,
+      $_db.businesses,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_toBranchIdTable($_db));
     if (item == null) return manager;
@@ -24166,20 +24155,20 @@ class $$StockTransferTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  $$UserBusinessTableFilterComposer get fromBranchId {
-    final $$UserBusinessTableFilterComposer composer = $composerBuilder(
+  $$BusinessesTableFilterComposer get fromBranchId {
+    final $$BusinessesTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.fromBranchId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableFilterComposer(
+          }) => $$BusinessesTableFilterComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -24189,20 +24178,20 @@ class $$StockTransferTableFilterComposer
     return composer;
   }
 
-  $$UserBusinessTableFilterComposer get toBranchId {
-    final $$UserBusinessTableFilterComposer composer = $composerBuilder(
+  $$BusinessesTableFilterComposer get toBranchId {
+    final $$BusinessesTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.toBranchId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableFilterComposer(
+          }) => $$BusinessesTableFilterComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -24310,20 +24299,20 @@ class $$StockTransferTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  $$UserBusinessTableOrderingComposer get fromBranchId {
-    final $$UserBusinessTableOrderingComposer composer = $composerBuilder(
+  $$BusinessesTableOrderingComposer get fromBranchId {
+    final $$BusinessesTableOrderingComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.fromBranchId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableOrderingComposer(
+          }) => $$BusinessesTableOrderingComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -24333,20 +24322,20 @@ class $$StockTransferTableOrderingComposer
     return composer;
   }
 
-  $$UserBusinessTableOrderingComposer get toBranchId {
-    final $$UserBusinessTableOrderingComposer composer = $composerBuilder(
+  $$BusinessesTableOrderingComposer get toBranchId {
+    final $$BusinessesTableOrderingComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.toBranchId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableOrderingComposer(
+          }) => $$BusinessesTableOrderingComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -24415,20 +24404,20 @@ class $$StockTransferTableAnnotationComposer
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
 
-  $$UserBusinessTableAnnotationComposer get fromBranchId {
-    final $$UserBusinessTableAnnotationComposer composer = $composerBuilder(
+  $$BusinessesTableAnnotationComposer get fromBranchId {
+    final $$BusinessesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.fromBranchId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableAnnotationComposer(
+          }) => $$BusinessesTableAnnotationComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -24438,20 +24427,20 @@ class $$StockTransferTableAnnotationComposer
     return composer;
   }
 
-  $$UserBusinessTableAnnotationComposer get toBranchId {
-    final $$UserBusinessTableAnnotationComposer composer = $composerBuilder(
+  $$BusinessesTableAnnotationComposer get toBranchId {
+    final $$BusinessesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.toBranchId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableAnnotationComposer(
+          }) => $$BusinessesTableAnnotationComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -25271,17 +25260,17 @@ final class $$BankDetailsTableReferences
     extends BaseReferences<_$AppDatabase, $BankDetailsTable, BankDetail> {
   $$BankDetailsTableReferences(super.$_db, super.$_table, super.$_typedResult);
 
-  static $UserBusinessTable _businessIdTable(_$AppDatabase db) =>
-      db.userBusiness.createAlias(
-        $_aliasNameGenerator(db.bankDetails.businessId, db.userBusiness.id),
+  static $BusinessesTable _businessIdTable(_$AppDatabase db) =>
+      db.businesses.createAlias(
+        $_aliasNameGenerator(db.bankDetails.businessId, db.businesses.id),
       );
 
-  $$UserBusinessTableProcessedTableManager get businessId {
+  $$BusinessesTableProcessedTableManager get businessId {
     final $_column = $_itemColumn<String>('business_id')!;
 
-    final manager = $$UserBusinessTableTableManager(
+    final manager = $$BusinessesTableTableManager(
       $_db,
-      $_db.userBusiness,
+      $_db.businesses,
     ).filter((f) => f.id.sqlEquals($_column));
     final item = $_typedResult.readTableOrNull(_businessIdTable($_db));
     if (item == null) return manager;
@@ -25345,20 +25334,20 @@ class $$BankDetailsTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  $$UserBusinessTableFilterComposer get businessId {
-    final $$UserBusinessTableFilterComposer composer = $composerBuilder(
+  $$BusinessesTableFilterComposer get businessId {
+    final $$BusinessesTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableFilterComposer(
+          }) => $$BusinessesTableFilterComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -25423,20 +25412,20 @@ class $$BankDetailsTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  $$UserBusinessTableOrderingComposer get businessId {
-    final $$UserBusinessTableOrderingComposer composer = $composerBuilder(
+  $$BusinessesTableOrderingComposer get businessId {
+    final $$BusinessesTableOrderingComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableOrderingComposer(
+          }) => $$BusinessesTableOrderingComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -25489,20 +25478,20 @@ class $$BankDetailsTableAnnotationComposer
     builder: (column) => column,
   );
 
-  $$UserBusinessTableAnnotationComposer get businessId {
-    final $$UserBusinessTableAnnotationComposer composer = $composerBuilder(
+  $$BusinessesTableAnnotationComposer get businessId {
+    final $$BusinessesTableAnnotationComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.businessId,
-      referencedTable: $db.userBusiness,
+      referencedTable: $db.businesses,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$UserBusinessTableAnnotationComposer(
+          }) => $$BusinessesTableAnnotationComposer(
             $db: $db,
-            $table: $db.userBusiness,
+            $table: $db.businesses,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -25664,8 +25653,8 @@ class $AppDatabaseManager {
   $AppDatabaseManager(this._db);
   $$BusinessVerificationTableTableManager get businessVerification =>
       $$BusinessVerificationTableTableManager(_db, _db.businessVerification);
-  $$UserBusinessTableTableManager get userBusiness =>
-      $$UserBusinessTableTableManager(_db, _db.userBusiness);
+  $$BusinessesTableTableManager get businesses =>
+      $$BusinessesTableTableManager(_db, _db.businesses);
   $$ProductCategoryTableTableManager get productCategory =>
       $$ProductCategoryTableTableManager(_db, _db.productCategory);
   $$GlobalProductTableTableManager get globalProduct =>

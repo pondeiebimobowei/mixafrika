@@ -1,7 +1,6 @@
-
 import 'package:spine/data/services/models/base_model.dart';
 
-class UserBusiness extends BaseModel{
+class Businesses extends BaseModel {
   final String id;
   final String userId;
   final String collectionId;
@@ -17,12 +16,11 @@ class UserBusiness extends BaseModel{
   final String syncDate;
   final String syncStatus;
 
-
   final String? createdAt;
   final String? updatedAt;
   final String? deletedAt;
 
-  UserBusiness({
+  Businesses({
     required this.id,
     required this.userId,
     required this.collectionId,
@@ -34,18 +32,24 @@ class UserBusiness extends BaseModel{
     required this.state,
     required this.country,
     required this.verification,
-    
+
     required this.syncStatus,
     required this.syncDate,
-
 
     required this.createdAt,
     required this.updatedAt,
     required this.deletedAt,
-  }): super(id: id, createdAt: createdAt, deletedAt: deletedAt, syncDate: syncDate, syncStatus: syncStatus, updatedAt: updatedAt);
+  }) : super(
+         id: id,
+         createdAt: createdAt,
+         deletedAt: deletedAt,
+         syncDate: syncDate,
+         syncStatus: syncStatus,
+         updatedAt: updatedAt,
+       );
 
-  factory UserBusiness.fromJson(Map<String, dynamic> json) {
-    return UserBusiness(
+  factory Businesses.fromJson(Map<String, dynamic> json) {
+    return Businesses(
       id: json['id'] ?? '',
       userId: json['user_id'] ?? '',
       collectionId: json['collection_id'] ?? '',
@@ -57,7 +61,7 @@ class UserBusiness extends BaseModel{
       state: json['state'] ?? '',
       country: json['country'] ?? '',
       verification: json['verification'] ?? '',
-      
+
       syncStatus: json['sync_status'] ?? '',
       syncDate: json['sync_date'] ?? '',
 

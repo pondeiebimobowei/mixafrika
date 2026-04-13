@@ -5,21 +5,21 @@ import 'package:spine/drift/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
-class UserBusinessRepositoryRemote implements UserBusinessRepositoryAbstract {
-  UserBusinessRepositoryRemote({
+class BusinessesRepositoryRemote implements BusinessesRepositoryAbstract {
+  BusinessesRepositoryRemote({
     required AppDatabase database,
-    required UserBusinessApiServices apiService,
+    required BusinessesApiServices apiService,
   }) : _database = database,
        _apiService = apiService;
 
   final AppDatabase _database;
-  final UserBusinessApiServices _apiService;
+  final BusinessesApiServices _apiService;
 
   @override
-  Future<ApiResponse<UserBusinessData>> createUserBusiness(
-    UserBusinessCompanion business,
+  Future<ApiResponse<BusinessesData>> createBusinesses(
+    BusinessesCompanion business,
   ) async {
-    UserBusinessData userBusiness = UserBusinessData(
+    BusinessesData businesses = BusinessesData(
       id: Uuid().v4(),
       userId: 'userId',
       collectionId: Uuid().v4(),
@@ -39,7 +39,7 @@ class UserBusinessRepositoryRemote implements UserBusinessRepositoryAbstract {
       updatedAt: DateTime.now(),
     );
 
-    final res = await _apiService.createUserBusiness(userBusiness);
+    final res = await _apiService.createBusinesses(businesses);
 
     return ApiResponse(
       data: res.data,
@@ -49,39 +49,39 @@ class UserBusinessRepositoryRemote implements UserBusinessRepositoryAbstract {
   }
 
   @override
-  Future<UserBusinessData> getUserBusinessById(String id) async {
-    final res = await _database.select(_database.userBusiness).get();
+  Future<BusinessesData> getBusinessesById(String id) async {
+    final res = await _database.select(_database.businesses).get();
 
-    return UserBusinessData.fromJson(res.first.toJson());
+    return BusinessesData.fromJson(res.first.toJson());
   }
 
   @override
-  Future<List<UserBusinessData>> getUserBusiness() async {
-    List<UserBusinessData> allItems = await _database
-        .select(_database.userBusiness)
+  Future<List<BusinessesData>> getBusinesses() async {
+    List<BusinessesData> allItems = await _database
+        .select(_database.businesses)
         .get();
 
-    return allItems.map((e) => UserBusinessData.fromJson(e.toJson())).toList();
+    return allItems.map((e) => BusinessesData.fromJson(e.toJson())).toList();
   }
 
   @override
-  Future<void> deleteUserBusiness(String id) async {
+  Future<void> deleteBusinesses(String id) async {
     await (_database.delete(
-      _database.userBusiness,
+      _database.businesses,
     )..where((p) => p.id.equals(id))).go();
   }
 
   @override
   Future<List<BankDetail>> getBankDetailsByBusinessId(String businessId) async {
-    return await (_database.select(_database.bankDetails)
-          ..where((t) => t.businessId.equals(businessId)))
-        .get();
+    return await (_database.select(
+      _database.bankDetails,
+    )..where((t) => t.businessId.equals(businessId))).get();
   }
 }
 
-final userBusinessRepositoryRemoteProvider = Provider(
-  (ref) => UserBusinessRepositoryRemote(
+final businessesRepositoryRemoteProvider = Provider(
+  (ref) => BusinessesRepositoryRemote(
     database: ref.watch(databaseProvider),
-    apiService: ref.watch(userBusinessApiServiceProvider),
+    apiService: ref.watch(businessesApiServiceProvider),
   ),
 );

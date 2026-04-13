@@ -8,37 +8,46 @@ import 'package:uuid/uuid.dart';
 
 class CustomersViewModel extends StateNotifier<CustomersState> {
   final CustomerRepository _customerRepository;
-  final UserBusinessData? _activeUserBusiness;
+  final BusinessesData? _activeBusinesses;
 
   CustomersViewModel({
     required CustomerRepository customerRepository,
-    required UserBusinessData? activeUserBusiness,
+    required BusinessesData? activeBusinesses,
   }) : _customerRepository = customerRepository,
-       _activeUserBusiness = activeUserBusiness,
+       _activeBusinesses = activeBusinesses,
        super(CustomersState()) {
     loadCustomers();
   }
 
   Future<void> loadCustomers() async {
-    if (_activeUserBusiness == null) return;
+    if (_activeBusinesses == null) return;
     state = state.copyWith(isLoading: true);
     try {
-      final customers = await _customerRepository.getCustomers(_activeUserBusiness.id);
-      state = state.copyWith(customers: customers, isLoading: false, clearError: true);
+      final customers = await _customerRepository.getCustomers(
+        _activeBusinesses.id,
+      );
+      state = state.copyWith(
+        customers: customers,
+        isLoading: false,
+        clearError: true,
+      );
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
   }
 
   Future<void> searchCustomers(String query) async {
-    if (_activeUserBusiness == null) return;
+    if (_activeBusinesses == null) return;
     state = state.copyWith(searchQuery: query);
     if (query.isEmpty) {
       loadCustomers();
       return;
     }
     try {
-      final results = await _customerRepository.searchCustomers(_activeUserBusiness.id, query);
+      final results = await _customerRepository.searchCustomers(
+        _activeBusinesses.id,
+        query,
+      );
       state = state.copyWith(customers: results);
     } catch (e) {
       state = state.copyWith(errorMessage: e.toString());
@@ -46,14 +55,14 @@ class CustomersViewModel extends StateNotifier<CustomersState> {
   }
 
   Future<void> addCustomer(String name, String phone) async {
-    if (_activeUserBusiness == null) return;
+    if (_activeBusinesses == null) return;
     state = state.copyWith(isLoading: true);
     try {
       final companion = CustomerCompanion(
         id: Value(const Uuid().v4()),
         name: Value(name),
         phone: Value(phone),
-        businessId: Value(_activeUserBusiness.id),
+        businessId: Value(_activeBusinesses.id),
         createdAt: Value(DateTime.now()),
         updatedAt: Value(DateTime.now()),
         syncStatus: const Value('pending'),
@@ -66,7 +75,7 @@ class CustomersViewModel extends StateNotifier<CustomersState> {
   }
 
   Future<void> updateCustomer(String id, String name, String phone) async {
-    if (_activeUserBusiness == null) return;
+    if (_activeBusinesses == null) return;
     state = state.copyWith(isLoading: true);
     try {
       final companion = CustomerCompanion(
@@ -95,8 +104,8 @@ class CustomersViewModel extends StateNotifier<CustomersState> {
 
 final customersViewModelProvider =
     StateNotifierProvider<CustomersViewModel, CustomersState>((ref) {
-  return CustomersViewModel(
-    customerRepository: ref.watch(customerRepositoryProvider),
-    activeUserBusiness: ref.watch(activeUserBusinessProvider),
-  );
-});
+      return CustomersViewModel(
+        customerRepository: ref.watch(customerRepositoryProvider),
+        activeBusinesses: ref.watch(activeBusinessesProvider),
+      );
+    });

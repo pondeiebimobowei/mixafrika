@@ -5,37 +5,41 @@ import 'package:spine/data/repositories/inventory/stock_transfer_repository.dart
 import 'package:spine/ui/inventory/state/stock_transfer_state.dart';
 import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
 
-class StockTransferViewModel extends AutoDisposeFamilyNotifier<StockTransferState, String> {
+class StockTransferViewModel
+    extends AutoDisposeFamilyNotifier<StockTransferState, String> {
   @override
   StockTransferState build(String arg) {
     Future.microtask(() => _init());
-    return  StockTransferState();
+    return StockTransferState();
   }
 
   Future<void> _init() async {
     state = state.copyWith(isLoading: true);
-    
+
     final inventoryRepo = ref.read(inventoryRepositoryProvider);
     final inventoryItem = await inventoryRepo.getInventoryItemById(arg);
-    
-    final currentBusiness = ref.read(activeUserBusinessProvider);
+
+    final currentBusiness = ref.read(activeBusinessesProvider);
     if (currentBusiness == null) {
-        state = state.copyWith(isLoading: false, errorMessage: 'No active business');
-        return;
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: 'No active business',
+      );
+      return;
     }
 
     final transferRepo = ref.read(stockTransferRepositoryProvider);
     final branches = await transferRepo.getOtherBranches(currentBusiness.id);
 
     state = state.copyWith(
-        product: inventoryItem?.product,
-        inventoryItem: inventoryItem,
-        branches: branches,
-        isLoading: false,
+      product: inventoryItem?.product,
+      inventoryItem: inventoryItem,
+      branches: branches,
+      isLoading: false,
     );
   }
 
-  void selectBranch(UserBusinessData branch) {
+  void selectBranch(BusinessesData branch) {
     state = state.copyWith(selectedBranch: branch);
   }
 
@@ -49,7 +53,9 @@ class StockTransferViewModel extends AutoDisposeFamilyNotifier<StockTransferStat
 
   Future<void> submit() async {
     if (state.selectedBranch == null) {
-      state = state.copyWith(errorMessage: 'Please select a destination branch');
+      state = state.copyWith(
+        errorMessage: 'Please select a destination branch',
+      );
       return;
     }
 
@@ -62,11 +68,11 @@ class StockTransferViewModel extends AutoDisposeFamilyNotifier<StockTransferStat
     state = state.copyWith(isLoading: true, errorMessage: null);
 
     try {
-      final currentBusiness = ref.read(activeUserBusinessProvider);
+      final currentBusiness = ref.read(activeBusinessesProvider);
       final transferRepo = ref.read(stockTransferRepositoryProvider);
-      
+
       // For now, we'll use a dummy user ID or get it from auth state if available
-      const userId = 'current-user-id'; 
+      const userId = 'current-user-id';
 
       await transferRepo.executeTransfer(
         productId: arg,
@@ -84,6 +90,7 @@ class StockTransferViewModel extends AutoDisposeFamilyNotifier<StockTransferStat
   }
 }
 
-final stockTransferViewModelProvider = NotifierProvider.autoDispose.family<StockTransferViewModel, StockTransferState, String>(
-  StockTransferViewModel.new,
-);
+final stockTransferViewModelProvider = NotifierProvider.autoDispose
+    .family<StockTransferViewModel, StockTransferState, String>(
+      StockTransferViewModel.new,
+    );

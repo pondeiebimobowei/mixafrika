@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:spine/drift/model/base.dart';
-import 'package:spine/drift/model/user_business.dart';
+import 'package:spine/drift/model/businesses.dart';
 import 'package:spine/drift/model/global_product.model.dart';
 
 class Product extends Table with TableMixin {
@@ -17,7 +17,7 @@ class Product extends Table with TableMixin {
     late final reviews = text()();
 
 
-    late final businessId = text().references(UserBusiness, #id)();
+    late final businessId = text().references(Businesses, #id)();
     late final globalProductId = text().references(GlobalProduct, #id)();
 
 }

@@ -14,13 +14,12 @@ class AddStockViewModel extends AutoDisposeNotifier<AddStockState> {
 
   Future<void> _init() async {
     state = state.copyWith(isLoading: true);
-    final business = ref.read(activeUserBusinessProvider);
+    final business = ref.read(activeBusinessesProvider);
     if (business != null) {
       final products = await ref
           .read(productRepositoryProvider)
           .getProductsByBusinessId(business.id);
       state = state.copyWith(products: products, isLoading: false);
-
     } else {
       state = state.copyWith(
         isLoading: false,
@@ -89,7 +88,7 @@ class AddStockViewModel extends AutoDisposeNotifier<AddStockState> {
 
     try {
       final inventoryRepository = ref.read(inventoryRepositoryProvider);
-      final businessProvider = ref.read(activeUserBusinessProvider);
+      final businessProvider = ref.read(activeBusinessesProvider);
 
       if (businessProvider == null)
         throw Exception('Active business not found');
@@ -100,7 +99,7 @@ class AddStockViewModel extends AutoDisposeNotifier<AddStockState> {
         businessId: businessProvider.id,
         pieceQuantity: int.tryParse(state.pieceQuantity) ?? 0,
         totalCost: state.totalCost,
-      
+
         bulkPrice: int.tryParse(state.bulkPrice) ?? 0,
         piecePrice: int.tryParse(state.piecePrice) ?? 0,
         expiryDate: state.expiryDate,

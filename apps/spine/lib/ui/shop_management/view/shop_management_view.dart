@@ -43,7 +43,10 @@ class ShopManagementView extends ConsumerWidget {
         child: state.isLoading
             ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 24,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -53,20 +56,32 @@ class ShopManagementView extends ConsumerWidget {
                         height: 4,
                         margin: const EdgeInsets.only(bottom: 24),
                         decoration: BoxDecoration(
-                          color: colors.primaryForeground.withValues(alpha: 0.1),
+                          color: colors.primaryForeground.withValues(
+                            alpha: 0.1,
+                          ),
                           borderRadius: BorderRadius.circular(2),
                         ),
                       ),
                     ),
-                    _buildSectionHeader(context, 'Business Profile', Icons.business_outlined),
+                    _buildSectionHeader(
+                      context,
+                      'Business Profile',
+                      Icons.business_outlined,
+                    ),
                     const SizedBox(height: 20),
                     if (state.businesses.isEmpty)
                       _buildEmptyBusinessState(context, viewModel)
                     else
-                      ...state.businesses.map((biz) => _buildBusinessCard(context, biz, viewModel)),
-                    
+                      ...state.businesses.map(
+                        (biz) => _buildBusinessCard(context, biz, viewModel),
+                      ),
+
                     const SizedBox(height: 40),
-                    _buildSectionHeader(context, 'Inventory Settings', Icons.inventory_2_outlined),
+                    _buildSectionHeader(
+                      context,
+                      'Inventory Settings',
+                      Icons.inventory_2_outlined,
+                    ),
                     const SizedBox(height: 20),
                     _buildSettingsGroup(context, [
                       _buildToggleTile(
@@ -90,9 +105,13 @@ class ShopManagementView extends ConsumerWidget {
                         () => _showUnitSelection(context, viewModel),
                       ),
                     ]),
-                    
+
                     const SizedBox(height: 40),
-                    _buildSectionHeader(context, 'Sales & Payments', Icons.payments_outlined),
+                    _buildSectionHeader(
+                      context,
+                      'Sales & Payments',
+                      Icons.payments_outlined,
+                    ),
                     const SizedBox(height: 20),
                     _buildSettingsGroup(context, [
                       _buildToggleTile(
@@ -117,9 +136,13 @@ class ShopManagementView extends ConsumerWidget {
                         viewModel.toggleTransferPayment,
                       ),
                     ]),
-  
+
                     const SizedBox(height: 40),
-                    _buildSectionHeader(context, 'System', Icons.settings_suggest_outlined),
+                    _buildSectionHeader(
+                      context,
+                      'System',
+                      Icons.settings_suggest_outlined,
+                    ),
                     const SizedBox(height: 20),
                     _buildSettingsGroup(context, [
                       _buildToggleTile(
@@ -145,7 +168,11 @@ class ShopManagementView extends ConsumerWidget {
     );
   }
 
-  Widget _buildSectionHeader(BuildContext context, String title, IconData icon) {
+  Widget _buildSectionHeader(
+    BuildContext context,
+    String title,
+    IconData icon,
+  ) {
     final colors = context.theme.colors;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -179,7 +206,11 @@ class ShopManagementView extends ConsumerWidget {
     );
   }
 
-  Widget _buildBusinessCard(BuildContext context, UserBusinessData biz, ShopManagementViewModel viewModel) {
+  Widget _buildBusinessCard(
+    BuildContext context,
+    BusinessesData biz,
+    ShopManagementViewModel viewModel,
+  ) {
     final colors = context.theme.colors;
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -193,7 +224,10 @@ class ShopManagementView extends ConsumerWidget {
           ],
         ),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: colors.primary.withValues(alpha: 0.1), width: 1),
+        border: Border.all(
+          color: colors.primary.withValues(alpha: 0.1),
+          width: 1,
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.1),
@@ -211,11 +245,18 @@ class ShopManagementView extends ConsumerWidget {
               height: 56,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [colors.primary.withValues(alpha: 0.2), colors.primary.withValues(alpha: 0.1)],
+                  colors: [
+                    colors.primary.withValues(alpha: 0.2),
+                    colors.primary.withValues(alpha: 0.1),
+                  ],
                 ),
                 borderRadius: BorderRadius.circular(16),
               ),
-              child: Icon(Icons.storefront_outlined, color: colors.primary, size: 28),
+              child: Icon(
+                Icons.storefront_outlined,
+                color: colors.primary,
+                size: 28,
+              ),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -224,19 +265,29 @@ class ShopManagementView extends ConsumerWidget {
                 children: [
                   Text(
                     biz.name,
-                    style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16, letterSpacing: -0.5),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w800,
+                      fontSize: 16,
+                      letterSpacing: -0.5,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      Icon(Icons.phone_outlined, size: 10, color: colors.primaryForeground.withValues(alpha: 0.4)),
+                      Icon(
+                        Icons.phone_outlined,
+                        size: 10,
+                        color: colors.primaryForeground.withValues(alpha: 0.4),
+                      ),
                       const SizedBox(width: 4),
                       Text(
                         biz.phone,
                         style: TextStyle(
                           fontSize: 11,
                           fontWeight: FontWeight.w500,
-                          color: colors.primaryForeground.withValues(alpha: 0.5),
+                          color: colors.primaryForeground.withValues(
+                            alpha: 0.5,
+                          ),
                         ),
                       ),
                     ],
@@ -274,16 +325,16 @@ class ShopManagementView extends ConsumerWidget {
       child: Container(
         width: 36,
         height: 36,
-        decoration: BoxDecoration(
-          color: color,
-          shape: BoxShape.circle,
-        ),
+        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         child: Icon(icon, size: 18, color: iconColor),
       ),
     );
   }
 
-  Widget _buildEmptyBusinessState(BuildContext context, ShopManagementViewModel viewModel) {
+  Widget _buildEmptyBusinessState(
+    BuildContext context,
+    ShopManagementViewModel viewModel,
+  ) {
     final colors = context.theme.colors;
     return Container(
       width: double.infinity,
@@ -291,7 +342,10 @@ class ShopManagementView extends ConsumerWidget {
       decoration: BoxDecoration(
         color: colors.secondaryForeground.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(28),
-        border: Border.all(color: colors.primary.withValues(alpha: 0.1), style: BorderStyle.solid),
+        border: Border.all(
+          color: colors.primary.withValues(alpha: 0.1),
+          style: BorderStyle.solid,
+        ),
       ),
       child: Column(
         children: [
@@ -301,12 +355,20 @@ class ShopManagementView extends ConsumerWidget {
               color: colors.primary.withValues(alpha: 0.05),
               shape: BoxShape.circle,
             ),
-            child: Icon(Icons.add_business_outlined, size: 40, color: colors.primary.withValues(alpha: 0.5)),
+            child: Icon(
+              Icons.add_business_outlined,
+              size: 40,
+              color: colors.primary.withValues(alpha: 0.5),
+            ),
           ),
           const SizedBox(height: 24),
           const Text(
             'No shops found',
-            style: TextStyle(fontWeight: FontWeight.w800, fontSize: 18, letterSpacing: -0.5),
+            style: TextStyle(
+              fontWeight: FontWeight.w800,
+              fontSize: 18,
+              letterSpacing: -0.5,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
@@ -357,7 +419,13 @@ class ShopManagementView extends ConsumerWidget {
     );
   }
 
-  Widget _buildToggleTile(BuildContext context, String title, String subtitle, bool value, Function(bool) onChanged) {
+  Widget _buildToggleTile(
+    BuildContext context,
+    String title,
+    String subtitle,
+    bool value,
+    Function(bool) onChanged,
+  ) {
     final colors = context.theme.colors;
     return InkWell(
       onTap: () => onChanged(!value),
@@ -398,8 +466,12 @@ class ShopManagementView extends ConsumerWidget {
                 onChanged: onChanged,
                 activeColor: colors.primary,
                 activeTrackColor: colors.primary.withValues(alpha: 0.2),
-                inactiveThumbColor: colors.primaryForeground.withValues(alpha: 0.3),
-                inactiveTrackColor: colors.primaryForeground.withValues(alpha: 0.05),
+                inactiveThumbColor: colors.primaryForeground.withValues(
+                  alpha: 0.3,
+                ),
+                inactiveTrackColor: colors.primaryForeground.withValues(
+                  alpha: 0.05,
+                ),
               ),
             ),
           ],
@@ -408,7 +480,12 @@ class ShopManagementView extends ConsumerWidget {
     );
   }
 
-  Widget _buildValueTile(BuildContext context, String title, String value, VoidCallback onTap) {
+  Widget _buildValueTile(
+    BuildContext context,
+    String title,
+    String value,
+    VoidCallback onTap,
+  ) {
     final colors = context.theme.colors;
     return InkWell(
       onTap: onTap,
@@ -434,18 +511,32 @@ class ShopManagementView extends ConsumerWidget {
               ),
               child: Text(
                 value,
-                style: TextStyle(fontWeight: FontWeight.w800, color: colors.primary, fontSize: 13),
+                style: TextStyle(
+                  fontWeight: FontWeight.w800,
+                  color: colors.primary,
+                  fontSize: 13,
+                ),
               ),
             ),
             const SizedBox(width: 12),
-            Icon(Icons.chevron_right, size: 20, color: colors.primaryForeground.withValues(alpha: 0.3)),
+            Icon(
+              Icons.chevron_right,
+              size: 20,
+              color: colors.primaryForeground.withValues(alpha: 0.3),
+            ),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildActionTile(BuildContext context, String title, String subtitle, IconData icon, VoidCallback onTap) {
+  Widget _buildActionTile(
+    BuildContext context,
+    String title,
+    String subtitle,
+    IconData icon,
+    VoidCallback onTap,
+  ) {
     final colors = context.theme.colors;
     return InkWell(
       onTap: onTap,
@@ -459,7 +550,10 @@ class ShopManagementView extends ConsumerWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [colors.primary.withValues(alpha: 0.15), colors.primary.withValues(alpha: 0.05)],
+                  colors: [
+                    colors.primary.withValues(alpha: 0.15),
+                    colors.primary.withValues(alpha: 0.05),
+                  ],
                 ),
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -490,14 +584,22 @@ class ShopManagementView extends ConsumerWidget {
                 ],
               ),
             ),
-            Icon(Icons.chevron_right, size: 20, color: colors.primaryForeground.withValues(alpha: 0.3)),
+            Icon(
+              Icons.chevron_right,
+              size: 20,
+              color: colors.primaryForeground.withValues(alpha: 0.3),
+            ),
           ],
         ),
       ),
     );
   }
 
-  void _showEditSheet(BuildContext context, ShopManagementViewModel viewModel, {UserBusinessData? business}) {
+  void _showEditSheet(
+    BuildContext context,
+    ShopManagementViewModel viewModel, {
+    BusinessesData? business,
+  }) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -505,16 +607,19 @@ class ShopManagementView extends ConsumerWidget {
       builder: (context) => EditBusinessSheet(business: business),
     ).then((result) {
       if (result != null) {
-        if (result is UserBusinessCompanion) {
+        if (result is BusinessesCompanion) {
           viewModel.createBusiness(result);
-        } else if (result is UserBusinessData) {
+        } else if (result is BusinessesData) {
           viewModel.updateBusiness(result);
         }
       }
     });
   }
 
-  void _showUnitSelection(BuildContext context, ShopManagementViewModel viewModel) {
+  void _showUnitSelection(
+    BuildContext context,
+    ShopManagementViewModel viewModel,
+  ) {
     final colors = context.theme.colors;
     showModalBottomSheet(
       context: context,
@@ -546,18 +651,17 @@ class ShopManagementView extends ConsumerWidget {
             ),
             const Text(
               'Select Default Unit',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800, letterSpacing: -0.5),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -0.5,
+              ),
             ),
             const SizedBox(height: 24),
-            _buildSelectionTile(
-              context,
-              'Pcs',
-              Icons.widgets_outlined,
-              () {
-                viewModel.setDefaultUnit('Pcs');
-                Navigator.pop(context);
-              },
-            ),
+            _buildSelectionTile(context, 'Pcs', Icons.widgets_outlined, () {
+              viewModel.setDefaultUnit('Pcs');
+              Navigator.pop(context);
+            }),
             const SizedBox(height: 12),
             _buildSelectionTile(
               context,
@@ -569,25 +673,15 @@ class ShopManagementView extends ConsumerWidget {
               },
             ),
             const SizedBox(height: 12),
-            _buildSelectionTile(
-              context,
-              'Litre',
-              Icons.opacity_outlined,
-              () {
-                viewModel.setDefaultUnit('Litre');
-                Navigator.pop(context);
-              },
-            ),
+            _buildSelectionTile(context, 'Litre', Icons.opacity_outlined, () {
+              viewModel.setDefaultUnit('Litre');
+              Navigator.pop(context);
+            }),
             const SizedBox(height: 12),
-            _buildSelectionTile(
-              context,
-              'Box',
-              Icons.inventory_2_outlined,
-              () {
-                viewModel.setDefaultUnit('Box');
-                Navigator.pop(context);
-              },
-            ),
+            _buildSelectionTile(context, 'Box', Icons.inventory_2_outlined, () {
+              viewModel.setDefaultUnit('Box');
+              Navigator.pop(context);
+            }),
             const SizedBox(height: 12),
             _buildSelectionTile(
               context,
@@ -605,7 +699,12 @@ class ShopManagementView extends ConsumerWidget {
     );
   }
 
-  Widget _buildSelectionTile(BuildContext context, String title, IconData icon, VoidCallback onTap) {
+  Widget _buildSelectionTile(
+    BuildContext context,
+    String title,
+    IconData icon,
+    VoidCallback onTap,
+  ) {
     final colors = context.theme.colors;
     return InkWell(
       onTap: onTap,
@@ -633,7 +732,11 @@ class ShopManagementView extends ConsumerWidget {
               style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 16),
             ),
             const Spacer(),
-            Icon(Icons.chevron_right, size: 20, color: colors.primaryForeground.withValues(alpha: 0.3)),
+            Icon(
+              Icons.chevron_right,
+              size: 20,
+              color: colors.primaryForeground.withValues(alpha: 0.3),
+            ),
           ],
         ),
       ),

@@ -7,51 +7,51 @@ import 'package:spine/ui/user_business/state/active_user_business_provider.dart'
 import 'package:spine/ui/user_business/view_model/user_business_view_model.dart';
 
 class HomeState {
-  final AsyncValue<List<UserBusinessData>> userBusiness;
+  final AsyncValue<List<BusinessesData>> businesses;
   final AsyncValue<List<ProductData>> product;
   final AsyncValue<InventoryState> inventory;
-  final UserBusinessData? activeUserBusiness;
+  final BusinessesData? activeBusinesses;
 
   HomeState({
-    required this.userBusiness,
+    required this.businesses,
     required this.product,
     required this.inventory,
-    required this.activeUserBusiness,
+    required this.activeBusinesses,
   });
 }
 
 // class HomeViewModel extends AutoDisposeAsyncNotifier<HomeState> {
 //   @override
 //   Future<HomeState> build() async {
-//     // await ref.read(userBusinessRepositoryRemoteProvider).getUserBusinesses();
+//     // await ref.read(businessesRepositoryRemoteProvider).getBusinesses();
 //     // await ref
-//     //     .read(userBusinessViewModelProvider.notifier)
+//     //     .read(businessesViewModelProvider.notifier)
 //     //     .createBusiness();
-//     final userBusiness = ref.watch(userBusinessViewModelProvider);
+//     final businesses = ref.watch(businessesViewModelProvider);
 //     final product = await ref.watch(productRepositoryProvider).getProducts();
 //     return HomeState(
-//       userBusiness: userBusiness.value?.userBusiness ?? [],
+//       businesses: businesses.value?.businesses ?? [],
 //       product: product,
-//       activeUserBusiness: userBusiness.value?.act,
+//       activeBusinesses: businesses.value?.act,
 //     );
 //   }
 // }
 
 final homeViewModelProvider = Provider<AsyncValue<HomeState>>((ref) {
-  final businessesAsync = ref.watch(userBusinessViewModelProvider);
+  final businessesAsync = ref.watch(businessesViewModelProvider);
   final productsAsync = ref.watch(productsViewModelProvider);
   final inventoryAsync = ref.watch(inventoryViewModelProvider);
-  final activeBusiness = ref.watch(activeUserBusinessProvider);
+  final activeBusiness = ref.watch(activeBusinessesProvider);
 
   // If we have businesses and an active business, we can show the UI.
   // We only show a full loading state if we have absolutely no business data yet.
   if (businessesAsync.value != null) {
     return AsyncData(
       HomeState(
-        userBusiness: businessesAsync,
+        businesses: businessesAsync,
         product: productsAsync,
         inventory: inventoryAsync,
-        activeUserBusiness: activeBusiness,
+        activeBusinesses: activeBusiness,
       ),
     );
   }
@@ -70,10 +70,10 @@ final homeViewModelProvider = Provider<AsyncValue<HomeState>>((ref) {
 
   return AsyncData(
     HomeState(
-      userBusiness: businessesAsync,
+      businesses: businessesAsync,
       product: productsAsync,
       inventory: inventoryAsync,
-      activeUserBusiness: activeBusiness,
+      activeBusinesses: activeBusiness,
     ),
   );
 });
