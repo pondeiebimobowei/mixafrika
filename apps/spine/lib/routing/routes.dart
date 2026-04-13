@@ -17,4 +17,5 @@ class Routes {
   static const String stockTransfer = 'stock-transfer';
   static const String stockTransferSuccess = 'stock-transfer-success';
   static const String shopManagement = '/shop-management';
+  static const String customers = '/customers';
 }

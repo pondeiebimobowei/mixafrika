@@ -582,6 +582,13 @@ class HomeView extends ConsumerWidget {
           color: Colors.purpleAccent,
           onTap: () => {},
         ),
+        _buildSmallMenuCard(
+          context,
+          'CUSTOMERS',
+          FIcons.users,
+          color: Colors.cyanAccent,
+          onTap: () => context.push(Routes.customers),
+        ),
       ],
     );
   }

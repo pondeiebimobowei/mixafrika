@@ -29,6 +29,11 @@ class CustomerRepository implements CustomerRepositoryAbstract {
   }
 
   @override
+  Future<void> updateCustomer(CustomerCompanion customer) async {
+    await (_database.update(_database.customer)..where((t) => t.id.equals(customer.id.value))).write(customer);
+  }
+
+  @override
   Future<void> deleteCustomer(String id) async {
     await (_database.delete(_database.customer)..where((t) => t.id.equals(id))).go();
   }

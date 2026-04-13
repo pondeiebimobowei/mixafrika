@@ -15,6 +15,7 @@ import 'package:spine/ui/inventory/view/product_details_view.dart';
 import 'package:spine/ui/inventory/view/stock_transfer_view.dart';
 import 'package:spine/ui/sales/view/checkout_view.dart';
 import 'package:spine/ui/shop_management/view/shop_management_view.dart';
+import 'package:spine/ui/customers/view/customers_view.dart';
 
 import 'package:spine/ui/sales/view/sale_receipt_view.dart';
 import 'package:spine/ui/sales/view/sales_log_view.dart';
@@ -118,6 +119,10 @@ GoRouter router() => GoRouter(
     GoRoute(
       path: Routes.shopManagement,
       builder: (context, state) => const ShopManagementView(),
+    ),
+    GoRoute(
+      path: Routes.customers,
+      builder: (context, state) => const CustomersView(),
     ),
   ],
 );
