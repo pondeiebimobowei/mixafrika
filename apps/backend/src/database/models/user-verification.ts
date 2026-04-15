@@ -26,30 +26,33 @@ export class UserVerification extends Model<IUserVerification> implements IUserV
   @Column(DataType.UUID)
   declare id: CreationOptional<string>;
 
-  @ForeignKey(() => User)
-  @Column({ type: DataType.UUID, allowNull: false })
-  declare user_id: string;
+  @Column({ type: DataType.STRING, allowNull: false })
+  declare type: string;
   
+  @Column({ type: DataType.STRING, allowNull: false })
+  declare id_number: string;
+  
+  @Column({ type: DataType.STRING, allowNull: false })
+  declare id_image_front_url: string;
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  declare id_image_back_url?: string;
+
   @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(VerificationStatus)] } })
   declare status: VerificationStatus;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  declare id_type: string;
-
-  @Column({ type: DataType.STRING, allowNull: false })
-  declare id_number: string;
-
-  @Column({ type: DataType.STRING, allowNull: false })
-  declare id_image_front: string;
-
-  @Column({ type: DataType.STRING, allowNull: false })
-  declare id_image_back: string;
-
-  @Column({ type: DataType.STRING, allowNull: false })
   declare rejection_reason: string;
+  
+  @ForeignKey(() => User)
+  @Column({ type: DataType.UUID, allowNull: false })
+  declare user_id: string;
+  
+  @Column({ type: DataType.STRING, allowNull: false })
+  declare submitted_at: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  declare reviewed_by_id: string;
+  declare reviewed_by: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
   declare reviewed_at: string;

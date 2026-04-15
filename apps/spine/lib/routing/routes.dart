@@ -1,6 +1,7 @@
 class Routes {
   static const String splash = '/splash';
   static const String login = '/login';
+  static const String selectBusiness = '/select-business';
   static const String signup = '/signup';
   static const String businessDetails = '/business-details';
   static const String dashboard = '/';

@@ -102,6 +102,18 @@ module.exports = {
 
         repayment: { type: Sequelize.STRING, allowNull: false },
 
+        sync_status: { 
+          type: Sequelize.STRING, 
+          allowNull: false, 
+          defaultValue: 'pending' 
+        },
+        
+        sync_date: { 
+          type: Sequelize.DATE, 
+          allowNull: true, 
+          defaultValue: Sequelize.NOW 
+        },
+
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,

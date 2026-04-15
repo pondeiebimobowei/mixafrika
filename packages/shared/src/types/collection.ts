@@ -1,7 +1,7 @@
-import { type BaseModel } from "./base-model-type";
+import { SyncableModel, type BaseModel } from "./base-model-type";
 import { type ICluster } from "./cluster";
 
-export interface ICollection extends BaseModel {
+export interface ICollection extends BaseModel, SyncableModel {
   name: string;
   description: string;
   total_traders: number;

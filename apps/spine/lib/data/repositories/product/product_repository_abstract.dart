@@ -5,7 +5,7 @@ import 'package:spine/drift/database.dart';
 abstract class ProductRepositoryAbstract {
   Future<List<ProductData>> getProducts();
 
-  Future<List<ProductData>> getProductsByBusinessId(String businessId);
+  Future<List<ProductData>> getProductsByBranchId(String branchId);
 
   Future<ApiResponse<Product?>> getProduct(String id);
 

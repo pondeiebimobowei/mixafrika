@@ -1,4 +1,3 @@
-import 'package:drift/drift.dart';
 import 'package:spine/data/repositories/product/product_repository_abstract.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/data/services/models/product_model.dart';
@@ -107,10 +106,10 @@ class ProductRepository implements ProductRepositoryAbstract {
   }
 
   @override
-  Future<List<ProductData>> getProductsByBusinessId(String businessId) async {
+  Future<List<ProductData>> getProductsByBranchId(String branchId) async {
     List<ProductData> products = await (_database.select(
       _database.product,
-    )..where((t) => t.businessId.equals(businessId))).get();
+    )..where((t) => t.branchId.equals(branchId))).get();
 
     return products;
   }

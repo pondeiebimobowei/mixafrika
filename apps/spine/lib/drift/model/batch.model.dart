@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
 import 'package:spine/drift/model/base.dart';
 import 'package:spine/drift/model/product.model.dart';
-import 'package:spine/drift/model/businesses.dart';
+import 'package:spine/drift/model/branch.model.dart';
 
 class SpineBatch extends Table with TableMixin {
     late final expiryDate = dateTime().nullable()();
@@ -14,10 +14,6 @@ class SpineBatch extends Table with TableMixin {
     
     
     late final productId = text().references(Product, #id)();
-    late final businessId = text().references(Businesses, #id)();
+    late final branchId = text().references(Branch, #id)();
 
-  //    @override
-  // List<Set<Column>> get uniqueKeys => [
-  //       {productId, batchNumber, businessId},
-  //     ];
 }

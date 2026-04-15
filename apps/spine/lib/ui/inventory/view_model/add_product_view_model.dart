@@ -37,8 +37,8 @@ class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {
     state = state.copyWith(isLoading: true, errorMessage: null);
 
     try {
-      final business = ref.read(activeBusinessesProvider);
-      final businessId = business?.id ?? '';
+      final branch = ref.read(activeBranchProvider);
+      final branchId = branch?.id ?? '';
 
       final newGlobalProduct = GlobalProductData(
         id: const Uuid().v4(),
@@ -58,7 +58,7 @@ class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {
 
       final newProduct = ProductData(
         id: const Uuid().v4(),
-        businessId: businessId,
+        branchId: branchId,
         name: state.name,
         description: 'description of ${state.name}',
         bulkUnitName: state.bulkUnit,

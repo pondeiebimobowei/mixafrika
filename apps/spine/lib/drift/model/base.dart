@@ -11,4 +11,7 @@ mixin TableMixin on Table {
   late final createdAt = dateTime().withDefault(currentDateAndTime)();
   late final updatedAt = dateTime().withDefault(currentDateAndTime)();
   late final deletedAt = dateTime().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {id};
 }

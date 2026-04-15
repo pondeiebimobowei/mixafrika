@@ -36,7 +36,7 @@ class HomeView extends ConsumerWidget {
               expand: false,
               builder: (context, scrollController) {
                 final filteredShops =
-                    homeState?.businesses.value
+                    homeState?.branch.value
                         ?.where(
                           (shop) => shop.name.toLowerCase().contains(
                             searchQuery.toLowerCase(),
@@ -110,14 +110,14 @@ class HomeView extends ConsumerWidget {
                           itemBuilder: (context, index) {
                             final shop = filteredShops[index];
                             final isSelected =
-                                shop == homeState?.activeBusinesses;
+                                shop == homeState?.activeBranch;
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 8.0),
                               child: ListTile(
                                 onTap: () {
                                   ref
                                           .read(
-                                            activeBusinessesProvider.notifier,
+                                            activeBranchProvider.notifier,
                                           )
                                           .state =
                                       shop;
@@ -233,7 +233,7 @@ class HomeView extends ConsumerWidget {
 
   Widget _buildTopBar(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeViewModelProvider).value;
-    final activeBusiness = homeState?.activeBusinesses;
+    final activeBranch = homeState?.activeBranch;
     final FColors colors = context.theme.colors;
 
     return Row(
@@ -272,7 +272,7 @@ class HomeView extends ConsumerWidget {
                     Expanded(
                       child: Text(
                         overflow: TextOverflow.ellipsis,
-                        activeBusiness?.name ?? "Select Shop",
+                        activeBranch?.name ?? "Select Shop",
                         style: context.theme.typography.sm.copyWith(
                           fontWeight: FontWeight.bold,
                         ),

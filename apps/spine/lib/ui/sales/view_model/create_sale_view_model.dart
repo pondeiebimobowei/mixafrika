@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/repositories/customer/customer_repository.dart';
 import 'package:spine/data/repositories/product/product_repository.dart';
 import 'package:spine/data/repositories/sales/sales_repository.dart';
-import 'package:spine/data/repositories/user_business/user_business_repository.dart';
+import 'package:spine/data/repositories/branch/branch_repository.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/sales/state/create_sale_state.dart';
 import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
@@ -12,21 +12,21 @@ import 'package:uuid/uuid.dart';
 class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
   final ProductRepository _productRepository;
   final SalesRepository _salesRepository;
-  final BusinessesRepository _businessesRepository;
+  final BranchRepository _branchRepository;
   final CustomerRepository _customerRepository;
-  final BusinessesData? _activeBusinesses;
+  final BranchData? _activeBranch;
 
   CreateSaleViewModel({
     required ProductRepository productRepository,
     required SalesRepository salesRepository,
-    required BusinessesRepository businessesRepository,
+    required BranchRepository branchRepository,
     required CustomerRepository customerRepository,
-    required BusinessesData? activeBusinesses,
+    required BranchData? activeBranch,
   }) : _productRepository = productRepository,
        _salesRepository = salesRepository,
-       _businessesRepository = businessesRepository,
+       _branchRepository = branchRepository,
        _customerRepository = customerRepository,
-       _activeBusinesses = activeBusinesses,
+       _activeBranch = activeBranch,
        super(CreateSaleState()) {
     _loadInitialData();
   }
@@ -34,19 +34,19 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
   Future<void> _loadInitialData() async {
     state = state.copyWith(isLoading: true);
     try {
-      final products = await _productRepository.getProductsByBusinessId(
-        _activeBusinesses?.id ?? '',
+      final products = await _productRepository.getProductsByBranchId(
+        _activeBranch?.id ?? '',
       );
-      final bankDetails = await _businessesRepository
-          .getBankDetailsByBusinessId(_activeBusinesses?.id ?? '');
+      final bankDetails = await _branchRepository
+          .getBankDetailsByBranchId(_activeBranch?.id ?? '');
       final customers = await _customerRepository.getCustomers(
-        _activeBusinesses?.id ?? '',
+        _activeBranch?.id ?? '',
       );
 
       // For demo, take first 5 as quick picks
       state = state.copyWith(
         quickPicks: products.take(5).toList(),
-        businessBankDetails: bankDetails,
+        branchBankDetails: bankDetails,
         customers: customers,
         isLoading: false,
       );
@@ -135,8 +135,8 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
 
     if (hasTransfer &&
         selectedBank == null &&
-        state.businessBankDetails.isNotEmpty) {
-      selectedBank = state.businessBankDetails.first;
+        state.branchBankDetails.isNotEmpty) {
+      selectedBank = state.branchBankDetails.first;
     }
 
     state = state.copyWith(
@@ -180,9 +180,9 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
 
       if (method == PaymentMethodType.transfer &&
           state.selectedBankDetail == null &&
-          state.businessBankDetails.isNotEmpty) {
+          state.branchBankDetails.isNotEmpty) {
         state = state.copyWith(
-          selectedBankDetail: state.businessBankDetails.first,
+          selectedBankDetail: state.branchBankDetails.first,
         );
       }
     }
@@ -217,9 +217,9 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
     if (availableMethods.isNotEmpty &&
         availableMethods.first == PaymentMethodType.transfer &&
         state.selectedBankDetail == null &&
-        state.businessBankDetails.isNotEmpty) {
+        state.branchBankDetails.isNotEmpty) {
       state = state.copyWith(
-        selectedBankDetail: state.businessBankDetails.first,
+        selectedBankDetail: state.branchBankDetails.first,
       );
     }
   }
@@ -239,7 +239,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
 
   void searchCustomers(String query) async {
     final customers = await _customerRepository.searchCustomers(
-      _activeBusinesses?.id ?? '',
+      _activeBranch?.id ?? '',
       query,
     );
     state = state.copyWith(customers: customers);
@@ -255,14 +255,14 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
       id: Value(const Uuid().v4()),
       name: Value(name),
       phone: Value(phone),
-      businessId: Value(_activeBusinesses?.id ?? ''),
+      branchId: Value(_activeBranch?.id ?? ''),
       syncStatus: const Value('pending'),
       createdAt: Value(DateTime.now()),
       updatedAt: Value(DateTime.now()),
     );
     await _customerRepository.addCustomer(customer);
     final customers = await _customerRepository.getCustomers(
-      _activeBusinesses?.id ?? '',
+      _activeBranch?.id ?? '',
     );
     state = state.copyWith(customers: customers);
   }
@@ -270,7 +270,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
   void deleteCustomer(String id) async {
     await _customerRepository.deleteCustomer(id);
     final customers = await _customerRepository.getCustomers(
-      _activeBusinesses?.id ?? '',
+      _activeBranch?.id ?? '',
     );
     state = state.copyWith(customers: customers);
   }
@@ -291,7 +291,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
         amountPaid: state.totalPaid,
         balance: state.balance,
         customerId: state.selectedCustomer?.id,
-        businessId: _activeBusinesses?.id ?? '',
+        branchId: _activeBranch?.id ?? '',
         syncStatus: 'pending',
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
@@ -323,6 +323,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
           createdAt: DateTime.now(),
           updatedAt: DateTime.now(),
           saleId: saleId,
+          status: 'pending',
           amount: payment.amount,
           paymentMethod: payment.method.name,
           reference: payment.reference,
@@ -343,8 +344,8 @@ final createSaleViewModelProvider =
       return CreateSaleViewModel(
         productRepository: ref.watch(productRepositoryProvider),
         salesRepository: ref.watch(salesRepositoryProvider),
-        businessesRepository: ref.watch(businessesRepositoryProvider),
+        branchRepository: ref.watch(branchRepositoryProvider),
         customerRepository: ref.watch(customerRepositoryProvider),
-        activeBusinesses: ref.read(activeBusinessesProvider),
+        activeBranch: ref.read(activeBranchProvider),
       );
     });

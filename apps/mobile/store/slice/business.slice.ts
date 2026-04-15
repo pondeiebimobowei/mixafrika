@@ -2,12 +2,12 @@ import type { StateCreator } from 'zustand';
 import { apiPrivate } from '@/axios/axios-config';
 import { BaseSlice } from '..';
 import { updateBusiness } from '@/axios/business';
-import { IUserBusiness } from '@mixafrica/shared/types/user-business';
+import { IBusiness } from '@mixafrica/shared/src/types/business';
 import { Submit_business } from '@mixafrica/shared/validation/submit-business-dto';
 
 export interface UserBusiness extends BaseSlice {
-  business: IUserBusiness[];
-  setUserBusiness: ({ business }: { business: IUserBusiness[] }) => void;
+  business: IBusiness[];
+  setUserBusiness: ({ business }: { business: IBusiness[] }) => void;
   getUserBusiness: () => void;
   updateUserBusiness: (business_data: Submit_business) => void;
 }

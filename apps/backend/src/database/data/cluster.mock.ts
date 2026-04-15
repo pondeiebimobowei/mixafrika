@@ -22,7 +22,9 @@ export const mockClusterSeed: (collection: ICollection[]) => Promise<ICluster[]>
             total_funds_raised: 45_000,
             roi: 15,
             createdAt: "2025-11-19T14:10:12.425Z",
-            updatedAt: "2025-11-19T14:10:12.425Z"
+            updatedAt: "2025-11-19T14:10:12.425Z",
+            sync_status: 'pending',
+            sync_date: new Date().toISOString(),
 
         },
         {
@@ -42,7 +44,9 @@ export const mockClusterSeed: (collection: ICollection[]) => Promise<ICluster[]>
             total_funds_raised: 1_500_00,
             roi: 15,
             createdAt: "2025-11-19T15:11:12.425Z",
-            updatedAt: "2025-11-19T15:11:12.425Z"
+            updatedAt: "2025-11-19T15:11:12.425Z",
+            sync_status: 'pending',
+            sync_date: new Date().toISOString(),
 
         },
         {
@@ -62,7 +66,9 @@ export const mockClusterSeed: (collection: ICollection[]) => Promise<ICluster[]>
             total_funds_raised: 1_800_000,
             roi: 15,
             createdAt: "2025-11-19T16:09:12.425Z",
-            updatedAt: "2025-11-19T16:09:12.425Z"
+            updatedAt: "2025-11-19T16:09:12.425Z",
+            sync_status: 'pending',
+            sync_date: new Date().toISOString(),
 
         },
     ]

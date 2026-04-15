@@ -50,7 +50,7 @@ export class Sales
 
     @ForeignKey(() => User)
     @Column(DataType.UUID)
-    declare created_by_id: string;
+    declare created_by: string;
 
     @BelongsTo(() => UserBusiness, 'branch_id')
     declare branch: UserBusiness;
@@ -58,14 +58,11 @@ export class Sales
     @BelongsTo(() => User, 'customer_id')
     declare customer: User;
 
-    @BelongsTo(() => User, 'created_by_id')
-    declare created_by: User;
-
     @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
-    declare syncStatus: syncStatus;
+    declare sync_status: syncStatus;
 
     @Column({ type: DataType.STRING, allowNull: false })
-    declare syncDate: string;
+    declare sync_date: string;
 
 
 

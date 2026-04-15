@@ -8,6 +8,7 @@ export const test_user:IUser = {
     email: 'johndoe@test.com',
     password: 'password123',
     role: 'trader',
+    is_verified: true,
     is_email_verified: false,
     credit_score: 0,
     credit_score_status: 'not set',

@@ -14,18 +14,18 @@ class SalesLogViewModel extends StateNotifier<SalesLogState> {
     state = state.copyWith(isLoading: true, errorMessage: null);
 
     try {
-      final activeBusiness = ref.read(activeBusinessesProvider);
-      if (activeBusiness == null) {
+      final activeBranch = ref.read(activeBranchProvider);
+      if (activeBranch == null) {
         state = state.copyWith(
           isLoading: false,
-          errorMessage: 'No active business',
+          errorMessage: 'No active branch',
         );
         return;
       }
 
       final repository = ref.read(salesRepositoryProvider);
       final sales = await repository.getSalesWithItems(
-        businessId: activeBusiness.id,
+        branchId: activeBranch.id,
       );
 
       state = state.copyWith(sales: sales, isLoading: false);

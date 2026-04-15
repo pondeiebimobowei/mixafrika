@@ -3,35 +3,31 @@ import {
   Column,
   Model,
   DataType,
-  ForeignKey,
-  BelongsTo,
   DeletedAt,
   UpdatedAt,
   CreatedAt,
   PrimaryKey,
   Default,
-  AllowNull,
-  HasOne,
+  BelongsTo,
+  ForeignKey,
+  HasMany,
+  BelongsToMany,
 } from 'sequelize-typescript';
-import { User } from './user.model';
-import { Collection } from './collection.model';
-import { IUserBusiness } from '@shared/shared/src/types/user-business';
+import { IBusiness } from '@shared/shared/src/types/business';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { BusinessVerification } from './business-verification.model';
+import { syncStatus } from '@shared/shared/src/enums';
+import { User } from './user.model';
+import { Branch } from './branch.model';
+import { BusinessUser } from './business-user';
 
 @Table({ tableName: 'user_business' })
 export class UserBusiness
-  extends Model<IUserBusiness>
-  implements IUserBusiness {
+  extends Model<IBusiness>
+  implements IBusiness {
   @PrimaryKey
   @Default(DataTypes.UUIDV4)
   @Column(DataTypes.UUID)
   declare id: CreationOptional<string>;
-
-  @ForeignKey(() => User)
-  @AllowNull(false)
-  @Column(DataTypes.UUID)
-  declare user_id: string;
 
   @Column(DataType.STRING)
   declare name: string;
@@ -54,18 +50,27 @@ export class UserBusiness
   @Column(DataType.STRING)
   declare country: string;
 
-  @ForeignKey(() => Collection)
-  @Column(DataTypes.UUID)
-  declare collection_id: string;
+  @Column(DataType.BOOLEAN)
+  declare is_verified: boolean;
 
-  @BelongsTo(() => Collection)
-  declare collection: Collection;
+  @Column(DataType.STRING)
+  declare sync_status: syncStatus;
 
-  @BelongsTo(() => User, { foreignKey: 'user_id', as: 'user' })
-  declare user?: User;
+  @Column(DataType.DATE)
+  declare sync_date?: string;
 
-  @HasOne(() => BusinessVerification)
-  declare verification: BusinessVerification;
+  @BelongsTo(() => User)
+  declare user: User;
+
+  @ForeignKey(() => User)
+  @Column(DataType.UUID)
+  declare user_id: string;
+
+  @BelongsToMany(() => User, () => BusinessUser)
+users: User[];
+
+  @HasMany(() => Branch)
+  declare branches: Branch
 
   @CreatedAt
   declare createdAt: string;

@@ -19,9 +19,10 @@ import 'package:spine/ui/customers/view/customers_view.dart';
 
 import 'package:spine/ui/sales/view/sale_receipt_view.dart';
 import 'package:spine/ui/sales/view/sales_log_view.dart';
+import 'package:spine/ui/user_business/view/select_business_view.dart';
 
 GoRouter router() => GoRouter(
-  initialLocation: Routes.dashboard,
+  initialLocation: Routes.splash,
   routes: [
     GoRoute(
       path: Routes.splash,
@@ -31,6 +32,12 @@ GoRouter router() => GoRouter(
       path: Routes.login,
       builder: (context, state) {
         return LoginView();
+      },
+    ),
+    GoRoute(
+      path: Routes.selectBusiness,
+      builder: (context, state) {
+        return SelectBusinessView();
       },
     ),
     GoRoute(

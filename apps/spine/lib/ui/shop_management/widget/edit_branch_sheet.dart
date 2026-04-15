@@ -5,16 +5,16 @@ import 'package:spine/drift/database.dart';
 import 'package:uuid/uuid.dart';
 import 'package:drift/drift.dart' as drift;
 
-class EditBusinessSheet extends ConsumerStatefulWidget {
-  final BusinessesData? business;
+class EditBranchSheet extends ConsumerStatefulWidget {
+  final BranchData? branch;
 
-  const EditBusinessSheet({super.key, this.business});
+  const EditBranchSheet({super.key, this.branch});
 
   @override
-  ConsumerState<EditBusinessSheet> createState() => _EditBusinessSheetState();
+  ConsumerState<EditBranchSheet> createState() => _EditBranchSheetState();
 }
 
-class _EditBusinessSheetState extends ConsumerState<EditBusinessSheet> {
+class _EditBranchSheetState extends ConsumerState<EditBranchSheet> {
   late TextEditingController _nameController;
   late TextEditingController _phoneController;
   late TextEditingController _addressController;
@@ -24,16 +24,16 @@ class _EditBusinessSheetState extends ConsumerState<EditBusinessSheet> {
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.business?.name ?? '');
+    _nameController = TextEditingController(text: widget.branch?.name ?? '');
     _phoneController = TextEditingController(
-      text: widget.business?.phone ?? '',
+      text: widget.branch?.phone ?? '',
     );
     _addressController = TextEditingController(
-      text: widget.business?.streetAddress ?? '',
+      text: widget.branch?.streetAddress ?? '',
     );
-    _cityController = TextEditingController(text: widget.business?.city ?? '');
+    _cityController = TextEditingController(text: widget.branch?.city ?? '');
     _stateController = TextEditingController(
-      text: widget.business?.state ?? '',
+      text: widget.branch?.state ?? '',
     );
   }
 
@@ -50,7 +50,7 @@ class _EditBusinessSheetState extends ConsumerState<EditBusinessSheet> {
   @override
   Widget build(BuildContext context) {
     final colors = context.theme.colors;
-    final isEditing = widget.business != null;
+    final isEditing = widget.branch != null;
 
     return Material(
       color: Colors.transparent,
@@ -178,7 +178,7 @@ class _EditBusinessSheetState extends ConsumerState<EditBusinessSheet> {
                   if (_nameController.text.isEmpty) return;
 
                   if (isEditing) {
-                    final updated = widget.business!.copyWith(
+                    final updated = widget.branch!.copyWith(
                       name: _nameController.text,
                       phone: _phoneController.text,
                       streetAddress: _addressController.text,
@@ -188,16 +188,17 @@ class _EditBusinessSheetState extends ConsumerState<EditBusinessSheet> {
                     );
                     Navigator.pop(context, updated);
                   } else {
-                    final companion = BusinessesCompanion(
+                    final companion = BranchCompanion(
                       id: drift.Value(const Uuid().v4()),
                       name: drift.Value(_nameController.text),
-                      type: const drift.Value('business'),
                       phone: drift.Value(_phoneController.text),
                       streetAddress: drift.Value(_addressController.text),
                       city: drift.Value(_cityController.text),
                       state: drift.Value(_stateController.text),
                       country: const drift.Value('Nigeria'),
-                      verification: const drift.Value(''),
+                      collectionId: drift.Value(''),
+
+                      isHeadOffice: drift.Value(false),
                       syncStatus: const drift.Value('pending'),
                       createdAt: drift.Value(DateTime.now()),
                       updatedAt: drift.Value(DateTime.now()),

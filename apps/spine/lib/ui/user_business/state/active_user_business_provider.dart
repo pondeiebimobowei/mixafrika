@@ -1,18 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/drift/database.dart';
 
-final activeBusinessesProvider =
-    NotifierProvider<ActiveBusinessesNotifier, BusinessesData?>(
-      ActiveBusinessesNotifier.new,
+final activeBranchProvider =
+    NotifierProvider<ActiveBranchNotifier, BranchData?>(
+      ActiveBranchNotifier.new,
     );
 
-class ActiveBusinessesNotifier extends Notifier<BusinessesData?> {
+class ActiveBranchNotifier extends Notifier<BranchData?> {
   @override
-  BusinessesData? build() {
+  BranchData? build() {
     return null;
   }
 
-  void setBusiness(BusinessesData businesses) {
-    state = businesses;
+  void setBranch(BranchData branch) {
+    state = branch;
   }
 }

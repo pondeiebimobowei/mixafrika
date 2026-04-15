@@ -1,9 +1,8 @@
 import 'package:spine/data/services/models/base_model.dart';
+import 'package:spine/drift/database.dart';
 
-class Businesses extends BaseModel {
+class BusinessMapper extends BaseModel {
   final String id;
-  final String userId;
-  final String collectionId;
   final String name;
   final String type;
   final String phone;
@@ -11,7 +10,7 @@ class Businesses extends BaseModel {
   final String city;
   final String state;
   final String country;
-  final String verification;
+  final bool isVerified;
 
   final String syncDate;
   final String syncStatus;
@@ -20,10 +19,8 @@ class Businesses extends BaseModel {
   final String? updatedAt;
   final String? deletedAt;
 
-  Businesses({
+  BusinessMapper({
     required this.id,
-    required this.userId,
-    required this.collectionId,
     required this.name,
     required this.type,
     required this.phone,
@@ -31,7 +28,7 @@ class Businesses extends BaseModel {
     required this.city,
     required this.state,
     required this.country,
-    required this.verification,
+    required this.isVerified,
 
     required this.syncStatus,
     required this.syncDate,
@@ -48,11 +45,9 @@ class Businesses extends BaseModel {
          updatedAt: updatedAt,
        );
 
-  factory Businesses.fromJson(Map<String, dynamic> json) {
-    return Businesses(
+  factory BusinessMapper.fromJson(Map<String, dynamic> json) {
+    return BusinessMapper(
       id: json['id'] ?? '',
-      userId: json['user_id'] ?? '',
-      collectionId: json['collection_id'] ?? '',
       name: json['name'] ?? '',
       type: json['type'] ?? '',
       phone: json['phone'] ?? '',
@@ -60,7 +55,7 @@ class Businesses extends BaseModel {
       city: json['city'] ?? '',
       state: json['state'] ?? '',
       country: json['country'] ?? '',
-      verification: json['verification'] ?? '',
+      isVerified: json['is_verified'] ?? false,
 
       syncStatus: json['sync_status'] ?? '',
       syncDate: json['sync_date'] ?? '',
@@ -71,10 +66,29 @@ class Businesses extends BaseModel {
     );
   }
 
+  /// Mapper → Drift Data
+  BusinessesData toData() {
+    return BusinessesData(
+      id: id,
+      name: name,
+      type: type,
+      phone: phone,
+      streetAddress: streetAddress,
+      city: city,
+      state: state,
+      country: country,
+      isVerified: isVerified,
+      syncStatus: syncStatus,
+      // syncDate: DateTime.parse(syncDate),
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+      // deletedAt: DateTime.parse(deletedAt!),
+    );
+  }
+
+
   Map<String, dynamic> toJson() => {
     'id': id,
-    'user_id': userId,
-    'collection_id': collectionId,
     'name': name,
     'type': type,
     'phone': phone,
@@ -82,7 +96,7 @@ class Businesses extends BaseModel {
     'city': city,
     'state': state,
     'country': country,
-    'verification': verification,
+    'is_verified': isVerified,
 
     'sync_status': syncStatus,
     'sync_date': syncDate,

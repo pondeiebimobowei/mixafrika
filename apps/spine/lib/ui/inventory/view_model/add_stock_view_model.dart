@@ -14,16 +14,16 @@ class AddStockViewModel extends AutoDisposeNotifier<AddStockState> {
 
   Future<void> _init() async {
     state = state.copyWith(isLoading: true);
-    final business = ref.read(activeBusinessesProvider);
-    if (business != null) {
+    final branch = ref.read(activeBranchProvider);
+    if (branch != null) {
       final products = await ref
           .read(productRepositoryProvider)
-          .getProductsByBusinessId(business.id);
+          .getProductsByBranchId(branch.id);
       state = state.copyWith(products: products, isLoading: false);
     } else {
       state = state.copyWith(
         isLoading: false,
-        errorMessage: 'No active business found',
+        errorMessage: 'No active Business Branch found',
       );
     }
   }
@@ -88,15 +88,15 @@ class AddStockViewModel extends AutoDisposeNotifier<AddStockState> {
 
     try {
       final inventoryRepository = ref.read(inventoryRepositoryProvider);
-      final businessProvider = ref.read(activeBusinessesProvider);
+      final branchProvider = ref.read(activeBranchProvider);
 
-      if (businessProvider == null)
-        throw Exception('Active business not found');
+      if (branchProvider == null)
+        throw Exception('Active branch not found');
 
       // Note: We'll implement recordPurchase in InventoryRepository
       await inventoryRepository.addStock(
         productId: state.selectedProduct!.id,
-        businessId: businessProvider.id,
+        branchId: branchProvider.id,
         pieceQuantity: int.tryParse(state.pieceQuantity) ?? 0,
         totalCost: state.totalCost,
 

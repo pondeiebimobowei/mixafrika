@@ -1,22 +1,22 @@
 import 'package:dio/dio.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/data/services/api/config/base_api_config.dart';
-import 'package:spine/data/services/models/user_business_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:spine/data/services/models/business_model.dart';
 import 'package:spine/drift/database.dart';
 
-class BusinessesApiServices {
-  Future<ApiResponse<List<Businesses>>> getBusinesses() async {
+class BusinessApiServices {
+  Future<ApiResponse<List<BusinessesData>>> getBusinesses() async {
     try {
-      final res = await apiPrivate.get('/user_business');
+      final res = await apiPrivate.get('/business');
 
       return ApiResponse.fromJson(
         res.data,
-        (data) => (data as List).map((e) => Businesses.fromJson(e)).toList(),
+        (data) => (data as List).map((e) => BusinessMapper.fromJson(e).toData()).toList(),
       );
     } on DioException catch (err) {
       if (err.response?.data != null) {
-        return ApiResponse.fromJson(err.response!.data, (_) => <Businesses>[]);
+        return ApiResponse.fromJson(err.response!.data, (_) => <BusinessesData>[]);
       }
 
       return ApiResponse(
@@ -27,29 +27,27 @@ class BusinessesApiServices {
     }
   }
 
-  Future<ApiResponse<BusinessesData>> createBusinesses(
-    BusinessesData businesses,
+  Future<ApiResponse<BusinessesData>> createBusiness(
+    BusinessesData business,
   ) async {
     try {
       final res = await apiPrivate.post(
-        '/user_business',
+        '/business',
         data: {
-          'id': businesses.id,
-          'name': businesses.name,
-          'type': businesses.type,
-          'phone': businesses.phone,
-          'streetAddress': businesses.streetAddress,
-          'city': businesses.city,
-          'state': businesses.state,
-          'country': businesses.country,
-          'verification': businesses.verification,
+          'id': business.id,
+          'name': business.name,
+          'phone': business.phone,
+          'streetAddress': business.streetAddress,
+          'city': business.city,
+          'state': business.state,
+          'country': business.country,
 
-          'syncStatus': businesses.syncStatus,
-          'syncDate': businesses.syncDate,
+          'syncStatus': business.syncStatus,
+          'syncDate': business.syncDate,
 
-          'createdAt': businesses.createdAt,
-          'updatedAt': businesses.updatedAt,
-          'deletedAt': businesses.deletedAt,
+          'createdAt': business.createdAt,
+          'updatedAt': business.updatedAt,
+          'deletedAt': business.deletedAt,
         },
       );
 
@@ -74,4 +72,4 @@ class BusinessesApiServices {
   }
 }
 
-final businessesApiServiceProvider = Provider((ref) => BusinessesApiServices());
+final businessApiServiceProvider = Provider((ref) => BusinessApiServices());

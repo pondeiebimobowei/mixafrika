@@ -573,20 +573,20 @@ class _SearchSheetState extends ConsumerState<_SearchSheet> {
   }
 
   Future<void> _loadAllProducts() async {
-    final activeBusiness = ref.read(activeBusinessesProvider);
+    final activeBranch = ref.read(activeBranchProvider);
     final inventoryProvider = await ref
         .read(inventoryRepositoryProvider)
-        .getInventoryItems(activeBusiness?.id ?? '');
+        .getInventoryItems(activeBranch?.id ?? '');
     setState(
       () => _searchResults = inventoryProvider.map((e) => e.product).toList(),
     );
   }
 
   void _onSearchChanged(String query) async {
-    final activeBusinessProvider = ref.read(activeBusinessesProvider);
+    final activeBranch = ref.read(activeBranchProvider);
     final inventoryProvider = await ref
         .read(inventoryRepositoryProvider)
-        .getInventoryItems(activeBusinessProvider?.id ?? '');
+        .getInventoryItems(activeBranch?.id ?? '');
     final products = inventoryProvider.map((e) => e.product).toList();
 
     setState(() {

@@ -15,6 +15,8 @@ export const mockUserSeed: () => Promise<IUser[]> = (async () => {
       is_email_verified: true,
       user_name: "beastTrader",
       credit_score: 10,
+      is_verified: true,
+      
       credit_score_status: 'Good',
       email: 'trader@mixafrika.com',
       password: await bcrypt.hash('password123', 10),

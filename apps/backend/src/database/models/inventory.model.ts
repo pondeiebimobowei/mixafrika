@@ -13,10 +13,10 @@ import {
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { IInventory } from '@shared/shared/src/types/inventory';
-import { UserBusiness } from './user-business.model';
 import { Product } from './product.model';
 import { Batch } from './batch.model';
 import { syncStatus } from '@shared/shared/src/enums';
+import { Branch } from './branch.model';
 
 @Table({ tableName: 'inventory' })
 export class Inventory
@@ -26,13 +26,16 @@ export class Inventory
     @Column(DataTypes.UUID)
     declare id: CreationOptional<string>;
 
-    @ForeignKey(() => UserBusiness)
-    @Column(DataType.STRING)
-    declare business_id: string;
+    @Column(DataType.INTEGER)
+    declare quantity: number;
 
     @ForeignKey(() => Product)
     @Column(DataType.STRING)
     declare product_id: string;
+
+    @ForeignKey(() => Branch)
+    @Column(DataType.STRING)
+    declare branch_id: string;
 
     @ForeignKey(() => Batch)
     @Column(DataType.STRING)
@@ -41,21 +44,18 @@ export class Inventory
     @BelongsTo(() => Product, 'product_id')
     declare product: Product;
 
-    @BelongsTo(() => UserBusiness, 'business_id')
-    declare business: UserBusiness;
+    @BelongsTo(() => Branch, 'business_id')
+    declare business: Branch;
 
     @BelongsTo(() => Batch, 'batch_id')
     declare batch: Batch;
 
 
-    @Column(DataType.INTEGER)
-    declare quantity: number;
-
     @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
-    declare syncStatus: syncStatus;
+    declare sync_status: syncStatus;
 
     @Column({ type: DataType.STRING, allowNull: false })
-    declare syncDate: string;
+    declare sync_date: string;
 
 
 

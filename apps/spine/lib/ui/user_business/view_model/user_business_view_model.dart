@@ -1,39 +1,39 @@
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:spine/data/repositories/user_business/user_business_repository.dart';
-import 'package:spine/data/repositories/user_business/user_business_repository_remote.dart';
+import 'package:spine/data/repositories/branch/branch_repository.dart';
+import 'package:spine/data/repositories/branch/branch_repository_remote.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
 
-class BusinessesViewModel
-    extends AutoDisposeAsyncNotifier<List<BusinessesData>> {
+class BranchViewModel
+    extends AutoDisposeAsyncNotifier<List<BranchData>> {
   @override
-  Future<List<BusinessesData>> build() async {
-    ref.read(businessesRepositoryRemoteProvider).getBusinesses();
-    final businesses = await getBusinesses();
-    if (businesses.isNotEmpty) {
+  Future<List<BranchData>> build() async {
+    ref.read(branchRepositoryRemoteProvider).getBranches();
+    final branch = await getBranches();
+    if (branch.isNotEmpty) {
       ref
-          .read(activeBusinessesProvider.notifier)
-          .setBusiness(businesses.first);
+          .read(activeBranchProvider.notifier)
+          .setBranch(branch.first);
     }
-    return businesses;
+    return branch;
   }
 
-  Future<ApiResponse<void>> createBusiness() async {
+  Future<ApiResponse<void>> createBranch() async {
     final res = await ref
-        .read(businessesRepositoryProvider)
-        .createBusinesses(BusinessesCompanion(name: Value('userId')));
+        .read(branchRepositoryProvider)
+        .createBranch(BranchCompanion(name: Value('userId')));
     return res;
   }
 
-  Future<List<BusinessesData>> getBusinesses() async {
-    return await ref.read(businessesRepositoryProvider).getBusinesses();
+  Future<List<BranchData>> getBranches() async {
+    return await ref.read(branchRepositoryProvider).getBranches();
   }
 }
 
-final businessesViewModelProvider =
+final branchViewModelProvider =
     AutoDisposeAsyncNotifierProvider<
-      BusinessesViewModel,
-      List<BusinessesData>
-    >(BusinessesViewModel.new);
+      BranchViewModel,
+      List<BranchData>
+    >(BranchViewModel.new);

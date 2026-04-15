@@ -1,0 +1,90 @@
+import 'package:spine/data/services/models/base_model.dart';
+
+class Branch extends BaseModel {
+  final String id;
+  final String name;
+  final String phone;
+  final String streetAddress;
+  final String city;
+  final String state;
+  final String country;
+
+  final String collectionId;
+  final String businessId;
+
+  final String syncDate;
+  final String syncStatus;
+
+  final String? createdAt;
+  final String? updatedAt;
+  final String? deletedAt;
+
+  Branch({
+    required this.id,
+    required this.name,
+    required this.phone,
+    required this.streetAddress,
+    required this.city,
+    required this.state,
+    required this.country,
+
+    required this.collectionId,
+    required this.businessId,
+
+    required this.syncStatus,
+    required this.syncDate,
+
+    required this.createdAt,
+    required this.updatedAt,
+    required this.deletedAt,
+  }) : super(
+         id: id,
+         createdAt: createdAt,
+         deletedAt: deletedAt,
+         syncDate: syncDate,
+         syncStatus: syncStatus,
+         updatedAt: updatedAt,
+       );
+
+  factory Branch.fromJson(Map<String, dynamic> json) {
+    return Branch(
+      id: json['id'] ?? '',
+      name: json['name'] ?? '',
+      phone: json['phone'] ?? '',
+      streetAddress: json['street_address'] ?? '',
+      city: json['city'] ?? '',
+      state: json['state'] ?? '',
+      country: json['country'] ?? '',
+      
+      collectionId: json['collection_id'] ?? '',
+      businessId: json['business_id'] ?? '',
+
+      syncStatus: json['sync_status'] ?? '',
+      syncDate: json['sync_date'] ?? '',
+
+      createdAt: json['created_at'] ?? '',
+      updatedAt: json['updated_at'] ?? '',
+      deletedAt: json['deleted_at'] ?? '',
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'phone': phone,
+    'street_address': streetAddress,
+    'city': city,
+    'state': state,
+    'country': country,
+
+    'collection_id': collectionId,
+    'business_id': businessId,
+
+    'sync_status': syncStatus,
+    'sync_date': syncDate,
+
+    'created_at': createdAt,
+    'updated_at': updatedAt,
+    'deleted_at': deletedAt,
+  };
+}
