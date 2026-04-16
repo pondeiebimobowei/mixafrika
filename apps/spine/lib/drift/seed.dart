@@ -24,7 +24,7 @@ final userBiz1 = BusinessesData(
 final biz1branch1 = BranchData(
   id: Uuid().v4(),
   businessId: userBiz1.id,
-  name: 'Chicken Republic Main Branch',
+  name: 'CR Main Branch',
   isHeadOffice: true,
   phone: '08023467856',
   streetAddress: '123 Main St',
@@ -41,7 +41,7 @@ final biz1branch1 = BranchData(
 final biz1branch2 = BranchData(
   id: Uuid().v4(),
   businessId: userBiz1.id,
-  name: 'Chicken Republic Gwarimpa Branch',
+  name: 'CR Gwarimpa Branch',
   isHeadOffice: false,
   phone: '08023467856',
   streetAddress: '123 Main St',
@@ -69,6 +69,41 @@ final userBiz2 = BusinessesData(
   syncStatus: 'pending',
   syncDate: DateTime.now(),
 
+
+  createdAt: DateTime.now(),
+  updatedAt: DateTime.now(),
+);
+
+
+final biz2branch1 = BranchData(
+  id: Uuid().v4(),
+  businessId: userBiz2.id,
+  name: 'BO Main Branch',
+  isHeadOffice: true,
+  phone: '08023467856',
+  streetAddress: '123 Main St',
+  city: 'Gwarimpa',
+  state: 'Abuja',
+  country: 'Nigeria',
+  syncStatus: 'synced',
+  syncDate: DateTime.now(),
+
+  createdAt: DateTime.now(),
+  updatedAt: DateTime.now(),
+);
+
+final biz2branch2 = BranchData(
+  id: Uuid().v4(),
+  businessId: userBiz2.id,
+  name: 'BO Gwarimpa Branch',
+  isHeadOffice: false,
+  phone: '08023467856',
+  streetAddress: '123 Main St',
+  city: 'Gwarimpa',
+  state: 'Abuja',
+  country: 'Nigeria',
+  syncStatus: 'synced',
+  syncDate: DateTime.now(),
 
   createdAt: DateTime.now(),
   updatedAt: DateTime.now(),

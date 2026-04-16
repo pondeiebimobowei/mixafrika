@@ -606,7 +606,7 @@ class ShopManagementView extends ConsumerWidget {
       builder: (context) => EditBranchSheet(branch: branch),
     ).then((result) {
       if (result != null) {
-        if (result is BranchCompanion) {
+        if (result is BranchData) {
           viewModel.createBranch(result);
         } else if (result is BranchData) {
           viewModel.updateBranch(result);

@@ -10,7 +10,7 @@ class BranchRepository implements BranchRepositoryAbstract {
 
   @override
   Future<ApiResponse<void>> createBranch(
-    BranchCompanion branch,
+    BranchData branch,
   ) async {
     try {
       await _database.into(_database.branch).insert(branch);
@@ -56,12 +56,11 @@ class BranchRepository implements BranchRepositoryAbstract {
   }
 
   @override
-  Future<List<BranchData>> getBranches() async {
-    List<BranchData> allItems = await _database
-        .select(_database.branch)
-        .get();
-
-    return allItems.map((e) => BranchData.fromJson(e.toJson())).toList();
+  Future<List<BranchData>> getBranchesByBusinessId(String businessId) async {
+    final query = _database.select(_database.branch)
+      ..where((t) => t.businessId.equals(businessId));
+    final res = await query.get();
+    return res;
   }
 
   @override

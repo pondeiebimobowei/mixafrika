@@ -6,8 +6,8 @@ abstract class BranchRepositoryAbstract {
 
   Future<BranchData> getBranchById(String id);
 
-  Future<ApiResponse<void>> createBranch(BranchCompanion branch);
+  Future<ApiResponse<void>> createBranch(BranchData branch);
   Future<ApiResponse<void>> updateBranch(BranchData branch);
-  Future<List<BranchData>> getBranches();
+  Future<List<BranchData>> getBranchesByBusinessId(String businessId);
   Future<List<BankDetail>> getBankDetailsByBranchId(String branchId);
 }

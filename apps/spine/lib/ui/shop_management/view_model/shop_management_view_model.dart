@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/repositories/branch/branch_repository.dart';
+import 'package:spine/data/shared_preference.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
 
@@ -8,7 +9,6 @@ class ShopManagementState {
   final bool isLoading;
   final String? error;
 
-  // Non-functional settings state (simulated)
   final bool batchTrackingEnabled;
   final bool expiryTrackingEnabled;
   final String defaultUnit;
@@ -69,17 +69,18 @@ class ShopManagementViewModel extends StateNotifier<ShopManagementState> {
 
   Future<void> loadBranches() async {
     state = state.copyWith(isLoading: true);
+    final businessId = await AppPreferences.getActiveBusinessId();
     try {
       final branch = await ref
           .read(branchRepositoryProvider)
-          .getBranches();
+          .getBranchesByBusinessId(businessId!);
       state = state.copyWith(branch: branch, isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 
-  Future<void> createBranch(BranchCompanion branch) async {
+  Future<void> createBranch(BranchData branch) async {
     final result = await ref
         .read(branchRepositoryProvider)
         .createBranch(branch);

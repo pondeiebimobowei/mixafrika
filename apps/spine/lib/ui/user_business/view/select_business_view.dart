@@ -129,7 +129,12 @@ class SelectBusinessView extends ConsumerWidget {
               ),
               FButton(
                 variant: FButtonVariant.ghost,
-                onPress: () => context.go(Routes.dashboard),
+                onPress: () async {
+                  await ref.read(selectBusinessViewModelProvider.notifier).selectBusiness(business.id);
+                  if (context.mounted) {
+                    context.go(Routes.dashboard);
+                  }
+                },
                 child: const Icon(FIcons.chevronRight),
               ),
             ],

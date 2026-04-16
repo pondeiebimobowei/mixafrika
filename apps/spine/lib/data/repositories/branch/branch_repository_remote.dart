@@ -1,9 +1,8 @@
 import 'package:spine/data/repositories/branch/branch_repository_abstract.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
-import 'package:spine/data/services/api/branch_api_services.dart';
+import 'package:spine/data/services/api/branch/branch_api_services.dart';
 import 'package:spine/drift/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
 
 class BranchRepositoryRemote implements BranchRepositoryAbstract {
   BranchRepositoryRemote({
@@ -12,31 +11,13 @@ class BranchRepositoryRemote implements BranchRepositoryAbstract {
   }) : _database = database,
        _apiService = apiService;
 
-  final AppDatabase _database;
+  final AppDatabase _database; 
   final BranchApiServices _apiService;
 
   @override
   Future<ApiResponse<BranchData>> createBranch(
-    BranchCompanion branch,
+    BranchData branch,
   ) async {
-    BranchData branch = BranchData(
-      id: Uuid().v4(),
-      name: 'Trader Business',
-      phone: '08023467856',
-      streetAddress: '123 Main St',
-      city: 'Gwarimpa',
-      state: 'Abuja',
-      country: 'Nigeria',
-      isHeadOffice: true,
-      businessId: '',
-      collectionId: '',
-
-      syncStatus: '',
-      syncDate: DateTime.now(),
-
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
 
     final res = await _apiService.createBranch(branch);
 
@@ -49,20 +30,17 @@ class BranchRepositoryRemote implements BranchRepositoryAbstract {
 
   @override
   Future<BranchData> getBranchById(String id) async {
-    final res = await _database.select(_database.branch).get();
-
-    return BranchData.fromJson(res.first.toJson());
+    final res = await _apiService.getBranchById(id);
+    return res.data;
   }
+
 
   @override
-  Future<List<BranchData>> getBranches() async {
-    List<BranchData> allItems = await _database
-        .select(_database.branch)
-        .get();
+  Future<List<BranchData>> getBranchesByBusinessId(String businessId) async {
+    final res = await _apiService.getBranchesByBusinessId(businessId);
 
-    return allItems.map((e) => BranchData.fromJson(e.toJson())).toList();
+    return res.data;
   }
-
   @override
   Future<void> deleteBranch(String id) async {
     await (_database.delete(

@@ -1,6 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:spine/data/repositories/branch/branch_repository.dart';
 import 'package:spine/data/repositories/business/business_repository.dart';
 import 'package:spine/data/repositories/business/business_repository_remote.dart';
+import 'package:spine/data/shared_preference.dart';
+import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
 import 'package:spine/ui/user_business/state/select_business_state.dart';
 
 class SelectBusinessViewModel extends AutoDisposeAsyncNotifier<SelectBusinessState> {
@@ -39,16 +42,27 @@ class SelectBusinessViewModel extends AutoDisposeAsyncNotifier<SelectBusinessSta
     }
   }
 
-  // Future<void> selectBusiness(String businessId) async {
-  //   final businessRepository = ref.read(businessRepositoryProvider);
+  Future<void> selectBusiness(String businessId) async {
+    final branchRepository = ref.read(branchRepositoryProvider);
 
-  //   // ✅ Save active business context
-  //   await businessRepository.setActiveBusiness(businessId);
+    // ✅ 1. Save active business context
+    await AppPreferences.saveActiveBusinessId(businessId);
 
-  //   // ✅ Trigger full sync for selected business (important)
-  //   // DO NOT block navigation
-  //   ref.read(syncServiceProvider).syncBusiness(businessId);
-  // }
+    // ✅ 2. Find branches and select default
+    final branches = await branchRepository.getBranchesByBusinessId(businessId);
+    if (branches.isNotEmpty) {
+      // Prioritize Head Office, else pick first
+      final headOffice = branches.where((b) => b.isHeadOffice).firstOrNull ?? branches.first;
+      await AppPreferences.saveActiveBranchId(headOffice.id);
+      
+      // ✅ Update active branch provider for immediate UI feedback
+      ref.read(activeBranchProvider.notifier).setBranch(headOffice);
+    }
+
+    // ✅ 3. Trigger full sync for selected business (important)
+    // TODO: implement syncServiceProvider if needed
+    // ref.read(syncServiceProvider).syncBusiness(businessId);
+  }
 }
 
 final selectBusinessViewModelProvider =

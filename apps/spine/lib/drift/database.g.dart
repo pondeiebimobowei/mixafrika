@@ -1861,7 +1861,7 @@ class $BranchTable extends Branch with TableInfo<$BranchTable, BranchData> {
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'UNIQUE REFERENCES businesses (id)',
+      'REFERENCES businesses (id)',
     ),
   );
   static const VerificationMeta _collectionIdMeta = const VerificationMeta(

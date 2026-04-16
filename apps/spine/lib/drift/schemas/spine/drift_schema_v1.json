@@ -496,9 +496,9 @@
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
-            "defaultConstraints": "UNIQUE REFERENCES businesses (id)",
+            "defaultConstraints": "REFERENCES businesses (id)",
             "dialectAwareDefaultConstraints": {
-              "sqlite": "UNIQUE REFERENCES businesses (id)"
+              "sqlite": "REFERENCES businesses (id)"
             },
             "default_dart": null,
             "default_client_dart": null,
@@ -513,8 +513,7 @@
                   "on_update": null,
                   "on_delete": null
                 }
-              },
-              "unique"
+              }
             ]
           },
           {
@@ -4640,7 +4639,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"branch\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"name\" TEXT NOT NULL, \"is_head_office\" INTEGER NOT NULL DEFAULT 0 CHECK (\"is_head_office\" IN (0, 1)), \"phone\" TEXT NOT NULL, \"street_address\" TEXT NOT NULL, \"city\" TEXT NOT NULL, \"state\" TEXT NOT NULL, \"country\" TEXT NOT NULL, \"business_id\" TEXT NOT NULL UNIQUE REFERENCES businesses (id), \"collection_id\" TEXT NULL REFERENCES collection (id), PRIMARY KEY (\"id\"));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"branch\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"name\" TEXT NOT NULL, \"is_head_office\" INTEGER NOT NULL DEFAULT 0 CHECK (\"is_head_office\" IN (0, 1)), \"phone\" TEXT NOT NULL, \"street_address\" TEXT NOT NULL, \"city\" TEXT NOT NULL, \"state\" TEXT NOT NULL, \"country\" TEXT NOT NULL, \"business_id\" TEXT NOT NULL REFERENCES businesses (id), \"collection_id\" TEXT NULL REFERENCES collection (id), PRIMARY KEY (\"id\"));"
         }
       ]
     },
