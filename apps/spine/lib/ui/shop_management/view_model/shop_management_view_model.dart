@@ -126,6 +126,14 @@ class ShopManagementViewModel extends StateNotifier<ShopManagementState> {
       state = state.copyWith(transferPaymentEnabled: value);
   void toggleNotification(bool value) =>
       state = state.copyWith(notificationEnabled: value);
+
+  Future<void> logout() async {
+    // 1. Clear local storage (business, branch, and token)
+    await AppPreferences.clearAll();
+
+    // 2. Reset global providers
+    ref.read(activeBranchProvider.notifier).setBranch(null);
+  }
 }
 
 final shopManagementViewModelProvider =

@@ -12,7 +12,7 @@ class ActiveBranchNotifier extends Notifier<BranchData?> {
     return null;
   }
 
-  void setBranch(BranchData branch) {
+  void setBranch(BranchData? branch) {
     state = branch;
   }
 }

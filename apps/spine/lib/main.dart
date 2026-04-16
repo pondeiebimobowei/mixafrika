@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:spine/routing/router.dart';
 import 'package:spine/theme/app-theme.dart';
@@ -18,12 +17,12 @@ class Application extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = ref.watch(themeProvider);
-
+    final router = ref.watch(routerProvider);
 
     return MaterialApp.router(
       title: 'Spine',
       debugShowCheckedModeBanner: false,
-      routerConfig: router(),
+      routerConfig: router,
       supportedLocales: FLocalizations.supportedLocales,
       localizationsDelegates: const [...FLocalizations.localizationsDelegates],
       theme: theme.toApproximateMaterialTheme(),
@@ -34,41 +33,4 @@ class Application extends ConsumerWidget {
       ),
     );
   }
-}
-
-class Example extends StatefulWidget {
-  const Example({super.key});
-
-  @override
-  State<Example> createState() => _ExampleState();
-}
-
-class _ExampleState extends State<Example> {
-  int _count = 0;
-
-  @override
-  Widget build(BuildContext context) => FScaffold(
-    child: Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        spacing: 10,
-        children: [
-          Text('Count: $_count'),
-          FButton(
-            onPress: () => setState(() => _count++),
-            suffix: const Icon(FIcons.chevronsUp),
-            child: Text(
-              'Increases',
-              style: TextStyle(color: context.theme.colors.primary),
-            ),
-          ),
-          const SizedBox(height: 20),
-          FButton(
-            onPress: () => context.go('/splash'),
-            child: const Text('Go to Splash'),
-          ),
-        ],
-      ),
-    ),
-  );
 }

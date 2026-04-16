@@ -3,6 +3,7 @@ import 'package:forui/forui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spine/drift/database.dart';
+import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/shop_management/view_model/shop_management_view_model.dart';
 import 'package:spine/ui/shop_management/widget/edit_branch_sheet.dart';
 import 'package:spine/widget/icon_widget.dart';
@@ -42,10 +43,6 @@ class ShopManagementView extends ConsumerWidget {
         child: state.isLoading
             ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 24,
-                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -157,6 +154,14 @@ class ShopManagementView extends ConsumerWidget {
                         'Export data or manage cloud backup',
                         Icons.backup_outlined,
                         () {},
+                      ),
+                      _buildActionTile(
+                        context,
+                        'Logout',
+                        'Sign out of your account',
+                        Icons.logout,
+                        () => _showLogoutConfirmation(context, viewModel),
+                        isDestructive: true,
                       ),
                     ]),
                     const SizedBox(height: 60),
@@ -534,9 +539,11 @@ class ShopManagementView extends ConsumerWidget {
     String title,
     String subtitle,
     IconData icon,
-    VoidCallback onTap,
-  ) {
+    VoidCallback onTap, {
+    bool isDestructive = false,
+  }) {
     final colors = context.theme.colors;
+    final tileColor = isDestructive ? colors.error : colors.primary;
     return InkWell(
       onTap: onTap,
       child: Padding(
@@ -550,13 +557,13 @@ class ShopManagementView extends ConsumerWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    colors.primary.withValues(alpha: 0.15),
-                    colors.primary.withValues(alpha: 0.05),
+                    tileColor.withValues(alpha: 0.15),
+                    tileColor.withValues(alpha: 0.05),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, size: 20, color: colors.primary),
+              child: Icon(icon, size: 20, color: tileColor),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -565,10 +572,11 @@ class ShopManagementView extends ConsumerWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 15,
                       letterSpacing: -0.3,
+                      color: isDestructive ? colors.error : null,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -738,6 +746,39 @@ class ShopManagementView extends ConsumerWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showLogoutConfirmation(
+    BuildContext context,
+    ShopManagementViewModel viewModel,
+  ) {
+    final colors = context.theme.colors;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: colors.background,
+        title: const Text('Confirm Logout'),
+        content: const Text('Are you sure you want to log out? This will clear your session data.'),
+        actions: [
+          FButton(
+            variant: FButtonVariant.ghost,
+            onPress: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          FButton(
+            variant: FButtonVariant.destructive,
+            onPress: () async {
+              Navigator.pop(context);
+              await viewModel.logout();
+              if (context.mounted) {
+                context.go(Routes.login);
+              }
+            },
+            child: const Text('Logout'),
+          ),
+        ],
       ),
     );
   }
