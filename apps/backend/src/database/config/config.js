@@ -39,7 +39,13 @@ const production = {
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     dialect: process.env.DB_DIALECT,
-    seederStorage: 'sequelize'
+    seederStorage: 'sequelize',
+    dialectOptions: {
+      ssl: {
+          require: true,
+          rejectUnauthorized: false,
+      }
+  }
 }
 
 module.exports = {
