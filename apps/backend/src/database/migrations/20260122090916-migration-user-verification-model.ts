@@ -22,16 +22,32 @@ module.exports = {
 
         user_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(VerificationStatus)]} },
-        id_type: { type: Sequelize.STRING, allowNull: false },
+        type: { type: Sequelize.STRING, allowNull: false },
         id_number: { type: Sequelize.STRING, allowNull: false },
-        id_image_front: { type: Sequelize.STRING, allowNull: false },
-        id_image_back: { type: Sequelize.STRING, allowNull: false },
+        id_image_front_url: { type: Sequelize.STRING, allowNull: false },
+        id_image_back_url: { type: Sequelize.STRING, allowNull: false },
         rejection_reason: { type: Sequelize.STRING, allowNull: false },
-        reviewed_by_id: { type: Sequelize.UUID, allowNull: true, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        reviewed_by: { type: Sequelize.UUID, allowNull: true, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         reviewed_at: {
+          allowNull: true,
+          type: Sequelize.DATE,
+        },
+        submitted_at: {
           allowNull: false,
           type: Sequelize.DATE,
           defaultValue: Sequelize.NOW,
+        },
+
+        sync_status: { 
+          type: Sequelize.STRING, 
+          allowNull: false, 
+          defaultValue: 'pending' 
+        },
+        
+        sync_date: { 
+          type: Sequelize.DATE, 
+          allowNull: true, 
+          defaultValue: Sequelize.NOW 
         },
 
         createdAt: {

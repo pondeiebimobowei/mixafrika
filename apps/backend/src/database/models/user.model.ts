@@ -12,6 +12,7 @@ import {
   BeforeCreate,
   PrimaryKey,
   Default,
+  BelongsToMany,
 } from 'sequelize-typescript';
 import { Wallet } from './wallet.model';
 import { Savings } from './saving.model';
@@ -29,6 +30,8 @@ import { FundingApplication } from './funding_application';
 import { LoanHistory } from './loan-history.model';
 import { BankCard } from './bank-card.model';
 import { UserVerification } from './user-verification';
+import { Branch } from './branch.model';
+import { BusinessUser } from './business-user';
 
 @Table({
   tableName: 'user',
@@ -62,6 +65,9 @@ export class User extends Model<IUser> implements IUser {
 
   @Column({ type: DataType.BOOLEAN, allowNull: false })
   declare is_email_verified: boolean;
+
+  @Column({ type: DataType.BOOLEAN, allowNull: false })
+  declare is_verified: boolean;
 
   @Column({ type: DataType.DECIMAL(5, 2), allowNull: false })
   declare credit_score: number;
@@ -118,8 +124,11 @@ export class User extends Model<IUser> implements IUser {
   @HasMany(() => Investment)
   declare investments: Investment[];
 
-  @HasOne(() => UserBusiness, { foreignKey: 'user_id', as: 'user_business' })
+  @HasMany(() => UserBusiness, { foreignKey: 'user_id', as: 'user_business' })
   declare user_business?: UserBusiness;
+
+  @HasMany(() => Branch, { foreignKey: 'user_id', as: 'branch' })
+  declare branch?: Branch;
 
   @HasMany(() => Notification)
   declare notifications: Notification[];
@@ -132,4 +141,7 @@ export class User extends Model<IUser> implements IUser {
 
   @HasMany(() => Feed)
   declare feeds: Feed[];
+
+  @BelongsToMany(() => UserBusiness, () => BusinessUser)
+  declare businesses: UserBusiness[];
 }

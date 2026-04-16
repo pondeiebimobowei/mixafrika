@@ -14,7 +14,7 @@ class User extends BaseModel{
   final String creditScore;
   final String creditScoreStaus;
   final String? verification;
-  final String? businessVerification;
+  final String? branchVerification;
   final String? trader;
   final String syncDate;
   final String syncStatus;
@@ -37,7 +37,7 @@ class User extends BaseModel{
     required this.creditScore,
     required this.creditScoreStaus,
     required this.verification,
-    required this.businessVerification,
+    required this.branchVerification,
     required this.trader,
     required this.syncStatus,
     required this.syncDate,
@@ -61,7 +61,7 @@ class User extends BaseModel{
       creditScore: json['credit_score'] ?? '',
       creditScoreStaus: json['credit_score_staus'] ?? '',
       verification: json['verification'] ?? '',
-      businessVerification: json['business_verification'] ?? '',
+      branchVerification: json['branch_verification'] ?? '',
       trader: json['trader'] ?? '',
       syncDate: json['sync_date'] ?? '',
       syncStatus: json['sync_status'] ?? '',
@@ -85,7 +85,7 @@ class User extends BaseModel{
     'credit_score': creditScore,
     'credit_score_staus': creditScoreStaus,
     'verification': verification,
-    'business_verification': businessVerification,
+    'branch_verification': branchVerification,
     'trader': trader,
     'sync_date': syncDate,
     'sync_status': syncStatus,

@@ -16,7 +16,7 @@ import {
 import { ICluster } from '@shared/shared/src/types/cluster';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { FundingApplication } from './funding_application';
-import { Duration } from '@shared/shared/src/enums';
+import { Duration, syncStatus } from '@shared/shared/src/enums';
 import { Collection } from './collection.model';
 
 @Table({ tableName: 'cluster' })
@@ -64,6 +64,13 @@ export class Cluster extends Model<ICluster> implements ICluster {
 
   @Column(DataType.STRING)
   declare description: string;
+  
+  @Column(DataType.DATE)
+  declare sync_date: string;
+
+  @Column(DataType.STRING)
+  declare sync_status: syncStatus;
+
 
   @HasOne(() => FundingApplication)
   declare application: FundingApplication;

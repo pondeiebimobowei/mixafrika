@@ -25,18 +25,30 @@ export class SalesItem
     @Column(DataTypes.UUID)
     declare id: CreationOptional<string>;
 
-    @ForeignKey(() => Product)
     @Column(DataType.STRING)
-    declare product_id: string;
+    declare name: string;
 
     @Column(DataType.INTEGER)
     declare quantity: number;
+
+    @Column(DataType.STRING)
+    declare type: string;
 
     @Column(DataType.INTEGER)
     declare unit_price: number;
 
     @Column(DataType.INTEGER)
+    declare cost_price: number;
+    
+    @Column(DataType.INTEGER)
     declare total: number;
+
+    @ForeignKey(() => Product)
+    @Column(DataType.STRING)
+    declare product_id: string;
+
+    @Column(DataType.STRING)
+    declare description: string;
 
     @ForeignKey(() => Sales)
     @Column(DataType.STRING)
@@ -49,10 +61,10 @@ export class SalesItem
     declare sale: Sales;
 
     @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
-    declare syncStatus: syncStatus;
+    declare sync_status: syncStatus;
 
     @Column({ type: DataType.STRING, allowNull: false })
-    declare syncDate: string;
+    declare sync_date: string;
 
 
 

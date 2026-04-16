@@ -2,17 +2,18 @@ import { VerificationStatus } from "../enums";
 import { type BaseModel } from "./base-model-type";
 
 export interface IUserVerification extends BaseModel {
-  user_id: string;
-
-  status: VerificationStatus;
-
-  id_type: string;
+  
+  type: string,
   id_number: string;
-  id_image_front: string;
-  id_image_back?: string;
-
+  id_image_front_url: string;
+  id_image_back_url?: string;
+  status: VerificationStatus;
   rejection_reason: string;
-
-  reviewed_by_id: string;
-  reviewed_at: string;
+  submitted_at: string,
+  
+  
+  
+  user_id: string;
+  reviewed_by: string;
+  reviewed_at?: string;
 }

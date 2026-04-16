@@ -3,7 +3,7 @@ import 'package:spine/drift/database.dart';
 import 'package:spine/data/repositories/inventory/inventory_repository.dart';
 import 'package:spine/data/repositories/inventory/stock_transfer_repository.dart';
 import 'package:spine/ui/inventory/state/stock_transfer_state.dart';
-import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
+import 'package:spine/ui/business/state/active_business_provider.dart';
 
 class StockTransferViewModel
     extends AutoDisposeFamilyNotifier<StockTransferState, String> {
@@ -19,17 +19,17 @@ class StockTransferViewModel
     final inventoryRepo = ref.read(inventoryRepositoryProvider);
     final inventoryItem = await inventoryRepo.getInventoryItemById(arg);
 
-    final currentBusiness = ref.read(activeBusinessesProvider);
-    if (currentBusiness == null) {
+    final currentBranch = ref.read(activeBranchProvider);
+    if (currentBranch == null) {
       state = state.copyWith(
         isLoading: false,
-        errorMessage: 'No active business',
+        errorMessage: 'No active branch',
       );
       return;
     }
 
     final transferRepo = ref.read(stockTransferRepositoryProvider);
-    final branches = await transferRepo.getOtherBranches(currentBusiness.id);
+    final branches = await transferRepo.getOtherBranches(currentBranch.id);
 
     state = state.copyWith(
       product: inventoryItem?.product,
@@ -39,7 +39,7 @@ class StockTransferViewModel
     );
   }
 
-  void selectBranch(BusinessesData branch) {
+  void selectBranch(BranchData branch) {
     state = state.copyWith(selectedBranch: branch);
   }
 
@@ -68,7 +68,7 @@ class StockTransferViewModel
     state = state.copyWith(isLoading: true, errorMessage: null);
 
     try {
-      final currentBusiness = ref.read(activeBusinessesProvider);
+      final currentBranch = ref.read(activeBranchProvider);
       final transferRepo = ref.read(stockTransferRepositoryProvider);
 
       // For now, we'll use a dummy user ID or get it from auth state if available
@@ -76,7 +76,7 @@ class StockTransferViewModel
 
       await transferRepo.executeTransfer(
         productId: arg,
-        fromBranchId: currentBusiness!.id,
+        fromBranchId: currentBranch!.id,
         toBranchId: state.selectedBranch!.id,
         quantity: qty,
         reason: state.reason,

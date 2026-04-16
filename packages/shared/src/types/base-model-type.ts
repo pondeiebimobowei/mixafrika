@@ -10,6 +10,6 @@ export interface BaseModel {
 
 
 export interface SyncableModel {
-    syncStatus: syncStatus;
-    syncDate: string;
+    sync_status: syncStatus;
+    sync_date?: string;
 }

@@ -291,7 +291,7 @@ class CheckoutView extends ConsumerWidget {
                     (state.selectedPaymentMethod?.type == PaymentMethodType.multiPay &&
                      state.selectedPaymentMethod!.payments.any((p) => p.method == PaymentMethodType.transfer))) ...[
                   Text(
-                    'BUSINESS BANK DETAILS',
+                    'BUSINESS BRANCH BANK DETAILS',
                     style: TextStyle(
                       color: colors.mutedForeground,
                       fontSize: 12,
@@ -300,21 +300,21 @@ class CheckoutView extends ConsumerWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  if (state.businessBankDetails.isEmpty)
+                  if (state.branchBankDetails.isEmpty)
                     const Text(
-                      'No bank details available for this business.',
+                      'No bank details available for this branch.',
                       style: TextStyle(color: Colors.redAccent, fontSize: 13),
                     )
                   else ...[
-                    if (state.businessBankDetails.length > 1)
+                    if (state.branchBankDetails.length > 1)
                       SizedBox(
                         height: 100,
                         child: ListView.separated(
                           scrollDirection: Axis.horizontal,
-                          itemCount: state.businessBankDetails.length,
+                          itemCount: state.branchBankDetails.length,
                           separatorBuilder: (context, index) => const SizedBox(width: 12),
                           itemBuilder: (context, index) {
-                            final bank = state.businessBankDetails[index];
+                            final bank = state.branchBankDetails[index];
                             final isSelected = state.selectedBankDetail?.id == bank.id;
                             return GestureDetector(
                               onTap: () => viewModel.selectBankDetail(bank),

@@ -13,10 +13,10 @@ import {
 import { CreationOptional, DataTypes } from 'sequelize';
 import { ICollection } from '@shared/shared/src/types/collection';
 import { Cluster } from './cluster.model';
-import { UserBusiness } from './user-business.model';
+import { syncStatus } from '@shared/shared/src/enums';
 
 @Table({ tableName: 'collection' })
-export class Collection extends Model<ICollection> {
+export class Collection extends Model<ICollection> implements ICollection {
   @PrimaryKey
   @Default(DataTypes.UUIDV4)
   @Column(DataTypes.UUID)
@@ -28,8 +28,8 @@ export class Collection extends Model<ICollection> {
   @Column(DataType.STRING)
   declare description: string;
 
-  @Column(DataType.STRING)
-  declare total_traders: string;
+  @Column(DataType.INTEGER)
+  declare total_traders: number;
 
   @Column(DataType.STRING)
   declare about: string;
@@ -52,11 +52,14 @@ export class Collection extends Model<ICollection> {
   @Column(DataType.STRING)
   declare country: string;
 
+  @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
+  declare sync_status: syncStatus;
+
+  @Column(DataType.DATE)
+  declare sync_date?: string;
+
   @HasMany(() => Cluster)
   declare cluster: Cluster
-
-  @HasMany(() => UserBusiness)
-  declare user_businesses: UserBusiness[];
 
   @CreatedAt
   declare createdAt: string;

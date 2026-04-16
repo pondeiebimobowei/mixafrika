@@ -259,7 +259,7 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
           ),
         ),
         const SizedBox(height: 16),
-        FSelect<BusinessesData>.rich(
+        FSelect<BranchData>.rich(
           format: (value) => value.name,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           validator: (v) => v == null ? 'Please select a branch' : null,
@@ -267,7 +267,7 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
           control: FSelectControl.managed(
             onChange: (val) => viewModel.selectBranch(val!),
           ),
-          children: state.branches.map<FSelectItem<BusinessesData>>((branch) {
+          children: state.branches.map<FSelectItem<BranchData>>((branch) {
             return FSelectItem(
               value: branch,
               title: Text(branch.name),

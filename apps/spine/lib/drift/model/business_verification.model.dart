@@ -6,7 +6,7 @@ import 'package:spine/drift/model/businesses.dart';
 class BusinessVerification extends Table with TableMixin {
   
   late final type = text()();
-  late final docNumber = text().nullable();
+  late final docNumber = text().nullable()();
   late final docUrl = text()();
   late final status = text()();
   late final rejectionReason = text()();
@@ -14,6 +14,8 @@ class BusinessVerification extends Table with TableMixin {
 
 
   late final businessId = text().references(Businesses, #id)();
+  @ReferenceName('businessVerificationSubmittedBy')
   late final submittedBy = text().references(User, #id)();
+  @ReferenceName('businessVerificationReviewedBy')
   late final reviewedBy = text().references(User, #id)();
 }

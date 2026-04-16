@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/repositories/sales/sales_repository.dart';
 import 'package:spine/ui/sales/state/sales_log_state.dart';
-import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
+import 'package:spine/ui/business/state/active_business_provider.dart';
 
 class SalesLogViewModel extends StateNotifier<SalesLogState> {
   final Ref ref;
@@ -14,18 +14,18 @@ class SalesLogViewModel extends StateNotifier<SalesLogState> {
     state = state.copyWith(isLoading: true, errorMessage: null);
 
     try {
-      final activeBusiness = ref.read(activeBusinessesProvider);
-      if (activeBusiness == null) {
+      final activeBranch = ref.read(activeBranchProvider);
+      if (activeBranch == null) {
         state = state.copyWith(
           isLoading: false,
-          errorMessage: 'No active business',
+          errorMessage: 'No active branch',
         );
         return;
       }
 
       final repository = ref.read(salesRepositoryProvider);
       final sales = await repository.getSalesWithItems(
-        businessId: activeBusiness.id,
+        branchId: activeBranch.id,
       );
 
       state = state.copyWith(sales: sales, isLoading: false);

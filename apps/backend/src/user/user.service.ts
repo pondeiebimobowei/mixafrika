@@ -63,7 +63,15 @@ export class UserService {
       user_id: userId,
       status: 'verified',
       rejection_reason: '',
-      reviewed_by_id: userId,
+      reviewed_by: userId,
+      id_image_front_url: '',
+      id_image_back_url: '',
+      type: '',
+      id_number: '',
+      submitted_at: new Date().toDateString(),
+      createdAt: new Date().toDateString(),
+
+      
       reviewed_at: new Date().toDateString(),
       
       

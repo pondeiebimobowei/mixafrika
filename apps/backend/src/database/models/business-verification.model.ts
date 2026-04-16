@@ -11,7 +11,7 @@ import {
   BelongsTo,
   ForeignKey,
 } from 'sequelize-typescript';
-import { VerificationStatus } from '@shared/shared/src/enums';
+import { syncStatus, VerificationStatus } from '@shared/shared/src/enums';
 import { CreationOptional } from 'sequelize';
 import { IBusinessVerification } from '@shared/shared/src/types/business-verification';
 import { UserBusiness } from './user-business.model';
@@ -34,13 +34,28 @@ export class BusinessVerification extends Model<IBusinessVerification> implement
   declare status: VerificationStatus;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  declare cac_document: string;
+  declare doc_url: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
   declare rejection_reason: string;
 
+  @Column({ type: DataType.STRING, allowNull: true })
+  declare doc_number?: string;
+
   @Column({ type: DataType.STRING, allowNull: false })
-  declare reviewed_by_id: string;
+  declare reviewed_by: string;
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  declare type: string;
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  declare submitted_by: string;
+
+  @Column({ type: DataType.DATE, allowNull: false })
+  declare sync_date: string;
+
+  @Column({ type: DataType.DATE, allowNull: false })
+  declare sync_status: syncStatus;
 
   @Column({ type: DataType.STRING, allowNull: false })
   declare reviewed_at: string;

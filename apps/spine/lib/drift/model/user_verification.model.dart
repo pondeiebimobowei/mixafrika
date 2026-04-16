@@ -14,5 +14,8 @@ class UserVerification extends Table with TableMixin {
   late final reviewedAt = dateTime()();
 
 
+  @ReferenceName('reviewed_by')
+  late final reviewedBy = text().nullable().references(User, #id)();
+  @ReferenceName('user_id')
   late final userId = text().references(User, #id)();
 }

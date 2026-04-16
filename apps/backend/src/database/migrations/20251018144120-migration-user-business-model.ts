@@ -13,8 +13,6 @@ module.exports = {
           primaryKey: true,
         },
 
-        user_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        collection_id: { type: Sequelize.UUID, allowNull: true, references: { model: 'collection', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         name: { type: Sequelize.STRING, allowNull: false },
         type: { type: Sequelize.STRING, allowNull: false },
         phone: { type: Sequelize.STRING, allowNull: false },
@@ -22,6 +20,23 @@ module.exports = {
         city: { type: Sequelize.STRING, allowNull: false },
         state: { type: Sequelize.STRING, allowNull: false },
         country: { type: Sequelize.STRING, allowNull: false },
+        is_verified: { type: Sequelize.BOOLEAN, allowNull: false },
+
+        sync_status: { type: Sequelize.STRING, allowNull: false, defaultValue: 'pending'},
+        sync_date: { type: Sequelize.DATE, allowNull: true, defaultValue: Sequelize.NOW },
+
+        user_id: {
+          type: Sequelize.UUID,
+          allowNull: false,
+          references: {
+            model: 'user',
+            key: 'id',
+            
+          },
+          onDelete: 'CASCADE',
+          onUpdate: 'CASCADE'
+          
+        },
 
         createdAt: {
           allowNull: false,

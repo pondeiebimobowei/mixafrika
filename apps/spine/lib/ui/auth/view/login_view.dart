@@ -96,7 +96,7 @@ class LoginView extends ConsumerWidget {
                                 final res = await viewModel.login(email: _emailController.text, password: _passwordController.text);
                                 
                                 if (res.success && context.mounted) {
-                                  context.go(Routes.dashboard);
+                                  context.go(Routes.selectBusiness);
                                 }
 
                                 // final authData = await AuthService.login(

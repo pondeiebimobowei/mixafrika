@@ -99,7 +99,7 @@ Future<void> createSale(
 }
 
   @override
-  Future<List<SaleWithItems>> getSalesWithItems({String? businessId}) async {
+  Future<List<SaleWithItems>> getSalesWithItems({String? branchId}) async {
     final query = _db.select(_db.sales).join([
       innerJoin(_db.salesItem, _db.salesItem.saleId.equalsExp(_db.sales.id)),
       leftOuterJoin(
@@ -112,8 +112,8 @@ Future<void> createSale(
       ),
     ]);
 
-    if (businessId != null) {
-      query.where(_db.sales.businessId.equals(businessId));
+    if (branchId != null) {
+      query.where(_db.sales.branchId.equals(branchId));
     }
 
     query.orderBy([

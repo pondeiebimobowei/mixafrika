@@ -15,7 +15,7 @@ class Branch extends Table with TableMixin {
     late final state = text()();
     late final country = text()();
     
-    late final businessId = text().unique().references(Businesses, #id)();
+    late final businessId = text().references(Businesses, #id)();
     late final collectionId = text().nullable().references(Collection, #id)();
 
 

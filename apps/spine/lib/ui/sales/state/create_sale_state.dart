@@ -102,7 +102,7 @@ class CreateSaleState {
   final bool isLoading;
   final String? errorMessage;
    final PaymentMethod? selectedPaymentMethod;
-  final List<BankDetail> businessBankDetails;
+  final List<BankDetail> branchBankDetails;
   final BankDetail? selectedBankDetail;
   final CustomerData? selectedCustomer;
   final List<CustomerData> customers;
@@ -113,7 +113,7 @@ class CreateSaleState {
     this.isLoading = false,
     this.errorMessage,
     this.selectedPaymentMethod,
-    this.businessBankDetails = const [],
+    this.branchBankDetails = const [],
     this.selectedBankDetail,
     this.selectedCustomer,
     this.customers = const [],
@@ -136,7 +136,7 @@ class CreateSaleState {
     String? errorMessage,
     bool clearError = false,
     PaymentMethod? selectedPaymentMethod,
-    List<BankDetail>? businessBankDetails,
+    List<BankDetail>? branchBankDetails,
     BankDetail? selectedBankDetail,
     CustomerData? selectedCustomer,
     List<CustomerData>? customers,
@@ -148,7 +148,7 @@ class CreateSaleState {
       errorMessage: clearError ? null : errorMessage ?? this.errorMessage,
       selectedPaymentMethod:
           selectedPaymentMethod ?? this.selectedPaymentMethod,
-      businessBankDetails: businessBankDetails ?? this.businessBankDetails,
+      branchBankDetails: branchBankDetails ?? this.branchBankDetails,
       selectedBankDetail: selectedBankDetail ?? this.selectedBankDetail,
       selectedCustomer: selectedCustomer ?? this.selectedCustomer,
       customers: customers ?? this.customers,

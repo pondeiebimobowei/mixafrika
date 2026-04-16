@@ -15,14 +15,14 @@ class InventoryRepository implements InventoryRepositoryAbstract {
   InventoryRepository(this._db, {required this.productRepository});
 
   @override
-  Future<List<InventoryItemData>> getInventoryItems(String businessId) async {
+  Future<List<InventoryItemData>> getInventoryItems(String branchId) async {
     final query = _db.select(_db.inventory).join([
       innerJoin(_db.product, _db.product.id.equalsExp(_db.inventory.productId)),
       leftOuterJoin(
         _db.spineBatch,
         _db.spineBatch.productId.equalsExp(_db.product.id),
       ),
-    ])..where(_db.inventory.businessId.equals(businessId));
+    ])..where(_db.inventory.branchId.equals(branchId));
 
     final rows = await query.get();
 
@@ -86,7 +86,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
       final InventoryData newInventoryRecord = InventoryData(
       id: const Uuid().v4(),
       productId: product.id,
-      businessId: product.businessId,
+      branchId: product.branchId,
       quantity: 0,
 
       syncStatus: 'pending',
@@ -111,7 +111,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
   @override
   Future<void> addStock({
     required String productId,
-    required String businessId,
+    required String branchId,
     required int pieceQuantity,
     required String totalCost,
     required int piecePrice,
@@ -130,7 +130,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
       sellingPricePerPiece: piecePrice,
       remainingQuantity: pieceQuantity,
       initialQuantity: pieceQuantity,
-      businessId: businessId,
+      branchId: branchId,
       batchNumber: 'BATCH-${now.millisecondsSinceEpoch}',
       createdAt: now,
       updatedAt: now,
@@ -145,7 +145,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
       createdAt: now, 
       updatedAt: now, 
       productId: productId, 
-      businessId: businessId, 
+      branchId: branchId, 
 
       type: 'purchase', 
       quantity: pieceQuantity
@@ -168,8 +168,8 @@ class InventoryRepository implements InventoryRepositoryAbstract {
   }
 
   @override
-  Future<double> getStockWorth(String businessId) async {
-    final products = await getInventoryItems(businessId);
+  Future<double> getStockWorth(String branchId) async {
+    final products = await getInventoryItems(branchId);
     double total = 0.0;
     for (final item in products) {
       final costPrice = item.product.costPricePerUnit.toDouble();
@@ -179,8 +179,8 @@ class InventoryRepository implements InventoryRepositoryAbstract {
   }
 
   @override
-  Future<double> getEstProfit(String businessId) async {
-    final products = await getInventoryItems(businessId);
+  Future<double> getEstProfit(String branchId) async {
+    final products = await getInventoryItems(branchId);
     double total = 0.0;
     for (final item in products) {
       final costPrice = item.product.costPricePerUnit.toDouble();
@@ -192,7 +192,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
 
   @override
   Future<List<InventoryItemData>> searchInventoryItems(
-    String businessId,
+    String branchId,
     String query,
   ) async {
     final response = await _db.select(_db.inventory).join([
@@ -202,7 +202,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
         _db.spineBatch.productId.equalsExp(_db.product.id),
       ),
     ])
-    ..where(_db.inventory.businessId.equals(businessId))
+    ..where(_db.inventory.branchId.equals(branchId))
     ..where(
       _db.product.name.like('%$query%') 
       // |

@@ -3,65 +3,65 @@ import 'package:spine/drift/database.dart';
 import 'package:spine/ui/inventory/state/inventory_state.dart';
 import 'package:spine/ui/inventory/view_model/inventory_view_model.dart';
 import 'package:spine/ui/products/view_model/products_view_model.dart';
-import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
-import 'package:spine/ui/user_business/view_model/user_business_view_model.dart';
+import 'package:spine/ui/business/state/active_business_provider.dart';
+import 'package:spine/ui/business/view_model/business_view_model.dart';
 
 class HomeState {
-  final AsyncValue<List<BusinessesData>> businesses;
+  final AsyncValue<List<BranchData>> branch;
   final AsyncValue<List<ProductData>> product;
   final AsyncValue<InventoryState> inventory;
-  final BusinessesData? activeBusinesses;
+  final BranchData? activeBranch;
 
   HomeState({
-    required this.businesses,
+    required this.branch,
     required this.product,
     required this.inventory,
-    required this.activeBusinesses,
+    required this.activeBranch,
   });
 }
 
 // class HomeViewModel extends AutoDisposeAsyncNotifier<HomeState> {
 //   @override
 //   Future<HomeState> build() async {
-//     // await ref.read(businessesRepositoryRemoteProvider).getBusinesses();
+//     // await ref.read(branchRepositoryRemoteProvider).getBranch();
 //     // await ref
-//     //     .read(businessesViewModelProvider.notifier)
-//     //     .createBusiness();
-//     final businesses = ref.watch(businessesViewModelProvider);
+//     //     .read(branchViewModelProvider.notifier)
+//     //     .createBranch();
+//     final branch = ref.watch(branchViewModelProvider);
 //     final product = await ref.watch(productRepositoryProvider).getProducts();
 //     return HomeState(
-//       businesses: businesses.value?.businesses ?? [],
+//       branch: branch.value?.branch ?? [],
 //       product: product,
-//       activeBusinesses: businesses.value?.act,
+//       activeBranch: branch.value?.act,
 //     );
 //   }
 // }
 
 final homeViewModelProvider = Provider<AsyncValue<HomeState>>((ref) {
-  final businessesAsync = ref.watch(businessesViewModelProvider);
+  final branchAsync = ref.watch(branchViewModelProvider);
   final productsAsync = ref.watch(productsViewModelProvider);
   final inventoryAsync = ref.watch(inventoryViewModelProvider);
-  final activeBusiness = ref.watch(activeBusinessesProvider);
+  final activeBranch = ref.watch(activeBranchProvider);
 
-  // If we have businesses and an active business, we can show the UI.
-  // We only show a full loading state if we have absolutely no business data yet.
-  if (businessesAsync.value != null) {
+  // If we have branch and an active branch, we can show the UI.
+  // We only show a full loading state if we have absolutely no branch data yet.
+  if (branchAsync.value != null) {
     return AsyncData(
       HomeState(
-        businesses: businessesAsync,
+        branch: branchAsync,
         product: productsAsync,
         inventory: inventoryAsync,
-        activeBusinesses: activeBusiness,
+        activeBranch: activeBranch,
       ),
     );
   }
 
-  if (businessesAsync.isLoading || productsAsync.isLoading) {
+  if (branchAsync.isLoading || productsAsync.isLoading) {
     return const AsyncLoading();
   }
 
-  if (businessesAsync.hasError) {
-    return AsyncError(businessesAsync.error!, StackTrace.current);
+  if (branchAsync.hasError) {
+    return AsyncError(branchAsync.error!, StackTrace.current);
   }
 
   if (productsAsync.hasError) {
@@ -70,10 +70,10 @@ final homeViewModelProvider = Provider<AsyncValue<HomeState>>((ref) {
 
   return AsyncData(
     HomeState(
-      businesses: businessesAsync,
+      branch: branchAsync,
       product: productsAsync,
       inventory: inventoryAsync,
-      activeBusinesses: activeBusiness,
+      activeBranch: activeBranch,
     ),
   );
 });

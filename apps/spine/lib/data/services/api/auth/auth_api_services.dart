@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:spine/data/services/api/auth/auth_api_services_abstract.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/data/services/api/config/base_api_config.dart';
 
-class AuthApiServices {
+class AuthApiServices implements AuthApiServicesAbstract {
+  @override
   Future<ApiResponse<AuthResponse>> login(String email, String password) async {
     try {
       final response = await api.post(
@@ -29,6 +31,8 @@ class AuthApiServices {
       );
     }
   }
+  
+  @override
   Future<ApiResponse<AuthResponse>> signUp(String firstName, String lastName, String phone, String email, String password) async {
     try {
       final response = await api.post(

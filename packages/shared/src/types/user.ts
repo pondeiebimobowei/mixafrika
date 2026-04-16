@@ -4,7 +4,7 @@ import { type BaseModel } from "./base-model-type";
 import { type IBusinessVerification } from "./business-verification";
 import { type ITrader } from "./trader";
 import { type ITransaction } from "./transaction";
-import { type IUserBusiness } from "./user-business";
+import { type IBusiness } from "./business";
 import { type IUserVerification } from "./user-verification";
 
 export interface IUser extends BaseModel {
@@ -16,6 +16,9 @@ export interface IUser extends BaseModel {
   password: string;
   role: Roles;
   is_email_verified: boolean;
+  is_verified: boolean;
+  avatar?: string;
+  
   credit_score: number;
   credit_score_status: string;
   verification?: IUserVerification;
@@ -26,11 +29,11 @@ export interface IUser extends BaseModel {
 }
 
 export interface IuserWithBusiness extends IUser {
-  business: IUserBusiness[]
+  business: IBusiness[]
 }
 
 export interface IuserWithBusinessWithTransactions extends IUser {
-  business: IUserBusiness[],
+  business: IBusiness[],
   transactions: ITransaction[]
 }
 

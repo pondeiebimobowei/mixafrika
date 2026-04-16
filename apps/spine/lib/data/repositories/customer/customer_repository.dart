@@ -9,16 +9,16 @@ class CustomerRepository implements CustomerRepositoryAbstract {
   CustomerRepository({required AppDatabase database}) : _database = database;
 
   @override
-  Future<List<CustomerData>> getCustomers(String businessId) async {
+  Future<List<CustomerData>> getCustomers(String branchId) async {
     return await (_database.select(_database.customer)
-          ..where((t) => t.businessId.equals(businessId)))
+          ..where((t) => t.branchId.equals(branchId)))
         .get();
   }
 
   @override
-  Future<List<CustomerData>> searchCustomers(String businessId, String query) async {
+  Future<List<CustomerData>> searchCustomers(String branchId, String query) async {
     return await (_database.select(_database.customer)
-          ..where((t) => t.businessId.equals(businessId))
+          ..where((t) => t.branchId.equals(branchId))
           ..where((t) => t.name.contains(query) | t.phone.contains(query)))
         .get();
   }

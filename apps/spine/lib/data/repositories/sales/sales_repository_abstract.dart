@@ -6,7 +6,7 @@ abstract class SalesRepositoryAbstract {
     List<SalesItemData> items,
     List<Payment> payments,
   );
-  Future<List<SaleWithItems>> getSalesWithItems({String? businessId});
+  Future<List<SaleWithItems>> getSalesWithItems({String? branchId});
   Future<SaleWithItems?> getSaleById(String id);
 }
 

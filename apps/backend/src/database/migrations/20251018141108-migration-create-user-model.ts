@@ -65,6 +65,24 @@ module.exports = {
           validate: { isIn: [Object.values(Roles)] },
           defaultValue: 'user',
         },
+        is_verified: {
+          type: Sequelize.BOOLEAN,
+          allowNull: false,
+          defaultValue: false,
+        },
+
+        sync_status: { 
+          type: Sequelize.STRING, 
+          allowNull: false, 
+          defaultValue: 'pending' 
+        },
+        
+        sync_date: { 
+          type: Sequelize.DATE, 
+          allowNull: true, 
+          defaultValue: Sequelize.NOW 
+        },
+        
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,

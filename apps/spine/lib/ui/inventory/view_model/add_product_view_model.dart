@@ -5,7 +5,7 @@ import 'package:spine/drift/database.dart';
 import 'package:spine/ui/inventory/state/add_product_state.dart';
 import 'package:spine/utils/helper.dart';
 import 'package:uuid/uuid.dart';
-import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
+import 'package:spine/ui/business/state/active_business_provider.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 
 class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {
@@ -37,8 +37,8 @@ class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {
     state = state.copyWith(isLoading: true, errorMessage: null);
 
     try {
-      final business = ref.read(activeBusinessesProvider);
-      final businessId = business?.id ?? '';
+      final branch = ref.read(activeBranchProvider);
+      final branchId = branch?.id ?? '';
 
       final newGlobalProduct = GlobalProductData(
         id: const Uuid().v4(),
@@ -58,7 +58,7 @@ class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {
 
       final newProduct = ProductData(
         id: const Uuid().v4(),
-        businessId: businessId,
+        branchId: branchId,
         name: state.name,
         description: 'description of ${state.name}',
         bulkUnitName: state.bulkUnit,

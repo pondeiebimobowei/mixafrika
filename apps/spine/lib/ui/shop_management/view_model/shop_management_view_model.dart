@@ -1,14 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:spine/data/repositories/user_business/user_business_repository.dart';
+import 'package:spine/data/repositories/branch/branch_repository.dart';
+import 'package:spine/data/shared_preference.dart';
 import 'package:spine/drift/database.dart';
-import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
+import 'package:spine/ui/business/state/active_business_provider.dart';
 
 class ShopManagementState {
-  final List<BusinessesData> businesses;
+  final List<BranchData> branch;
   final bool isLoading;
   final String? error;
 
-  // Non-functional settings state (simulated)
   final bool batchTrackingEnabled;
   final bool expiryTrackingEnabled;
   final String defaultUnit;
@@ -18,7 +18,7 @@ class ShopManagementState {
   final bool notificationEnabled;
 
   ShopManagementState({
-    required this.businesses,
+    required this.branch,
     this.isLoading = false,
     this.error,
     this.batchTrackingEnabled = false,
@@ -31,7 +31,7 @@ class ShopManagementState {
   });
 
   ShopManagementState copyWith({
-    List<BusinessesData>? businesses,
+    List<BranchData>? branch,
     bool? isLoading,
     String? error,
     bool? batchTrackingEnabled,
@@ -43,7 +43,7 @@ class ShopManagementState {
     bool? notificationEnabled,
   }) {
     return ShopManagementState(
-      businesses: businesses ?? this.businesses,
+      branch: branch ?? this.branch,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
       batchTrackingEnabled: batchTrackingEnabled ?? this.batchTrackingEnabled,
@@ -63,52 +63,53 @@ class ShopManagementViewModel extends StateNotifier<ShopManagementState> {
   final Ref ref;
 
   ShopManagementViewModel(this.ref)
-    : super(ShopManagementState(businesses: [])) {
-    loadBusinesses();
+    : super(ShopManagementState(branch: [])) {
+    loadBranches();
   }
 
-  Future<void> loadBusinesses() async {
+  Future<void> loadBranches() async {
     state = state.copyWith(isLoading: true);
+    final businessId = await AppPreferences.getActiveBusinessId();
     try {
-      final businesses = await ref
-          .read(businessesRepositoryProvider)
-          .getBusinesses();
-      state = state.copyWith(businesses: businesses, isLoading: false);
+      final branch = await ref
+          .read(branchRepositoryProvider)
+          .getBranchesByBusinessId(businessId!);
+      state = state.copyWith(branch: branch, isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
     }
   }
 
-  Future<void> createBusiness(BusinessesCompanion business) async {
+  Future<void> createBranch(BranchData branch) async {
     final result = await ref
-        .read(businessesRepositoryProvider)
-        .createBusinesses(business);
+        .read(branchRepositoryProvider)
+        .createBranch(branch);
     if (result.success) {
-      await loadBusinesses();
+      await loadBranches();
     } else {
       state = state.copyWith(error: result.message);
     }
   }
 
-  Future<void> updateBusiness(BusinessesData business) async {
+  Future<void> updateBranch(BranchData branch) async {
     final result = await ref
-        .read(businessesRepositoryProvider)
-        .updateBusinesses(business);
+        .read(branchRepositoryProvider)
+        .updateBranch(branch);
     if (result.success) {
-      await loadBusinesses();
-      // Update active business if it was the one updated
-      final activeBiz = ref.read(activeBusinessesProvider);
-      if (activeBiz?.id == business.id) {
-        ref.read(activeBusinessesProvider.notifier).setBusiness(business);
+      await loadBranches();
+      // Update active branch if it was the one updated
+      final activeBiz = ref.read(activeBranchProvider);
+      if (activeBiz?.id == branch.id) {
+        ref.read(activeBranchProvider.notifier).setBranch(branch);
       }
     } else {
       state = state.copyWith(error: result.message);
     }
   }
 
-  Future<void> deleteBusiness(String id) async {
-    await ref.read(businessesRepositoryProvider).deleteBusinesses(id);
-    await loadBusinesses();
+  Future<void> deleteBranch(String id) async {
+    await ref.read(branchRepositoryProvider).deleteBranch(id);
+    await loadBranches();
   }
 
   // UI Toggles (Simulated)
@@ -125,6 +126,14 @@ class ShopManagementViewModel extends StateNotifier<ShopManagementState> {
       state = state.copyWith(transferPaymentEnabled: value);
   void toggleNotification(bool value) =>
       state = state.copyWith(notificationEnabled: value);
+
+  Future<void> logout() async {
+    // 1. Clear local storage (business, branch, and token)
+    await AppPreferences.clearAll();
+
+    // 2. Reset global providers
+    ref.read(activeBranchProvider.notifier).setBranch(null);
+  }
 }
 
 final shopManagementViewModelProvider =

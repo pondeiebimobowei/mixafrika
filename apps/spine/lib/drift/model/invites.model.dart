@@ -1,7 +1,7 @@
 import 'package:drift/drift.dart';
-import 'package:spine/data/services/models/user_business_model.dart';
 import 'package:spine/drift/model/base.dart';
 import 'package:spine/drift/model/branch.model.dart';
+import 'package:spine/drift/model/businesses.dart';
 
 
 class Invites extends Table with TableMixin {

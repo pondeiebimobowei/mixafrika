@@ -27,6 +27,7 @@ export class AuthService {
       email: create_user_dto.email,
       password: passwordHash,
       credit_score: 0,
+      is_verified: false,
       credit_score_status: "not set",
       role: create_user_dto.role as Roles,
       is_email_verified: false,
@@ -63,7 +64,7 @@ export class AuthService {
     const jwtSecret = this.configService.get('access_token_secret');
     const jwtSecretRefresh = this.configService.get('refresh_token_secret');
 
-    const user = await User.findOne({ where: { email: loginDto.email }, include: [UserBusiness] });
+    const user = await User.findOne({ where: { email: loginDto.email } });
     
     const valid = await bcrypt.compare(loginDto.password, user?.dataValues.password || '');
     if (!valid || !user) {

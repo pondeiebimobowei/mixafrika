@@ -10,9 +10,9 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
   StockTransferRepository(this._db);
 
   @override
-  Future<List<BusinessesData>> getOtherBranches(currentBusinessId) async {
-    return (await _db.select(_db.businesses).get())
-        .where((b) => b.id != currentBusinessId)
+  Future<List<BranchData>> getOtherBranches(currentBranchId) async {
+    return (await _db.select(_db.branch).get())
+        .where((b) => b.id != currentBranchId)
         .toList();
   }
 
@@ -49,7 +49,7 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
 
       final sourceBatches =
           await (_db.select(_db.spineBatch)
-                ..where((t) => t.businessId.equals(fromBranchId))
+                ..where((t) => t.branchId.equals(fromBranchId))
                 ..where((t) => t.productId.equals(productId))
                 ..where((t) => t.remainingQuantity.isBiggerThanValue(0))
                 ..orderBy([
@@ -68,7 +68,7 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
       }
 
       final updatedRows = await _db.customUpdate(
-        'UPDATE inventory SET quantity = quantity - ? WHERE product_id = ? AND business_id = ? AND quantity >= ?',
+        'UPDATE inventory SET quantity = quantity - ? WHERE product_id = ? AND branch_id = ? AND quantity >= ?',
         variables: [
           Variable.withInt(quantity),
           Variable.withString(productId),
@@ -86,7 +86,7 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
 
       final destProductQuery = _db.select(_db.product)
         ..where((t) => t.globalProductId.equals(globalProductId))
-        ..where((t) => t.businessId.equals(toBranchId));
+        ..where((t) => t.branchId.equals(toBranchId));
       final destProduct = await destProductQuery.getSingleOrNull();
 
       final newProductId;
@@ -100,7 +100,7 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
               ProductCompanion.insert(
                 id: newProductId,
                 bulkUnitName: product.bulkUnitName,
-                businessId: toBranchId,
+                branchId: toBranchId,
                 globalProductId: globalProductId,
                 name: product.name,
                 pieceUnitName: product.pieceUnitName,
@@ -124,7 +124,7 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
               InventoryCompanion.insert(
                 id: const Uuid().v4(),
                 productId: newProductId,
-                businessId: toBranchId,
+                branchId: toBranchId,
                 quantity: quantity,
                 syncStatus: 'pending',
                 createdAt: Value(now),
@@ -135,7 +135,7 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
         newProductId = destProduct.id;
 
         final rows = await _db.customUpdate(
-          'UPDATE inventory SET quantity = quantity + ? WHERE product_id = ? AND business_id = ?',
+          'UPDATE inventory SET quantity = quantity + ? WHERE product_id = ? AND branch_id = ?',
           variables: [
             Variable.withInt(quantity),
             Variable.withString(destProduct.id),
@@ -154,7 +154,7 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
                 InventoryCompanion.insert(
                   id: const Uuid().v4(),
                   productId: newProductId,
-                  businessId: toBranchId,
+                  branchId: toBranchId,
                   quantity: quantity,
                   syncStatus: 'pending',
                   createdAt: Value(now),
@@ -217,7 +217,7 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
                 id: const Uuid().v4(),
                 syncStatus: 'pending',
                 productId: productId,
-                businessId: fromBranchId,
+                branchId: fromBranchId,
                 type: 'transfer_out',
                 quantity: take,
                 batchId: Value(batch.id),
@@ -229,7 +229,7 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
 
         final existingDestBatch =
             await (_db.select(_db.spineBatch)
-                  ..where((t) => t.businessId.equals(toBranchId))
+                  ..where((t) => t.branchId.equals(toBranchId))
                   ..where(
                     (t) => t.productId.equals(destProduct?.id ?? newProductId),
                   )
@@ -271,7 +271,7 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
                 SpineBatchCompanion.insert(
                   id: destinationBatchId,
                   productId: newProductId,
-                  businessId: toBranchId,
+                  branchId: toBranchId,
                   batchNumber: 'TRF-$transferId-${batch.id}',
                   expiryDate: Value(batch.expiryDate),
                   costPricePerUnit: batch.costPricePerUnit,
@@ -294,7 +294,7 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
                 id: const Uuid().v4(),
                 syncStatus: 'pending',
                 productId: destProduct?.id ?? newProductId,
-                businessId: toBranchId,
+                branchId: toBranchId,
                 type: 'transfer_in',
                 quantity: take,
                 batchId: Value(destinationBatchId),

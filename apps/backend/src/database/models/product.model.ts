@@ -38,7 +38,7 @@ export class Product
   declare units_per_bulk: number;
 
   @Column(DataType.INTEGER)
-  declare cost_price: number;
+  declare cost_price_per_unit: number;
 
   @Column(DataType.INTEGER)
   declare selling_price_per_piece: number;
@@ -50,21 +50,16 @@ export class Product
   declare category: string;
 
   @Column(DataType.STRING)
-  declare serial_number: string;
-
-  @Column(DataType.STRING)
   declare image_url: string;
 
   @Column(DataType.STRING)
   declare reviews: string;
 
   @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
-  declare syncStatus: syncStatus;
+  declare sync_status: syncStatus;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  declare syncDate: string;
-
-
+  declare sync_date: string;
   
   @CreatedAt
   declare createdAt: string;

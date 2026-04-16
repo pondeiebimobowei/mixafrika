@@ -3,28 +3,28 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/repositories/customer/customer_repository.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/customers/state/customers_state.dart';
-import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
+import 'package:spine/ui/business/state/active_business_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class CustomersViewModel extends StateNotifier<CustomersState> {
   final CustomerRepository _customerRepository;
-  final BusinessesData? _activeBusinesses;
+  final BranchData? _activeBranch;
 
   CustomersViewModel({
     required CustomerRepository customerRepository,
-    required BusinessesData? activeBusinesses,
+    required BranchData? activeBranch,
   }) : _customerRepository = customerRepository,
-       _activeBusinesses = activeBusinesses,
+       _activeBranch = activeBranch,
        super(CustomersState()) {
     loadCustomers();
   }
 
   Future<void> loadCustomers() async {
-    if (_activeBusinesses == null) return;
+    if (_activeBranch == null) return;
     state = state.copyWith(isLoading: true);
     try {
       final customers = await _customerRepository.getCustomers(
-        _activeBusinesses.id,
+        _activeBranch.id,
       );
       state = state.copyWith(
         customers: customers,
@@ -37,7 +37,7 @@ class CustomersViewModel extends StateNotifier<CustomersState> {
   }
 
   Future<void> searchCustomers(String query) async {
-    if (_activeBusinesses == null) return;
+    if (_activeBranch == null) return;
     state = state.copyWith(searchQuery: query);
     if (query.isEmpty) {
       loadCustomers();
@@ -45,7 +45,7 @@ class CustomersViewModel extends StateNotifier<CustomersState> {
     }
     try {
       final results = await _customerRepository.searchCustomers(
-        _activeBusinesses.id,
+        _activeBranch.id,
         query,
       );
       state = state.copyWith(customers: results);
@@ -55,14 +55,14 @@ class CustomersViewModel extends StateNotifier<CustomersState> {
   }
 
   Future<void> addCustomer(String name, String phone) async {
-    if (_activeBusinesses == null) return;
+    if (_activeBranch == null) return;
     state = state.copyWith(isLoading: true);
     try {
       final companion = CustomerCompanion(
         id: Value(const Uuid().v4()),
         name: Value(name),
         phone: Value(phone),
-        businessId: Value(_activeBusinesses.id),
+        branchId: Value(_activeBranch.id),
         createdAt: Value(DateTime.now()),
         updatedAt: Value(DateTime.now()),
         syncStatus: const Value('pending'),
@@ -75,7 +75,7 @@ class CustomersViewModel extends StateNotifier<CustomersState> {
   }
 
   Future<void> updateCustomer(String id, String name, String phone) async {
-    if (_activeBusinesses == null) return;
+    if (_activeBranch == null) return;
     state = state.copyWith(isLoading: true);
     try {
       final companion = CustomerCompanion(
@@ -106,6 +106,6 @@ final customersViewModelProvider =
     StateNotifierProvider<CustomersViewModel, CustomersState>((ref) {
       return CustomersViewModel(
         customerRepository: ref.watch(customerRepositoryProvider),
-        activeBusinesses: ref.watch(activeBusinessesProvider),
+        activeBranch: ref.watch(activeBranchProvider),
       );
     });

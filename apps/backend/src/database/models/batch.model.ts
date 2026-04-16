@@ -15,6 +15,7 @@ import { CreationOptional, DataTypes } from 'sequelize';
 import { IBatch } from '@shared/shared/src/types/batch';
 import { Product } from './product.model';
 import { syncStatus } from '@shared/shared/src/enums';
+import { Branch } from './branch.model';
 
 @Table({ tableName: 'batch' })
 export class Batch
@@ -24,27 +25,49 @@ export class Batch
     @Column(DataTypes.UUID)
     declare id: CreationOptional<string>;
 
-    @ForeignKey(() => Product)
-    @Column(DataType.STRING)
-    declare product_id: string;
-
-    @BelongsTo(() => Product, 'product_id')
-    declare product: Product;
-
     @Column(DataType.STRING)
     declare expiry_date: string;
-
-    @Column(DataType.INTEGER)
-    declare quantity: number;
 
     @Column(DataType.STRING)
     declare batch_number: string;
 
+    @Column(DataType.INTEGER)
+    declare cost_price_per_unit: number;
+
+    @Column(DataType.INTEGER)
+    declare selling_price_per_piece: number;
+
+    @Column(DataType.INTEGER)
+    declare selling_price_per_bulk: number;
+
+    @Column(DataType.INTEGER)
+    declare initial_quantity: number;
+
+    @Column(DataType.INTEGER)
+    declare remaining_quantity: number;
+
+    @ForeignKey(() => Product)
+    @Column(DataType.STRING)
+    declare product_id: string;
+
+    @ForeignKey(() => Branch)
+    @Column(DataType.STRING)
+    declare branch_id: string;
+
+    @BelongsTo(() => Product, 'product_id')
+    declare product: Product;
+
+    @BelongsTo(() => Product, 'branch_id')
+    declare branch: Product;
+
+    @Column(DataType.INTEGER)
+    declare quantity: number;
+
     @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
-    declare syncStatus: syncStatus;
+    declare sync_status: syncStatus;
 
     @Column({ type: DataType.STRING, allowNull: false })
-    declare syncDate: string;
+    declare sync_date: string;
 
 
 

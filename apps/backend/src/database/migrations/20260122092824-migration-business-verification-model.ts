@@ -18,16 +18,31 @@ module.exports = {
           defaultValue: sequelize.UUIDV4,
           primaryKey: true,
         },
-
+        type: { type: Sequelize.STRING, allowNull: false },
         business_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user_business', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(VerificationStatus)]} },
         rejection_reason: { type: Sequelize.STRING, allowNull: false },
-        cac_document: { type: Sequelize.STRING, allowNull: false },
-        reviewed_by_id: { type: Sequelize.UUID, allowNull: true, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        doc_url: { type: Sequelize.STRING, allowNull: false },
+        doc_number: { type: Sequelize.STRING, allowNull: false },
+        
+        reviewed_by: { type: Sequelize.UUID, allowNull: true, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         reviewed_at: {
           allowNull: false,
           type: Sequelize.DATE,
           defaultValue: Sequelize.NOW,
+        },
+        submitted_by: { type: Sequelize.UUID, allowNull: false, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+
+        sync_status: { 
+          type: Sequelize.STRING, 
+          allowNull: false, 
+          defaultValue: 'pending' 
+        },
+        
+        sync_date: { 
+          type: Sequelize.DATE, 
+          allowNull: true, 
+          defaultValue: Sequelize.NOW 
         },
 
         createdAt: {

@@ -17,6 +17,9 @@ export const mockColectionSeed: () => Promise<ICollection[]> = ( async () => {
             state: 'Lagos',
             total_traders: 302,
 
+            sync_status: 'pending',
+            sync_date: "2025-11-19T14:10:12.425Z",
+
             createdAt: "2025-11-19T14:10:12.425Z",
             updatedAt: "2025-11-19T14:10:12.425Z"
 

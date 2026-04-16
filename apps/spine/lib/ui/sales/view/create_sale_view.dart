@@ -8,7 +8,7 @@ import 'package:spine/drift/database.dart';
 import 'package:spine/ui/sales/state/create_sale_state.dart';
 import 'package:spine/ui/sales/view_model/create_sale_view_model.dart';
 import 'package:spine/ui/sales/widget/sale_calculator_sheet.dart';
-import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
+import 'package:spine/ui/business/state/active_business_provider.dart';
 
 class CreateSaleView extends ConsumerStatefulWidget {
   const CreateSaleView({super.key});
@@ -573,20 +573,20 @@ class _SearchSheetState extends ConsumerState<_SearchSheet> {
   }
 
   Future<void> _loadAllProducts() async {
-    final activeBusiness = ref.read(activeBusinessesProvider);
+    final activeBranch = ref.read(activeBranchProvider);
     final inventoryProvider = await ref
         .read(inventoryRepositoryProvider)
-        .getInventoryItems(activeBusiness?.id ?? '');
+        .getInventoryItems(activeBranch?.id ?? '');
     setState(
       () => _searchResults = inventoryProvider.map((e) => e.product).toList(),
     );
   }
 
   void _onSearchChanged(String query) async {
-    final activeBusinessProvider = ref.read(activeBusinessesProvider);
+    final activeBranch = ref.read(activeBranchProvider);
     final inventoryProvider = await ref
         .read(inventoryRepositoryProvider)
-        .getInventoryItems(activeBusinessProvider?.id ?? '');
+        .getInventoryItems(activeBranch?.id ?? '');
     final products = inventoryProvider.map((e) => e.product).toList();
 
     setState(() {

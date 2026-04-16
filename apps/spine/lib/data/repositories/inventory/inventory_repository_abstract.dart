@@ -4,12 +4,12 @@ import 'package:spine/data/services/api/config/api_response.dart';
 
 
 abstract class InventoryRepositoryAbstract {
-  Future<List<InventoryItemData>> getInventoryItems(String businessId);
+  Future<List<InventoryItemData>> getInventoryItems(String branchId);
   Future<InventoryItemData?> getInventoryItemById(String productId);
   Future<ApiResponse<void>> addInventoryItem(ProductData product);
   Future<void> addStock({
     required String productId,
-    required String businessId,
+    required String branchId,
     // required int bulkQuantity,
     required int pieceQuantity,
     required String totalCost,
@@ -17,10 +17,10 @@ abstract class InventoryRepositoryAbstract {
     required int piecePrice,
     DateTime? expiryDate,
   });
-  Future<double> getStockWorth(String businessId);
-  Future<double> getEstProfit(String businessId);
+  Future<double> getStockWorth(String branchId);
+  Future<double> getEstProfit(String branchId);
   Future<List<InventoryItemData>> searchInventoryItems(
-    String businessId,
+    String branchId,
     String query,
   );
 }

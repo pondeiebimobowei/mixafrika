@@ -4,14 +4,14 @@ import 'package:spine/data/repositories/product/product_repository.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/drift/database.dart';
-import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
+import 'package:spine/ui/business/state/active_business_provider.dart';
 
 class ProductsViewModel extends AsyncNotifier<List<ProductData>> {
   @override
   FutureOr<List<ProductData>> build() {
     // Initial state: fetch the username from the repository
-    final business = ref.watch(activeBusinessesProvider);
-    if (business == null) return [];
+    final branch = ref.watch(activeBranchProvider);
+    if (branch == null) return [];
     return ref.read(productRepositoryProvider).getProducts();
   }
 

@@ -3,9 +3,9 @@ import 'package:forui/forui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spine/drift/database.dart';
-import 'package:spine/theme/app-theme.dart';
+import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/shop_management/view_model/shop_management_view_model.dart';
-import 'package:spine/ui/shop_management/widget/edit_business_sheet.dart';
+import 'package:spine/ui/shop_management/widget/edit_branch_sheet.dart';
 import 'package:spine/widget/icon_widget.dart';
 
 class ShopManagementView extends ConsumerWidget {
@@ -43,10 +43,6 @@ class ShopManagementView extends ConsumerWidget {
         child: state.isLoading
             ? const Center(child: CircularProgressIndicator())
             : SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 24,
-                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -65,15 +61,15 @@ class ShopManagementView extends ConsumerWidget {
                     ),
                     _buildSectionHeader(
                       context,
-                      'Business Profile',
+                      'Branch Profile',
                       Icons.business_outlined,
                     ),
                     const SizedBox(height: 20),
-                    if (state.businesses.isEmpty)
-                      _buildEmptyBusinessState(context, viewModel)
+                    if (state.branch.isEmpty)
+                      _buildEmptyBranchState(context, viewModel)
                     else
-                      ...state.businesses.map(
-                        (biz) => _buildBusinessCard(context, biz, viewModel),
+                      ...state.branch.map(
+                        (biz) => _buildBranchCard(context, biz, viewModel),
                       ),
 
                     const SizedBox(height: 40),
@@ -159,6 +155,14 @@ class ShopManagementView extends ConsumerWidget {
                         Icons.backup_outlined,
                         () {},
                       ),
+                      _buildActionTile(
+                        context,
+                        'Logout',
+                        'Sign out of your account',
+                        Icons.logout,
+                        () => _showLogoutConfirmation(context, viewModel),
+                        isDestructive: true,
+                      ),
                     ]),
                     const SizedBox(height: 60),
                   ],
@@ -206,9 +210,9 @@ class ShopManagementView extends ConsumerWidget {
     );
   }
 
-  Widget _buildBusinessCard(
+  Widget _buildBranchCard(
     BuildContext context,
-    BusinessesData biz,
+    BranchData biz,
     ShopManagementViewModel viewModel,
   ) {
     final colors = context.theme.colors;
@@ -297,14 +301,14 @@ class ShopManagementView extends ConsumerWidget {
             ),
             _buildRoundActionButton(
               icon: Icons.edit_outlined,
-              onTap: () => _showEditSheet(context, viewModel, business: biz),
+              onTap: () => _showEditSheet(context, viewModel, branch: biz),
               color: colors.primary.withValues(alpha: 0.1),
               iconColor: colors.primary,
             ),
             const SizedBox(width: 8),
             _buildRoundActionButton(
               icon: Icons.delete_outline,
-              onTap: () => viewModel.deleteBusiness(biz.id),
+              onTap: () => viewModel.deleteBranch(biz.id),
               color: colors.destructive.withValues(alpha: 0.1),
               iconColor: colors.destructive,
             ),
@@ -331,7 +335,7 @@ class ShopManagementView extends ConsumerWidget {
     );
   }
 
-  Widget _buildEmptyBusinessState(
+  Widget _buildEmptyBranchState(
     BuildContext context,
     ShopManagementViewModel viewModel,
   ) {
@@ -535,9 +539,11 @@ class ShopManagementView extends ConsumerWidget {
     String title,
     String subtitle,
     IconData icon,
-    VoidCallback onTap,
-  ) {
+    VoidCallback onTap, {
+    bool isDestructive = false,
+  }) {
     final colors = context.theme.colors;
+    final tileColor = isDestructive ? colors.error : colors.primary;
     return InkWell(
       onTap: onTap,
       child: Padding(
@@ -551,13 +557,13 @@ class ShopManagementView extends ConsumerWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    colors.primary.withValues(alpha: 0.15),
-                    colors.primary.withValues(alpha: 0.05),
+                    tileColor.withValues(alpha: 0.15),
+                    tileColor.withValues(alpha: 0.05),
                   ],
                 ),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, size: 20, color: colors.primary),
+              child: Icon(icon, size: 20, color: tileColor),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -566,10 +572,11 @@ class ShopManagementView extends ConsumerWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w700,
                       fontSize: 15,
                       letterSpacing: -0.3,
+                      color: isDestructive ? colors.error : null,
                     ),
                   ),
                   const SizedBox(height: 4),
@@ -598,19 +605,19 @@ class ShopManagementView extends ConsumerWidget {
   void _showEditSheet(
     BuildContext context,
     ShopManagementViewModel viewModel, {
-    BusinessesData? business,
+    BranchData? branch,
   }) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => EditBusinessSheet(business: business),
+      builder: (context) => EditBranchSheet(branch: branch),
     ).then((result) {
       if (result != null) {
-        if (result is BusinessesCompanion) {
-          viewModel.createBusiness(result);
-        } else if (result is BusinessesData) {
-          viewModel.updateBusiness(result);
+        if (result is BranchData) {
+          viewModel.createBranch(result);
+        } else if (result is BranchData) {
+          viewModel.updateBranch(result);
         }
       }
     });
@@ -739,6 +746,39 @@ class ShopManagementView extends ConsumerWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showLogoutConfirmation(
+    BuildContext context,
+    ShopManagementViewModel viewModel,
+  ) {
+    final colors = context.theme.colors;
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: colors.background,
+        title: const Text('Confirm Logout'),
+        content: const Text('Are you sure you want to log out? This will clear your session data.'),
+        actions: [
+          FButton(
+            variant: FButtonVariant.ghost,
+            onPress: () => Navigator.pop(context),
+            child: const Text('Cancel'),
+          ),
+          FButton(
+            variant: FButtonVariant.destructive,
+            onPress: () async {
+              Navigator.pop(context);
+              await viewModel.logout();
+              if (context.mounted) {
+                context.go(Routes.login);
+              }
+            },
+            child: const Text('Logout'),
+          ),
+        ],
       ),
     );
   }

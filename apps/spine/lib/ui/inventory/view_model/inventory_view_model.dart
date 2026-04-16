@@ -2,21 +2,21 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/repositories/inventory/inventory_repository.dart';
 import 'package:spine/ui/inventory/state/inventory_state.dart';
-import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
+import 'package:spine/ui/business/state/active_business_provider.dart';
 
 class InventoryViewModel extends AutoDisposeAsyncNotifier<InventoryState> {
   Timer? _debounce;
 
   @override
   FutureOr<InventoryState> build() async {
-    final activeBusiness = ref.watch(activeBusinessesProvider);
-    if (activeBusiness == null) return InventoryState();
+    final activeBranch = ref.watch(activeBranchProvider);
+    if (activeBranch == null) return InventoryState();
 
     final repository = ref.read(inventoryRepositoryProvider);
 
-    final items = await repository.getInventoryItems(activeBusiness.id);
-    final stockWorth = await repository.getStockWorth(activeBusiness.id);
-    final estProfit = await repository.getEstProfit(activeBusiness.id);
+    final items = await repository.getInventoryItems(activeBranch.id);
+    final stockWorth = await repository.getStockWorth(activeBranch.id);
+    final estProfit = await repository.getEstProfit(activeBranch.id);
 
     return InventoryState(
       items: items,
@@ -46,8 +46,8 @@ class InventoryViewModel extends AutoDisposeAsyncNotifier<InventoryState> {
   }
 
   Future<void> _performSearch(String query) async {
-    final activeBusiness = ref.read(activeBusinessesProvider);
-    if (activeBusiness == null) return;
+    final activeBranch = ref.read(activeBranchProvider);
+    if (activeBranch == null) return;
 
     final repository = ref.read(inventoryRepositoryProvider);
 
@@ -55,8 +55,8 @@ class InventoryViewModel extends AutoDisposeAsyncNotifier<InventoryState> {
       state = const AsyncLoading();
 
       final items = query.isEmpty
-          ? await repository.getInventoryItems(activeBusiness.id)
-          : await repository.searchInventoryItems(activeBusiness.id, query);
+          ? await repository.getInventoryItems(activeBranch.id)
+          : await repository.searchInventoryItems(activeBranch.id, query);
 
       final current = state.value;
 
