@@ -3,7 +3,7 @@ import 'package:spine/drift/database.dart';
 import 'package:spine/data/repositories/inventory/inventory_repository.dart';
 import 'package:spine/data/repositories/inventory/stock_transfer_repository.dart';
 import 'package:spine/ui/inventory/state/stock_transfer_state.dart';
-import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
+import 'package:spine/ui/business/state/active_business_provider.dart';
 
 class StockTransferViewModel
     extends AutoDisposeFamilyNotifier<StockTransferState, String> {

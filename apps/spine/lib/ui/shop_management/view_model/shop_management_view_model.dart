@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/repositories/branch/branch_repository.dart';
 import 'package:spine/data/shared_preference.dart';
 import 'package:spine/drift/database.dart';
-import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
+import 'package:spine/ui/business/state/active_business_provider.dart';
 
 class ShopManagementState {
   final List<BranchData> branch;

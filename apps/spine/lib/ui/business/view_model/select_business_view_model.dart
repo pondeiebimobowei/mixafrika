@@ -3,8 +3,8 @@ import 'package:spine/data/repositories/branch/branch_repository.dart';
 import 'package:spine/data/repositories/business/business_repository.dart';
 import 'package:spine/data/repositories/business/business_repository_remote.dart';
 import 'package:spine/data/shared_preference.dart';
-import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
-import 'package:spine/ui/user_business/state/select_business_state.dart';
+import 'package:spine/ui/business/state/active_business_provider.dart';
+import 'package:spine/ui/business/state/select_business_state.dart';
 
 class SelectBusinessViewModel extends AutoDisposeAsyncNotifier<SelectBusinessState> {
 

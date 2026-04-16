@@ -3,8 +3,8 @@ import 'package:spine/drift/database.dart';
 import 'package:spine/ui/inventory/state/inventory_state.dart';
 import 'package:spine/ui/inventory/view_model/inventory_view_model.dart';
 import 'package:spine/ui/products/view_model/products_view_model.dart';
-import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
-import 'package:spine/ui/user_business/view_model/user_business_view_model.dart';
+import 'package:spine/ui/business/state/active_business_provider.dart';
+import 'package:spine/ui/business/view_model/business_view_model.dart';
 
 class HomeState {
   final AsyncValue<List<BranchData>> branch;

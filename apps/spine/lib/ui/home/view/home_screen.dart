@@ -6,7 +6,7 @@ import 'package:spine/routing/routes.dart';
 import 'package:spine/theme/app-theme.dart';
 import 'package:spine/theme/typography.dart';
 import 'package:spine/ui/home/view_model/home_view_model.dart';
-import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
+import 'package:spine/ui/business/state/active_business_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/widget/icon_widget.dart';
 import 'package:spine/widget/styles/f_header_style.dart';

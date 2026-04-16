@@ -6,7 +6,7 @@ import 'package:spine/data/repositories/sales/sales_repository.dart';
 import 'package:spine/data/repositories/branch/branch_repository.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/sales/state/create_sale_state.dart';
-import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
+import 'package:spine/ui/business/state/active_business_provider.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateSaleViewModel extends StateNotifier<CreateSaleState> {

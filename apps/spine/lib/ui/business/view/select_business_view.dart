@@ -4,7 +4,7 @@ import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/routing/routes.dart';
-import 'package:spine/ui/user_business/view_model/select_business_view_model.dart';
+import 'package:spine/ui/business/view_model/select_business_view_model.dart';
 
 class SelectBusinessView extends ConsumerWidget {
   const SelectBusinessView({super.key});

@@ -5,7 +5,7 @@ import 'package:spine/drift/database.dart';
 import 'package:spine/ui/inventory/state/add_product_state.dart';
 import 'package:spine/utils/helper.dart';
 import 'package:uuid/uuid.dart';
-import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
+import 'package:spine/ui/business/state/active_business_provider.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 
 class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {

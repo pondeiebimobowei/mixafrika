@@ -8,7 +8,7 @@ import 'package:spine/drift/database.dart';
 import 'package:spine/ui/sales/state/create_sale_state.dart';
 import 'package:spine/ui/sales/view_model/create_sale_view_model.dart';
 import 'package:spine/ui/sales/widget/sale_calculator_sheet.dart';
-import 'package:spine/ui/user_business/state/active_user_business_provider.dart';
+import 'package:spine/ui/business/state/active_business_provider.dart';
 
 class CreateSaleView extends ConsumerStatefulWidget {
   const CreateSaleView({super.key});
