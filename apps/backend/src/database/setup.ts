@@ -25,14 +25,14 @@ export const getSequelizeConfig = (
 
   const sequelizeConfig: any = { ...baseConfig };
 
-  // if (configService.get<string>('NODE_ENV') === 'production') {
-  //   sequelizeConfig.dialectOptions = {
-  //     ssl: {
-  //       require: true, // Enforce SSL connection
-  //       rejectUnauthorized: true, // Set to false if you are using self-signed certificates in dev, but true for production
-  //     },
-  //   };
-  // }
+  if (configService.get<string>('NODE_ENV') === 'production') {
+    sequelizeConfig.dialectOptions = {
+      ssl: {
+        require: true, // Enforce SSL connection
+        rejectUnauthorized: true, // Set to false if you are using self-signed certificates in dev, but true for production
+      },
+    };
+  }
 
   return sequelizeConfig;
 };
