@@ -73,7 +73,7 @@ class AppDatabase extends _$AppDatabase {
 
   static QueryExecutor _openConnection() {
     return driftDatabase(
-      name: 'spinedbbbbbbBbXff-1',
+      name: 'spinedbbbbbbBbXffV-1',
 
       
 
@@ -128,6 +128,8 @@ class AppDatabase extends _$AppDatabase {
 
     await db.into(db.branch).insert(biz2branch1);
     await db.into(db.branch).insert(biz2branch2);
+
+    
 
     await db.into(db.bankDetails).insert(bankDetail1);
     await db.into(db.bankDetails).insert(bankDetail2);

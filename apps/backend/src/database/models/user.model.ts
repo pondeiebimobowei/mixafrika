@@ -124,8 +124,8 @@ export class User extends Model<IUser> implements IUser {
   @HasMany(() => Investment)
   declare investments: Investment[];
 
-  @HasMany(() => UserBusiness, { foreignKey: 'user_id', as: 'user_business' })
-  declare user_business?: UserBusiness;
+  // @HasMany(() => UserBusiness, { foreignKey: 'user_id', as: 'user_business' })
+  // declare user_business?: UserBusiness;
 
   @HasMany(() => Branch, { foreignKey: 'user_id', as: 'branch' })
   declare branch?: Branch;

@@ -1,7 +1,8 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:spine/data/shared_preference.dart';
+import 'package:spine/routing/routes.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,18 +20,32 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(seconds: 2),
-      vsync: this,
-    );
+        duration: const Duration(seconds: 2), vsync: this);
     _animation = CurvedAnimation(parent: _controller, curve: Curves.easeIn);
 
     _controller.forward();
 
-    Timer(const Duration(seconds: 3), () {
-      if (mounted) {
-        context.go('/login');
+    _handleNavigation();
+  }
+
+  Future<void> _handleNavigation() async {
+    // Wait for the animation to complete (at least 2 seconds)
+    await Future.delayed(const Duration(seconds: 3));
+
+    if (!mounted) return;
+
+    final token = await TokenManager.getToken();
+    final activeBusinessId = await AppPreferences.getActiveBusinessId();
+
+    if (token != null && token.isNotEmpty) {
+      if (activeBusinessId != null && activeBusinessId.isNotEmpty) {
+        context.go(Routes.dashboard);
+      } else {
+        context.go(Routes.selectBusiness);
       }
-    });
+    } else {
+      context.go(Routes.login);
+    }
   }
 
   @override

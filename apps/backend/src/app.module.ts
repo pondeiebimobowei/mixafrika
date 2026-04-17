@@ -64,6 +64,9 @@ import { Sales } from './database/models/sales.model';
 import { SalesItem } from './database/models/sales-item.model';
 import { Branch } from './database/models/branch.model';
 import { BusinessUser } from './database/models/business-user';
+import { Invitation } from './database/models/invitation.model';
+import { BranchUser } from './database/models/branch-user';
+import { TeamModule } from './team/team.module';
 
 @Module({
   imports: [
@@ -83,7 +86,7 @@ import { BusinessUser } from './database/models/business-user';
     AdminModule,
     LoanAccountHistoryModule,
     SettingsModule,
-    SequelizeModule.forFeature([User, BusinessUser, UserVerification, Branch, BusinessVerification, Savings, FundingApplication, Goal, BankCard, Investment, Notification, Feed, Cluster, Collection, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, UserBusiness, Transaction, Wallet, LoanAccount, Product, Batch, Inventory, Sales, SalesItem]),
+    SequelizeModule.forFeature([User, BusinessUser, BusinessUser, BranchUser, Invitation, UserVerification, Branch, BusinessVerification, Savings, FundingApplication, Goal, BankCard, Investment, Notification, Feed, Cluster, Collection, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, UserBusiness, Transaction, Wallet, LoanAccount, Product, Batch, Inventory, Sales, SalesItem]),
     ConfigModule.forRoot({ isGlobal: true }),
     SequelizeModule.forRootAsync({
       useFactory: getSequelizeConfig,
@@ -102,6 +105,7 @@ import { BusinessUser } from './database/models/business-user';
     SalesModule,
     SalesItemModule,
     ProductModule,
+    TeamModule,
   ],
   controllers: [AppController],
   providers: [

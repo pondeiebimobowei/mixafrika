@@ -157,6 +157,13 @@ class ShopManagementView extends ConsumerWidget {
                       ),
                       _buildActionTile(
                         context,
+                        'Team Management',
+                        'Manage staff, roles and invitations',
+                        Icons.people_alt_outlined,
+                        () => context.push(Routes.teamManagement),
+                      ),
+                      _buildActionTile(
+                        context,
                         'Logout',
                         'Sign out of your account',
                         Icons.logout,

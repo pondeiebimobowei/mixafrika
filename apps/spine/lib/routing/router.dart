@@ -17,6 +17,7 @@ import 'package:spine/ui/inventory/view/stock_transfer_view.dart';
 import 'package:spine/ui/sales/view/checkout_view.dart';
 import 'package:spine/ui/shop_management/view/shop_management_view.dart';
 import 'package:spine/ui/customers/view/customers_view.dart';
+import 'package:spine/ui/team_management/view/team_management_view.dart';
 
 import 'package:spine/ui/sales/view/sale_receipt_view.dart';
 import 'package:spine/ui/sales/view/sales_log_view.dart';
@@ -132,6 +133,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.customers,
         builder: (context, state) => const CustomersView(),
+      ),
+      GoRoute(
+        path: Routes.teamManagement,
+        builder: (context, state) => const TeamManagementView(),
       ),
     ],
   );

@@ -78,11 +78,11 @@ export class BusinessUser extends Model<IBusinessUser> implements IBusinessUser 
   // businesses: UserBusiness[];
 
   
-  // @BelongsTo(() => User)
-  // declare user: UserBusiness[];
+  @BelongsTo(() => User)
+  declare user: User;
 
-  // @BelongsTo(() => UserBusiness)
-  // declare business: UserBusiness[];
+  @BelongsTo(() => UserBusiness)
+  declare business: UserBusiness;
 
 //   @BelongsToMany(() => User, () => BusinessUser)
 // users: User[];
