@@ -344,7 +344,7 @@ final createSaleViewModelProvider =
       return CreateSaleViewModel(
         productRepository: ref.watch(productRepositoryProvider),
         salesRepository: ref.watch(salesRepositoryProvider),
-        branchRepository: ref.watch(branchRepositoryProvider),
+        branchRepository: ref.watch(branchRepositoryLocalProvider),
         customerRepository: ref.watch(customerRepositoryProvider),
         activeBranch: ref.read(activeBranchProvider),
       );

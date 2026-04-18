@@ -6,7 +6,7 @@ import { QueryInterface, DataTypes } from 'sequelize';
 module.exports = {
   async up(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
     await queryInterface.sequelize.transaction(async (t) => {
-      await queryInterface.createTable('user_business', {
+      await queryInterface.createTable('business', {
         id: {
           type: Sequelize.UUID,
           defaultValue: sequelize.UUIDV4,
@@ -24,19 +24,6 @@ module.exports = {
 
         sync_status: { type: Sequelize.STRING, allowNull: false, defaultValue: 'pending'},
         sync_date: { type: Sequelize.DATE, allowNull: true, defaultValue: Sequelize.NOW },
-
-        user_id: {
-          type: Sequelize.UUID,
-          allowNull: false,
-          references: {
-            model: 'user',
-            key: 'id',
-            
-          },
-          onDelete: 'CASCADE',
-          onUpdate: 'CASCADE'
-          
-        },
 
         createdAt: {
           allowNull: false,
@@ -56,6 +43,6 @@ module.exports = {
     });
   },
   async down(queryInterface: QueryInterface) {
-    await queryInterface.dropTable('user_business');
+    await queryInterface.dropTable('business');
   },
 };

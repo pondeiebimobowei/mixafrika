@@ -8,7 +8,7 @@ import { Transaction } from './database/models/transaction.model';
 import { Wallet } from './database/models/wallet.model';
 import { Savings } from './database/models/saving.model';
 import { FundingApplication } from './database/models/funding_application';
-import { UserBusiness } from './database/models/user-business.model';
+import { Business } from './database/models/business.model';
 import { Cluster } from './database/models/cluster.model';
 import { Feed } from './database/models/feed.model';
 import { Goal } from './database/models/goal.model';
@@ -19,26 +19,35 @@ import { Collection } from './database/models/collection.model';
 import { BankCard } from './database/models/bank-card.model';
 import { BusinessVerification } from './database/models/business-verification.model';
 import { UserVerification } from './database/models/user-verification';
+import { BusinessUser } from './database/models/business-user';
 
 @Injectable()
 export class AppService {
   async getHello() {
-    const user = await User.findAll( { include: [ 
-      { model: LoanAccount, include: [ { model: RepaymentHistory }, { model: FundingApplication, include: [{ model: Cluster, include: [Collection]}] }] },
-      { model: BankCard },
-      { model: Notification },
-      { model: LoanHistory },
-      { model: Feed },
-      { model: UserVerification },
-      { model: Transaction },
-      { model: Wallet },
-      { model: Goal },
-      { model: Investment },
-      { model: Savings, include: [ SavingsHistory] },
-      { model: UserBusiness, include: [ BusinessVerification ] },
-      { model: FundingApplication },
-      { model: Setting }
-    ]});
+    const user = await User.findAll({
+      include: [
+        { model: LoanAccount, include: [{ model: RepaymentHistory }, { model: FundingApplication, include: [{ model: Cluster, include: [Collection] }] }] },
+        { model: BankCard },
+        { model: Notification },
+        { model: LoanHistory },
+        { model: Feed },
+        { model: UserVerification },
+        { model: Transaction },
+        { model: Wallet },
+        { model: Goal },
+        { model: Investment },
+        { model: Savings, include: [SavingsHistory] },
+        {
+          model: Business, include: [{
+            model: User,
+            attributes: [],
+            required: true,
+          }]
+        },
+        { model: FundingApplication },
+        { model: Setting }
+      ]
+    });
 
     return user
   }

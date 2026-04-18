@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { Invitation } from 'src/database/models/invitation.model';
+import { Invitation } from 'src/database/models/invites.model';
 import { BusinessUser } from 'src/database/models/business-user';
 import { BranchUser } from 'src/database/models/branch-user';
 import { User } from 'src/database/models/user.model';
-import { UserBusiness } from 'src/database/models/user-business.model';
+import { Business } from 'src/database/models/business.model';
 import { v4 as uuidv4 } from 'uuid';
 import * as dayjs from 'dayjs';
 import { syncStatus } from '@shared/shared/src/enums';
@@ -15,16 +15,16 @@ export class TeamService {
     businessId: string,
     data: { email: string; role: string; branch_id?: string },
   ) {
-    const business = await UserBusiness.findByPk(businessId);
+    const business = await Business.findByPk(businessId);
     if (!business) throw new NotFoundException('Business not found');
 
     // Check if invitation already exists for this email and business
     const existingInvite = await Invitation.findOne({
-        where: { email: data.email, business_id: businessId, status: 'pending' }
+      where: { email: data.email, business_id: businessId, status: 'pending' }
     });
 
     if (existingInvite) {
-        throw new BadRequestException('An invitation has already been sent to this email');
+      throw new BadRequestException('An invitation has already been sent to this email');
     }
 
     const token = uuidv4();
@@ -51,22 +51,22 @@ export class TeamService {
     };
   }
 
-  async handleGetTeamMembers(businessId: string) {
-    const members = await BusinessUser.findAll({
-      where: { business_id: businessId },
+  async handleGetBranchTeamMembers(branchId: string) {
+    const members = await BranchUser.findAll({
+      where: { branch_id: branchId },
       include: [{ model: User }],
     });
 
     return {
       success: true,
-      message: 'Team members fetched successfully',
+      message: 'Branch team members fetched successfully',
       data: members,
     };
   }
 
-  async handleGetPendingInvitations(businessId: string) {
+  async handleGetBranchPendingInvitations(branchId: string) {
     const invitations = await Invitation.findAll({
-      where: { business_id: businessId, status: 'pending' },
+      where: { branch_id: branchId, status: 'pending' },
     });
 
     return {
@@ -102,16 +102,14 @@ export class TeamService {
 
     // Link user to branch if specified
     if (invitation.branch_id) {
-       await BranchUser.create({
-         // @ts-ignore
-         user_id: userId,
-         // @ts-ignore
-         branch_id: invitation.branch_id,
-         role: invitation.role as any,
-         is_active: true,
-         assigned_at: new Date().toISOString(),
-         sync_status: syncStatus.COMPLETED,
-       });
+      await BranchUser.create({
+        user_id: userId,
+        branch_id: invitation.branch_id,
+        role: invitation.role as any,
+        is_active: true,
+        assigned_at: new Date().toISOString(),
+        sync_status: syncStatus.COMPLETED,
+      });
     }
 
     invitation.status = 'accepted';

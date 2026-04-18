@@ -50,7 +50,7 @@ module.exports = {
         updatedAt: new Date(),
       }));
 
-      const userBusiness = [...responseUser].map((u) => ({
+      const Business = [...responseUser].map((u) => ({
         id: uuidv4(),
         name: 'Trader Business1',
         type: 'business',
@@ -62,7 +62,6 @@ module.exports = {
         is_verified: true,
         sync_status: 'pending',
         sync_date: new Date(),
-        user_id: responseUser[0].id,
         
 
         deletedAt: null,
@@ -70,7 +69,7 @@ module.exports = {
         updatedAt: new Date(),
       }));
 
-      const userBusiness2 = [...responseUser].map((u) => ({
+      const Business2 = [...responseUser].map((u) => ({
         id: uuidv4(),
         name: 'Trader Business2',
         type: 'business',
@@ -82,36 +81,36 @@ module.exports = {
         is_verified: true,
         sync_status: 'pending',
         sync_date: new Date(),
-        user_id: responseUser[0].id,
 
         deletedAt: null,
         createdAt: new Date(),
         updatedAt: new Date(),
       }));
       
-      const application = await mockApplicationSeed(users, clusters, userBusiness)
+      const application = await mockApplicationSeed(users, clusters, Business)
 
       
       
       
       
-      await queryInterface.bulkInsert('user_business', userBusiness, { transaction: t });
-      await queryInterface.bulkInsert('user_business', userBusiness2, { transaction: t });
+      await queryInterface.bulkInsert('business', Business, { transaction: t });
+      await queryInterface.bulkInsert('business', Business2, { transaction: t });
       await queryInterface.bulkInsert('funding_application', application, { returning: true, transaction: t });
       
-      const branch = await mockBranchSeed(responseUser, userBusiness);
+      const branch = await mockBranchSeed(responseUser, Business);
       const responseBranch = await queryInterface.bulkInsert('branch', branch, { returning: true, transaction: t });
 
-      const businessUsers = await mockBusinessUserSeed(users, [...userBusiness, ...userBusiness2])
-      const branchUser = await mockBranchUserSeed(responseUser, responseBranch)
+      const businessUsers = await mockBusinessUserSeed(users, [...Business, ...Business2])
+      const branchUser = await mockBranchUserSeed(responseUser, branch)
 
       await queryInterface.bulkInsert('business_user', businessUsers, { returning: true, transaction: t });
       await queryInterface.bulkInsert('branch_user', branchUser, { returning: true, transaction: t });
       
+      
       const userVerification = await mockUserVerificationSeed(users);
       await queryInterface.bulkInsert('user_verification', userVerification, { transaction: t });
       
-      const businessVerifications = await mockBusinessVerificationSeed(userBusiness, users);
+      const businessVerifications = await mockBusinessVerificationSeed(Business, users);
       await queryInterface.bulkInsert('business_verification', businessVerifications, { transaction: t });
       
       
@@ -217,7 +216,7 @@ module.exports = {
       await queryInterface.bulkDelete('transaction', null, { transaction: t });
       await queryInterface.bulkDelete('update', null, { transaction: t });
       await queryInterface.bulkDelete('wallet', null, { transaction: t });
-      await queryInterface.bulkDelete('user_business', null, { transaction: t });
+      await queryInterface.bulkDelete('business', null, { transaction: t });
       await queryInterface.bulkDelete('user_verification', null, { transaction: t });
       await queryInterface.bulkDelete('business_user', null, { transaction: t });
       await queryInterface.bulkDelete('branch_user', null, { transaction: t });

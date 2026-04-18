@@ -37,8 +37,8 @@ The API is versioned. Current version is `v1`.
 
 | Endpoint | Method | Request Body Schema | Return Data Structure | Purpose |
 | :--- | :--- | :--- | :--- | :--- |
-| `/` | GET | - | `UserBusiness[]` (incl. `BusinessVerification`) | Retrieves user's business details. |
-| `/` | POST | `SubmitBusinessReq` + Files | `UserBusiness` | Submits business registration/docs. |
+| `/` | GET | - | `Business[]` (incl. `BusinessVerification`) | Retrieves user's business details. |
+| `/` | POST | `SubmitBusinessReq` + Files | `Business` | Submits business registration/docs. |
 
 ## Wallet (`v1/wallet`)
 
@@ -194,7 +194,7 @@ The API is versioned. Current version is `v1`.
 ### FundingApplicationReq
 ```json
 {
-  "user_business_id": "uuid",
+  "business_id": "uuid",
   "amount": "string",
   "duration": "string",
   "repayment_plan": "string",
@@ -220,7 +220,7 @@ The API is versioned. Current version is `v1`.
   "credit_score_status": "string",
   "is_email_verified": "boolean",
   "image": "string | null",
-  "user_business": "UserBusiness (optional)"
+  "business": "Business (optional)"
 }
 ```
 
@@ -279,7 +279,7 @@ The API is versioned. Current version is `v1`.
 }
 ```
 
-### UserBusiness
+### Business
 ```json
 {
   "id": "uuid",

@@ -30,7 +30,7 @@ export class FundingService {
 
     const data =  await FundingApplication.create({
       ...createFundingApplicationDto,
-      user_business_id: createFundingApplicationDto.user_business_id,
+      business_id: createFundingApplicationDto.business_id,
       duration: Number(createFundingApplicationDto.duration),
       amount: Number(amount),
       allocated_amount: Number(amount),

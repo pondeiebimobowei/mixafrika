@@ -29,7 +29,7 @@ export const mockBusinessUserSeed: (user, business) => Promise<IBusinessUser[]> 
       role: 'trader',
       is_active: true,
       has_full_access: true,
-      user_id: user_id[0],
+      user_id: user_id[1],
       business_id: business_id[1],
       sync_status: 'pending',
       sync_date: "2025-11-12T16:13:42.425Z",

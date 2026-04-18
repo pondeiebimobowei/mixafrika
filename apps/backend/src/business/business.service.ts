@@ -4,43 +4,44 @@ import { IBusiness } from '@shared/shared/src/types/business';
 import { Submit_business } from '@shared/shared/src/validation/submit-business-dto';
 import { Branch } from 'src/database/models/branch.model';
 import { BusinessVerification } from 'src/database/models/business-verification.model';
-import { UserBusiness } from 'src/database/models/user-business.model';
+import { Business } from 'src/database/models/business.model';
 import { User } from 'src/database/models/user.model';
 
 @Injectable()
 export class BusinessService {
 
-    async handleGetUserBusiness(user_id: string): Promise<Response<IBusiness[]>> {
+    async handleGetBusiness(user_id: string): Promise<Response<IBusiness[]>> {
 
-        const directBusinesses = await UserBusiness.findAll({
+        const directBusinesses = await Business.findAll({
             include: [
                 {
                     model: User,
                     attributes: [],
-                    // through: {
-                    //     attributes: ['role']
-                    // },
+                    // where: { user_id: user_id },
+                    through: {
+                        attributes: ['role']
+                    },
                     required: true
                 }
             ],
         });
 
-        const branchBusinesses = await UserBusiness.findAll({
+        const branchBusinesses = await Business.findAll({
             include: [
                 {
-                model: Branch,
-                required: true, 
-                include: [
-                    {
-                    model: User,
-                    // where: { id: user_id },
-                    attributes: [],
-                    // through: {
-                    //     attributes: ['role'],
-                    // },
+                    model: Branch,
                     required: true,
-                    },
-                ],
+                    include: [
+                        {
+                            model: User,
+                            // where: { id: user_id },
+                            attributes: [],
+                            // through: {
+                            //     attributes: ['role'],
+                            // },
+                            required: true,
+                        },
+                    ],
                 },
             ],
         });
@@ -61,17 +62,16 @@ export class BusinessService {
         }
     }
 
-    async handleSubmitUserBusiness(user_id: string, { street_address, city, state, country, name, phone, type, cac_document, national_id_document }: Submit_business): Promise<Response<IBusiness>> {
+    async handleSubmitBusiness(user_id: string, { street_address, city, state, country, name, phone, type, cac_document, national_id_document }: Submit_business): Promise<Response<IBusiness>> {
 
 
-        const business = await UserBusiness.create({
+        const business = await Business.create({
             city,
             state,
             country,
             street_address,
             name,
             phone,
-            user_id,
             type,
             is_verified: true,
             sync_date: '',

@@ -1,4 +1,5 @@
 import 'package:spine/data/services/models/base_model.dart';
+import 'package:spine/drift/database.dart';
 
 class Branch extends BaseModel {
   final String id;
@@ -87,4 +88,23 @@ class Branch extends BaseModel {
     'updated_at': updatedAt,
     'deleted_at': deletedAt,
   };
+
+  BranchData toData() {
+    return BranchData(
+      id: id,
+      name: name,
+      phone: phone,
+      streetAddress: streetAddress,
+      city: city,
+      state: state,
+      country: country,
+      businessId: businessId,
+      collectionId: collectionId.isEmpty ? null : collectionId,
+      isHeadOffice: false, // Defaulting as it's not in the service model yet
+      syncStatus: syncStatus,
+      syncDate: DateTime.tryParse(syncDate),
+      createdAt: DateTime.tryParse(createdAt ?? '') ?? DateTime.now(),
+      updatedAt: DateTime.tryParse(updatedAt ?? '') ?? DateTime.now(),
+    );
+  }
 }

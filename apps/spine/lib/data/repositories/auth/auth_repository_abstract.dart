@@ -6,4 +6,6 @@ abstract class AuthRepositoryAbstract {
   Future<ApiResponse<void>> logOut();
 
   Future<ApiResponse<void>> signUp(String firstName, String lastName, String phone, String email, String password);
+
+  Future<ApiResponse<void>> syncData();
 }

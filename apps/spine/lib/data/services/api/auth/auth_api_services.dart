@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:spine/data/services/api/auth/auth_api_services_abstract.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/data/services/api/config/base_api_config.dart';
+import 'package:spine/data/services/api/auth/sync_response.dart';
 
 class AuthApiServices implements AuthApiServicesAbstract {
   @override
@@ -56,6 +57,30 @@ class AuthApiServices implements AuthApiServicesAbstract {
         success: false,
         message: err.message ?? 'Unknown error',
         data: AuthResponse(token: '', refreshToken: '', user: null),
+      );
+    }
+  }
+
+  @override
+  Future<ApiResponse<SyncResponse>> syncData() async {
+    try {
+      final response = await apiPrivate.get('/auth/sync');
+
+      return ApiResponse.fromJson(
+        response.data,
+        (data) => SyncResponse.fromJson(data),
+      );
+    } on DioException catch (err) {
+      return ApiResponse(
+        success: false,
+        message: err.response?.data['message'] ?? err.message ?? 'Unknown error',
+        data: SyncResponse(
+          user: null,
+          businessUsers: [],
+          businesses: [],
+          branchUsers: [],
+          branches: [],
+        ),
       );
     }
   }

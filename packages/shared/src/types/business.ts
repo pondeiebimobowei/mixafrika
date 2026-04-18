@@ -9,8 +9,6 @@ export interface IBusiness extends BaseModel, SyncableModel {
   state: string;
   country: string;
   is_verified: boolean;
-
-  user_id: string,
   
 }
 

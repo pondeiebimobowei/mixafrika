@@ -23,7 +23,7 @@ import { Feed } from './feed.model';
 import { roles, type Roles } from '@shared/shared/src/enums';
 import { CreationOptional } from 'sequelize';
 import { LoanAccount } from './loan-account.model';
-import { UserBusiness } from './user-business.model';
+import { Business } from './business.model';
 import { Setting } from './setting.model';
 import { Transaction } from './transaction.model';
 import { FundingApplication } from './funding_application';
@@ -32,6 +32,7 @@ import { BankCard } from './bank-card.model';
 import { UserVerification } from './user-verification';
 import { Branch } from './branch.model';
 import { BusinessUser } from './business-user';
+import { BranchUser } from './branch-user';
 
 @Table({
   tableName: 'user',
@@ -99,7 +100,7 @@ export class User extends Model<IUser> implements IUser {
 
   @HasOne(() => Wallet)
   declare wallet: Wallet;
-  
+
   @HasOne(() => UserVerification)
   declare verification: UserVerification;
 
@@ -124,12 +125,6 @@ export class User extends Model<IUser> implements IUser {
   @HasMany(() => Investment)
   declare investments: Investment[];
 
-  // @HasMany(() => UserBusiness, { foreignKey: 'user_id', as: 'user_business' })
-  // declare user_business?: UserBusiness;
-
-  @HasMany(() => Branch, { foreignKey: 'user_id', as: 'branch' })
-  declare branch?: Branch;
-
   @HasMany(() => Notification)
   declare notifications: Notification[];
 
@@ -142,6 +137,9 @@ export class User extends Model<IUser> implements IUser {
   @HasMany(() => Feed)
   declare feeds: Feed[];
 
-  @BelongsToMany(() => UserBusiness, () => BusinessUser)
-  declare businesses: UserBusiness[];
+  @BelongsToMany(() => Business, () => BusinessUser)
+  declare businesses: Business[];
+
+  @BelongsToMany(() => Branch, () => BranchUser)
+  declare branches: Branch[];
 }

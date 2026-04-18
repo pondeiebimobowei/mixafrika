@@ -78,6 +78,6 @@ class BranchRepository implements BranchRepositoryAbstract {
   }
 }
 
-final branchRepositoryProvider = Provider(
+final branchRepositoryLocalProvider = Provider(
   (ref) => BranchRepository(database: ref.watch(databaseProvider)),
 );

@@ -38,7 +38,7 @@ module.exports = {
         business_id: {
           type: Sequelize.UUID,
           allowNull: false,
-          references: { model: 'user_business', key: 'id' },
+          references: { model: 'business', key: 'id' },
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
         },

@@ -4,26 +4,29 @@ import { Roles } from '@shared/shared/src/enums';
 import { Login_user_dto } from '@shared/shared/src/validation/login-user-dto';
 import * as bcrypt from 'bcrypt';
 import { Setting } from 'src/database/models/setting.model';
-import { UserBusiness } from 'src/database/models/user-business.model';
+import { Business } from 'src/database/models/business.model';
 import { User } from 'src/database/models/user.model';
 import { Wallet } from 'src/database/models/wallet.model';
 import { JwtPayload, verify, sign, } from 'jsonwebtoken';
 import { Create_user_dto } from '@shared/shared/src/validation/create-user-dto';
+import { BusinessUser } from 'src/database/models/business-user';
+import { Branch } from 'src/database/models/branch.model';
+import { BranchUser } from 'src/database/models/branch-user';
 
 
 @Injectable()
 export class AuthService {
 
-  constructor(private readonly configService: ConfigService ) {}
-  
+  constructor(private readonly configService: ConfigService) { }
+
   async handleSignup(create_user_dto: Create_user_dto) {
     const jwtSecret = this.configService.get('access_token_secret');
     const jwtSecretRefresh = this.configService.get('refresh_token_secret');
 
     const passwordHash = await bcrypt.hash(create_user_dto.password, 10);
-    const user = await User.create({ 
-      first_name: create_user_dto.first_name, 
-      last_name: create_user_dto.last_name, 
+    const user = await User.create({
+      first_name: create_user_dto.first_name,
+      last_name: create_user_dto.last_name,
       email: create_user_dto.email,
       password: passwordHash,
       credit_score: 0,
@@ -31,7 +34,7 @@ export class AuthService {
       credit_score_status: "not set",
       role: create_user_dto.role as Roles,
       is_email_verified: false,
-      
+
     });
 
     await Wallet.create({
@@ -52,7 +55,7 @@ export class AuthService {
 
     const token = sign(payload, jwtSecret, { expiresIn: '1h' });
     const refresh_token = sign(payload, jwtSecretRefresh, { expiresIn: '1d' });
-    
+
     return {
       success: true,
       message: "User created successfully",
@@ -65,7 +68,7 @@ export class AuthService {
     const jwtSecretRefresh = this.configService.get('refresh_token_secret');
 
     const user = await User.findOne({ where: { email: loginDto.email } });
-    
+
     const valid = await bcrypt.compare(loginDto.password, user?.dataValues.password || '');
     if (!valid || !user) {
       throw new UnauthorizedException({ success: false, message: 'Invalid credentials' });
@@ -83,20 +86,20 @@ export class AuthService {
   async refreshToken(token: string) {
     const jwtSecret = this.configService.get('access_token_secret');
     const jwtSecretRefresh = this.configService.get('refresh_token_secret');
-    
+
     if (!token) {
       throw new UnauthorizedException('Refresh token is required');
     }
 
-    try { 
+    try {
 
       const decoded = verify(token, jwtSecretRefresh) as JwtPayload;
-      delete decoded?.iat; 
+      delete decoded?.iat;
       delete decoded?.exp;
       const newToken = sign(decoded, jwtSecret, { expiresIn: '1h' });
       const newRefreshToken = sign(decoded, jwtSecretRefresh, { expiresIn: '1d' });
-      return { success: true, data: { token: newToken, refreshToken: newRefreshToken }, message: 'Tokens refreshed successfully'  };
-    } catch (error:any) {
+      return { success: true, data: { token: newToken, refreshToken: newRefreshToken }, message: 'Tokens refreshed successfully' };
+    } catch (error: any) {
       throw new UnauthorizedException({
         message: error.message || 'Invalid refresh token',
         reason: 'TOKEN_EXPIRED',
@@ -117,6 +120,57 @@ export class AuthService {
       success: true,
       message: '',
       data: [],
+    };
+  }
+
+  async handleSync(userId: string) {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+
+    const businessUsers = await BusinessUser.findAll({
+      where: { user_id: userId },
+    });
+
+    const businesses = await Business.findAll({
+      include: [
+        {
+          model: User,
+          where: { id: userId },
+          attributes: [],
+          through: {
+            attributes: ['role'], // optional
+          },
+          required: true,
+        },
+      ],
+    });
+
+    const branchUsers = await BranchUser.findAll({
+      where: { user_id: userId },
+    });
+
+    const branches = await Branch.findAll({
+      include: [
+        {
+          model: User,
+          // where: { user_id: userId },
+          attributes: [],
+        },
+      ],
+    });
+
+    return {
+      success: true,
+      message: 'Sync data fetched successfully',
+      data: {
+        user,
+        business_users: businessUsers,
+        businesses,
+        branch_users: branchUsers,
+        branches,
+      },
     };
   }
 }

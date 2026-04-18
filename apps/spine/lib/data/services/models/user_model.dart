@@ -1,5 +1,6 @@
 
 import 'package:spine/data/services/models/base_model.dart';
+import 'package:spine/drift/database.dart';
 
 class User extends BaseModel{
   final String id;
@@ -94,4 +95,24 @@ class User extends BaseModel{
     'updated_at': updatedAt,
     'deleted_at': deletedAt,
   };
+
+  UserData toData() {
+    return UserData(
+      id: id,
+      userName: userName,
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: password,
+      role: role,
+      isEmailVerified: isEmailVerified,
+      isVerified: true, // Assuming true if synced
+      creditScore: int.tryParse(creditScore) ?? 0,
+      creditScoreStatus: creditScoreStaus,
+      syncStatus: syncStatus,
+      syncDate: DateTime.tryParse(syncDate),
+      createdAt: DateTime.tryParse(createdAt ?? '') ?? DateTime.now(),
+      updatedAt: DateTime.tryParse(updatedAt ?? '') ?? DateTime.now(),
+    );
+  }
 }

@@ -3,6 +3,7 @@ import 'package:spine/data/repositories/team/team_repository_abstract.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/data/services/api/team/team_api_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:spine/data/services/models/branch_user_model.dart';
 import 'package:spine/drift/database.dart';
 
 class TeamRepositoryRemote implements TeamRepositoryAbstract {
@@ -34,13 +35,13 @@ class TeamRepositoryRemote implements TeamRepositoryAbstract {
   }
 
   @override
-  Future<ApiResponse<List<BusinessUserData>>> getTeamMembers(String businessId) async {
-    return await _apiService.getTeamMembers(businessId);
+  Future<ApiResponse<List<BranchUserWithUser>>> getBranchTeamMembers(String branchId) async {
+    return await _apiService.getBranchTeamMembers(branchId);
   }
 
   @override
-  Future<ApiResponse<List<Invite>>> getPendingInvitations(String businessId) async {
-    return await _apiService.getPendingInvitations(businessId);
+  Future<ApiResponse<List<Invite>>> getBranchPendingInvitations(String branchId) async {
+    return await _apiService.getBranchPendingInvitations(branchId);
   }
 
   @override

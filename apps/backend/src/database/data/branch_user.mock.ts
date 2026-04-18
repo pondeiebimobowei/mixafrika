@@ -19,21 +19,5 @@ export const mockBranchUserSeed: (user, branch) => Promise<IBranchUser[]> = (asy
       createdAt: "2025-11-12T16:13:42.425Z",
       updatedAt: "2025-11-12T16:13:42.425Z"
     },
-
-    {
-      id: uuidv4(),
-      role: 'staff',
-      is_active: true,
-      assigned_at: "2025-11-12T16:13:42.425Z",
-
-      user_id: user_id[0],
-      branch_id: branch_id[1],
-
-      sync_status: 'pending',
-      sync_date: "2025-11-12T16:13:42.425Z",
-
-      createdAt: "2025-11-12T16:13:42.425Z",
-      updatedAt: "2025-11-12T16:13:42.425Z"
-    }
   ]
 });

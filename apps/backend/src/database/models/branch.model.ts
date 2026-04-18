@@ -9,13 +9,14 @@ import {
   PrimaryKey,
   Default,
   ForeignKey,
-  BelongsTo,
+  BelongsToMany,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { syncStatus } from '@shared/shared/src/enums';
 import { IBranch } from '@shared/shared/src/types/branch';
-import { UserBusiness } from './user-business.model';
+import { Business } from './business.model';
 import { User } from './user.model';
+import { BranchUser } from './branch-user';
 
 @Table({ tableName: 'branch' })
 export class Branch
@@ -31,39 +32,43 @@ export class Branch
 
   @Column(DataType.BOOLEAN)
   declare is_head_office: boolean;
-  
+
   @Column(DataType.INTEGER)
   declare phone: string;
 
   @Column(DataType.STRING)
   declare street_address: string;
-  
+
   @Column(DataType.STRING)
   declare city: string;
-  
+
   @Column(DataType.STRING)
   declare state: string;
-  
+
   @Column(DataType.STRING)
   declare country: string;
 
-  
+
   @Column(DataType.STRING)
   declare sync_status: syncStatus;
 
   @Column(DataType.DATE)
   declare sync_date?: string;
 
-  @ForeignKey(() => UserBusiness)
+  @ForeignKey(() => Business)
   @Column(DataType.UUID)
-  declare user_business_id: string;
+  declare business_id: string;
 
   @ForeignKey(() => User)
   @Column(DataType.UUID)
   declare user_id: string;
-  
-  @BelongsTo(() => User)
-  declare user: User;
+
+  // @BelongsTo(() => User)
+  // declare user: User;
+
+  @BelongsToMany(() => User, () => BranchUser)
+  declare users: User[];
+
   @CreatedAt
   declare createdAt: string;
 

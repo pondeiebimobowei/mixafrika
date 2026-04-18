@@ -34,7 +34,7 @@ import { RepaymentHistory } from './database/models/repayment-history.model';
 import { SavingsHistory } from './database/models/saving-history.model';
 import { Setting } from './database/models/setting.model';
 import { Update } from './database/models/update.model';
-import { UserBusiness } from './database/models/user-business.model';
+import { Business } from './database/models/business.model';
 import { Transaction } from './database/models/transaction.model';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -64,9 +64,10 @@ import { Sales } from './database/models/sales.model';
 import { SalesItem } from './database/models/sales-item.model';
 import { Branch } from './database/models/branch.model';
 import { BusinessUser } from './database/models/business-user';
-import { Invitation } from './database/models/invitation.model';
+import { Invitation } from './database/models/invites.model';
 import { BranchUser } from './database/models/branch-user';
 import { TeamModule } from './team/team.module';
+import { BranchModule } from './branch/branch.module';
 
 @Module({
   imports: [
@@ -86,7 +87,7 @@ import { TeamModule } from './team/team.module';
     AdminModule,
     LoanAccountHistoryModule,
     SettingsModule,
-    SequelizeModule.forFeature([User, BusinessUser, BusinessUser, BranchUser, Invitation, UserVerification, Branch, BusinessVerification, Savings, FundingApplication, Goal, BankCard, Investment, Notification, Feed, Cluster, Collection, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, UserBusiness, Transaction, Wallet, LoanAccount, Product, Batch, Inventory, Sales, SalesItem]),
+    SequelizeModule.forFeature([User, BusinessUser, BusinessUser, BranchUser, Invitation, UserVerification, Branch, BusinessVerification, Savings, FundingApplication, Goal, BankCard, Investment, Notification, Feed, Cluster, Collection, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, Business, Transaction, Wallet, LoanAccount, Product, Batch, Inventory, Sales, SalesItem]),
     ConfigModule.forRoot({ isGlobal: true }),
     SequelizeModule.forRootAsync({
       useFactory: getSequelizeConfig,
@@ -106,6 +107,7 @@ import { TeamModule } from './team/team.module';
     SalesItemModule,
     ProductModule,
     TeamModule,
+    BranchModule,
   ],
   controllers: [AppController],
   providers: [

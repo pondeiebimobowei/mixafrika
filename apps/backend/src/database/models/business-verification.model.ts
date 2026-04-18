@@ -14,7 +14,7 @@ import {
 import { syncStatus, VerificationStatus } from '@shared/shared/src/enums';
 import { CreationOptional } from 'sequelize';
 import { IBusinessVerification } from '@shared/shared/src/types/business-verification';
-import { UserBusiness } from './user-business.model';
+import { Business } from './business.model';
 
 @Table({
   tableName: 'business_verification',
@@ -26,10 +26,10 @@ export class BusinessVerification extends Model<IBusinessVerification> implement
   @Column(DataType.UUID)
   declare id: CreationOptional<string>;
 
-  @ForeignKey(() => UserBusiness)
+  @ForeignKey(() => Business)
   @Column({ type: DataType.UUID, allowNull: false })
   declare business_id: string;
-  
+
   @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(VerificationStatus)] } })
   declare status: VerificationStatus;
 
@@ -69,7 +69,7 @@ export class BusinessVerification extends Model<IBusinessVerification> implement
   @DeletedAt
   declare deletedAt?: string;
 
-  @BelongsTo(() => UserBusiness)
-  declare business: UserBusiness;
-  
+  @BelongsTo(() => Business)
+  declare business: Business;
+
 }

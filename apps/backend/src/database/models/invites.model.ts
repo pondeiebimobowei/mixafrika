@@ -14,7 +14,7 @@ import {
 import { IInvites } from '@shared/shared/src/types/invites';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { syncStatus } from '@shared/shared/src/enums';
-import { UserBusiness } from './user-business.model';
+import { Business } from './business.model';
 import { Branch } from './branch.model';
 import { User } from './user.model';
 
@@ -42,7 +42,7 @@ export class Invitation
   })
   declare status: 'pending' | 'accepted' | 'declined' | 'expired' | 'cancelled';
 
-  @ForeignKey(() => UserBusiness)
+  @ForeignKey(() => Business)
   @Column(DataType.UUID)
   declare business_id: string;
 
@@ -63,8 +63,8 @@ export class Invitation
   @Column(DataType.DATE)
   declare sync_date?: string;
 
-  @BelongsTo(() => UserBusiness)
-  declare business: UserBusiness;
+  @BelongsTo(() => Business)
+  declare business: Business;
 
   @BelongsTo(() => Branch)
   declare branch: Branch;

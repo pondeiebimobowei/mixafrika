@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:spine/data/services/models/branch_user_model.dart';
 import 'package:spine/ui/team_management/view_model/team_management_view_model.dart';
 import 'package:spine/ui/team_management/widget/invite_member_sheet.dart';
 import 'package:spine/widget/icon_widget.dart';
@@ -54,6 +55,7 @@ class TeamManagementView extends ConsumerWidget {
                       const SizedBox(height: 16),
                       if (state.members.isEmpty)
                         _buildEmptyState(context, 'No active members yet.')
+                        
                       else
                         ...state.members.map((member) => _buildMemberCard(context, member, viewModel)),
                       
@@ -96,10 +98,10 @@ class TeamManagementView extends ConsumerWidget {
     );
   }
 
-  Widget _buildMemberCard(BuildContext context, dynamic member, TeamManagementViewModel viewModel) {
+  Widget _buildMemberCard(BuildContext context, BranchUserWithUser member, TeamManagementViewModel viewModel) {
     final colors = context.theme.colors;
-    final user = member['user'];
-    final role = member['role'];
+    final user = member.user;
+    final role = member.branchUser.role;
 
     if (user == null) return const SizedBox.shrink();
 
@@ -116,7 +118,7 @@ class TeamManagementView extends ConsumerWidget {
           CircleAvatar(
             backgroundColor: colors.primary.withAlpha(50),
             child: Text(
-              (user['first_name'] as String?)?[0].toUpperCase() ?? 'U',
+              (user.firstName as String?)?[0].toUpperCase() ?? 'U',
               style: TextStyle(color: colors.primary, fontWeight: FontWeight.bold),
             ),
           ),
@@ -126,11 +128,11 @@ class TeamManagementView extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  '${user['first_name'] ?? ''} ${user['last_name'] ?? ''}',
+                  '${user.firstName} ${user.lastName}',
                   style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
                 Text(
-                  user['email'] ?? '',
+                  user.email,
                   style: TextStyle(fontSize: 12, color: colors.primaryForeground.withAlpha(120)),
                 ),
                 const SizedBox(height: 4),
@@ -143,7 +145,7 @@ class TeamManagementView extends ConsumerWidget {
           ),
           IconButton(
             icon: Icon(Icons.remove_circle_outline, color: colors.error.withAlpha(150)),
-            onPressed: () => _showMemberActions(context, user['id'], viewModel),
+            onPressed: () => _showMemberActions(context, user.id, viewModel),
           ),
         ],
       ),

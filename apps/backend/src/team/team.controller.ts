@@ -16,14 +16,14 @@ export class TeamController {
     return this.teamService.handleInviteMember(user.id, businessId, data);
   }
 
-  @Get('members/:businessId')
-  getTeamMembers(@Param('businessId') businessId: string) {
-    return this.teamService.handleGetTeamMembers(businessId);
+  @Get('branch/members/:branchId')
+  getBranchTeamMembers(@Param('branchId') branchId: string) {
+    return this.teamService.handleGetBranchTeamMembers(branchId);
   }
 
-  @Get('invitations/:businessId')
-  getPendingInvitations(@Param('businessId') businessId: string) {
-    return this.teamService.handleGetPendingInvitations(businessId);
+  @Get('branch/invites/:branchId')
+  getBranchPendingInvitations(@Param('branchId') branchId: string) {
+    return this.teamService.handleGetBranchPendingInvitations(branchId);
   }
 
   @Post('accept-invite')

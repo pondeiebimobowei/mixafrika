@@ -110,7 +110,7 @@ describe('AppController (e2e)', () => {
         expect(res.body.data.user).toHaveProperty('last_name', test_user.last_name);
         expect(res.body.data.user).toHaveProperty('password');
         expect(res.body.data.user).toHaveProperty('email', test_user.email);
-        expect(res.body.data.user).toHaveProperty('user_business');
+        expect(res.body.data.user).toHaveProperty('business');
       });
   });
 });

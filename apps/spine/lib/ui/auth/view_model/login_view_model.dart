@@ -14,10 +14,9 @@ class LoginViewModel extends Notifier<void> {
     final res = await ref.read(authRepositoryProvider).login(email, password);
     if (res.success) {
       await TokenManager.saveToken(res.data.token);
+      await ref.read(authRepositoryProvider).syncData();
     }
     return res;
-
-
   }
 }
 

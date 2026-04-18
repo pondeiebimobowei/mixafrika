@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:spine/data/repositories/auth/auth_repository.dart';
 import 'package:spine/data/repositories/branch/branch_repository.dart';
 import 'package:spine/data/shared_preference.dart';
 import 'package:spine/drift/database.dart';
@@ -72,7 +73,7 @@ class ShopManagementViewModel extends StateNotifier<ShopManagementState> {
     final businessId = await AppPreferences.getActiveBusinessId();
     try {
       final branch = await ref
-          .read(branchRepositoryProvider)
+          .read(branchRepositoryLocalProvider)
           .getBranchesByBusinessId(businessId!);
       state = state.copyWith(branch: branch, isLoading: false);
     } catch (e) {
@@ -82,7 +83,7 @@ class ShopManagementViewModel extends StateNotifier<ShopManagementState> {
 
   Future<void> createBranch(BranchData branch) async {
     final result = await ref
-        .read(branchRepositoryProvider)
+        .read(branchRepositoryLocalProvider)
         .createBranch(branch);
     if (result.success) {
       await loadBranches();
@@ -93,7 +94,7 @@ class ShopManagementViewModel extends StateNotifier<ShopManagementState> {
 
   Future<void> updateBranch(BranchData branch) async {
     final result = await ref
-        .read(branchRepositoryProvider)
+        .read(branchRepositoryLocalProvider)
         .updateBranch(branch);
     if (result.success) {
       await loadBranches();
@@ -108,7 +109,7 @@ class ShopManagementViewModel extends StateNotifier<ShopManagementState> {
   }
 
   Future<void> deleteBranch(String id) async {
-    await ref.read(branchRepositoryProvider).deleteBranch(id);
+    await ref.read(branchRepositoryLocalProvider).deleteBranch(id);
     await loadBranches();
   }
 
@@ -128,10 +129,8 @@ class ShopManagementViewModel extends StateNotifier<ShopManagementState> {
       state = state.copyWith(notificationEnabled: value);
 
   Future<void> logout() async {
-    // 1. Clear local storage (business, branch, and token)
-    await AppPreferences.clearAll();
+    await ref.read(authRepositoryProvider).logOut();
 
-    // 2. Reset global providers
     ref.read(activeBranchProvider.notifier).setBranch(null);
   }
 }

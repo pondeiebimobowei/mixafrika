@@ -1,10 +1,11 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/repositories/team/team_repository_local.dart';
-import 'package:spine/data/repositories/team/team_repository_remote.dart';
+import 'package:spine/data/services/models/branch_user_model.dart';
+import 'package:spine/data/services/models/business_user_model.dart';
 import 'package:spine/data/shared_preference.dart';
 
 class TeamManagementState {
-  final List<dynamic> members;
+  final List<BranchUserWithUser> members;
   final List<dynamic> invitations;
   final bool isLoading;
   final String? error;
@@ -17,7 +18,7 @@ class TeamManagementState {
   });
 
   TeamManagementState copyWith({
-    List<dynamic>? members,
+    List<BranchUserWithUser>? members,
     List<dynamic>? invitations,
     bool? isLoading,
     String? error,
@@ -42,18 +43,25 @@ class TeamManagementViewModel extends StateNotifier<TeamManagementState> {
   Future<void> loadTeamData() async {
     state = state.copyWith(isLoading: true, error: null);
     final businessId = await AppPreferences.getActiveBusinessId();
+    final businessBranchId = await AppPreferences.getActiveBranchId();
     if (businessId == null) {
       state = state.copyWith(isLoading: false, error: 'No active business found');
       return;
     }
+    if (businessBranchId == null) {
+      state = state.copyWith(isLoading: false, error: 'No active business branch found');
+      return;
+    }
+
+
 
     try {
-      final membersRes = await ref.read(teamRepositoryLocalProvider).getTeamMembers(businessId);
-      final invitesRes = await ref.read(teamRepositoryLocalProvider).getPendingInvitations(businessId);
+      final membersRes = await ref.read(teamRepositoryLocalProvider).getBranchTeamMembers(businessBranchId);
+      final invitesRes = await ref.read(teamRepositoryLocalProvider).getBranchPendingInvitations(businessBranchId);
 
       if (membersRes.success && invitesRes.success) {
         state = state.copyWith(
-          members: (membersRes.data as List?) ?? [],
+          members: (membersRes.data as List<BranchUserWithUser>?) ?? [],
           invitations: (invitesRes.data as List?) ?? [],
           isLoading: false,
         );
