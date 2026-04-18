@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Response } from '@shared/shared/src/types/api/responses';
-import { IBusiness } from '@shared/shared/src/types/business';
+import { IBusiness, IBusinessWithBranch } from '@shared/shared/src/types/business';
 import { Submit_business } from '@shared/shared/src/validation/submit-business-dto';
 import { Branch } from 'src/database/models/branch.model';
 import { BusinessVerification } from 'src/database/models/business-verification.model';
@@ -62,8 +62,7 @@ export class BusinessService {
         }
     }
 
-    async handleSubmitBusiness(user_id: string, { street_address, city, state, country, name, phone, type, cac_document, national_id_document }: Submit_business): Promise<Response<IBusiness>> {
-
+    async handleSubmitBusiness(user_id: string, { street_address, city, state, country, name, phone, type, cac_document, national_id_document }: Submit_business): Promise<Response<IBusinessWithBranch>> {
 
         const business = await Business.create({
             city,
@@ -73,10 +72,24 @@ export class BusinessService {
             name,
             phone,
             type,
+        
             is_verified: true,
-            sync_date: '',
             sync_status: 'pending',
 
+        })
+
+        await Branch.create({
+            business_id: business.id,
+            name: business.name,
+            phone: business.phone,
+            street_address: business.street_address,
+            city: business.city,
+            state: business.state,
+            country: business.country,
+            sync_status: 'pending',
+            is_head_office: true,
+            user_id: user_id,
+            
         })
 
         await BusinessVerification.create({
@@ -93,10 +106,21 @@ export class BusinessService {
 
         })
 
+        const businessWithBranch = await Business.findOne({
+            where: { id: business.id },
+            include: [
+                {
+                    model: Branch,
+                    where: { is_head_office: true },
+                    required: true,
+                },
+            ],
+        }) as unknown as IBusinessWithBranch;
+
 
         return {
             success: true,
-            data: business,
+            data: businessWithBranch,
             message: 'Business details submitted successfully!'
         }
     }

@@ -9,7 +9,7 @@ class SyncResponse {
   final List<BusinessUserModel> businessUsers;
   final List<BusinessMapper> businesses;
   final List<BranchUserModel> branchUsers;
-  final List<Branch> branches;
+  final List<BranchMapper> branches;
 
   SyncResponse({
     required this.user,
@@ -32,7 +32,7 @@ class SyncResponse {
           .map((e) => BranchUserModel.fromJson(e))
           .toList(),
       branches: (json['branches'] as List)
-          .map((e) => Branch.fromJson(e))
+          .map((e) => BranchMapper.fromJson(e))
           .toList(),
     );
   }

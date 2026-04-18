@@ -106,3 +106,14 @@ class BusinessMapper extends BaseModel {
     'deleted_at': deletedAt,
   };
 }
+
+
+class BusinessWithBranch {
+  final BusinessesData business;
+  final List<BranchData> branches;
+
+  BusinessWithBranch({
+    required this.business,
+    required this.branches,
+  });
+}

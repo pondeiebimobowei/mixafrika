@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/business/view_model/select_business_view_model.dart';
+import 'package:spine/widget/icon_widget.dart';
 
 class SelectBusinessView extends ConsumerWidget {
   const SelectBusinessView({super.key});
@@ -135,7 +136,7 @@ class SelectBusinessView extends ConsumerWidget {
                     context.go(Routes.dashboard);
                   }
                 },
-                child: const Icon(FIcons.chevronRight),
+                child: const IconWidget( icon: Icons.chevron_right),
               ),
             ],
           ),

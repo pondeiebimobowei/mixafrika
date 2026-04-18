@@ -1,7 +1,7 @@
 import 'package:spine/data/services/models/base_model.dart';
 import 'package:spine/drift/database.dart';
 
-class Branch extends BaseModel {
+class BranchMapper extends BaseModel {
   final String id;
   final String name;
   final String phone;
@@ -20,7 +20,7 @@ class Branch extends BaseModel {
   final String? updatedAt;
   final String? deletedAt;
 
-  Branch({
+  BranchMapper({
     required this.id,
     required this.name,
     required this.phone,
@@ -47,8 +47,8 @@ class Branch extends BaseModel {
          updatedAt: updatedAt,
        );
 
-  factory Branch.fromJson(Map<String, dynamic> json) {
-    return Branch(
+  factory BranchMapper.fromJson(Map<String, dynamic> json) {
+    return BranchMapper(
       id: json['id'] ?? '',
       name: json['name'] ?? '',
       phone: json['phone'] ?? '',

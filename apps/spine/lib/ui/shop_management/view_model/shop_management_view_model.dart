@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/repositories/auth/auth_repository.dart';
 import 'package:spine/data/repositories/branch/branch_repository.dart';
 import 'package:spine/data/repositories/business/business_repository.dart';
+import 'package:spine/data/repositories/business/business_repository_remote.dart';
 import 'package:spine/data/shared_preference.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/business/state/active_business_provider.dart';
@@ -138,7 +139,7 @@ class ShopManagementViewModel extends StateNotifier<ShopManagementState> {
 
   Future<void> createBusiness(BusinessesData business) async {
     final result = await ref
-        .read(businessRepositoryProvider)
+        .read(businessRepositoryRemoteProvider)
         .createBusiness(business);
     if (result.success) {
       await loadBusinesses();
@@ -149,7 +150,7 @@ class ShopManagementViewModel extends StateNotifier<ShopManagementState> {
 
   Future<void> updateBusiness(BusinessesData business) async {
     final result = await ref
-        .read(businessRepositoryProvider)
+        .read(businessRepositoryRemoteProvider)
         .updateBusiness(business);
     if (result.success) {
       await loadBusinesses();

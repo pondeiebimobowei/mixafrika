@@ -60,10 +60,7 @@ module.exports = {
         // branch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'product', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         
         sync_status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)]} },
-        sync_date: {
-          allowNull: false,
-          type: Sequelize.DATE,
-        },
+        sync_date: { allowNull: true, type: Sequelize.DATE },
 
 
         createdAt: {

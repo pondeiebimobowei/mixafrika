@@ -4,147 +4,254 @@ import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/auth/view_model/signup_view_model.dart';
+import 'dart:ui';
 
 
-class SignupView extends ConsumerWidget {
-  SignupView({ super.key });
+class SignupView extends ConsumerStatefulWidget {
+  const SignupView({super.key});
 
+  @override
+  ConsumerState<SignupView> createState() => _SignupViewState();
+}
+
+class _SignupViewState extends ConsumerState<SignupView> {
   final _formKey = GlobalKey<FormState>();
   final _firstNameController = TextEditingController();
   final _lastNameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _isLoading = false;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _phoneController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final viewModel = ref.read(signupViewModelProvider.notifier);
 
     return FScaffold(
       header: FHeader(title: const Text('Create Account')),
-      child: Material(
-        color: Colors.transparent,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  'Personal Information',
-                  style: context.theme.typography.xl.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  'Provide your basic details to get started.',
-                  style: context.theme.typography.sm.copyWith(
-                    color: context.theme.colors.mutedForeground,
-                  ),
-                ),
-                const SizedBox(height: 32),
-                _buildTextField(
-                  controller: _firstNameController,
-                  label: 'First Name',
-                  hint: 'Enter your first name',
-                  context: context,
-                ),
-                const SizedBox(height: 20),
-                _buildTextField(
-                  controller: _lastNameController,
-                  label: 'Last Name',
-                  hint: 'Enter your last name',
-                  context: context,
-                ),
-                const SizedBox(height: 20),
-                _buildTextField(
-                  controller: _phoneController,
-                  label: 'Phone Number',
-                  hint: 'e.g. 08012345678',
-                  keyboardType: TextInputType.phone,
-                  context: context,
-
-                ),
-                const SizedBox(height: 20),
-                _buildTextField(
-                  controller: _emailController,
-                  label: 'Email Address',
-                  hint: 'e.g. trader@example.com',
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value == null || value.isEmpty)
-                      return 'Please enter email';
-                    if (!RegExp(
-                      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
-                    ).hasMatch(value))
-                      return 'Enter a valid email';
-                    return null;
-                  },
-                  context: context,
-                ),
-                const SizedBox(height: 20),
-                _buildTextField(
-                  controller: _passwordController,
-                  label: 'Password',
-                  hint: 'Minimum 6 characters',
-                  obscureText: true,
-                  validator: (value) {
-                    if (value == null || value.isEmpty)
-                      return 'Please enter password';
-                    if (value.length < 6) return 'Password too short';
-                    return null;
-                  },
-                  context: context,
-
-                ),
-                const SizedBox(height: 40),
-                FButton(
-                  onPress: () async {
-                    final res = await viewModel.signup(
-                      firstName: _firstNameController.text,
-                      lastName: _lastNameController.text,
-                      phone: _phoneController.text,
-                      email: _emailController.text,
-                      password: _passwordController.text,
-                    );
-
-                    if (res.success && context.mounted) {
-                      context.go(Routes.businessDetails);
-                    } else if (context.mounted) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(res.message)),
-                      );
-                    }
-
-
-                  },
-                  child: const Text('Continue to Business Details'),
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+      child: Stack(
+        children: [
+          // Background Gradient Element
+          Positioned(
+            top: -100,
+            left: -100,
+            child: Container(
+              width: 300,
+              height: 300,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: context.theme.colors.primary.withOpacity(0.15),
+              ),
+            ),
+          ),
+          Positioned(
+            bottom: -50,
+            right: -50,
+            child: Container(
+              width: 250,
+              height: 250,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: context.theme.colors.primary.withOpacity(0.1),
+              ),
+            ),
+          ),
+          // Blur Effect
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+            child: Container(color: Colors.transparent),
+          ),
+          // Content
+          SafeArea(
+            child: Material(
+              color: Colors.transparent,
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
+                child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     Text(
-                      'Already have an account? ',
-                      style: context.theme.typography.sm,
-                    ),
-                    GestureDetector(
-                      child: Text(
-                        'Sign In',
-                        style: context.theme.typography.sm.copyWith(
-                          color: context.theme.colors.primary,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      'Personal Information',
+                      style: context.theme.typography.xl.copyWith(
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: -0.5,
                       ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Provide your basic details to get started.',
+                      style: context.theme.typography.base.copyWith(
+                        color: context.theme.colors.mutedForeground,
+                      ),
+                    ),
+                    const SizedBox(height: 48),
+                    
+                    Container(
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: context.theme.colors.background,
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(
+                          color: context.theme.colors.border.withOpacity(0.5),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.04),
+                            blurRadius: 24,
+                            offset: const Offset(0, 8),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _buildTextField(
+                                  controller: _firstNameController,
+                                  label: 'First Name',
+                                  hint: 'John',
+                                  context: context,
+                                ),
+                              ),
+                              const SizedBox(width: 16),
+                              Expanded(
+                                child: _buildTextField(
+                                  controller: _lastNameController,
+                                  label: 'Last Name',
+                                  hint: 'Doe',
+                                  context: context,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          _buildTextField(
+                            controller: _phoneController,
+                            label: 'Phone Number',
+                            hint: 'e.g. 08012345678',
+                            keyboardType: TextInputType.phone,
+                            context: context,
+                          ),
+                          const SizedBox(height: 20),
+                          _buildTextField(
+                            controller: _emailController,
+                            label: 'Email Address',
+                            hint: 'e.g. trader@example.com',
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter email';
+                              }
+                              if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                                return 'Enter a valid email';
+                              }
+                              return null;
+                            },
+                            context: context,
+                          ),
+                          const SizedBox(height: 20),
+                          _buildTextField(
+                            controller: _passwordController,
+                            label: 'Password',
+                            hint: 'Minimum 6 characters',
+                            obscureText: true,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter password';
+                              }
+                              if (value.length < 6) return 'Password too short';
+                              return null;
+                            },
+                            context: context,
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 48),
+                    
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      child: FButton(
+                        onPress: _isLoading ? null : () async {
+                          if (!_formKey.currentState!.validate()) return;
+                          
+                          setState(() => _isLoading = true);
+                          
+                          final res = await viewModel.signup(
+                            firstName: _firstNameController.text,
+                            lastName: _lastNameController.text,
+                            phone: _phoneController.text,
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                          );
+
+                          if (!mounted) return;
+                          setState(() => _isLoading = false);
+
+                          if (res.success) {
+                            context.go(Routes.businessDetails);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(res.message, style: const TextStyle(color: Colors.white)),
+                                backgroundColor: context.theme.colors.destructive,
+                                behavior: SnackBarBehavior.floating,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                              ),
+                            );
+                          }
+                        },
+                        child: _isLoading 
+                          ? const SizedBox(
+                              width: 20, 
+                              height: 20, 
+                              child: CircularProgressIndicator(strokeWidth: 2)
+                            )
+                          : const Text('Continue to Business Details'),
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Already have an account? ',
+                          style: context.theme.typography.sm.copyWith(
+                            color: context.theme.colors.mutedForeground,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => context.go(Routes.login),
+                          child: Text(
+                            'Sign In',
+                            style: context.theme.typography.sm.copyWith(
+                              color: context.theme.colors.primary,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -158,39 +265,51 @@ class SignupView extends ConsumerWidget {
     String? Function(String?)? validator,
     required BuildContext context,
   }) {
-    
-    return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      style: TextStyle(color: context.theme.colors.primaryForeground),
-      decoration: InputDecoration(
-        labelText: label,
-        labelStyle: TextStyle(color: context.theme.colors.mutedForeground),
-        hintText: hint,
-        hintStyle: TextStyle(
-          color: context.theme.colors.mutedForeground.withOpacity(0.5),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: context.theme.typography.sm.copyWith(
+            fontWeight: FontWeight.w500,
+            color: context.theme.colors.foreground,
+          ),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: context.theme.colors.border),
-          borderRadius: BorderRadius.circular(8),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: controller,
+          obscureText: obscureText,
+          keyboardType: keyboardType,
+          style: TextStyle(color: context.theme.colors.foreground),
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: TextStyle(
+              color: context.theme.colors.mutedForeground.withOpacity(0.5),
+            ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            filled: true,
+            fillColor: context.theme.colors.muted.withOpacity(0.3),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide.none,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: context.theme.colors.primary, width: 2),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: context.theme.colors.destructive),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            focusedErrorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: context.theme.colors.destructive, width: 2),
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          validator: validator ??
+              (value) => (value == null || value.isEmpty) ? 'Required' : null,
         ),
-        focusedBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: context.theme.colors.primary),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: context.theme.colors.destructive),
-          borderRadius: BorderRadius.circular(8),
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-          borderSide: BorderSide(color: context.theme.colors.destructive),
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-      validator:
-          validator ??
-          (value) => (value == null || value.isEmpty) ? 'Required' : null,
+      ],
     );
   }
 }
