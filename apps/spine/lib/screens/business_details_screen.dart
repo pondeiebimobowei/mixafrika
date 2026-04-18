@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:go_router/go_router.dart';
+import 'package:spine/routing/routes.dart';
 
 class BusinessDetailsScreen extends StatefulWidget {
   // final Map<String, dynamic> userData;
@@ -73,7 +74,7 @@ class _BusinessDetailsScreenState extends State<BusinessDetailsScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Registration Successful!')),
         );
-        context.go('/');
+        context.go(Routes.dashboard);
       }
     }
   }

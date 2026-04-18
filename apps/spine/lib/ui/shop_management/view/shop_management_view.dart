@@ -6,6 +6,7 @@ import 'package:spine/drift/database.dart';
 import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/shop_management/view_model/shop_management_view_model.dart';
 import 'package:spine/ui/shop_management/widget/edit_branch_sheet.dart';
+import 'package:spine/ui/shop_management/widget/edit_business_sheet.dart';
 import 'package:spine/widget/icon_widget.dart';
 
 class ShopManagementView extends ConsumerWidget {
@@ -29,11 +30,6 @@ class ShopManagementView extends ConsumerWidget {
             Text(
               'Shop Management',
               style: TextStyle(fontSize: 20, color: colors.primaryForeground),
-            ),
-            const Spacer(),
-            IconWidget(
-              icon: Icons.add,
-              onTap: () => _showEditSheet(context, viewModel),
             ),
           ],
         ),
@@ -59,10 +55,64 @@ class ShopManagementView extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    _buildSectionHeader(
-                      context,
-                      'Branch Profile',
-                      Icons.business_outlined,
+
+                    // --- MY BUSINESSES SECTION ---
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildSectionHeader(
+                          context,
+                          'My Businesses',
+                          Icons.business_center_outlined,
+                        ),
+                        FButton(
+                          variant: FButtonVariant.outline,
+                          // size: FButtonSize.extraSmall,
+                          child: const Icon(Icons.add, size: 14),
+                          onPress: () => _showEditBusinessSheet(context, viewModel),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    if (state.businesses.isEmpty)
+                      _buildEmptyBusinessState(context, viewModel)
+                    else
+                      SizedBox(
+                        height: 140,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: state.businesses.length,
+                          itemBuilder: (context, index) {
+                            final biz = state.businesses[index];
+                            final isActive = biz.id == state.activeBusinessId;
+                            return _buildBusinessCard(
+                              context,
+                              biz,
+                              isActive,
+                              viewModel,
+                            );
+                          },
+                        ),
+                      ),
+
+                    const SizedBox(height: 40),
+
+                    // --- BRANCH PROFILE SECTION ---
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildSectionHeader(
+                          context,
+                          'Branch Profile',
+                          Icons.storefront_outlined,
+                        ),
+                        FButton(
+                          variant: FButtonVariant.outline,
+                          // size: FButtonSize.extraSmall,
+                          child: const Icon(Icons.add, size: 14),
+                          onPress: () => _showEditBranchSheet(context, viewModel),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 20),
                     if (state.branch.isEmpty)
@@ -177,6 +227,234 @@ class ShopManagementView extends ConsumerWidget {
               ),
       ),
     );
+  }
+
+  Widget _buildBusinessCard(
+    BuildContext context,
+    BusinessesData biz,
+    bool isActive,
+    ShopManagementViewModel viewModel,
+  ) {
+    final colors = context.theme.colors;
+    return GestureDetector(
+      onTap: () => viewModel.switchBusiness(biz.id),
+      child: Container(
+        width: 200,
+        margin: const EdgeInsets.only(right: 16),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: isActive
+                ? [colors.primary, colors.primary.withValues(alpha: 0.8)]
+                : [
+                    colors.secondaryForeground,
+                    colors.secondaryForeground.withValues(alpha: 0.8)
+                  ],
+          ),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: isActive
+                ? colors.primary.withValues(alpha: 0.2)
+                : colors.primary.withValues(alpha: 0.1),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(
+                    Icons.business_outlined,
+                    color: isActive ? Colors.white : colors.primary,
+                    size: 20,
+                  ),
+                ),
+                if (isActive)
+                  const Icon(Icons.check_circle, color: Colors.white, size: 20),
+              ],
+            ),
+            const Spacer(),
+            Text(
+              biz.name,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontWeight: FontWeight.w800,
+                fontSize: 16,
+                color: isActive ? Colors.white : null,
+                letterSpacing: -0.5,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              biz.type,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+                color: isActive
+                    ? Colors.white.withValues(alpha: 0.7)
+                    : colors.primaryForeground.withValues(alpha: 0.5),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                _buildSmallCircleButton(
+                  icon: Icons.edit_outlined,
+                  onTap: () => _showEditBusinessSheet(context, viewModel, business: biz),
+                  color: Colors.white.withValues(alpha: 0.15),
+                  iconColor: isActive ? Colors.white : colors.primary,
+                ),
+                const SizedBox(width: 8),
+                _buildSmallCircleButton(
+                  icon: Icons.delete_outline,
+                  onTap: () => viewModel.deleteBusiness(biz.id),
+                  color: Colors.white.withValues(alpha: 0.15),
+                  iconColor: isActive ? Colors.white : colors.error,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSmallCircleButton({
+    required IconData icon,
+    required VoidCallback onTap,
+    required Color color,
+    required Color iconColor,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 28,
+        height: 28,
+        decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+        child: Icon(icon, size: 14, color: iconColor),
+      ),
+    );
+  }
+
+  Widget _buildEmptyBusinessState(
+    BuildContext context,
+    ShopManagementViewModel viewModel,
+  ) {
+    final colors = context.theme.colors;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 24),
+      decoration: BoxDecoration(
+        color: colors.secondaryForeground.withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(28),
+      ),
+      child: Column(
+        children: [
+          Icon(Icons.business_center_outlined,
+              size: 40, color: colors.primary.withValues(alpha: 0.3)),
+          const SizedBox(height: 16),
+          const Text('No businesses yet',
+              style: TextStyle(fontWeight: FontWeight.w700)),
+          const SizedBox(height: 16),
+          FButton(
+            variant: FButtonVariant.outline,
+            child: const Text('Add Business'),
+            onPress: () => _showEditBusinessSheet(context, viewModel),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showEditBusinessSheet(
+    BuildContext context,
+    ShopManagementViewModel viewModel, {
+    BusinessesData? business,
+  }) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => EditBusinessSheet(business: business),
+    ).then((result) {
+      if (result != null) {
+        if (result is BusinessesCompanion) {
+          viewModel.createBusiness(
+            BusinessesData(
+              id: result.id.value,
+              name: result.name.value,
+              type: result.type.value,
+              phone: result.phone.value,
+              streetAddress: result.streetAddress.value,
+              city: result.city.value,
+              state: result.state.value,
+              country: result.country.value,
+              isVerified: result.isVerified.value,
+              syncStatus: result.syncStatus.value,
+              createdAt: result.createdAt.value,
+              updatedAt: result.updatedAt.value,
+            ),
+          );
+        } else if (result is BusinessesData) {
+          viewModel.updateBusiness(result);
+        }
+      }
+    });
+  }
+
+  void _showEditBranchSheet(
+    BuildContext context,
+    ShopManagementViewModel viewModel, {
+    BranchData? branch,
+  }) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => EditBranchSheet(branch: branch),
+    ).then((result) {
+      if (result != null) {
+        if (result is BranchCompanion) {
+          viewModel.createBranch(
+            BranchData(
+              id: result.id.value,
+              name: result.name.value,
+              phone: result.phone.value,
+              streetAddress: result.streetAddress.value,
+              city: result.city.value,
+              state: result.state.value,
+              country: result.country.value,
+              isHeadOffice: result.isHeadOffice.value,
+              businessId: viewModel.state.activeBusinessId!,
+              syncStatus: result.syncStatus.value,
+              createdAt: result.createdAt.value,
+              updatedAt: result.updatedAt.value,
+              collectionId: result.collectionId.value,
+            ),
+          );
+        } else if (result is BranchData) {
+          viewModel.updateBranch(result);
+        }
+      }
+    });
   }
 
   Widget _buildSectionHeader(
@@ -308,7 +586,7 @@ class ShopManagementView extends ConsumerWidget {
             ),
             _buildRoundActionButton(
               icon: Icons.edit_outlined,
-              onTap: () => _showEditSheet(context, viewModel, branch: biz),
+              onTap: () => _showEditBranchSheet(context, viewModel, branch: biz),
               color: colors.primary.withValues(alpha: 0.1),
               iconColor: colors.primary,
             ),
@@ -401,7 +679,7 @@ class ShopManagementView extends ConsumerWidget {
                 Text('Add First Shop'),
               ],
             ),
-            onPress: () => _showEditSheet(context, viewModel),
+            onPress: () => _showEditBranchSheet(context, viewModel),
           ),
         ],
       ),
@@ -607,27 +885,6 @@ class ShopManagementView extends ConsumerWidget {
         ),
       ),
     );
-  }
-
-  void _showEditSheet(
-    BuildContext context,
-    ShopManagementViewModel viewModel, {
-    BranchData? branch,
-  }) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) => EditBranchSheet(branch: branch),
-    ).then((result) {
-      if (result != null) {
-        if (result is BranchData) {
-          viewModel.createBranch(result);
-        } else if (result is BranchData) {
-          viewModel.updateBranch(result);
-        }
-      }
-    });
   }
 
   void _showUnitSelection(

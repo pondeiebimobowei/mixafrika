@@ -1,12 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/repositories/auth/auth_repository.dart';
 import 'package:spine/data/repositories/branch/branch_repository.dart';
+import 'package:spine/data/repositories/business/business_repository.dart';
 import 'package:spine/data/shared_preference.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/business/state/active_business_provider.dart';
 
 class ShopManagementState {
   final List<BranchData> branch;
+  final List<BusinessesData> businesses;
+  final String? activeBusinessId;
   final bool isLoading;
   final String? error;
 
@@ -20,6 +23,8 @@ class ShopManagementState {
 
   ShopManagementState({
     required this.branch,
+    this.businesses = const [],
+    this.activeBusinessId,
     this.isLoading = false,
     this.error,
     this.batchTrackingEnabled = false,
@@ -33,6 +38,8 @@ class ShopManagementState {
 
   ShopManagementState copyWith({
     List<BranchData>? branch,
+    List<BusinessesData>? businesses,
+    String? activeBusinessId,
     bool? isLoading,
     String? error,
     bool? batchTrackingEnabled,
@@ -45,6 +52,8 @@ class ShopManagementState {
   }) {
     return ShopManagementState(
       branch: branch ?? this.branch,
+      businesses: businesses ?? this.businesses,
+      activeBusinessId: activeBusinessId ?? this.activeBusinessId,
       isLoading: isLoading ?? this.isLoading,
       error: error ?? this.error,
       batchTrackingEnabled: batchTrackingEnabled ?? this.batchTrackingEnabled,
@@ -65,19 +74,102 @@ class ShopManagementViewModel extends StateNotifier<ShopManagementState> {
 
   ShopManagementViewModel(this.ref)
     : super(ShopManagementState(branch: [])) {
-    loadBranches();
+    init();
+  }
+
+  Future<void> init() async {
+    final activeId = await AppPreferences.getActiveBusinessId();
+    state = state.copyWith(activeBusinessId: activeId);
+    await loadBusinesses();
+    await loadBranches();
+  }
+
+  Future<void> loadBusinesses() async {
+    state = state.copyWith(isLoading: true);
+    try {
+      final businesses = await ref.read(businessRepositoryProvider).getBusinesses();
+      state = state.copyWith(businesses: businesses, isLoading: false);
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
   }
 
   Future<void> loadBranches() async {
     state = state.copyWith(isLoading: true);
     final businessId = await AppPreferences.getActiveBusinessId();
+    if (businessId == null) return;
+
     try {
       final branch = await ref
           .read(branchRepositoryLocalProvider)
-          .getBranchesByBusinessId(businessId!);
+          .getBranchesByBusinessId(businessId);
       state = state.copyWith(branch: branch, isLoading: false);
     } catch (e) {
       state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
+  Future<void> switchBusiness(String businessId) async {
+    state = state.copyWith(isLoading: true, activeBusinessId: businessId);
+    try {
+      // 1. Save active business
+      await AppPreferences.saveActiveBusinessId(businessId);
+
+      // 2. Load branches for this business
+      final branches = await ref
+          .read(branchRepositoryLocalProvider)
+          .getBranchesByBusinessId(businessId);
+      
+      // 3. Set default branch (head office or first)
+      if (branches.isNotEmpty) {
+        final headOffice = branches.where((b) => b.isHeadOffice).firstOrNull ?? branches.first;
+        await AppPreferences.saveActiveBranchId(headOffice.id);
+        ref.read(activeBranchProvider.notifier).setBranch(headOffice);
+      } else {
+        ref.read(activeBranchProvider.notifier).setBranch(null);
+      }
+
+      // 4. Update state
+      state = state.copyWith(branch: branches, isLoading: false);
+    } catch (e) {
+      state = state.copyWith(isLoading: false, error: e.toString());
+    }
+  }
+
+  Future<void> createBusiness(BusinessesData business) async {
+    final result = await ref
+        .read(businessRepositoryProvider)
+        .createBusiness(business);
+    if (result.success) {
+      await loadBusinesses();
+    } else {
+      state = state.copyWith(error: result.message);
+    }
+  }
+
+  Future<void> updateBusiness(BusinessesData business) async {
+    final result = await ref
+        .read(businessRepositoryProvider)
+        .updateBusiness(business);
+    if (result.success) {
+      await loadBusinesses();
+    } else {
+      state = state.copyWith(error: result.message);
+    }
+  }
+
+  Future<void> deleteBusiness(String id) async {
+    await ref.read(businessRepositoryProvider).deleteBusiness(id);
+    await loadBusinesses();
+    
+    // If deleted business was active, switch to first available or logout
+    final activeId = await AppPreferences.getActiveBusinessId();
+    if (activeId == id) {
+      if (state.businesses.isNotEmpty) {
+        await switchBusiness(state.businesses.first.id);
+      } else {
+        await logout();
+      }
     }
   }
 
