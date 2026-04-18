@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:math_expressions/math_expressions.dart';
 import 'package:spine/ui/calculator/state/calculator_state.dart';
 
 class CalculatorViewModel extends Notifier<CalculatorState> {
@@ -8,88 +9,136 @@ class CalculatorViewModel extends Notifier<CalculatorState> {
   }
 
   void onNumberPressed(String number) {
-    if (state.shouldResetDisplay) {
-      state = state.copyWith(display: number, shouldResetDisplay: false);
-    } else {
+    state = state.copyWith(expression: state.expression + number);
+    _calculate();
+  }
+
+  void onOperatorPressed(String operator) {
+    if (state.expression.isEmpty) return;
+
+    final lastChar = state.expression[state.expression.length - 1];
+    final operators = ['+', '-', 'x', '÷', '×'];
+
+    if (operators.contains(operator) && operators.contains(lastChar)) {
       state = state.copyWith(
-        display: state.display == '0' ? number : state.display + number,
+        expression: state.expression.substring(0, state.expression.length - 1) +
+            operator,
+      );
+    } else {
+      state = state.copyWith(expression: state.expression + operator);
+    }
+    _calculate();
+  }
+
+  void onBackspacePressed() {
+    if (state.expression.isNotEmpty) {
+      state = state.copyWith(
+        expression: state.expression.substring(0, state.expression.length - 1),
+      );
+      _calculate();
+    }
+  }
+
+  void _calculate() {
+    try {
+      if (state.expression.isEmpty) {
+        state = state.copyWith(result: '0');
+        return;
+      }
+
+      String expStr = state.expression
+          .replaceAll('x', '*')
+          .replaceAll('×', '*')
+          .replaceAll('÷', '/');
+
+      // Remove trailing operators for partial evaluation
+      final operators = ['+', '-', '*', '/'];
+      while (expStr.isNotEmpty &&
+          operators.contains(expStr[expStr.length - 1])) {
+        expStr = expStr.substring(0, expStr.length - 1);
+      }
+
+      if (expStr.isEmpty) {
+        state = state.copyWith(result: '0');
+        return;
+      }
+
+      Parser p = Parser();
+      Expression exp = p.parse(expStr);
+      ContextModel cm = ContextModel();
+      double eval = exp.evaluate(EvaluationType.REAL, cm);
+
+      if (eval.isInfinite || eval.isNaN) {
+        state = state.copyWith(result: 'Error');
+      } else {
+        String res = '';
+        if (eval == eval.toInt()) {
+          res = eval.toInt().toString();
+        } else {
+          res = eval.toStringAsFixed(8);
+          if (res.contains('.')) {
+            res = res.replaceAll(RegExp(r'0+$'), '').replaceAll(
+              RegExp(r'\.$'),
+              '',
+            );
+          }
+        }
+        state = state.copyWith(result: res);
+      }
+    } catch (e) {
+      // Incomplete formulas
+    }
+  }
+
+  void onEqualPressed() {
+    if (state.expression.isEmpty) return;
+    _calculate();
+
+    if (state.result != 'Error') {
+      final historyEntry = '${state.expression} = ${state.result}';
+
+      state = state.copyWith(
+        expression: state.result,
+        result: '0',
+        history: [historyEntry, ...state.history],
       );
     }
   }
 
-  void onOperatorPressed(String operator) {
-    if (state.operator != null && !state.shouldResetDisplay) {
-      calculate();
-    }
-    state = state.copyWith(
-      operator: operator,
-      previousValue: double.tryParse(state.display),
-      shouldResetDisplay: true,
-    );
-  }
-
-  void calculate() {
-    if (state.operator == null || state.previousValue == null) return;
-
-    final currentValue = double.tryParse(state.display) ?? 0;
-    double result = 0;
-
-    switch (state.operator) {
-      case '+':
-        result = state.previousValue! + currentValue;
-        break;
-      case '-':
-        result = state.previousValue! - currentValue;
-        break;
-      case '×':
-        result = state.previousValue! * currentValue;
-        break;
-      case '÷':
-        if (currentValue != 0) {
-          result = state.previousValue! / currentValue;
-        } else {
-          state = state.copyWith(display: 'Error', shouldResetDisplay: true);
-          return;
-        }
-        break;
-    }
-
-    final resultStr = _formatResult(result);
-    final historyEntry =
-        '${state.previousValue} ${state.operator} $currentValue = $resultStr';
-
-    state = state.copyWith(
-      display: resultStr,
-      operator: null,
-      previousValue: null,
-      shouldResetDisplay: true,
-      history: [historyEntry, ...state.history],
-    );
-  }
-
   void onClearPressed() {
-    state = CalculatorState();
+    state = CalculatorState(history: state.history);
   }
 
   void onPercentagePressed() {
-    final currentValue = double.tryParse(state.display) ?? 0;
-    state = state.copyWith(display: (currentValue / 100).toString());
+    if (state.expression.isEmpty) return;
+    _calculate();
+    if (state.result != '0' && state.result != 'Error') {
+      try {
+        double val = double.parse(state.result);
+        val = val / 100;
+        String res = val.toString();
+        if (val == val.toInt()) {
+          res = val.toInt().toString();
+        }
+        state = state.copyWith(expression: res, result: '0');
+      } catch (_) {}
+    }
   }
 
   void onNegatePressed() {
-    if (state.display == '0') return;
-    if (state.display.startsWith('-')) {
-      state = state.copyWith(display: state.display.substring(1));
-    } else {
-      state = state.copyWith(display: '-${state.display}');
+    if (state.expression.isEmpty) return;
+    _calculate();
+    if (state.result != '0' && state.result != 'Error') {
+      try {
+        double val = double.parse(state.result);
+        val = -val;
+        String res = val.toString();
+        if (val == val.toInt()) {
+          res = val.toInt().toString();
+        }
+        state = state.copyWith(expression: res, result: '0');
+      } catch (_) {}
     }
-  }
-
-  String _formatResult(double result) {
-    if (result == result.toInt()) {
-      return result.toInt().toString();
-    }
-    return result.toString();
   }
 }
 

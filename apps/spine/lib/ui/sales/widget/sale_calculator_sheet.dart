@@ -24,18 +24,54 @@ class _SaleCalculatorSheetState extends State<SaleCalculatorSheet> {
         _result = '0';
       } else if (value == '=') {
         _calculate();
-        _expression = _result;
+        if (_result != '0' && _result != 'Error') {
+          _expression = _result;
+          _result = '0';
+        }
       } else if (value == '⌫') {
         if (_expression.isNotEmpty) {
           _expression = _expression.substring(0, _expression.length - 1);
         }
         _calculate();
+      } else if (value == '%') {
+        if (_expression.isNotEmpty) {
+          _calculate();
+          if (_result != '0' && _result != 'Error') {
+            try {
+              double val = double.parse(_result);
+              val = val / 100;
+              String res = val.toString();
+              if (val == val.toInt()) {
+                res = val.toInt().toString();
+              }
+              _expression = res;
+              _result = '0';
+            } catch (_) {}
+          }
+        }
+      } else if (value == '+/-') {
+        if (_expression.isNotEmpty) {
+          _calculate();
+          if (_result != '0' && _result != 'Error') {
+            try {
+              double val = double.parse(_result);
+              val = -val;
+              String res = val.toString();
+              if (val == val.toInt()) {
+                res = val.toInt().toString();
+              }
+              _expression = res;
+              _result = '0';
+            } catch (_) {}
+          }
+        }
       } else {
         // Prevent multiple operators in a row
         final lastChar = _expression.isNotEmpty
             ? _expression[_expression.length - 1]
             : '';
-        final operators = ['+', '-', 'x', '÷'];
+        final operators = ['+', '-', 'x', '÷', '×'];
+
         if (operators.contains(value) && operators.contains(lastChar)) {
           _expression =
               _expression.substring(0, _expression.length - 1) + value;
@@ -54,7 +90,10 @@ class _SaleCalculatorSheetState extends State<SaleCalculatorSheet> {
         return;
       }
 
-      String expStr = _expression.replaceAll('x', '*').replaceAll('÷', '/');
+      String expStr = _expression
+          .replaceAll('x', '*')
+          .replaceAll('×', '*')
+          .replaceAll('÷', '/');
 
       // Remove trailing operator for partial evaluation
       final operators = ['+', '-', '*', '/'];
@@ -73,16 +112,13 @@ class _SaleCalculatorSheetState extends State<SaleCalculatorSheet> {
       ContextModel cm = ContextModel();
       double eval = exp.evaluate(EvaluationType.REAL, cm);
 
-      // Handle very large or small numbers gracefully
       if (eval.isInfinite || eval.isNaN) {
-        _result = '0';
+        _result = 'Error';
       } else {
-        // If it's a whole number, show as int, else show up to 2 decimals
         if (eval == eval.toInt()) {
           _result = eval.toInt().toString();
         } else {
           _result = eval.toStringAsFixed(2);
-          // Remove trailing zeros if any
           if (_result.contains('.')) {
             _result = _result
                 .replaceAll(RegExp(r'0+$'), '')
@@ -91,7 +127,7 @@ class _SaleCalculatorSheetState extends State<SaleCalculatorSheet> {
         }
       }
     } catch (e) {
-      // Incomplete expressions are fine during typing
+      // Incomplete expressions
     }
   }
 
@@ -99,144 +135,223 @@ class _SaleCalculatorSheetState extends State<SaleCalculatorSheet> {
   Widget build(BuildContext context) {
     final colors = context.theme.colors;
     return Container(
-      height: MediaQuery.of(context).size.height * 0.85,
-      padding: const EdgeInsets.all(24),
+      height: MediaQuery.of(context).size.height * 0.9,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
       decoration: const BoxDecoration(
-        color: Color(0xFF0F172A),
-        borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
+        color: Color(0xFF0B1121),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(40)),
       ),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                'Calculator Charge',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: const Icon(Icons.close, color: Colors.white24),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          TextField(
-            controller: _nameController,
-            style: const TextStyle(color: Colors.white),
-            decoration: InputDecoration(
-              labelText: 'Charge Name',
-              labelStyle: TextStyle(color: colors.mutedForeground),
-              filled: true,
-              fillColor: const Color(0xFF1E293B),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide.none,
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.all(20),
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: const Color(0xFF020617),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  _expression.isEmpty ? '0' : _expression,
-                  style: TextStyle(color: colors.mutedForeground, fontSize: 18),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '₦$_result',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 32,
+                  'Calculator Charge',
+                  style: TextStyle(
+                    color: colors.primaryForeground,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 24),
-          Expanded(
-            child: GridView.count(
-              crossAxisCount: 4,
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              children: [
-                _buildCalcButton('7'),
-                _buildCalcButton('8'),
-                _buildCalcButton('9'),
-                _buildCalcButton('÷', color: colors.primary),
-                _buildCalcButton('4'),
-                _buildCalcButton('5'),
-                _buildCalcButton('6'),
-                _buildCalcButton('x', color: colors.primary),
-                _buildCalcButton('1'),
-                _buildCalcButton('2'),
-                _buildCalcButton('3'),
-                _buildCalcButton('-', color: colors.primary),
-                _buildCalcButton('C', color: colors.destructive),
-                _buildCalcButton('0'),
-                _buildCalcButton('⌫'),
-                _buildCalcButton('+', color: colors.primary),
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: const Icon(Icons.close, color: Colors.white54),
+                ),
               ],
             ),
           ),
           const SizedBox(height: 16),
-          Row(
-            children: [
-              SizedBox(
-                width: 72,
-                height: 56,
-                child: _buildCalcButton('=', color: colors.primary),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: TextField(
+              controller: _nameController,
+              style: TextStyle(color: colors.primaryForeground, fontSize: 18),
+              decoration: InputDecoration(
+                labelText: 'Charge Name',
+                labelStyle: TextStyle(color: colors.mutedForeground),
+                filled: true,
+                fillColor: const Color(0xFF1E293B),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16),
+                  borderSide: BorderSide.none,
+                ),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: FButton(
-                  onPress: _result == '0'
-                      ? null
-                      : () {
-                          widget.onAdd(
-                            int.tryParse(_result) ?? 0,
-                            _nameController.text,
-                          );
-                          Navigator.pop(context);
-                        },
-                  child: const Text('ADD TO CART'),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Container(
+              padding: const EdgeInsets.all(24),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: const Color(0xFF020617),
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Text(
+                      _expression.isEmpty ? '0' : _expression,
+                      style: TextStyle(
+                        color: colors.primaryForeground,
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    '= $_result',
+                    style: TextStyle(
+                      color: colors.primary,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Expanded(
+            child: Column(
+              children: [
+                _buildRow([
+                  _buildCalcButton('C', color: colors.destructive),
+                  _buildCalcButton('⌫', color: colors.primary),
+                  _buildCalcButton('%', color: colors.primary),
+                  _buildCalcButton('÷', color: colors.primary),
+                ]),
+                _buildRow([
+                  _buildCalcButton('7'),
+                  _buildCalcButton('8'),
+                  _buildCalcButton('9'),
+                  _buildCalcButton('×', color: colors.primary),
+                ]),
+                _buildRow([
+                  _buildCalcButton('4'),
+                  _buildCalcButton('5'),
+                  _buildCalcButton('6'),
+                  _buildCalcButton('-', color: colors.primary),
+                ]),
+                _buildRow([
+                  _buildCalcButton('1'),
+                  _buildCalcButton('2'),
+                  _buildCalcButton('3'),
+                  _buildCalcButton('+', color: colors.primary),
+                ]),
+                _buildRow([
+                  _buildCalcButton('+/-'),
+                  _buildCalcButton('0'),
+                  _buildCalcButton('.'),
+                  _buildCalcButton(
+                    '=',
+                    isPrimary: true,
+                    color: const Color(0xFF1DB978),
+                  ),
+                ]),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: FButton(
+                onPress: _result == '0' && _expression.isEmpty ||
+                        _result == 'Error'
+                    ? null
+                    : () {
+                        String resStr = _result;
+                        if (resStr == '0' && _expression.isNotEmpty) {
+                          _calculate();
+                          resStr = _result;
+                        }
+                        // if result is floating point, tryParse returns null, so we drop decimal
+                        if (resStr.contains('.')) {
+                           resStr = resStr.split('.')[0];
+                        }
+                        widget.onAdd(
+                          int.tryParse(resStr) ?? 0,
+                          _nameController.text,
+                        );
+                        Navigator.pop(context);
+                      },
+                child: const Text(
+                  'ADD TO CART',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ),
-            ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildCalcButton(String value, {Color? color}) {
-    return GestureDetector(
-      onTap: () => _onPress(value),
-      child: Container(
-        decoration: BoxDecoration(
-          color: color?.withValues(alpha: 0.2) ?? const Color(0xFF1E293B),
-          borderRadius: BorderRadius.circular(16),
-        ),
-        alignment: Alignment.center,
-        child: Text(
-          value,
-          style: TextStyle(
-            color: color ?? Colors.white,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+  Widget _buildRow(List<Widget> children) {
+    return Expanded(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: children,
+      ),
+    );
+  }
+
+  Widget _buildCalcButton(
+    String value, {
+    Color? color,
+    bool isPrimary = false,
+  }) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: InkWell(
+          onTap: () => _onPress(value),
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            decoration: BoxDecoration(
+              color: isPrimary
+                  ? color
+                  : color?.withValues(alpha: 0.15) ?? const Color(0xFF1E293B),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: isPrimary
+                    ? Colors.transparent
+                    : color?.withValues(alpha: 0.3) ??
+                        Colors.white.withValues(alpha: 0.05),
+              ),
+              boxShadow: isPrimary
+                  ? [
+                      BoxShadow(
+                        color: color!.withValues(alpha: 0.4),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      )
+                    ]
+                  : null,
+            ),
+            child: Center(
+              child: Text(
+                value,
+                style: TextStyle(
+                  color: isPrimary ? Colors.white : color ?? Colors.white,
+                  fontSize: value == '⌫' ? 22 : 26,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
           ),
         ),
       ),
