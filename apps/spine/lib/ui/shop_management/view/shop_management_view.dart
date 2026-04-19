@@ -8,6 +8,7 @@ import 'package:spine/ui/shop_management/view_model/shop_management_view_model.d
 import 'package:spine/ui/shop_management/widget/edit_branch_sheet.dart';
 import 'package:spine/ui/shop_management/widget/edit_business_sheet.dart';
 import 'package:spine/widget/icon_widget.dart';
+import 'package:spine/widget/toast_widget.dart';
 
 class ShopManagementView extends ConsumerWidget {
   const ShopManagementView({super.key});
@@ -237,7 +238,15 @@ class ShopManagementView extends ConsumerWidget {
   ) {
     final colors = context.theme.colors;
     return GestureDetector(
-      onTap: () => viewModel.switchBusiness(biz.id),
+      onTap: () {
+        viewModel.switchBusiness(biz.id);
+        ToastWidget.makeToast(
+          context: context, 
+          description: 'Switched to ${biz.name}', 
+          icon: FIcons.circleCheck, 
+          color: Colors.green
+        );
+      },
       child: Container(
         width: 200,
         margin: const EdgeInsets.only(right: 16),
@@ -413,8 +422,20 @@ class ShopManagementView extends ConsumerWidget {
               updatedAt: result.updatedAt.value,
             ),
           );
+          ToastWidget.makeToast(
+            context: context, 
+            description: 'Business created successfully', 
+            icon: FIcons.circleCheck, 
+            color: Colors.green
+          );
         } else if (result is BusinessesData) {
           viewModel.updateBusiness(result);
+          ToastWidget.makeToast(
+            context: context, 
+            description: 'Business updated successfully', 
+            icon: FIcons.circleCheck, 
+            color: Colors.green
+          );
         }
       }
     });
@@ -450,8 +471,20 @@ class ShopManagementView extends ConsumerWidget {
               collectionId: result.collectionId.value,
             ),
           );
+          ToastWidget.makeToast(
+            context: context, 
+            description: 'Shop created successfully', 
+            icon: FIcons.circleCheck, 
+            color: Colors.green
+          );
         } else if (result is BranchData) {
           viewModel.updateBranch(result);
+          ToastWidget.makeToast(
+            context: context, 
+            description: 'Shop updated successfully', 
+            icon: FIcons.circleCheck, 
+            color: Colors.green
+          );
         }
       }
     });
@@ -1037,6 +1070,12 @@ class ShopManagementView extends ConsumerWidget {
               Navigator.pop(context);
               await viewModel.logout();
               if (context.mounted) {
+                ToastWidget.makeToast(
+                  context: context, 
+                  description: 'Logged out successfully', 
+                  icon: FIcons.logOut, 
+                  color: Colors.blue
+                );
                 context.go(Routes.login);
               }
             },

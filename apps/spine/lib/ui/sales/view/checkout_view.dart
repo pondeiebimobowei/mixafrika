@@ -7,6 +7,7 @@ import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/sales/state/create_sale_state.dart';
 import 'package:spine/ui/sales/view/customer_selection_sheet.dart';
 import 'package:spine/ui/sales/view_model/create_sale_view_model.dart';
+import 'package:spine/widget/toast_widget.dart';
 
 class CheckoutView extends ConsumerWidget {
   const CheckoutView({super.key});
@@ -379,8 +380,21 @@ class CheckoutView extends ConsumerWidget {
                             final success = await viewModel.checkout();
                             if (context.mounted) {
                               if (success) {
+                                ToastWidget.makeToast(
+                                  context: context, 
+                                  description: 'Sale recorded successfully', 
+                                  icon: FIcons.circleCheck, 
+                                  color: Colors.green
+                                );
                                 context.go(Routes.dashboard);
-                              } else {}
+                              } else {
+                                ToastWidget.makeToast(
+                                  context: context, 
+                                  description: 'Failed to record sale', 
+                                  icon: FIcons.circleX, 
+                                  color: Colors.red
+                                );
+                              }
                             }
                           },
                     child: Padding(

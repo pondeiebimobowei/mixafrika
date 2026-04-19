@@ -1,11 +1,13 @@
 import 'package:forui/forui.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:spine/theme/alert_styles.dart';
 import 'package:spine/theme/badge_styles.dart';
 import 'package:spine/theme/card_style.dart';
 import 'package:spine/theme/form_field_style.dart';
 import 'package:spine/theme/select_style.dart';
 import 'package:spine/theme/text_field_style.dart';
+import 'package:spine/theme/toaster_style.dart';
 
 
 // ignore_for_file: avoid_redundant_argument_values
@@ -53,7 +55,8 @@ FThemeData get greenDark {
     typography: typography, 
     style: style,
 
-    
+    toasterStyle: toasterStyle(colors: colors, typography: typography, style: style),
+    alertStyles: alertStyles(colors: colors, typography: typography, style: style),
     textFieldStyle: textFieldStyle(colors: colors, typography: typography, style: style),
     selectStyle: selectStyle(colors: colors, typography: typography, style: style),
     cardStyle: cardStyle(colors: colors, typography: typography, style: style),

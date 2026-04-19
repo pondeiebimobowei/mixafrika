@@ -3,6 +3,7 @@ import 'package:forui/forui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/ui/team_management/view_model/team_management_view_model.dart';
 import 'package:spine/ui/shop_management/view_model/shop_management_view_model.dart';
+import 'package:spine/widget/toast_widget.dart';
 
 class InviteMemberSheet extends ConsumerStatefulWidget {
   const InviteMemberSheet({super.key});
@@ -97,7 +98,20 @@ class _InviteMemberSheetState extends ConsumerState<InviteMemberSheet> {
                   );
 
                   if (success && mounted) {
+                    ToastWidget.makeToast(
+                      context: context, 
+                      description: 'Invitation sent successfully', 
+                      icon: FIcons.circleCheck, 
+                      color: Colors.green
+                    );
                     Navigator.pop(context);
+                  } else if (mounted) {
+                    ToastWidget.makeToast(
+                      context: context, 
+                      description: 'Failed to send invitation', 
+                      icon: FIcons.circleX, 
+                      color: Colors.red
+                    );
                   }
                 },
               ),

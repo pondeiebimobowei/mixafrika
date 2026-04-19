@@ -6,6 +6,8 @@ import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/auth/view_model/signup_view_model.dart';
 import 'dart:ui';
 
+import 'package:spine/widget/toast_widget.dart';
+
 
 class SignupView extends ConsumerStatefulWidget {
   const SignupView({super.key});
@@ -201,17 +203,15 @@ class _SignupViewState extends ConsumerState<SignupView> {
                           if (!mounted) return;
                           setState(() => _isLoading = false);
 
+                          ToastWidget.makeToast(
+                            context: context, 
+                            description: res.message, 
+                            icon: res.success ? FIcons.circleCheck : FIcons.circleX, 
+                            color: res.success ? Colors.green : Colors.red
+                          );
+                          
                           if (res.success) {
                             context.go(Routes.businessDetails);
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(res.message, style: const TextStyle(color: Colors.white)),
-                                backgroundColor: context.theme.colors.destructive,
-                                behavior: SnackBarBehavior.floating,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                              ),
-                            );
                           }
                         },
                         child: _isLoading 

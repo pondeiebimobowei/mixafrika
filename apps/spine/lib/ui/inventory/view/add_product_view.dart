@@ -7,6 +7,7 @@ import 'package:spine/ui/inventory/state/add_product_state.dart';
 import 'package:spine/ui/inventory/view_model/add_product_view_model.dart';
 import 'package:spine/ui/inventory/view_model/inventory_view_model.dart';
 import 'package:spine/widget/icon_widget.dart';
+import 'package:spine/widget/toast_widget.dart';
 
 class AddProductView extends ConsumerWidget {
   const AddProductView({super.key});
@@ -20,14 +21,23 @@ class AddProductView extends ConsumerWidget {
     // Handle Success Navigation and Toaster in a listener if needed
     ref.listen(addProductViewModelProvider, (previous, next) {
       if (next.isSuccess && (previous == null || !previous.isSuccess)) {
-
         ref.invalidate(inventoryViewModelProvider);
-        
+        ToastWidget.makeToast(
+          context: context, 
+          description: 'Product created successfully', 
+          icon: FIcons.circleCheck, 
+          color: Colors.green
+        );
         context.go(Routes.dashboard); // Go back to inventory
       }
       if (next.errorMessage != null &&
           (previous == null || previous.errorMessage != next.errorMessage)) {
-        print(next.errorMessage);
+        ToastWidget.makeToast(
+          context: context, 
+          description: next.errorMessage ?? 'Failed to create product', 
+          icon: FIcons.circleX, 
+          color: Colors.red
+        );
       }
     });
 

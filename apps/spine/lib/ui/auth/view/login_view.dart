@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:spine/routing/routes.dart';
 import 'package:spine/theme/typography.dart';
 import 'package:spine/ui/auth/view_model/login_view_model.dart';
+import 'package:spine/widget/toast_widget.dart';
 
 class LoginView extends ConsumerWidget {
   LoginView({super.key});
@@ -95,14 +96,17 @@ class LoginView extends ConsumerWidget {
 
                                 final res = await viewModel.login(email: _emailController.text, password: _passwordController.text);
                                 
-                                if (res.success && context.mounted) {
-                                  context.go(Routes.selectBusiness);
-                                }
+                                ToastWidget.makeToast(
+                                  context: context, 
+                                  description: res.message, 
+                                  
+                                  icon: res.success ? FIcons.circleCheck : FIcons.circleX, 
+                                  color: res.success ? Colors.green : Colors.red
+                                );
 
-                                // final authData = await AuthService.login(
-                                //   _emailController.text,
-                                //   _passwordController.text,
-                                // );
+                                if (res.success && context.mounted) {
+                                  context.go(Routes.selectBusiness); 
+                                }
                               },
                             ),
                           ),

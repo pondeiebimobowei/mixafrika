@@ -8,6 +8,7 @@ import 'package:spine/ui/inventory/view_model/add_stock_view_model.dart';
 import 'package:intl/intl.dart';
 import 'package:spine/ui/inventory/view_model/inventory_view_model.dart';
 import 'package:spine/widget/icon_widget.dart';
+import 'package:spine/widget/toast_widget.dart';
 
 class AddStockView extends ConsumerStatefulWidget {
   const AddStockView({super.key});
@@ -198,12 +199,23 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
 
     ref.listen(addStockViewModelProvider, (previous, next) {
       if (next.isSuccess) {
+        ToastWidget.makeToast(
+          context: context, 
+          description: 'Stock updated successfully', 
+          icon: FIcons.circleCheck, 
+          color: Colors.green
+        );
         context.go(Routes.inventory);
         ref.invalidate(inventoryViewModelProvider);
       }
       if (next.errorMessage != null &&
           next.errorMessage != previous?.errorMessage) {
-            print(next.errorMessage);
+        ToastWidget.makeToast(
+          context: context, 
+          description: next.errorMessage!, 
+          icon: FIcons.circleX, 
+          color: Colors.red
+        );
       }
 
 

@@ -12,6 +12,8 @@ import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/business/view_model/select_business_view_model.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:spine/widget/toast_widget.dart';
+
 class SignupBusinessView extends ConsumerStatefulWidget {
   const SignupBusinessView({super.key});
 
@@ -85,6 +87,13 @@ class _SignupBusinessViewState extends ConsumerState<SignupBusinessView> {
       if (!mounted) return;
       setState(() => _isSubmitting = false);
 
+      ToastWidget.makeToast(
+        context: context, 
+        description: res.message, 
+        icon: res.success ? FIcons.circleCheck : FIcons.circleX, 
+        color: res.success ? Colors.green : Colors.red
+      );
+
       if (res.success) {
 
         final businessRepository = ref.read(businessRepositoryProvider);
@@ -95,8 +104,6 @@ class _SignupBusinessViewState extends ConsumerState<SignupBusinessView> {
         await selectBusinessProv.selectBusiness(res.data.business.id);
 
         context.go(Routes.dashboard);
-      } else {
-        print("error: ${res.message}");
       }
     }
   }
