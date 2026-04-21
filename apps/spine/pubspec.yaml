@@ -50,7 +50,6 @@ dependencies:
   intl: ^0.20.2
   math_expressions: ^2.5.0
   drift_devtools: ^0.0.17
-  flutter_dotenv: ^5.2.1
   
   # flutter_shared:
   #   path: ../../packages/flutter_shared
