@@ -8,6 +8,7 @@ import 'package:spine/ui/inventory/state/product_details_state.dart';
 import 'package:spine/ui/inventory/view_model/product_details_view_model.dart';
 import 'package:spine/utils/helper.dart';
 import 'package:spine/widget/icon_widget.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 class ProductDetailsView extends ConsumerWidget {
   final String productId;
@@ -56,7 +57,7 @@ class ProductDetailsView extends ConsumerWidget {
       child: Material(
         color: Colors.transparent,
         child: state.isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? Center(child: SpinnerWidget.spinner())
             : state.errorMessage != null
             ? Center(
                 child: Text(

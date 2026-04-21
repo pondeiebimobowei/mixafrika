@@ -9,6 +9,7 @@ import 'package:spine/ui/shop_management/widget/edit_branch_sheet.dart';
 import 'package:spine/ui/shop_management/widget/edit_business_sheet.dart';
 import 'package:spine/widget/icon_widget.dart';
 import 'package:spine/widget/toast_widget.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 class ShopManagementView extends ConsumerWidget {
   const ShopManagementView({super.key});
@@ -38,7 +39,7 @@ class ShopManagementView extends ConsumerWidget {
       child: Material(
         color: colors.background,
         child: state.isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? Center(child: SpinnerWidget.spinner())
             : SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

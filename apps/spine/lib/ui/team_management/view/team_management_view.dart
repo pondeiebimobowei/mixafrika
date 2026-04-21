@@ -5,6 +5,7 @@ import 'package:spine/data/services/models/branch_user_model.dart';
 import 'package:spine/ui/team_management/view_model/team_management_view_model.dart';
 import 'package:spine/ui/team_management/widget/invite_member_sheet.dart';
 import 'package:spine/widget/icon_widget.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 class TeamManagementView extends ConsumerWidget {
   const TeamManagementView({super.key});
@@ -39,7 +40,7 @@ class TeamManagementView extends ConsumerWidget {
       child: Material(
         color: colors.background,
         child: state.isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? Center(child: SpinnerWidget.spinner())
             : RefreshIndicator(
                 onRefresh: () => viewModel.loadTeamData(),
                 child: SingleChildScrollView(

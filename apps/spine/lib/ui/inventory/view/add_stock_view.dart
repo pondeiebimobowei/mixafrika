@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:spine/ui/inventory/view_model/inventory_view_model.dart';
 import 'package:spine/widget/icon_widget.dart';
 import 'package:spine/widget/toast_widget.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 class AddStockView extends ConsumerStatefulWidget {
   const AddStockView({super.key});
@@ -309,7 +310,7 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
                     ),
                   ),
                   child: state.isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
+                      ? SpinnerWidget.spinner()
                       : Text(
                           'Record Purchase',
                           style: TextStyle(

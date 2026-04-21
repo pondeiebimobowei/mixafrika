@@ -8,6 +8,7 @@ import 'package:spine/ui/inventory/view_model/add_product_view_model.dart';
 import 'package:spine/ui/inventory/view_model/inventory_view_model.dart';
 import 'package:spine/widget/icon_widget.dart';
 import 'package:spine/widget/toast_widget.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 class AddProductView extends ConsumerWidget {
   const AddProductView({super.key});
@@ -45,119 +46,210 @@ class AddProductView extends ConsumerWidget {
       header: FHeader(
         title: Row(
           children: [
-            GestureDetector(
+            IconWidget(
+              icon: Icons.arrow_back_ios_new_rounded,
+              size: 18,
               onTap: () => context.go(Routes.inventory),
-              child: const IconWidget(icon: Icons.arrow_back),
             ),
-            const SizedBox(width: 20),
-            Text(
-              'New Product',
-              style: TextStyle(
-                fontSize: 20,
-                color: colors.primaryForeground,
-              ),
+            const SizedBox(width: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'New Product',
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: colors.primaryForeground,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: -1,
+                  ),
+                ),
+                Text(
+                  'Catalog expansion',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: colors.primaryForeground.withValues(alpha: 0.4),
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.2,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
       ),
       child: Material(
-        color: Colors.transparent,
+        color: colors.background,
         child: Stack(
           children: [
-            SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // _buildActionButtons(),
-                  // const SizedBox(height: 32),
+            _buildContent(context, viewModel, state),
+            _buildBottomDock(context, state, viewModel),
+          ],
+        ),
+      ),
+    );
+  }
 
-                  // const SizedBox(height: 8),
-                  FTextField(
-                    control: .managed(
-                      onChange: (value) => viewModel.updateName(value.text),
-                    ),
-                    label: const Text('Item Name'),
-                    hint: 'e.g. Bananas',
+  Widget _buildContent(
+    BuildContext context,
+    AddProductViewModel viewModel,
+    AddProductState state,
+  ) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 16),
+          _buildGlassCard(
+            context,
+            'BASIC INFORMATION',
+            Column(
+              children: [
+                FTextField(
+                  control: .managed(
+                    onChange: (value) => viewModel.updateName(value.text),
                   ),
-                  const SizedBox(height: 24),
-
-                  const SizedBox(height: 8),
-                  FTextField(
-                    control: .managed(
-                      onChange: (value) => viewModel.updateBarcode(value.text),
-                    ),
-                    label: const Text('Barcode / Serial Number'),
-                    hint: 'Optional Barcode',
+                  label: const Text('Item Name'),
+                  hint: 'e.g. Bananas',
+                ),
+                const SizedBox(height: 24),
+                FTextField(
+                  control: .managed(
+                    onChange: (value) => viewModel.updateBarcode(value.text),
                   ),
-                  const SizedBox(height: 24),
-
-                  _buildUnitConversionSetup(context, viewModel, state),
-                  const SizedBox(height: 24),
-
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            FTextFormField(
-                              control: .managed(
-                                onChange: (value) => viewModel.updateSellPricePerUnit(value.text),
-                              ),
-                              label: const Text('Unit Sell Price'),
-                              hint: '₦',
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            FTextFormField(
-                              control: .managed(
-                                onChange: (value) => viewModel.updateSellPricePerBulk(value.text),
-                              ),
-                              label: const Text('Bulk Sell Price (Optional)'),
-                              hint: '₦',
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 100), // spacing for bottom button
-                ],
-              ),
+                  label: const Text('Barcode / Serial Number'),
+                  hint: 'Optional Barcode',
+                ),
+              ],
             ),
+          ),
+          const SizedBox(height: 24),
+          _buildUnitConversionSetup(context, viewModel, state),
+          const SizedBox(height: 24),
+          _buildFinancialsSection(context, viewModel, state),
+          const SizedBox(height: 140), // Spacing for Dock
+        ],
+      ),
+    );
+  }
 
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                padding: const EdgeInsets.all(16),
-                color: context.theme.colors.background,
-                child: SizedBox(
-                  width: double.infinity,
-                  child: FButton(
-                    onPress: state.isLoading
-                        ? null
-                        : () => viewModel.submitProduct(),
-                    child: state.isLoading
-                        ? const CircularProgressIndicator(color: Colors.white)
-                        : Text(
-                            'Save Product',
-                            style: TextStyle(
-                              color: colors.primaryForeground,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                  ),
+  Widget _buildGlassCard(BuildContext context, String title, Widget child) {
+    final colors = context.theme.colors;
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: colors.secondaryForeground.withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(
+          color: colors.primary.withValues(alpha: 0.05),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w900,
+                  letterSpacing: 1.5,
+                  color: colors.primary.withValues(alpha: 0.7),
                 ),
               ),
+              const SizedBox(width: 8),
+              Expanded(
+                  child: Divider(
+                      color: colors.primary.withValues(alpha: 0.05))),
+            ],
+          ),
+          const SizedBox(height: 24),
+          child,
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFinancialsSection(
+    BuildContext context,
+    AddProductViewModel viewModel,
+    AddProductState state,
+  ) {
+    return _buildGlassCard(
+      context,
+      'PRICING',
+      Row(
+        children: [
+          Expanded(
+            child: FTextFormField(
+              control: .managed(
+                onChange: (value) => viewModel.updateSellPricePerUnit(value.text),
+              ),
+              label: Text('Unit Price (${state.pieceUnit.isEmpty ? 'Item' : state.pieceUnit})'),
+              hint: '₦',
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: FTextFormField(
+              control: .managed(
+                onChange: (value) => viewModel.updateSellPricePerBulk(value.text),
+              ),
+              label: Text('Bulk Price (${state.bulkUnit.isEmpty ? 'Bulk' : state.bulkUnit})'),
+              hint: '₦',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomDock(BuildContext context, AddProductState state, AddProductViewModel viewModel) {
+    final colors = context.theme.colors;
+    return Positioned(
+      left: 16,
+      right: 16,
+      bottom: 30,
+      child: Container(
+        decoration: BoxDecoration(
+          color: colors.secondaryForeground,
+          borderRadius: BorderRadius.circular(32),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.3),
+              blurRadius: 30,
+              offset: const Offset(0, 10),
             ),
           ],
+          border: Border.all(
+            color: colors.primary.withValues(alpha: 0.1),
+            width: 1,
+          ),
+        ),
+        child: FButton(
+          onPress: state.isLoading ? null : () => viewModel.submitProduct(),
+          child: state.isLoading
+              ? SpinnerWidget.spinner()
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text('Save Product'),
+                    const SizedBox(width: 12),
+                    Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(
+                        color: Colors.black26,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.check_rounded,
+                        size: 14,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
         ),
       ),
     );
@@ -231,162 +323,157 @@ class AddProductView extends ConsumerWidget {
     AddProductViewModel viewModel,
     AddProductState state,
   ) {
-    final FColors colors = context.theme.colors;
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: colors.secondaryForeground.withValues(alpha: .4),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
-      ),
-      child: Column(
+    final colors = context.theme.colors;
+    return _buildGlassCard(
+      context,
+      'UNIT LOGIC',
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Container(
-                width: 8,
-                height: 8,
-                decoration: const BoxDecoration(
-                  color: Colors.tealAccent,
-                  shape: BoxShape.circle,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Text(
-                'Unit Conversion Setup',
-                style: TextStyle(
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.grey[400],
-                  letterSpacing: 1.0,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-          Row(
-            children: [
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // const SizedBox(height: 8),
-                    _buildDropdownField(
-                      'Bunch',
-                      ['Bunch', 'Carton', 'Box'],
-                      viewModel.updateBulkUnit,
-                      label: Text('Bulk Unit', style: TextStyle(
-                        color: colors.primaryForeground,
-                        
-                      ),),
-                      value: state.bulkUnit.isEmpty ? null : state.bulkUnit,
-                    ),
-                  ],
+                child: _buildDropdownField(
+                  'Bulk Unit',
+                  ['Bunch', 'Carton', 'Box', 'Pack', 'Sack'],
+                  viewModel.updateBulkUnit,
+                  label: Text('Major Unit', style: TextStyle(color: colors.primaryForeground)),
+                  value: state.bulkUnit.isEmpty ? null : state.bulkUnit,
                 ),
               ),
               const SizedBox(width: 16),
               Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // const SizedBox(height: 8),
-                    _buildDropdownField(
-                      state.pieceUnit.isEmpty ? 'Finger' : state.pieceUnit,
-                      ['Finger', 'Piece', 'Item'],
-                      viewModel.updatePieceUnit,
-                      label: Text('Retail Unit', style: TextStyle(
-                        color: colors.primaryForeground,
-                        
-                      ),),
-                      value: state.pieceUnit.isEmpty ? null : state.pieceUnit,
-                    ),
-                  ],
+                child: _buildDropdownField(
+                  'Retail Unit',
+                  ['Piece', 'Item', 'Finger', 'Bottle', 'Sachet'],
+                  viewModel.updatePieceUnit,
+                  label: Text('Minor Unit', style: TextStyle(color: colors.primaryForeground)),
+                  value: state.pieceUnit.isEmpty ? null : state.pieceUnit,
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 32),
+          // Blueprint representation
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+            padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: colors.secondaryForeground,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: colors.secondaryForeground),
+              color: colors.background,
+              borderRadius: BorderRadius.circular(24),
+              border: Border.all(color: colors.primary.withValues(alpha: 0.05)),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Column(
               children: [
-                Text(
-                  '1 ${state.bulkUnit.isEmpty ? 'BUNCH' : state.bulkUnit.toUpperCase()}',
-                  style: TextStyle(
-                    color: Colors.grey[400],
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: Colors.tealAccent.withValues(alpha: 0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Text(
-                    '=',
-                    style: TextStyle(
-                      color: Colors.tealAccent,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Column(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    _buildBlueprintUnit(
+                      context,
+                      '1',
+                      state.bulkUnit.isEmpty ? 'BULK' : state.bulkUnit.toUpperCase(),
+                      isHighLighted: true,
+                    ),
+                    const SizedBox(width: 16),
                     Container(
-                      width: 60,
-                      height: 48,
+                      padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF0F172A),
-                        borderRadius: BorderRadius.circular(8),
+                        color: colors.primary.withValues(alpha: 0.1),
+                        shape: BoxShape.circle,
                       ),
-                      child: Center(
-                        child: TextField(
-                          onChanged: viewModel.updateConversionFactor,
-                          keyboardType: TextInputType.number,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: Colors.tealAccent,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          decoration: const InputDecoration(
-                            hintText: '12',
-                            hintStyle: TextStyle(color: Colors.teal),
-                            border: InputBorder.none,
-                          ),
+                      child: Text(
+                        '=',
+                        style: TextStyle(
+                          color: colors.primary,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 16,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      state.pieceUnit.isEmpty
-                          ? 'FINGER'
-                          : state.pieceUnit.toUpperCase(),
-                      style: TextStyle(
-                        color: Colors.grey[400],
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          TextField(
+                            onChanged: viewModel.updateConversionFactor,
+                            keyboardType: TextInputType.number,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              color: colors.primary,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: -1,
+                            ),
+                            decoration: InputDecoration(
+                              hintText: '12',
+                              hintStyle: TextStyle(
+                                color: colors.primary.withValues(alpha: 0.3),
+                              ),
+                              isDense: true,
+                              contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                              border: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: colors.primary.withValues(alpha: 0.2),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            state.pieceUnit.isEmpty ? 'RETAIL UNITS' : state.pieceUnit.toUpperCase() + 'S',
+                            style: TextStyle(
+                              fontSize: 9,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 1,
+                              color: colors.primaryForeground.withValues(alpha: 0.4),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
+                const SizedBox(height: 20),
+                Text(
+                                  'This tells us how many pieces make a bulk unit for inventory tracking.',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: colors.primaryForeground.withValues(alpha: 0.3),
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
               ],
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildBlueprintUnit(BuildContext context, String value, String label, {bool isHighLighted = false}) {
+    final colors = context.theme.colors;
+    return Column(
+      children: [
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w900,
+            color: isHighLighted ? colors.primaryForeground : colors.primary,
+            letterSpacing: -1,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 9,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1,
+            color: colors.primaryForeground.withValues(alpha: 0.4),
+          ),
+        ),
+      ],
     );
   }
 

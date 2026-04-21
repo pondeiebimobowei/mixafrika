@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:spine/data/repositories/sales/sales_repository_abstract.dart';
 import 'package:spine/ui/sales/view_model/sale_receipt_view_model.dart';
 import 'package:spine/utils/helper.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 class SaleReceiptView extends ConsumerWidget {
   final String saleId;
@@ -35,7 +36,7 @@ class SaleReceiptView extends ConsumerWidget {
         ),
       ),
       child: state.isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(child: SpinnerWidget.spinner())
           : state.errorMessage != null
           ? Center(child: Text(state.errorMessage!))
           : state.item == null

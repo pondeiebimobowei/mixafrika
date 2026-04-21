@@ -13,6 +13,7 @@ import 'package:spine/ui/business/view_model/select_business_view_model.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:spine/widget/toast_widget.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 class SignupBusinessView extends ConsumerStatefulWidget {
   const SignupBusinessView({super.key});
@@ -286,11 +287,7 @@ class _SignupBusinessViewState extends ConsumerState<SignupBusinessView> {
                       child: FButton(
                         onPress: _isSubmitting ? null : _onSubmit,
                         child: _isSubmitting
-                            ? const SizedBox(
-                                width: 20, 
-                                height: 20, 
-                                child: CircularProgressIndicator(strokeWidth: 2)
-                              )
+                            ? SpinnerWidget.spinner()
                             : const Text('Complete Registration'),
                       ),
                     ),

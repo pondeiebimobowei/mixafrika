@@ -6,6 +6,7 @@ import 'package:spine/drift/database.dart';
 import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/business/view_model/select_business_view_model.dart';
 import 'package:spine/widget/icon_widget.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 class SelectBusinessView extends ConsumerWidget {
   const SelectBusinessView({super.key});
@@ -24,7 +25,7 @@ class SelectBusinessView extends ConsumerWidget {
         color: colors.background,
         child: businessAsync.when(
           data: (state) => _buildContent(context, ref, state.business),
-          loading: () => const Center(child: CircularProgressIndicator()),
+          loading: () => Center(child: SpinnerWidget.spinner()),
           error: (error, stack) => Center(
             child: Padding(
               padding: const EdgeInsets.all(24.0),

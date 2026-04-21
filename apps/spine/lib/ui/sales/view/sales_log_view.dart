@@ -8,6 +8,7 @@ import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/sales/state/sales_log_state.dart';
 import 'package:spine/ui/sales/view_model/sales_log_view_model.dart';
 import 'package:spine/widget/icon_widget.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 class SalesLogView extends ConsumerWidget {
   const SalesLogView({super.key});
@@ -196,7 +197,7 @@ class SalesLogView extends ConsumerWidget {
 
   Widget _buildSalesList(BuildContext context, SalesLogState state) {
     if (state.isLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return Center(child: SpinnerWidget.spinner());
     }
 
     if (state.sales.isEmpty) {

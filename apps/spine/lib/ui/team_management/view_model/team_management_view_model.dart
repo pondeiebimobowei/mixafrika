@@ -84,6 +84,7 @@ class TeamManagementViewModel extends StateNotifier<TeamManagementState> {
     final businessId = await AppPreferences.getActiveBusinessId();
     if (businessId == null) return false;
 
+    state = state.copyWith(isLoading: true, error: null);
     final res = await ref.read(teamRepositoryLocalProvider).inviteMember(
       businessId: businessId,
       email: email,
@@ -93,9 +94,10 @@ class TeamManagementViewModel extends StateNotifier<TeamManagementState> {
 
     if (res.success) {
       await loadTeamData();
+      state = state.copyWith(isLoading: false);
       return true;
     } else {
-      state = state.copyWith(error: res.message);
+      state = state.copyWith(isLoading: false, error: res.message);
       return false;
     }
   }

@@ -7,6 +7,7 @@ import 'package:spine/ui/auth/view_model/signup_view_model.dart';
 import 'dart:ui';
 
 import 'package:spine/widget/toast_widget.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 
 class SignupView extends ConsumerStatefulWidget {
@@ -215,11 +216,7 @@ class _SignupViewState extends ConsumerState<SignupView> {
                           }
                         },
                         child: _isLoading 
-                          ? const SizedBox(
-                              width: 20, 
-                              height: 20, 
-                              child: CircularProgressIndicator(strokeWidth: 2)
-                            )
+                          ? SpinnerWidget.spinner()
                           : const Text('Continue to Business Details'),
                       ),
                     ),

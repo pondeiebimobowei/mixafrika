@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/theme/typography.dart';
 import 'package:spine/ui/products/view_model/products_view_model.dart';
-import 'package:uuid/uuid.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 class ProductView extends ConsumerWidget {
   const ProductView({super.key});
@@ -46,7 +46,7 @@ class ProductView extends ConsumerWidget {
               ],
             );
           },
-          loading: () => const Center(child: CircularProgressIndicator()),
+          loading: () => Center(child: SpinnerWidget.spinner()),
           error: (error, stack) => Center(child: Text('Error: $error')),
         ),
       ),

@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:spine/data/shared_preference.dart';
 
-final String baseUrl = dotenv.env['base_url'] ?? 'https://mixafrica-app-zncj.onrender.com';
+final String baseUrl = dotenv.env['base_url'] ?? 'https://mixafrica-app-zncj.onrender.com/v1';
 // final String baseUrl = String.fromEnvironment(
 //   'base_url',
 //   defaultValue: 'https://mixafrica-app-zncj.onrender.com/v1',

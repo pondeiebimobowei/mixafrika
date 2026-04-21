@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:spine/routing/routes.dart';
 import 'package:spine/theme/typography.dart';
 import 'package:spine/ui/auth/view_model/login_view_model.dart';
+import 'package:spine/widget/spinner_widget.dart';
 import 'package:spine/widget/toast_widget.dart';
 
 class LoginView extends ConsumerWidget {
@@ -17,6 +18,7 @@ class LoginView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(loginViewModelProvider);
     final viewModel = ref.read(loginViewModelProvider.notifier);
     final FColors colors = context.theme.colors;
 
@@ -28,15 +30,15 @@ class LoginView extends ConsumerWidget {
 
                 child: Column(
                   children: [
-                    SizedBox(height: 50),
-                    SizedBox(height: 30),
-                    Icon(Icons.storefront_outlined, size: 50),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 50),
+                    const SizedBox(height: 30),
+                    const Icon(Icons.storefront_outlined, size: 50),
+                    const SizedBox(height: 5),
 
-                    HeadingText(title: 'Login'),
-                    SizedBox(height: 5),
-                    RegularText(title: 'Login in to account'),
-                    SizedBox(height: 50),
+                    const HeadingText(title: 'Login'),
+                    const SizedBox(height: 5),
+                    const RegularText(title: 'Login in to account'),
+                    const SizedBox(height: 50),
 
                     Form(
                       key: _key,
@@ -48,7 +50,7 @@ class LoginView extends ConsumerWidget {
                               controller: _emailController,
                             ),
                             hint: 'trader@mixafrika.com',
-                            label: SmallText(title: 'Email', bold: true),
+                            label: const SmallText(title: 'Email', bold: true),
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             validator: (value) =>
@@ -61,7 +63,7 @@ class LoginView extends ConsumerWidget {
                             control: FTextFieldControl.managed(
                               controller: _passwordController,
                             ),
-                            label: SmallText(title: 'Password', bold: true),
+                            label: const SmallText(title: 'Password', bold: true),
                             // style: (style) => style.,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
@@ -85,29 +87,33 @@ class LoginView extends ConsumerWidget {
                             height: 60,
                             child: FButton(
                               // style: buttonStyle(colors: colors, color: colors.primary, typography: typography, style: style, foregroundColor: colors.primaryForeground),
-                              child: const RegularText(
-                                title: 'Sign In',
-                                bold: true,
-                              ),
-                              onPress: () async {
+                              onPress: state.isLoading ? null : () async {
                                 if (!_key.currentState!.validate()) {
                                   return; // Form is invalid.
                                 }
 
                                 final res = await viewModel.login(email: _emailController.text, password: _passwordController.text);
                                 
-                                ToastWidget.makeToast(
-                                  context: context, 
-                                  description: res.message, 
-                                  
-                                  icon: res.success ? FIcons.circleCheck : FIcons.circleX, 
-                                  color: res.success ? Colors.green : Colors.red
-                                );
+                                if (context.mounted) {
+                                  ToastWidget.makeToast(
+                                    context: context, 
+                                    description: res.message, 
+                                    
+                                    icon: res.success ? FIcons.circleCheck : FIcons.circleX, 
+                                    color: res.success ? Colors.green : Colors.red
+                                  );
 
-                                if (res.success && context.mounted) {
-                                  context.go(Routes.selectBusiness); 
+                                  if (res.success) {
+                                    context.go(Routes.selectBusiness); 
+                                  }
                                 }
                               },
+                              child: state.isLoading 
+                                ? SpinnerWidget.spinner()
+                                : const RegularText(
+                                    title: 'Sign In',
+                                    bold: true,
+                                  ),
                             ),
                           ),
 

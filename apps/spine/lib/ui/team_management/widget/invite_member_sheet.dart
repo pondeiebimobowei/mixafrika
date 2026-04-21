@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/ui/team_management/view_model/team_management_view_model.dart';
 import 'package:spine/ui/shop_management/view_model/shop_management_view_model.dart';
 import 'package:spine/widget/toast_widget.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 class InviteMemberSheet extends ConsumerStatefulWidget {
   const InviteMemberSheet({super.key});
@@ -28,6 +29,7 @@ class _InviteMemberSheetState extends ConsumerState<InviteMemberSheet> {
   @override
   Widget build(BuildContext context) {
     final colors = context.theme.colors;
+    final teamState = ref.watch(teamManagementViewModelProvider);
     final shopState = ref.watch(shopManagementViewModelProvider);
 
     return Material(
@@ -87,8 +89,10 @@ class _InviteMemberSheetState extends ConsumerState<InviteMemberSheet> {
             SizedBox(
               width: double.infinity,
               child: FButton(
-                child: const Text('Send Invitation'),
-                onPress: () async {
+                child: teamState.isLoading
+                    ? SpinnerWidget.spinner()
+                    : const Text('Send Invitation'),
+                onPress: teamState.isLoading ? null : () async {
                   if (_emailController.text.isEmpty) return;
                   
                   final success = await ref.read(teamManagementViewModelProvider.notifier).inviteMember(

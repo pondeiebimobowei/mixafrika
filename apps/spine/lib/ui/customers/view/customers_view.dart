@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/customers/view/add_edit_customer_sheet.dart';
 import 'package:spine/ui/customers/view_model/customers_view_model.dart';
-import 'package:spine/widget/icon_widget.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 class CustomersView extends ConsumerWidget {
   const CustomersView({super.key});
@@ -68,7 +68,7 @@ class CustomersView extends ConsumerWidget {
             ),
             Expanded(
               child: state.isLoading && state.customers.isEmpty
-                  ? const Center(child: CircularProgressIndicator())
+                  ? Center(child: SpinnerWidget.spinner())
                   : state.customers.isEmpty
                       ? _buildEmptyState(context)
                       : ListView.builder(
