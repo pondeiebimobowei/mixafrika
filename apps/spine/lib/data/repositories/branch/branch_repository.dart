@@ -31,7 +31,14 @@ class BranchRepository implements BranchRepositoryAbstract {
   @override
   Future<ApiResponse<void>> updateBranch(BranchData branch) async {
     try {
-      await _database.update(_database.branch).replace(branch);
+      final updated = await _database.update(_database.branch).replace(branch);
+      if (!updated) {
+        return ApiResponse(
+          data: null,
+          message: 'Branch not found or no changes made',
+          success: false,
+        );
+      }
       return ApiResponse(
         data: null,
         message: 'branch updated successfully',

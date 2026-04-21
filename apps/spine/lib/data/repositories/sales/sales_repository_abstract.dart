@@ -1,4 +1,5 @@
 import 'package:spine/drift/database.dart';
+import 'package:spine/data/services/logic/sales_logic.dart';
 
 abstract class SalesRepositoryAbstract {
   Future<void> createSale(
@@ -24,7 +25,16 @@ class SaleWithItems {
   });
 
   int get totalProfit {
-    return items.fold(0, (sum, item) => sum + item.profit);
+    return SalesLogic.calculateTotalProfit(
+      items
+          .where((item) => item.product != null)
+          .map((item) => (
+                unitPrice: item.item.unitPrice,
+                costPrice: item.product!.costPricePerUnit,
+                quantity: item.item.quantity,
+              ))
+          .toList(),
+    );
   }
 }
 
@@ -36,6 +46,10 @@ class SaleItemWithProduct {
 
   int get profit {
     if (product == null) return 0; // Manual charges have no defined profit yet
-    return (item.unitPrice - product!.costPricePerUnit) * item.quantity;
+    return SalesLogic.calculateItemProfit(
+      unitPrice: item.unitPrice,
+      costPrice: product!.costPricePerUnit,
+      quantity: item.quantity,
+    );
   }
 }

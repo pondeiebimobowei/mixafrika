@@ -24,10 +24,11 @@ Future<void> createSale(
       await _db.into(_db.sales).insert(sale);
 
       for (final item in items) {
-        if( item.type != 'product') {
+        if (item.type != 'product') {
           await _db.into(_db.salesItem).insert(item);
+          continue;
         }
-        
+
         if (item.productId == null) {
           throw Exception('Product item must have productId');
         }
@@ -65,6 +66,8 @@ Future<void> createSale(
           final take = min(batch.remainingQuantity, remaining);
 
           await _db.into(_db.salesItem).insert(item.copyWith(
+            id: const Uuid().v4(),
+            total: item.unitPrice * take,
             quantity: take,
             batchId: Value(batch.id), // Ensure your schema links salesItem to the batch
           ));

@@ -96,7 +96,7 @@ class AuthRepository implements AuthRepositoryAbstract {
 
 final authRepositoryProvider = Provider(
   (ref) => AuthRepository(
-    authApiServices: AuthApiServices(),
+    authApiServices: ref.read(authApiServicesProvider),
     database: ref.read(databaseProvider),
   ),
 );
