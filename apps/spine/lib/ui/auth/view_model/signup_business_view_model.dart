@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/repositories/business/business_repository_remote.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
+import 'package:spine/data/services/models/business_model.dart';
 import 'package:spine/drift/database.dart';
 import 'package:uuid/uuid.dart';
 
@@ -11,7 +12,7 @@ class SignupBusinessViewModel extends Notifier<void> {
     return;
   }
 
-  Future<ApiResponse<void>> createBusiness({
+  Future<ApiResponse<BusinessWithBranch>> createBusiness({
     required String name,
     required String type,
     required String streetAddress,
@@ -41,9 +42,9 @@ class SignupBusinessViewModel extends Notifier<void> {
     
     // We expect the type returned inside ApiResponse.data to be BusinessesData or similar
     if (res.success) {
-      return ApiResponse(success: true, message: res.message, data: null);
+      return ApiResponse(success: true, message: res.message, data: res.data);
     } else {
-      return ApiResponse(success: false, message: res.message, data: null);
+      return ApiResponse(success: false, message: res.message, data: res.data);
     }
   }
 }

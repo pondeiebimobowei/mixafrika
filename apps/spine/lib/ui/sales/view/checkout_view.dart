@@ -378,12 +378,12 @@ class CheckoutView extends ConsumerWidget {
                         state.selectedPaymentMethod == null || state.isLoading
                         ? null
                         : () async {
-                            final success = await viewModel.checkout();
+                            final res = await viewModel.checkout();
                             if (context.mounted) {
-                              if (success) {
+                              if (res.success) {
                                 ToastWidget.makeToast(
                                   context: context, 
-                                  description: 'Sale recorded successfully', 
+                                  description: res.message, 
                                   icon: FIcons.circleCheck, 
                                   color: Colors.green
                                 );
@@ -391,7 +391,7 @@ class CheckoutView extends ConsumerWidget {
                               } else {
                                 ToastWidget.makeToast(
                                   context: context, 
-                                  description: 'Failed to record sale', 
+                                  description: res.message, 
                                   icon: FIcons.circleX, 
                                   color: Colors.red
                                 );

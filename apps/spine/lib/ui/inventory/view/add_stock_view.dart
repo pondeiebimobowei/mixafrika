@@ -761,65 +761,23 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
     AddStockState state,
     AddStockViewModel viewModel,
   ) {
-    final displayDate = state.expiryDate != null
-        ? DateFormat('MM/dd/yyyy').format(state.expiryDate!)
-        : 'mm/dd/yyyy';
 
-    return GestureDetector(
-      onTap: () async {
-        final date = await showDatePicker(
-          context: context,
-          initialDate: DateTime.now(),
-          firstDate: DateTime.now(),
-          lastDate: DateTime.now().add(const Duration(days: 3650)),
-          builder: (context, child) {
-            return Theme(
-              data: Theme.of(context).copyWith(
-                colorScheme: ColorScheme.dark(
-                  primary: context.theme.colors.primary,
-                  onPrimary: context.theme.colors.primaryForeground,
-                  surface: const Color(0xFF1E2433),
-                  onSurface: Colors.white,
-                ),
-              ),
-              child: child!,
-            );
-          },
-        );
-        if (date != null) viewModel.updateExpiryDate(date);
-      },
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: const Color(0xFF1E2433).withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-        ),
-        child: Row(
-          children: [
-            const Icon(
-              Icons.calendar_today_outlined,
-              color: Colors.redAccent,
-              size: 24,
-            ),
-            const SizedBox(width: 16),
-            Text(
-              displayDate,
-              style: TextStyle(
-                color: state.expiryDate != null ? Colors.white : Colors.grey,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const Spacer(),
-            Icon(
-              Icons.calendar_month_outlined,
-              color: Colors.white.withValues(alpha: 0.3),
-              size: 24,
-            ),
-          ],
-        ),
+    return FDateField.calendar(
+      control: .managed(
+        initial: null,
+        validator: (date) => null,
+        onChange: (value) => viewModel.updateExpiryDate(value),
       ),
+      textAlign: .start,
+      expands: false,
+      mouseCursor: .defer,
+      canRequestFocus: true,
+      clearable: false,
+      builder: (context, style, states, child) => child,
+      prefixBuilder: FDateField.defaultIconBuilder,
+      suffixBuilder: null,
+      enabled: true,
     );
+
   }
 }

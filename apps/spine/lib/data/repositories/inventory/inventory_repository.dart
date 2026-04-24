@@ -124,7 +124,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     final newBatch = SpineBatchData(
       id: Uuid().v4(),
       productId: productId,
-      expiryDate: expiryDate?.toUtc() ?? DateTime.now().toUtc(),
+      expiryDate: expiryDate,
       costPricePerUnit: int.tryParse(totalCost) ?? 0,
       sellingPricePerBulk: bulkPrice,
       sellingPricePerPiece: piecePrice,

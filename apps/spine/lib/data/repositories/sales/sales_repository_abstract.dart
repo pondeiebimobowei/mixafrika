@@ -1,8 +1,9 @@
+import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/data/services/logic/sales_logic.dart';
 
 abstract class SalesRepositoryAbstract {
-  Future<void> createSale(
+  Future<ApiResponse<void>> createSale(
     Sale sale,
     List<SalesItemData> items,
     List<Payment> payments,

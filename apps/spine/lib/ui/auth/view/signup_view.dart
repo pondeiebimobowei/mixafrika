@@ -269,42 +269,23 @@ class _SignupViewState extends ConsumerState<SignupView> {
           label,
           style: context.theme.typography.sm.copyWith(
             fontWeight: FontWeight.w500,
-            color: context.theme.colors.foreground,
+            color: context.theme.colors.primaryForeground,
           ),
         ),
         const SizedBox(height: 8),
-        TextFormField(
-          controller: controller,
-          obscureText: obscureText,
-          keyboardType: keyboardType,
-          style: TextStyle(color: context.theme.colors.foreground),
-          decoration: InputDecoration(
-            hintText: hint,
-            hintStyle: TextStyle(
-              color: context.theme.colors.mutedForeground.withOpacity(0.5),
-            ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            filled: true,
-            fillColor: context.theme.colors.muted.withOpacity(0.3),
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.theme.colors.primary, width: 2),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.theme.colors.destructive),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: context.theme.colors.destructive, width: 2),
-              borderRadius: BorderRadius.circular(12),
-            ),
+        FTextFormField(
+          
+          control: FTextFieldControl.managed(
+            controller: controller,
+            
+            
           ),
+          obscureText: obscureText,
           validator: validator ??
               (value) => (value == null || value.isEmpty) ? 'Required' : null,
+          
+          
+          
         ),
       ],
     );

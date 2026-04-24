@@ -51,8 +51,8 @@ export class BusinessVerification extends Model<IBusinessVerification> implement
   @Column({ type: DataType.STRING, allowNull: false })
   declare submitted_by: string;
 
-  @Column({ type: DataType.DATE, allowNull: false })
-  declare sync_date: string;
+  @Column({ type: DataType.DATE, allowNull: true })
+  declare sync_date?: string;
 
   @Column({ type: DataType.DATE, allowNull: false })
   declare sync_status: syncStatus;

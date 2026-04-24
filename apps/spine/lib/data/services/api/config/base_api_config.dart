@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:spine/data/shared_preference.dart';
 
 final String baseUrl =  'https://mixafrica-app-zncj.onrender.com/v1';
+// final String baseUrl =  'http://localhost:3003/v1';
 // final String baseUrl = String.fromEnvironment(
 //   'base_url',
 //   defaultValue: 'https://mixafrica-app-zncj.onrender.com/v1',
