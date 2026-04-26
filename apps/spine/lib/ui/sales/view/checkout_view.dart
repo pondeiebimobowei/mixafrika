@@ -7,6 +7,8 @@ import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/sales/state/create_sale_state.dart';
 import 'package:spine/ui/sales/view/customer_selection_sheet.dart';
 import 'package:spine/ui/sales/view_model/create_sale_view_model.dart';
+import 'package:spine/widget/toast_widget.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 class CheckoutView extends ConsumerWidget {
   const CheckoutView({super.key});
@@ -376,25 +378,31 @@ class CheckoutView extends ConsumerWidget {
                         state.selectedPaymentMethod == null || state.isLoading
                         ? null
                         : () async {
-                            final success = await viewModel.checkout();
+                            final res = await viewModel.checkout();
                             if (context.mounted) {
-                              if (success) {
+                              if (res.success) {
+                                ToastWidget.makeToast(
+                                  context: context, 
+                                  description: res.message, 
+                                  icon: FIcons.circleCheck, 
+                                  color: Colors.green
+                                );
                                 context.go(Routes.dashboard);
-                              } else {}
+                              } else {
+                                ToastWidget.makeToast(
+                                  context: context, 
+                                  description: res.message, 
+                                  icon: FIcons.circleX, 
+                                  color: Colors.red
+                                );
+                              }
                             }
                           },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: Center(
                         child: state.isLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                ),
-                              )
+                            ? SpinnerWidget.spinner()
                             : const Text(
                                 'Finish & Record Sale',
                                 style: TextStyle(

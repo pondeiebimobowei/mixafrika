@@ -1,6 +1,7 @@
 import 'package:spine/data/repositories/business/business_repository_abstract.dart';
 import 'package:spine/data/services/api/business/business_api_services.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
+import 'package:spine/data/services/models/business_model.dart';
 import 'package:spine/drift/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,7 +16,7 @@ class BusinessRepositoryRemote implements BusinessRepositoryAbstract {
   final BusinessApiServices _businessApiService;
 
   @override
-  Future<ApiResponse<BusinessesData>> createBusiness(
+  Future<ApiResponse<BusinessWithBranch>> createBusiness(
     BusinessesData business,
   ) async {
 
@@ -64,6 +65,8 @@ class BusinessRepositoryRemote implements BusinessRepositoryAbstract {
   @override
   Future<void> saveBusinesses(List<BusinessesData> businesses) async {}
 
+  @override
+  Future<void> saveBranches (List<BranchData> branches) async {}
 }
 
 final businessRepositoryRemoteProvider = Provider(

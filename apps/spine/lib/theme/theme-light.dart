@@ -2,11 +2,16 @@ import 'package:forui/forui.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:spine/theme/alert_styles.dart';
 import 'package:spine/theme/badge_styles.dart';
 import 'package:spine/theme/card_style.dart';
+import 'package:spine/theme/circular_progress_style.dart';
+import 'package:spine/theme/date_field_style.dart';
 import 'package:spine/theme/form_field_style.dart';
 import 'package:spine/theme/select_style.dart';
+import 'package:spine/theme/switch_style.dart';
 import 'package:spine/theme/text_field_style.dart';
+import 'package:spine/theme/toaster_style.dart';
 
 // ignore_for_file: avoid_redundant_argument_values
 
@@ -52,6 +57,11 @@ FThemeData get greenLight {
     typography: typography, 
     style: style,
     
+    dateFieldStyle: dateFieldStyle(colors: colors, typography: typography, style: style),
+    switchStyle: switchStyle(colors: colors, style: style),
+    circularProgressStyle: circularProgressStyle(colors: colors),
+    alertStyles: alertStyles(colors: colors, typography: typography, style: style),
+    toasterStyle: toasterStyle(colors: colors, typography: typography, style: style),
     textFieldStyle: textFieldStyle(colors: colors, typography: typography, style: style),
     selectStyle: selectStyle(colors: colors, typography: typography, style: style),
     cardStyle: cardStyle(colors: colors, typography: typography, style: style),

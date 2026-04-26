@@ -7,6 +7,7 @@ import 'package:spine/ui/inventory/view_model/inventory_view_model.dart';
 import 'package:spine/utils/helper.dart';
 import 'package:spine/widget/icon_widget.dart';
 import 'package:spine/routing/routes.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 class InventoryView extends ConsumerWidget {
   const InventoryView({super.key});
@@ -20,60 +21,48 @@ class InventoryView extends ConsumerWidget {
       header: FHeader(
         title: Row(
           children: [
-            GestureDetector(
+            IconWidget(
+              icon: Icons.arrow_back_ios_new_rounded,
+              size: 18,
               onTap: () => context.go(Routes.dashboard),
-              child: const IconWidget(icon: Icons.arrow_back),
             ),
-            const SizedBox(width: 20),
-            Text(
-              'My Stock',
-              style: TextStyle(fontSize: 20, color: colors.primaryForeground),
+            const SizedBox(width: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'My Stock',
+                  style: TextStyle(
+                    fontSize: 22,
+                    color: colors.primaryForeground,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: -1,
+                  ),
+                ),
+                Text(
+                  'Inventory Overview',
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: colors.primaryForeground.withValues(alpha: 0.4),
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 1.2,
+                  ),
+                ),
+              ],
             ),
-            const Spacer(),
-            FButton(
-              size: .xs,
-              prefix: Icon(
-                Icons.shopping_cart_outlined,
-                color: colors.primaryForeground,
-              ),
-              onPress: () => context.go('${Routes.inventory}/${Routes.addStock}'),
-              variant: .outline,
-              child: Text(
-                'RESTOCK',
-                style: TextStyle(color: colors.primaryForeground),
-              ),
-            ),
-
-            const SizedBox(width: 8),
-
-            Container(
-              padding: const EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                color: context.theme.colors.primary,
-                shape: BoxShape.circle,
-              ),
-              child: FButton(
-                size: .xs,
-                onPress: () => context.go('${Routes.inventory}/${Routes.addProduct}'),
-                child: Icon(Icons.add, color: Colors.white, size: 24),
-              ),
-            ),
-            // Container(
-            //   padding: const EdgeInsets.all(8),
-            //   decoration: BoxDecoration(
-            //     color: context.theme.colors.primary,
-            //     shape: BoxShape.circle,
-            //   ),
-            //   child: FButton(onPress: ()=>{}, child: Icon(Icons.add, color: Colors.white, size: 24)),
-            //   // child: const Icon(Icons.add, color: Colors.white, size: 24),
-            // ),
           ],
         ),
       ),
       child: Material(
+        color: colors.background,
         child: inventoryAsync.when(
-          data: (state) => _buildContent(context, ref, state),
-          loading: () => const Center(child: CircularProgressIndicator()),
+          data: (state) => Stack(
+            children: [
+              _buildContent(context, ref, state),
+              _buildFloatingDock(context, state),
+            ],
+          ),
+          loading: () => Center(child: SpinnerWidget.spinner()),
           error: (error, stack) => Center(
             child: Text(
               'Error: $error',
@@ -94,15 +83,17 @@ class InventoryView extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 16),
           _buildStats(context, state),
-          const SizedBox(height: 24),
+          const SizedBox(height: 28),
           _buildFilters(context, ref, state),
-          const SizedBox(height: 24),
+          const SizedBox(height: 28),
           _buildSearchBar(context, ref),
           const SizedBox(height: 32),
           _buildListHeader(context, state),
-          const SizedBox(height: 16),
+          // const SizedBox(height: 16),
           _buildInventoryList(context, ref, state),
+          const SizedBox(height: 120), // Spacing for Dock
         ],
       ),
     );
@@ -139,17 +130,26 @@ class InventoryView extends ConsumerWidget {
     BuildContext context,
     String title,
     String value,
-    String sub,
-    {
+    String sub, {
     Color? valueColor,
   }) {
     final colors = context.theme.colors;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: colors.secondaryForeground,
-        borderRadius: BorderRadius.circular(12),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            colors.secondaryForeground.withValues(alpha: 0.8),
+            colors.secondaryForeground.withValues(alpha: 0.4),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(
+          color: colors.primary.withValues(alpha: 0.08),
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,27 +157,29 @@ class InventoryView extends ConsumerWidget {
           Text(
             title,
             style: TextStyle(
-              fontSize: 10,
-              fontWeight: .bold,
-              color: Colors.grey[400],
+              fontSize: 9,
+              fontWeight: FontWeight.w900,
+              letterSpacing: 1.5,
+              color: colors.primary.withValues(alpha: 0.7),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           Text(
             value,
             style: TextStyle(
-              fontSize: 18,
-              fontWeight: .bold,
-              color: valueColor,
+              fontSize: 20,
+              fontWeight: FontWeight.w900,
+              color: valueColor ?? colors.primaryForeground,
+              letterSpacing: -0.5,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6),
           Text(
             sub,
             style: TextStyle(
               fontSize: 10,
-              fontWeight: .bold,
-              color: Colors.grey[500],
+              fontWeight: FontWeight.w600,
+              color: colors.primaryForeground.withValues(alpha: 0.4),
             ),
           ),
         ],
@@ -243,15 +245,22 @@ class InventoryView extends ConsumerWidget {
     VoidCallback onTap, {
     Color? iconColor,
   }) {
+    final colors = context.theme.colors;
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 80,
-        constraints: BoxConstraints(minWidth: label.isEmpty ? 60 : 140),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+        height: 64,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
-          color: isSelected ? Colors.white : const Color(0xFF1E293B),
+          color: isSelected
+              ? colors.primary
+              : colors.secondaryForeground.withValues(alpha: 0.3),
           borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isSelected
+                ? colors.primary
+                : colors.primary.withValues(alpha: 0.05),
+          ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -260,40 +269,42 @@ class InventoryView extends ConsumerWidget {
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? Colors.grey[100]
-                    : Colors.white.withValues(alpha: .05),
+                    ? Colors.black.withValues(alpha: 0.1)
+                    : colors.primary.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
                 icon,
-                color: iconColor ?? (isSelected ? Colors.black : Colors.white),
-                size: 20,
+                color: isSelected ? Colors.black : (iconColor ?? colors.primary),
+                size: 18,
               ),
             ),
-            if (label.isNotEmpty) ...[
-              const SizedBox(width: 12),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    count,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: isSelected ? Colors.black : Colors.white,
-                    ),
+            const SizedBox(width: 12),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  count,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w900,
+                    color: isSelected ? Colors.black : colors.primaryForeground,
                   ),
-                  Text(
-                    label,
-                    style: TextStyle(
-                      fontSize: 8,
-                      fontWeight: .bold,
-                      color: isSelected ? Colors.black54 : Colors.grey[400],
-                    ),
+                ),
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 8,
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 0.5,
+                    color: isSelected
+                        ? Colors.black.withValues(alpha: 0.6)
+                        : colors.primaryForeground.withValues(alpha: 0.4),
                   ),
-                ],
-              ),
-            ],
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -304,36 +315,77 @@ class InventoryView extends ConsumerWidget {
     final colors = context.theme.colors;
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
       decoration: BoxDecoration(
-        color: colors.secondaryForeground,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: TextField(
-        onChanged: (v) =>
-            ref.read(inventoryViewModelProvider.notifier).setSearchQuery(v),
-        // style: TextStyle(color: colors.primaryForeground),
-        decoration: InputDecoration(
-          icon: Icon(Icons.search, color: Colors.grey[400]),
-          hintText: 'Search items...',
-          hintStyle: TextStyle(color: Colors.grey[500]),
-          border: InputBorder.none,
+        color: colors.secondaryForeground.withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: colors.primary.withValues(alpha: 0.05),
         ),
+      ),
+      child: Row(
+        children: [
+          Icon(
+            Icons.search_rounded,
+            color: colors.primary.withValues(alpha: 0.6),
+            size: 22,
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: TextField(
+              onChanged: (v) =>
+                  ref.read(inventoryViewModelProvider.notifier).setSearchQuery(v),
+              style: TextStyle(
+                color: colors.primaryForeground,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+              decoration: InputDecoration(
+                hintText: 'Search stock...',
+                hintStyle: TextStyle(
+                  color: colors.mutedForeground,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+                isDense: true,
+                contentPadding: EdgeInsets.zero,
+                border: InputBorder.none,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildListHeader(BuildContext context, InventoryState state) {
+    final colors = context.theme.colors;
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          'INVENTORY LIST (${state.currentFilter.name.toUpperCase()})',
-          style: TextStyle(fontSize: 12, color: Colors.grey[400]),
+          'STOCK LIST',
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.w900,
+            letterSpacing: 1.5,
+            color: colors.primary.withValues(alpha: 0.7),
+          ),
         ),
-        Text(
-          '${state.filteredItems.length} Results',
-          style: TextStyle(fontSize: 12, color: Colors.grey[500]),
+        const SizedBox(width: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+          decoration: BoxDecoration(
+            color: colors.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(6),
+          ),
+          child: Text(
+            state.filteredItems.length.toString(),
+            style: TextStyle(
+              color: colors.primary,
+              fontSize: 10,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
         ),
       ],
     );
@@ -442,101 +494,106 @@ class InventoryView extends ConsumerWidget {
 
   Widget _buildInventoryItem(BuildContext context, InventoryItemData item) {
     final FColors colors = context.theme.colors;
-    Color statusColor = Colors.greenAccent;
-    String? statusBadge;
 
     return GestureDetector(
-      onTap: () => context.go('${Routes.inventory}/${Routes.productDetails}/${item.product.id}'),
+      onTap: () => context.go(
+          '${Routes.inventory}/${Routes.productDetails}/${item.product.id}'),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+        padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: colors.secondaryForeground,
-          borderRadius: BorderRadius.circular(24),
+          color: colors.secondaryForeground.withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(28),
+          border: Border.all(
+            color: colors.primary.withValues(alpha: 0.05),
+          ),
         ),
-        child: Row(
+        child: Column(
           children: [
-            Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.orange[50], // Box color from image
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Icon(
-                Icons.inventory_2_outlined,
-                color: colors.primary,
-                size: 28,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    item.product.name,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: .w900,
-                      color: colors.primaryForeground
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      FBadge(
-                        variant: .macOS,
-                        style: FBadgeStyleDelta.delta(
-                          decoration: BoxDecorationDelta.delta(
-                            color: colors.primaryForeground.withValues(alpha: .2),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Column(children: [
-                          Text('${item.stockEntries?.quantity.toString()} ${item.product.pieceUnitName}',
-                          style: TextStyle(
-                            fontSize: 10
-                          ),),
-                        ],),
-                        // variant: FBadgeVariant.secondary,
-                      ),
-                      const SizedBox(width: 8),
-                      FBadge(
-                        style: FBadgeStyleDelta.delta(
-                          decoration: BoxDecorationDelta.delta(
-                            color: colors.primaryForeground.withValues(alpha: .2),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Column(children: [
-                          Text('${(item.stockEntries?.quantity ?? 0 / item.product.unitsPerBulk).toInt().toString()} ${item.product.bulkUnitName}',
-                          style: TextStyle(
-                            fontSize: 10
-                          ),),
-                        ],),
-                      ),
-                    
-                      if (statusBadge != null) ...[
-                        const SizedBox(width: 8),
-                        _buildStatusBadge(context, statusBadge, statusColor),
-                      ],
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+            Row(
               children: [
-                Text(
-                  formatCurrency(item.product.sellingPricePerPiece),
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: statusColor,
+                Container(
+                  width: 52,
+                  height: 52,
+                  decoration: BoxDecoration(
+                    color: colors.primary.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Icon(
+                    Icons.inventory_2_rounded,
+                    color: colors.primary,
+                    size: 24,
                   ),
                 ),
-                const SizedBox(height: 8),
-                const Icon(Icons.chevron_right, color: Colors.grey),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.product.name,
+                        style: TextStyle(
+                          color: colors.primaryForeground,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 16,
+                          letterSpacing: -0.5,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Retail Unit: ${item.product.pieceUnitName}',
+                        style: TextStyle(
+                          color: colors.primaryForeground.withValues(alpha: 0.4),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      formatCurrency(item.product.sellingPricePerPiece),
+                      style: TextStyle(
+                        color: colors.primary,
+                        fontWeight: FontWeight.w900,
+                        fontSize: 18,
+                        letterSpacing: -0.5,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      'per ${item.product.pieceUnitName}',
+                      style: TextStyle(
+                        color: colors.primaryForeground.withValues(alpha: 0.4),
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                _buildStockInfo(
+                  context,
+                  '${item.stockEntries?.quantity ?? 0}',
+                  item.product.pieceUnitName,
+                ),
+                const SizedBox(width: 12),
+                _buildStockInfo(
+                  context,
+                  '${((item.stockEntries?.quantity ?? 0) / (item.product.unitsPerBulk > 0 ? item.product.unitsPerBulk : 1)).toInt()}',
+                  item.product.bulkUnitName,
+                ),
+                const Spacer(),
+                Icon(
+                  Icons.chevron_right_rounded,
+                  color: colors.primaryForeground.withValues(alpha: 0.2),
+                ),
               ],
             ),
           ],
@@ -545,19 +602,95 @@ class InventoryView extends ConsumerWidget {
     );
   }
 
-  Widget _buildStatusBadge(BuildContext context, String text, Color color) {
+  Widget _buildStockInfo(BuildContext context, String count, String unit) {
+    final colors = context.theme.colors;
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: .2),
-        borderRadius: BorderRadius.circular(6),
+        color: colors.background,
+        borderRadius: BorderRadius.circular(12),
       ),
-      child: Text(
-        text,
-        style: TextStyle(
-          color: color,
-          fontSize: 8,
-          fontWeight: FontWeight.bold,
+      child: Row(
+        children: [
+          Text(
+            count,
+            style: TextStyle(
+              color: colors.primaryForeground,
+              fontWeight: FontWeight.w900,
+              fontSize: 12,
+            ),
+          ),
+          const SizedBox(width: 4),
+          Text(
+            unit.toUpperCase(),
+            style: TextStyle(
+              color: colors.primaryForeground.withValues(alpha: 0.4),
+              fontWeight: FontWeight.w900,
+              fontSize: 9,
+              letterSpacing: 0.5,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFloatingDock(BuildContext context, InventoryState state) {
+    final colors = context.theme.colors;
+    return Positioned(
+      left: 16,
+      right: 16,
+      bottom: 30,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+        decoration: BoxDecoration(
+          color: colors.secondaryForeground,
+          borderRadius: BorderRadius.circular(32),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.3),
+              blurRadius: 30,
+              offset: const Offset(0, 10),
+            ),
+          ],
+          border: Border.all(
+            color: colors.primary.withValues(alpha: 0.1),
+            width: 1,
+          ),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: FButton(
+                variant: .outline,
+                onPress: () =>
+                    context.go('${Routes.inventory}/${Routes.addStock}'),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.shopping_cart_outlined, size: 18),
+                    const SizedBox(width: 12),
+                    const Text('Restock'),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: FButton(
+                onPress: () =>
+                    context.go('${Routes.inventory}/${Routes.addProduct}'),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.add_rounded, size: 18),
+                    const SizedBox(width: 12),
+                    const Text('New Product'),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

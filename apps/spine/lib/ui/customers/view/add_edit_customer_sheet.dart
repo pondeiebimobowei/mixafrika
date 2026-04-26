@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/customers/view_model/customers_view_model.dart';
+import 'package:spine/widget/toast_widget.dart';
 
 class AddEditCustomerSheet extends ConsumerStatefulWidget {
   final CustomerData? customer;
@@ -92,10 +93,22 @@ class _AddEditCustomerSheetState extends ConsumerState<AddEditCustomerSheet> {
                       _nameController.text,
                       _phoneController.text,
                     );
+                    ToastWidget.makeToast(
+                      context: context, 
+                      description: 'Customer updated successfully', 
+                      icon: FIcons.circleCheck, 
+                      color: Colors.green
+                    );
                   } else {
                     viewModel.addCustomer(
                       _nameController.text,
                       _phoneController.text,
+                    );
+                    ToastWidget.makeToast(
+                      context: context, 
+                      description: 'Customer added successfully', 
+                      icon: FIcons.circleCheck, 
+                      color: Colors.green
                     );
                   }
                   Navigator.pop(context);

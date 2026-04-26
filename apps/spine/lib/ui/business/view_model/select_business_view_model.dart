@@ -14,9 +14,7 @@ class SelectBusinessViewModel extends AutoDisposeAsyncNotifier<SelectBusinessSta
 
     // ✅ 1. Load local immediately
     final localBusinesses = await businessRepository.getBusinesses();
-
     // ✅ 2. Trigger background refresh (don’t await)
-    _refreshBusinesses();
 
     return SelectBusinessState(
       business: localBusinesses,
@@ -43,7 +41,7 @@ class SelectBusinessViewModel extends AutoDisposeAsyncNotifier<SelectBusinessSta
   }
 
   Future<void> selectBusiness(String businessId) async {
-    final branchRepository = ref.read(branchRepositoryProvider);
+    final branchRepository = ref.read(branchRepositoryLocalProvider);
 
     // ✅ 1. Save active business context
     await AppPreferences.saveActiveBusinessId(businessId);

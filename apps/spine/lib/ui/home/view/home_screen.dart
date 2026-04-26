@@ -9,6 +9,7 @@ import 'package:spine/ui/home/view_model/home_view_model.dart';
 import 'package:spine/ui/business/state/active_business_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/widget/icon_widget.dart';
+import 'package:spine/widget/spinner_widget.dart';
 import 'package:spine/widget/styles/f_header_style.dart';
 
 class HomeView extends ConsumerWidget {
@@ -224,7 +225,7 @@ class HomeView extends ConsumerWidget {
               ),
             );
           },
-          loading: () => const CircularProgressIndicator(),
+          loading: () => SpinnerWidget.spinner(),
           error: (error, stack) => RegularText(title: 'Error: $error'),
         ),
       ),
@@ -817,7 +818,7 @@ class HomeView extends ConsumerWidget {
           ],
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => Center(child: SpinnerWidget.spinner()),
       error: (e, s) => const SizedBox.shrink(),
     );
   }

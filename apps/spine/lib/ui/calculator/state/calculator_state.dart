@@ -1,30 +1,22 @@
 class CalculatorState {
-  final String display;
-  final String? operator;
-  final double? previousValue;
-  final bool shouldResetDisplay;
+  final String expression;
+  final String result;
   final List<String> history;
 
   CalculatorState({
-    this.display = '0',
-    this.operator,
-    this.previousValue,
-    this.shouldResetDisplay = false,
+    this.expression = '',
+    this.result = '0',
     this.history = const [],
   });
 
   CalculatorState copyWith({
-    String? display,
-    String? operator,
-    double? previousValue,
-    bool? shouldResetDisplay,
+    String? expression,
+    String? result,
     List<String>? history,
   }) {
     return CalculatorState(
-      display: display ?? this.display,
-      operator: operator ?? this.operator,
-      previousValue: previousValue ?? this.previousValue,
-      shouldResetDisplay: shouldResetDisplay ?? this.shouldResetDisplay,
+      expression: expression ?? this.expression,
+      result: result ?? this.result,
       history: history ?? this.history,
     );
   }

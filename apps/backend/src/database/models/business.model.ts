@@ -8,10 +8,9 @@ import {
   CreatedAt,
   PrimaryKey,
   Default,
-  BelongsTo,
-  ForeignKey,
   HasMany,
   BelongsToMany,
+  HasOne,
 } from 'sequelize-typescript';
 import { IBusiness } from '@shared/shared/src/types/business';
 import { CreationOptional, DataTypes } from 'sequelize';
@@ -19,9 +18,10 @@ import { syncStatus } from '@shared/shared/src/enums';
 import { User } from './user.model';
 import { Branch } from './branch.model';
 import { BusinessUser } from './business-user';
+import { BusinessVerification } from './business-verification.model';
 
-@Table({ tableName: 'user_business' })
-export class UserBusiness
+@Table({ tableName: 'business' })
+export class Business
   extends Model<IBusiness>
   implements IBusiness {
   @PrimaryKey
@@ -59,15 +59,23 @@ export class UserBusiness
   @Column(DataType.DATE)
   declare sync_date?: string;
 
-  @BelongsTo(() => User)
-  declare user: User;
+  // @BelongsTo(() => User)
+  // declare user: User;
 
-  @ForeignKey(() => User)
-  @Column(DataType.UUID)
-  declare user_id: string;
+  // @ForeignKey(() => BusinessUser)
+  // @Column(DataType.UUID)
+  // declare business_user_id: string;
+
+  
 
   @BelongsToMany(() => User, () => BusinessUser)
-users: User[];
+  users: User[];
+
+  @HasOne(() => BusinessVerification)
+  declare verification: BusinessVerification;
+
+  // @BelongsTo(() => BusinessUser)
+  // declare business_user: BusinessUser;
 
   @HasMany(() => Branch)
   declare branches: Branch

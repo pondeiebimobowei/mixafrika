@@ -19,7 +19,7 @@ module.exports = {
           primaryKey: true,
         },
 
-        business_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user_business', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        business_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'business', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         product_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'product', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         batch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'batch', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         quantity: { type: Sequelize.STRING, allowNull: false },

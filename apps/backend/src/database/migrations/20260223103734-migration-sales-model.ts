@@ -26,7 +26,7 @@ module.exports = {
           primaryKey: true,
         },
 
-        branch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user_business', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        branch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'business', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         customer_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         total_amount: { type: Sequelize.STRING, allowNull: false },
         payment_method: { type: Sequelize.STRING, allowNull: false },

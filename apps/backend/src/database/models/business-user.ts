@@ -12,15 +12,12 @@ import {
   PrimaryKey,
   Default,
   ForeignKey,
-  BelongsToMany,
-  BelongsTo,
 } from 'sequelize-typescript';
-import { Wallet } from './wallet.model';
 import { roles, syncStatus, type Roles } from '@shared/shared/src/enums';
 import { CreationOptional } from 'sequelize';
 import { IBusinessUser } from '@shared/shared/src/types/business-user';
 import { User } from './user.model';
-import { UserBusiness } from './user-business.model';
+import { Business } from './business.model';
 
 @Table({
   tableName: 'business_user',
@@ -31,7 +28,7 @@ export class BusinessUser extends Model<IBusinessUser> implements IBusinessUser 
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
   declare id: CreationOptional<string>;
-  
+
   @Column({
     type: DataType.STRING,
     allowNull: false,
@@ -52,8 +49,9 @@ export class BusinessUser extends Model<IBusinessUser> implements IBusinessUser 
   @Column
   declare user_id: string;
 
-  @ForeignKey(() => UserBusiness)
-  @Column
+
+  @ForeignKey(() => Business)
+  @Column(DataType.UUID)
   declare business_id: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
@@ -68,23 +66,5 @@ export class BusinessUser extends Model<IBusinessUser> implements IBusinessUser 
   @DeletedAt
   declare deletedAt?: string;
 
-  // @HasOne(() => Wallet)
-  // declare wallet: Wallet;
-  
-  // @HasMany(() => BusinessUser)
-  // declare notifications: Notification[];
-
-  // @BelongsToMany(() => UserBusiness, () => User)
-  // businesses: UserBusiness[];
-
-  
-  // @BelongsTo(() => User)
-  // declare user: UserBusiness[];
-
-  // @BelongsTo(() => UserBusiness)
-  // declare business: UserBusiness[];
-
-//   @BelongsToMany(() => User, () => BusinessUser)
-// users: User[];
 
 }

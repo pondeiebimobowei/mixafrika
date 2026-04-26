@@ -1,54 +1,51 @@
 import 'package:drift/drift.dart';
-import 'package:spine/data/repositories/business/business_repository_abstract.dart';
-import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/drift/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
 
-class BusinessRepository implements BusinessRepositoryAbstract {
+class BusinessRepository {
   BusinessRepository({required AppDatabase database}) : _database = database;
 
   final AppDatabase _database;
 
-  @override
-  Future<ApiResponse<BusinessesData>> createBusiness(
-    BusinessesData business,
-  ) async {
-    try {
-      await _database.into(_database.businesses).insert(business);
-      return ApiResponse(
-        data: business,
-        message: 'business created successfully',
-        success: true,
-      );
-    } catch (e) {
-      return ApiResponse(
-        data: business,
-        message: 'Failed to create business: $e',
-        success: false,
-      );
-    }
-  }
 
-  @override
-  Future<ApiResponse<void>> updateBusiness(BusinessesData business) async {
-    try {
-      await _database.update(_database.businesses).replace(business);
-      return ApiResponse(
-        data: null,
-        message: 'business updated successfully',
-        success: true,
-      );
-    } catch (e) {
-      return ApiResponse(
-        data: null,
-        message: 'Failed to update business: $e',
-        success: false,
-      );
-    }
-  }
+  // @override
+  // Future<ApiResponse<BusinessWithBranch>> createBusiness(
+  //   BusinessesData business,
+  // ) async {
+  //   try {
+  //     await _database.into(_database.businesses).insert(business);
+  //     return ApiResponse(
+  //       data: business,
+  //       message: 'business created successfully',
+  //       success: true,
+  //     );
+  //   } catch (e) {
+  //     return ApiResponse(
+  //       data: business,
+  //       message: 'Failed to create business: $e',
+  //       success: false,
+  //     );
+  //   }
+  // }
 
-  @override
+  // @override
+  // Future<ApiResponse<void>> updateBusiness(BusinessesData business) async {
+  //   try {
+  //     await _database.update(_database.businesses).replace(business);
+  //     return ApiResponse(
+  //       data: null,
+  //       message: 'business updated successfully',
+  //       success: true,
+  //     );
+  //   } catch (e) {
+  //     return ApiResponse(
+  //       data: null,
+  //       message: 'Failed to update business: $e',
+  //       success: false,
+  //     );
+  //   }
+  // }
+
   Future<BusinessesData> getBusinessById(String id) async {
     final query = _database.select(_database.businesses)
       ..where((t) => t.id.equals(id));
@@ -57,7 +54,6 @@ class BusinessRepository implements BusinessRepositoryAbstract {
     return res;
   }
 
-  @override
   Future<List<BusinessesData>> getBusinesses() async {
     try {
       final List<BusinessesData> allItems = await _database
@@ -72,20 +68,19 @@ class BusinessRepository implements BusinessRepositoryAbstract {
     }
   }
 
-  @override
   Future<void> deleteBusiness(String id) async {
     await (_database.delete(
       _database.businesses,
     )..where((p) => p.id.equals(id))).go();
   }
 
-  @override
   Future<void> saveBusinesses(List<BusinessesData> businesses) async {
   await _database.batch((batch) {
+
     batch.insertAllOnConflictUpdate(
       _database.businesses,
       businesses.map((b) => BusinessesCompanion.insert(
-        id: Uuid().v4(),
+        id: b.id,
         name: b.name,
         phone: b.phone,
         streetAddress: b.streetAddress,
@@ -94,6 +89,30 @@ class BusinessRepository implements BusinessRepositoryAbstract {
         country: b.country,
         type: b.type,
         isVerified: b.isVerified,
+        syncStatus: b.syncStatus,
+        syncDate: Value(b.syncDate),
+        createdAt: Value(b.createdAt),
+        updatedAt: Value(b.updatedAt),
+      )).toList(),
+    );
+  });
+}
+
+  Future<void> saveBranches (List<BranchData> branches) async {
+  await _database.batch((batch) {
+
+    batch.insertAllOnConflictUpdate(
+      _database.branch,
+      branches.map((b) => BranchCompanion.insert(
+        id: b.id,
+        name: b.name,
+        phone: b.phone,
+        streetAddress: b.streetAddress,
+        city: b.city,
+        state: b.state,
+        country: b.country,
+        businessId: b.businessId,
+        isHeadOffice: Value(b.isHeadOffice),
         syncStatus: b.syncStatus,
         syncDate: Value(b.syncDate),
         createdAt: Value(b.createdAt),

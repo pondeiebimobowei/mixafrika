@@ -15,12 +15,11 @@ import { CreationOptional, DataTypes } from 'sequelize';
 import { User } from './user.model';
 import { IFundingApplication } from '@shared/shared/src/types/funding-application';
 import { Cluster } from './cluster.model';
-import { UserBusiness } from './user-business.model';
+import { Business } from './business.model';
 
 @Table({ tableName: 'funding_application' })
 export class FundingApplication
-  extends Model<IFundingApplication>
-{
+  extends Model<IFundingApplication> {
   @PrimaryKey
   @Default(DataTypes.UUIDV4)
   @Column(DataTypes.UUID)
@@ -34,9 +33,9 @@ export class FundingApplication
   @Column(DataType.STRING)
   declare cluster_id: string | null;
 
-  @ForeignKey(() => UserBusiness)
+  @ForeignKey(() => Business)
   @Column(DataType.STRING)
-  declare user_business_id: string;
+  declare business_id: string;
 
   @Column(DataType.DECIMAL(15, 2))
   declare amount: number;

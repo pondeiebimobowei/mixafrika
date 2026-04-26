@@ -15,8 +15,8 @@ export class BusinessController {
     ) { }
 
     @Get()
-    getUserBusiness(@ParsedToken() user: User) {
-        return this.businessService.handleGetUserBusiness(user.id)
+    getBusiness(@ParsedToken() user: User) {
+        return this.businessService.handleGetBusiness(user.id)
     }
 
     @Post()
@@ -24,7 +24,7 @@ export class BusinessController {
         { name: 'cac_document', maxCount: 1 },
         { name: 'national_id_document', maxCount: 1 },
     ]))
-    async submitUserBusiness(
+    async submitBusiness(
         @ParsedToken() user: User,
         @Body(new ZodPipe(submit_business)) submit_business: Submit_business,
         @UploadedFiles() files: { cac_document?: Express.Multer.File[], national_id_document?: Express.Multer.File[] }
@@ -48,6 +48,6 @@ export class BusinessController {
             national_id_document: national_id_document_url
         };
 
-        return this.businessService.handleSubmitUserBusiness(user.id, businessData)
+        return this.businessService.handleSubmitBusiness(user.id, businessData)
     }
 }

@@ -1,4 +1,5 @@
 import { SyncableModel, type BaseModel } from "./base-model-type";
+import { IBranch } from "./branch";
 
 export interface IBusiness extends BaseModel, SyncableModel {
   name: string;
@@ -9,8 +10,10 @@ export interface IBusiness extends BaseModel, SyncableModel {
   state: string;
   country: string;
   is_verified: boolean;
-
-  user_id: string,
   
 }
 
+
+export interface IBusinessWithBranch extends IBusiness {
+  branch: IBranch[],
+}

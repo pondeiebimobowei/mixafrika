@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:spine/data/services/api/auth/auth_api_services_abstract.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/data/services/api/config/base_api_config.dart';
+import 'package:spine/data/services/api/auth/sync_response.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class AuthApiServices implements AuthApiServicesAbstract {
   @override
@@ -59,4 +61,30 @@ class AuthApiServices implements AuthApiServicesAbstract {
       );
     }
   }
+
+  @override
+  Future<ApiResponse<SyncResponse>> syncData() async {
+    try {
+      final response = await apiPrivate.get('/auth/sync');
+
+      return ApiResponse.fromJson(
+        response.data,
+        (data) => SyncResponse.fromJson(data),
+      );
+    } on DioException catch (err) {
+      return ApiResponse(
+        success: false,
+        message: err.response?.data['message'] ?? err.message ?? 'Unknown error',
+        data: SyncResponse(
+          user: null,
+          businessUsers: [],
+          businesses: [],
+          branchUsers: [],
+          branches: [],
+        ),
+      );
+    }
+  }
 }
+
+final authApiServicesProvider = Provider((ref) => AuthApiServices());

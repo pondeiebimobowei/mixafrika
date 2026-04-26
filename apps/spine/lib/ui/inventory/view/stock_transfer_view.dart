@@ -7,6 +7,7 @@ import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/inventory/state/stock_transfer_state.dart';
 import 'package:spine/ui/inventory/view_model/stock_transfer_view_model.dart';
 import 'package:spine/widget/icon_widget.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 class StockTransferView extends ConsumerStatefulWidget {
   final String productId;
@@ -68,7 +69,7 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
         ),
       ),
       child: state.isLoading && state.product == null
-          ? const Center(child: CircularProgressIndicator())
+          ? Center(child: SpinnerWidget.spinner())
           : Material(
               color: Colors.transparent,
               child: Stack(
@@ -358,14 +359,7 @@ class _StockTransferViewState extends ConsumerState<StockTransferView> {
           child: FButton(
             onPress: state.isLoading ? null : () => viewModel.submit(),
             child: state.isLoading
-                ? const SizedBox(
-                    height: 24,
-                    width: 24,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    ),
-                  )
+                ? SpinnerWidget.spinner()
                 : const Text(
                     'Initiate Movement',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),

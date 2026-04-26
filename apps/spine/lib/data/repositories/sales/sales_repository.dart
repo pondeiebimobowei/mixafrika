@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/data/repositories/sales/sales_repository_abstract.dart';
 import 'package:uuid/uuid.dart';
@@ -12,22 +13,23 @@ class SalesRepository implements SalesRepositoryAbstract {
   SalesRepository(this._db);
 
 @override
-Future<void> createSale(
+Future<ApiResponse<void>> createSale(
   Sale sale,
   List<SalesItemData> items,
   List<Payment> payments,
 ) async {
   try {
-    await _db.transaction(() async {
+    final res = await _db.transaction(() async {
       final now = DateTime.now();
 
       await _db.into(_db.sales).insert(sale);
 
       for (final item in items) {
-        if( item.type != 'product') {
+        if (item.type != 'product') {
           await _db.into(_db.salesItem).insert(item);
+          continue;
         }
-        
+
         if (item.productId == null) {
           throw Exception('Product item must have productId');
         }
@@ -41,7 +43,11 @@ Future<void> createSale(
             )
           )
           ..orderBy([
-            (t) => OrderingTerm(expression: t.expiryDate, mode: OrderingMode.asc),
+            (t) => OrderingTerm(
+              expression: t.expiryDate, 
+              mode: OrderingMode.asc, 
+              nulls: .last,
+            ),
             (t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.asc),
           ]);
 
@@ -65,6 +71,8 @@ Future<void> createSale(
           final take = min(batch.remainingQuantity, remaining);
 
           await _db.into(_db.salesItem).insert(item.copyWith(
+            id: const Uuid().v4(),
+            total: item.unitPrice * take,
             quantity: take,
             batchId: Value(batch.id), // Ensure your schema links salesItem to the batch
           ));
@@ -92,6 +100,7 @@ Future<void> createSale(
         await _db.into(_db.payments).insert(payment);
       }
     });
+    return ApiResponse(success: true, message: 'Sale record created successfully', data: null);
   } catch (e) {
     print(e);
     rethrow; 

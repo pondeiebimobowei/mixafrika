@@ -39,9 +39,9 @@ class CalculatorView extends ConsumerWidget {
           children: [
             // Display Area
             Expanded(
-              flex: 2,
+              flex: 3,
               child: Container(
-                padding: const EdgeInsets.all(24),
+                padding: const EdgeInsets.all(32),
                 alignment: Alignment.bottomRight,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -52,19 +52,28 @@ class CalculatorView extends ConsumerWidget {
                         state.history.first,
                         style: TextStyle(
                           color: colors.mutedForeground,
-                          fontSize: 16,
+                          fontSize: 18,
                         ),
                       ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 16),
                     FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
-                        state.display,
+                        state.expression.isEmpty ? '0' : state.expression,
                         style: TextStyle(
                           color: colors.primaryForeground,
                           fontSize: 64,
                           fontWeight: FontWeight.bold,
                         ),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      '= ${state.result}',
+                      style: TextStyle(
+                        color: colors.primary,
+                        fontSize: 32,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],
@@ -74,17 +83,24 @@ class CalculatorView extends ConsumerWidget {
 
             // Keypad
             Expanded(
-              flex: 5,
+              flex: 6,
               child: Container(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF0F172A),
+                  color: const Color(0xFF0B1121),
                   borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(32),
+                    top: Radius.circular(40),
                   ),
                   border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.1),
+                    color: Colors.white.withValues(alpha: 0.05),
                   ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.2),
+                      blurRadius: 20,
+                      offset: const Offset(0, -5),
+                    )
+                  ],
                 ),
                 child: Column(
                   children: [
@@ -95,9 +111,9 @@ class CalculatorView extends ConsumerWidget {
                         () => viewModel.onClearPressed(),
                       ),
                       _buildButton(
-                        '+/-',
+                        '⌫',
                         colors.primary,
-                        () => viewModel.onNegatePressed(),
+                        () => viewModel.onBackspacePressed(),
                       ),
                       _buildButton(
                         '%',
@@ -106,7 +122,7 @@ class CalculatorView extends ConsumerWidget {
                       ),
                       _buildButton(
                         '÷',
-                        const Color(0xFF1DB978),
+                        colors.primary,
                         () => viewModel.onOperatorPressed('÷'),
                       ),
                     ]),
@@ -128,7 +144,7 @@ class CalculatorView extends ConsumerWidget {
                       ),
                       _buildButton(
                         '×',
-                        const Color(0xFF1DB978),
+                        colors.primary,
                         () => viewModel.onOperatorPressed('×'),
                       ),
                     ]),
@@ -150,7 +166,7 @@ class CalculatorView extends ConsumerWidget {
                       ),
                       _buildButton(
                         '-',
-                        const Color(0xFF1DB978),
+                        colors.primary,
                         () => viewModel.onOperatorPressed('-'),
                       ),
                     ]),
@@ -172,16 +188,20 @@ class CalculatorView extends ConsumerWidget {
                       ),
                       _buildButton(
                         '+',
-                        const Color(0xFF1DB978),
+                        colors.primary,
                         () => viewModel.onOperatorPressed('+'),
                       ),
                     ]),
                     _buildRow([
                       _buildButton(
+                        '+/-',
+                        null,
+                        () => viewModel.onNegatePressed(),
+                      ),
+                      _buildButton(
                         '0',
                         null,
                         () => viewModel.onNumberPressed('0'),
-                        flex: 2,
                       ),
                       _buildButton(
                         '.',
@@ -191,7 +211,8 @@ class CalculatorView extends ConsumerWidget {
                       _buildButton(
                         '=',
                         const Color(0xFF1DB978),
-                        () => viewModel.calculate(),
+                        () => viewModel.onEqualPressed(),
+                        isPrimary: true,
                       ),
                     ]),
                   ],
@@ -218,6 +239,7 @@ class CalculatorView extends ConsumerWidget {
     Color? color,
     VoidCallback onPressed, {
     int flex = 1,
+    bool isPrimary = false,
   }) {
     return Expanded(
       flex: flex,
@@ -225,24 +247,35 @@ class CalculatorView extends ConsumerWidget {
         padding: const EdgeInsets.all(8.0),
         child: InkWell(
           onTap: onPressed,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(24),
           child: Container(
             decoration: BoxDecoration(
-              color: color?.withValues(alpha: 0.2) ?? const Color(0xFF1E293B),
-              borderRadius: BorderRadius.circular(16),
+              color: isPrimary
+                  ? color
+                  : color?.withValues(alpha: 0.15) ?? const Color(0xFF1E293B),
+              borderRadius: BorderRadius.circular(24),
               border: Border.all(
-                color:
-                    color?.withValues(alpha: 0.5) ??
-                    Colors.white.withValues(alpha: 0.05),
+                color: isPrimary
+                    ? Colors.transparent
+                    : color?.withValues(alpha: 0.3) ?? Colors.white.withValues(alpha: 0.05),
               ),
+              boxShadow: isPrimary
+                  ? [
+                      BoxShadow(
+                        color: color!.withValues(alpha: 0.4),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      )
+                    ]
+                  : null,
             ),
             child: Center(
               child: Text(
                 text,
                 style: TextStyle(
-                  color: color ?? Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+                  color: isPrimary ? Colors.white : color ?? Colors.white,
+                  fontSize: text == '⌫' ? 24 : 32,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),

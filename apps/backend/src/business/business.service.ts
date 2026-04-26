@@ -1,46 +1,47 @@
 import { Injectable } from '@nestjs/common';
 import { Response } from '@shared/shared/src/types/api/responses';
-import { IBusiness } from '@shared/shared/src/types/business';
+import { IBusiness, IBusinessWithBranch } from '@shared/shared/src/types/business';
 import { Submit_business } from '@shared/shared/src/validation/submit-business-dto';
 import { Branch } from 'src/database/models/branch.model';
 import { BusinessVerification } from 'src/database/models/business-verification.model';
-import { UserBusiness } from 'src/database/models/user-business.model';
+import { Business } from 'src/database/models/business.model';
 import { User } from 'src/database/models/user.model';
 
 @Injectable()
 export class BusinessService {
 
-    async handleGetUserBusiness(user_id: string): Promise<Response<IBusiness[]>> {
+    async handleGetBusiness(user_id: string): Promise<Response<IBusiness[]>> {
 
-        const directBusinesses = await UserBusiness.findAll({
+        const directBusinesses = await Business.findAll({
             include: [
                 {
                     model: User,
                     attributes: [],
-                    // through: {
-                    //     attributes: ['role']
-                    // },
+                    // where: { user_id: user_id },
+                    through: {
+                        attributes: ['role']
+                    },
                     required: true
                 }
             ],
         });
 
-        const branchBusinesses = await UserBusiness.findAll({
+        const branchBusinesses = await Business.findAll({
             include: [
                 {
-                model: Branch,
-                required: true, 
-                include: [
-                    {
-                    model: User,
-                    // where: { id: user_id },
-                    attributes: [],
-                    // through: {
-                    //     attributes: ['role'],
-                    // },
+                    model: Branch,
                     required: true,
-                    },
-                ],
+                    include: [
+                        {
+                            model: User,
+                            // where: { id: user_id },
+                            attributes: [],
+                            // through: {
+                            //     attributes: ['role'],
+                            // },
+                            required: true,
+                        },
+                    ],
                 },
             ],
         });
@@ -61,22 +62,34 @@ export class BusinessService {
         }
     }
 
-    async handleSubmitUserBusiness(user_id: string, { street_address, city, state, country, name, phone, type, cac_document, national_id_document }: Submit_business): Promise<Response<IBusiness>> {
+    async handleSubmitBusiness(user_id: string, { street_address, city, state, country, name, phone, type, cac_document, national_id_document }: Submit_business): Promise<Response<IBusinessWithBranch>> {
 
-
-        const business = await UserBusiness.create({
+        const business = await Business.create({
             city,
             state,
             country,
             street_address,
             name,
             phone,
-            user_id,
             type,
+        
             is_verified: true,
-            sync_date: '',
             sync_status: 'pending',
 
+        })
+
+        await Branch.create({
+            business_id: business.id,
+            name: business.name,
+            phone: business.phone,
+            street_address: business.street_address,
+            city: business.city,
+            state: business.state,
+            country: business.country,
+            sync_status: 'pending',
+            is_head_office: true,
+            user_id: user_id,
+            
         })
 
         await BusinessVerification.create({
@@ -93,10 +106,21 @@ export class BusinessService {
 
         })
 
+        const businessWithBranch = await Business.findOne({
+            where: { id: business.id },
+            include: [
+                {
+                    model: Branch,
+                    where: { is_head_office: true },
+                    required: true,
+                },
+            ],
+        }) as unknown as IBusinessWithBranch;
+
 
         return {
             success: true,
-            data: business,
+            data: businessWithBranch,
             message: 'Business details submitted successfully!'
         }
     }

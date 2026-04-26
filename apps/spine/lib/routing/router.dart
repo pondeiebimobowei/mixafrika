@@ -1,8 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spine/routing/routes.dart';
-import 'package:spine/screens/business_details_screen.dart';
-import 'package:spine/screens/splash_screen.dart';
+import 'package:spine/ui/auth/view/signup_business_view.dart';
+import 'package:spine/ui/auth/view/splash_view.dart';
 import 'package:spine/ui/auth/view/login_view.dart';
 import 'package:spine/ui/auth/view/signup_view.dart';
 import 'package:spine/ui/home/view/home_screen.dart';
@@ -17,6 +17,7 @@ import 'package:spine/ui/inventory/view/stock_transfer_view.dart';
 import 'package:spine/ui/sales/view/checkout_view.dart';
 import 'package:spine/ui/shop_management/view/shop_management_view.dart';
 import 'package:spine/ui/customers/view/customers_view.dart';
+import 'package:spine/ui/team_management/view/team_management_view.dart';
 
 import 'package:spine/ui/sales/view/sale_receipt_view.dart';
 import 'package:spine/ui/sales/view/sales_log_view.dart';
@@ -28,7 +29,7 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(
         path: Routes.splash,
-        builder: (context, state) => const SplashScreen(),
+        builder: (context, state) => const SplashView(),
       ),
       GoRoute(
         path: Routes.login,
@@ -48,7 +49,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: Routes.businessDetails,
-        builder: (context, state) => const BusinessDetailsScreen(),
+        builder: (context, state) => const SignupBusinessView(),
       ),
       GoRoute(path: Routes.dashboard, builder: (context, state) => HomeView()),
       GoRoute(
@@ -132,6 +133,10 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: Routes.customers,
         builder: (context, state) => const CustomersView(),
+      ),
+      GoRoute(
+        path: Routes.teamManagement,
+        builder: (context, state) => const TeamManagementView(),
       ),
     ],
   );

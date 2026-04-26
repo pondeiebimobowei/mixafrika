@@ -73,7 +73,7 @@ class AppDatabase extends _$AppDatabase {
 
   static QueryExecutor _openConnection() {
     return driftDatabase(
-      name: 'spinedbbbbbbBbXff-1',
+      name: 'spinedbbbbbbBbXfDughUu1dediDdrf2fQ-1',
 
       
 
@@ -120,19 +120,21 @@ class AppDatabase extends _$AppDatabase {
   }
 
   Future<void> _insertSeedData(AppDatabase db) async {
-    await db.into(db.businesses).insert(userBiz1);
-    await db.into(db.businesses).insert(userBiz2);
+    // await db.into(db.businesses).insert(userBiz1);
+    // await db.into(db.businesses).insert(userBiz2);
     
-    await db.into(db.branch).insert(biz1branch1);
-    await db.into(db.branch).insert(biz1branch2);
+    // await db.into(db.branch).insert(biz1branch1);
+    // await db.into(db.branch).insert(biz1branch2);
 
-    await db.into(db.branch).insert(biz2branch1);
-    await db.into(db.branch).insert(biz2branch2);
+    // await db.into(db.branch).insert(biz2branch1);
+    // await db.into(db.branch).insert(biz2branch2);
 
-    await db.into(db.bankDetails).insert(bankDetail1);
-    await db.into(db.bankDetails).insert(bankDetail2);
-    await db.into(db.bankDetails).insert(bankDetail3);
-    await db.into(db.bankDetails).insert(bankDetail4);
+    
+
+    // await db.into(db.bankDetails).insert(bankDetail1);
+    // await db.into(db.bankDetails).insert(bankDetail2);
+    // await db.into(db.bankDetails).insert(bankDetail3);
+    // await db.into(db.bankDetails).insert(bankDetail4);
   }
 }
 

@@ -4,6 +4,7 @@ import 'package:spine/data/repositories/customer/customer_repository.dart';
 import 'package:spine/data/repositories/product/product_repository.dart';
 import 'package:spine/data/repositories/sales/sales_repository.dart';
 import 'package:spine/data/repositories/branch/branch_repository.dart';
+import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/ui/sales/state/create_sale_state.dart';
 import 'package:spine/ui/business/state/active_business_provider.dart';
@@ -275,9 +276,13 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
     state = state.copyWith(customers: customers);
   }
 
-  Future<bool> checkout() async {
-    if (state.cartItems.isEmpty || state.selectedPaymentMethod == null) {
-      return false;
+  Future<ApiResponse<void>> checkout() async {
+    if (state.cartItems.isEmpty) {
+      return ApiResponse(success: false, message: 'Cart is empty', data: null);
+    }
+
+    if (state.selectedPaymentMethod == null) {
+      return ApiResponse(success: false, message: 'No payment method selected', data: null);
     }
 
     state = state.copyWith(isLoading: true);
@@ -329,12 +334,12 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
           reference: payment.reference,
         );
       }).toList();
-      await _salesRepository.createSale(sale, items, paymentsList);
+      final res = await _salesRepository.createSale(sale, items, paymentsList);
       state = CreateSaleState(quickPicks: state.quickPicks); // Reset cart
-      return true;
+      return res;
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
-      return false;
+      return ApiResponse(success: false, message: e.toString(), data: null);
     }
   }
 }
@@ -344,7 +349,7 @@ final createSaleViewModelProvider =
       return CreateSaleViewModel(
         productRepository: ref.watch(productRepositoryProvider),
         salesRepository: ref.watch(salesRepositoryProvider),
-        branchRepository: ref.watch(branchRepositoryProvider),
+        branchRepository: ref.watch(branchRepositoryLocalProvider),
         customerRepository: ref.watch(customerRepositoryProvider),
         activeBranch: ref.read(activeBranchProvider),
       );

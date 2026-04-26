@@ -19,7 +19,7 @@ module.exports = {
           primaryKey: true,
         },
         type: { type: Sequelize.STRING, allowNull: false },
-        business_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user_business', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        business_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'business', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(VerificationStatus)]} },
         rejection_reason: { type: Sequelize.STRING, allowNull: false },
         doc_url: { type: Sequelize.STRING, allowNull: false },

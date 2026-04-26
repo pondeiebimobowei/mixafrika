@@ -3,13 +3,13 @@ import {
   Column,
   Model,
   DataType,
-  HasOne,
-  HasMany,
   CreatedAt,
   UpdatedAt,
   DeletedAt,
   PrimaryKey,
   Default,
+  BelongsTo,
+  ForeignKey,
 } from 'sequelize-typescript';
 import { Wallet } from './wallet.model';
 import { roles, syncStatus, type Roles } from '@shared/shared/src/enums';
@@ -41,8 +41,25 @@ export class BranchUser extends Model<IBranchUser> implements IBranchUser {
   @Column({ type: DataType.DATE, allowNull: true })
   declare assigned_at?: string;
 
+  @BelongsTo(() => User)
+  declare user: User;
+
+  @BelongsTo(() => Branch)
+  declare branch: Branch;
+
+  @ForeignKey(() => User)
+  @Column(DataType.UUID)
+  declare user_id: string;
+
+  @ForeignKey(() => Branch)
+  @Column(DataType.UUID)
+  declare branch_id: string;
+
   @Column({ type: DataType.STRING, allowNull: false })
   declare sync_status: syncStatus;
+
+  @Column({ type: DataType.DATE, allowNull: true })
+  declare sync_date?: string;
 
   @CreatedAt
   declare createdAt: string;
@@ -52,14 +69,5 @@ export class BranchUser extends Model<IBranchUser> implements IBranchUser {
 
   @DeletedAt
   declare deletedAt?: string;
-
-  @HasOne(() => Wallet)
-  declare wallet: Wallet;
-
-  @HasMany(() => User)
-  declare user_id: string;
-
-  @HasMany(() => Branch)
-  declare branch_id: string;
 
 }

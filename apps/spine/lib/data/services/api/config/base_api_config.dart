@@ -1,7 +1,13 @@
 import 'package:dio/dio.dart';
+// import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:spine/data/shared_preference.dart';
 
-const String baseUrl = 'http://localhost:3003/v1';
+final String baseUrl =  'https://mixafrica-app-zncj.onrender.com/v1';
+// final String baseUrl =  'http://localhost:3003/v1';
+// final String baseUrl = String.fromEnvironment(
+//   'base_url',
+//   defaultValue: 'https://mixafrica-app-zncj.onrender.com/v1',
+// );
 
 final Dio apiPrivate =
     Dio(

@@ -10,7 +10,7 @@ export const mockApplicationSeed: (response, cluster, business) => Promise<IFund
         {
         "id": uuidv4(),
         "user_id": user_id[0],
-        "user_business_id": business_id[0],
+        "business_id": business_id[0],
         "cluster_id": cluster_id[0],
         "amount": 800_000,
         "allocated_amount": 800_000,

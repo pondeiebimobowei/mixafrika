@@ -5,9 +5,10 @@ import 'package:go_router/go_router.dart';
 import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/inventory/state/add_stock_state.dart';
 import 'package:spine/ui/inventory/view_model/add_stock_view_model.dart';
-import 'package:intl/intl.dart';
 import 'package:spine/ui/inventory/view_model/inventory_view_model.dart';
 import 'package:spine/widget/icon_widget.dart';
+import 'package:spine/widget/toast_widget.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 class AddStockView extends ConsumerStatefulWidget {
   const AddStockView({super.key});
@@ -198,12 +199,23 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
 
     ref.listen(addStockViewModelProvider, (previous, next) {
       if (next.isSuccess) {
+        ToastWidget.makeToast(
+          context: context, 
+          description: 'Stock updated successfully', 
+          icon: FIcons.circleCheck, 
+          color: Colors.green
+        );
         context.go(Routes.inventory);
         ref.invalidate(inventoryViewModelProvider);
       }
       if (next.errorMessage != null &&
           next.errorMessage != previous?.errorMessage) {
-            print(next.errorMessage);
+        ToastWidget.makeToast(
+          context: context, 
+          description: next.errorMessage!, 
+          icon: FIcons.circleX, 
+          color: Colors.red
+        );
       }
 
 
@@ -297,7 +309,7 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
                     ),
                   ),
                   child: state.isLoading
-                      ? const CircularProgressIndicator(color: Colors.white)
+                      ? SpinnerWidget.spinner()
                       : Text(
                           'Record Purchase',
                           style: TextStyle(
@@ -748,65 +760,23 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
     AddStockState state,
     AddStockViewModel viewModel,
   ) {
-    final displayDate = state.expiryDate != null
-        ? DateFormat('MM/dd/yyyy').format(state.expiryDate!)
-        : 'mm/dd/yyyy';
 
-    return GestureDetector(
-      onTap: () async {
-        final date = await showDatePicker(
-          context: context,
-          initialDate: DateTime.now(),
-          firstDate: DateTime.now(),
-          lastDate: DateTime.now().add(const Duration(days: 3650)),
-          builder: (context, child) {
-            return Theme(
-              data: Theme.of(context).copyWith(
-                colorScheme: ColorScheme.dark(
-                  primary: context.theme.colors.primary,
-                  onPrimary: context.theme.colors.primaryForeground,
-                  surface: const Color(0xFF1E2433),
-                  onSurface: Colors.white,
-                ),
-              ),
-              child: child!,
-            );
-          },
-        );
-        if (date != null) viewModel.updateExpiryDate(date);
-      },
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: const Color(0xFF1E2433).withValues(alpha: 0.5),
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-        ),
-        child: Row(
-          children: [
-            const Icon(
-              Icons.calendar_today_outlined,
-              color: Colors.redAccent,
-              size: 24,
-            ),
-            const SizedBox(width: 16),
-            Text(
-              displayDate,
-              style: TextStyle(
-                color: state.expiryDate != null ? Colors.white : Colors.grey,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const Spacer(),
-            Icon(
-              Icons.calendar_month_outlined,
-              color: Colors.white.withValues(alpha: 0.3),
-              size: 24,
-            ),
-          ],
-        ),
+    return FDateField.calendar(
+      control: .managed(
+        initial: null,
+        validator: (date) => null,
+        onChange: (value) => viewModel.updateExpiryDate(value),
       ),
+      textAlign: .start,
+      expands: false,
+      mouseCursor: .defer,
+      canRequestFocus: true,
+      clearable: false,
+      builder: (context, style, states, child) => child,
+      prefixBuilder: FDateField.defaultIconBuilder,
+      suffixBuilder: null,
+      enabled: true,
     );
+
   }
 }

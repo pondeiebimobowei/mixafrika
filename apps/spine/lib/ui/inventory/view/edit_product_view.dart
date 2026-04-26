@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spine/ui/inventory/view_model/edit_product_view_model.dart';
+import 'package:spine/widget/toast_widget.dart';
+import 'package:spine/widget/spinner_widget.dart';
 
 class EditProductView extends ConsumerStatefulWidget {
   final String productId;
@@ -93,7 +95,7 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
       child: Material(
         color: Colors.transparent,
         child: state.isLoading
-            ? const Center(child: CircularProgressIndicator())
+            ? Center(child: SpinnerWidget.spinner())
             : Stack(
                 children: [
                   SingleChildScrollView(
@@ -189,13 +191,24 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
                                   final router = GoRouter.of(context);
                                   final success = await viewModel.submit();
                                   if (success && mounted) {
+                                    ToastWidget.makeToast(
+                                      context: context, 
+                                      description: 'Product updated successfully', 
+                                      icon: FIcons.circleCheck, 
+                                      color: Colors.green
+                                    );
                                     router.pop();
+                                  } else if (mounted) {
+                                    ToastWidget.makeToast(
+                                      context: context, 
+                                      description: 'Failed to update product', 
+                                      icon: FIcons.circleX, 
+                                      color: Colors.red
+                                    );
                                   }
                                 },
                           child: state.value!.isSubmitting
-                              ? const CircularProgressIndicator(
-                                  color: Colors.white,
-                                )
+                              ? SpinnerWidget.spinner()
                               : Text(
                                   'Update Product',
                                   style: TextStyle(

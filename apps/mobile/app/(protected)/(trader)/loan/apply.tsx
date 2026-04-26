@@ -107,7 +107,7 @@ export default function LoanApplication() {
               <Text className="dark:text-white mb-2">Business</Text>
               <Controller
                 control={control}
-                name="user_business_id"
+                name="business_id"
                 render={({ field, fieldState: { error },
                 }) => (
                   <Select className='w-full ' onValueChange={(option) => field.onChange(option?.value)}>

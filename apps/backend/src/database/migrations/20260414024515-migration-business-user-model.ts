@@ -8,6 +8,14 @@ const syncStatus = {
     FAILED: "failed",
 } as const;
 
+export const roles = {
+    TRADER: "trader",
+    INVESTOR: "investor",
+    AGENT: "agent",
+    ADMIN: "admin",
+    SUBADMIN: "subadmin"
+} as const;
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
@@ -19,14 +27,14 @@ module.exports = {
           primaryKey: true,
         },
 
-        role: { type: Sequelize.STRING, allowNull: false },
+        role: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(roles)]} },
         is_active: { type: Sequelize.BOOLEAN, allowNull: false },
         has_full_access: { type: Sequelize.BOOLEAN, allowNull: false },
         joined_at: { type: Sequelize.DATE, allowNull: true },
         
         
 
-        business_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user_business', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        business_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'business', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         user_id: { type: Sequelize.UUID, allowNull: true, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         
         

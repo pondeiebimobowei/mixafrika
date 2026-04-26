@@ -10,7 +10,7 @@ module.exports = {
         id: { type: Sequelize.UUID, defaultValue: sequelize.UUIDV4, primaryKey: true },
         
         user_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user', key: 'id' }, onDelete: "Cascade", onUpdate: "Cascade"  }, 
-        user_business_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user_business', key: 'id' }, onDelete: "Cascade", onUpdate: "Cascade"  }, 
+        business_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'business', key: 'id' }, onDelete: "Cascade", onUpdate: "Cascade"  }, 
         cluster_id: {
           type: Sequelize.UUID,
           allowNull: true,
