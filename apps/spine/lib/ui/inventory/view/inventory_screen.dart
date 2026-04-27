@@ -668,9 +668,18 @@ class InventoryView extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.shopping_cart_outlined, size: 18),
+                    Icon(
+                      Icons.shopping_cart_outlined,
+                      color: context.theme.colors.primaryForeground,
+                      size: 18,
+                    ),
                     const SizedBox(width: 12),
-                    const Text('Restock'),
+                    Text(
+                      'Restock',
+                      style: TextStyle(
+                        color: context.theme.colors.primaryForeground,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -683,9 +692,18 @@ class InventoryView extends ConsumerWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Icon(Icons.add_rounded, size: 18),
+                    Icon(
+                      Icons.add_rounded,
+                      color: context.theme.colors.primaryForeground,
+                      size: 18,
+                    ),
                     const SizedBox(width: 12),
-                    const Text('New Product'),
+                    Text(
+                      'New Product',
+                      style: TextStyle(
+                        color: context.theme.colors.primaryForeground,
+                      ),
+                    ),
                   ],
                 ),
               ),

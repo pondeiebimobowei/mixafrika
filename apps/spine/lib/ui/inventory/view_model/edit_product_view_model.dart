@@ -36,8 +36,8 @@ class EditProductViewModel extends FamilyAsyncNotifier<EditProductState, String>
         bulkUnit: product.bulkUnitName,
         pieceUnit: product.pieceUnitName,
         unitsPerBulk: product.unitsPerBulk.toString(),
-        bulkCostPrice: product.costPricePerUnit.toString(),
         pieceSellingPrice: product.sellingPricePerPiece.toString(),
+        bulkSellingPrice: product.sellingPricePerBulk.toString(),
       ));
     } else {
       state = AsyncData(state.value!.copyWith(isLoading: false, errorMessage: response.message));
@@ -53,10 +53,10 @@ class EditProductViewModel extends FamilyAsyncNotifier<EditProductState, String>
       state = AsyncData(state.value!.copyWith(pieceUnit: value));
   void updateUnitsPerBulk(String value) =>
       state = AsyncData(state.value!.copyWith(unitsPerBulk: value));
-  void updateBulkCostPrice(String value) =>
-      state = AsyncData(state.value!.copyWith(bulkCostPrice: value));
   void updatePieceSellingPrice(String value) =>
       state = AsyncData(state.value!.copyWith(pieceSellingPrice: value));
+  void updateBulkSellingPrice(String value) =>
+      state = AsyncData(state.value!.copyWith(bulkSellingPrice: value));
   void updateSerialNumber(String value) =>
       state = AsyncData(state.value!.copyWith(serialNumber: value));
 
@@ -72,8 +72,8 @@ class EditProductViewModel extends FamilyAsyncNotifier<EditProductState, String>
       bulkUnitName: state.value!.bulkUnit,
       pieceUnitName: state.value!.pieceUnit,
       unitsPerBulk: int.tryParse(state.value!.unitsPerBulk) ?? 1,
-      costPricePerUnit: int.tryParse(state.value!.bulkCostPrice) ?? 0,
       sellingPricePerPiece: int.tryParse(state.value!.pieceSellingPrice) ?? 0,
+      sellingPricePerBulk: int.tryParse(state.value!.bulkSellingPrice) ?? 0,
       updatedAt: DateTime.now(),
     ));
 

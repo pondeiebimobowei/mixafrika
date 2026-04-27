@@ -1,6 +1,7 @@
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/data/services/logic/sales_logic.dart';
+import 'package:spine/ui/sales/state/state.dart';
 
 abstract class SalesRepositoryAbstract {
   Future<ApiResponse<void>> createSale(
@@ -10,6 +11,7 @@ abstract class SalesRepositoryAbstract {
   );
   Future<List<SaleWithItems>> getSalesWithItems({String? branchId});
   Future<SaleWithItems?> getSaleById(String id);
+  Future<SalesSummary> getTodaySalesSummary(String branchId);
 }
 
 class SaleWithItems {

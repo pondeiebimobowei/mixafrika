@@ -8,9 +8,11 @@ import 'package:spine/theme/typography.dart';
 import 'package:spine/ui/home/view_model/home_view_model.dart';
 import 'package:spine/ui/business/state/active_business_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:spine/ui/sales/state/state.dart';
 import 'package:spine/widget/icon_widget.dart';
 import 'package:spine/widget/spinner_widget.dart';
 import 'package:spine/widget/styles/f_header_style.dart';
+import 'package:spine/utils/helper.dart';
 
 class HomeView extends ConsumerWidget {
   const HomeView({super.key});
@@ -211,7 +213,7 @@ class HomeView extends ConsumerWidget {
                 children: [
                   _buildTopBar(context, ref),
                   const SizedBox(height: 20),
-                  _buildActivityCard(context),
+                  _buildActivityCard(context, homeState),
                   const SizedBox(height: 24),
                   _buildQuickActions(context),
                   const SizedBox(height: 24),
@@ -314,7 +316,9 @@ class HomeView extends ConsumerWidget {
               ),
               SizedBox(width: 4),
               Text(
-                '₦14,000',
+                homeState?.todaySummary.value?.pending != null 
+                  ? formatCurrency(homeState!.todaySummary.value!.pending)
+                  : '₦0',
                 style: context.theme.typography.sm.copyWith(
                   fontWeight: FontWeight.bold,
                   color: colors.destructive,
@@ -336,9 +340,10 @@ class HomeView extends ConsumerWidget {
     );
   }
 
-  Widget _buildActivityCard(BuildContext context) {
+  Widget _buildActivityCard(BuildContext context, HomeState homeState) {
     final FColors colors = context.theme.colors;
     final FTypography typography = context.theme.typography;
+    final summary = homeState.todaySummary.value ?? SalesSummary();
 
     return Container(
       padding: const EdgeInsets.all(20),
@@ -364,15 +369,19 @@ class HomeView extends ConsumerWidget {
           ),
           const SizedBox(height: 24),
           Text(
-            '1,500',
+            formatCurrency(summary.netRevenue),
             style: typography.xl4.copyWith(fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 8),
           Row(
             children: [
-              _buildStatusIndicator(context, '500 REALIZED', colors.primary),
+              _buildStatusIndicator(context, '${formatCurrency(summary.realized)} REALIZED', colors.primary),
               const SizedBox(width: 12),
-              _buildStatusIndicator(context, 'NO PENDING', colors.destructive),
+              _buildStatusIndicator(
+                context, 
+                summary.pending == 0 ? 'NO PENDING' : '${formatCurrency(summary.pending)} PENDING', 
+                colors.destructive
+              ),
             ],
           ),
           const SizedBox(height: 24),
@@ -381,14 +390,14 @@ class HomeView extends ConsumerWidget {
               _buildSubMetricCard(
                 context,
                 'EST. PROFIT',
-                '₦500',
+                formatCurrency(summary.estProfit),
                 colors.primary,
               ),
               const SizedBox(width: 12),
               _buildSubMetricCard(
                 context,
                 'PHYSICAL INFLOW',
-                '₦1,500',
+                formatCurrency(summary.physicalInflow),
                 colors.secondary,
               ),
             ],

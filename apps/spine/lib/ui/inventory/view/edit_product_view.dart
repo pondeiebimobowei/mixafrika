@@ -19,8 +19,8 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
   late TextEditingController _descriptionController;
   late TextEditingController _bulkUnitController;
   late TextEditingController _unitsPerBulkController;
-  late TextEditingController _costPriceController;
-  late TextEditingController _sellingPriceController;
+  late TextEditingController _pieceSellingPriceController;
+  late TextEditingController _bulkSellingPriceController;
   late TextEditingController _serialNumberController;
 
   @override
@@ -30,8 +30,8 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
     _descriptionController = TextEditingController();
     _bulkUnitController = TextEditingController();
     _unitsPerBulkController = TextEditingController();
-    _costPriceController = TextEditingController();
-    _sellingPriceController = TextEditingController();
+    _pieceSellingPriceController = TextEditingController();
+    _bulkSellingPriceController = TextEditingController();
     _serialNumberController = TextEditingController();
   }
 
@@ -41,8 +41,8 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
     _descriptionController.dispose();
     _bulkUnitController.dispose();
     _unitsPerBulkController.dispose();
-    _costPriceController.dispose();
-    _sellingPriceController.dispose();
+    _pieceSellingPriceController.dispose();
+    _bulkSellingPriceController.dispose();
     _serialNumberController.dispose();
     super.dispose();
   }
@@ -55,8 +55,8 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
       _descriptionController.text = state.value!.description;
       _bulkUnitController.text = state.value!.bulkUnit;
       _unitsPerBulkController.text = state.value!.unitsPerBulk;
-      _costPriceController.text = state.value!.bulkCostPrice;
-      _sellingPriceController.text = state.value!.pieceSellingPrice;
+      _pieceSellingPriceController.text = state.value!.pieceSellingPrice;
+      _bulkSellingPriceController.text = state.value!.bulkSellingPrice;
       _serialNumberController.text = state.value!.serialNumber;
       _initialized = true;
     }
@@ -143,12 +143,12 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  _buildLabel('COST PRICE'),
+                                  _buildLabel('PIECE PRICE'),
                                   const SizedBox(height: 8),
                                   _buildTextField(
-                                    controller: _costPriceController,
+                                    controller: _pieceSellingPriceController,
                                     hint: '₦',
-                                    onChanged: viewModel.updateBulkCostPrice,
+                                    onChanged: viewModel.updatePieceSellingPrice,
                                     keyboardType: TextInputType.number,
                                   ),
                                 ],
@@ -159,13 +159,13 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  _buildLabel('SELL PRICE'),
+                                  _buildLabel('BULK PRICE'),
                                   const SizedBox(height: 8),
                                   _buildTextField(
-                                    controller: _sellingPriceController,
+                                    controller: _bulkSellingPriceController,
                                     hint: '₦',
                                     onChanged:
-                                        viewModel.updatePieceSellingPrice,
+                                        viewModel.updateBulkSellingPrice,
                                     keyboardType: TextInputType.number,
                                   ),
                                 ],

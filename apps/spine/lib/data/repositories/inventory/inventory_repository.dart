@@ -7,7 +7,6 @@ import 'package:spine/ui/inventory/state/inventory_state.dart';
 import 'package:uuid/uuid.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 
-
 class InventoryRepository implements InventoryRepositoryAbstract {
   final AppDatabase _db;
   final ProductRepository productRepository;
@@ -56,7 +55,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     final productQuery = _db.select(_db.product)
       ..where((p) => p.id.equals(productId));
     final product = await productQuery.getSingleOrNull();
-  
+
     if (product == null) return null;
 
     final inventoryQuery = _db.select(_db.inventory)
@@ -64,13 +63,15 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     final inventoryRecords = await inventoryQuery.getSingleOrNull();
 
     final batchQuery = _db.select(_db.spineBatch)
-    ..where((b) =>
-        b.productId.equals(productId) &
-        b.remainingQuantity.isBiggerThanValue(0))
-    ..orderBy([
-      (b) => OrderingTerm(expression: b.expiryDate, mode: OrderingMode.asc),
-      (b) => OrderingTerm(expression: b.createdAt, mode: OrderingMode.asc),
-    ]);
+      ..where(
+        (b) =>
+            b.productId.equals(productId) &
+            b.remainingQuantity.isBiggerThanValue(0),
+      )
+      ..orderBy([
+        (b) => OrderingTerm(expression: b.expiryDate, mode: OrderingMode.asc),
+        (b) => OrderingTerm(expression: b.createdAt, mode: OrderingMode.asc),
+      ]);
     final batches = await batchQuery.get();
 
     return InventoryItemData(
@@ -84,22 +85,23 @@ class InventoryRepository implements InventoryRepositoryAbstract {
   Future<ApiResponse<void>> addInventoryItem(ProductData product) async {
     try {
       final InventoryData newInventoryRecord = InventoryData(
-      id: const Uuid().v4(),
-      productId: product.id,
-      branchId: product.branchId,
-      quantity: 0,
+        id: const Uuid().v4(),
+        productId: product.id,
+        branchId: product.branchId,
+        quantity: 0,
 
-      syncStatus: 'pending',
+        syncStatus: 'pending',
 
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-    );
-    await _db.into(_db.inventory).insert(newInventoryRecord);
-    return ApiResponse(
-      success: true, 
-      message: 'Product added to inventory', 
-      data: null);
-    }catch (e) {
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+      );
+      await _db.into(_db.inventory).insert(newInventoryRecord);
+      return ApiResponse(
+        success: true,
+        message: 'Product added to inventory',
+        data: null,
+      );
+    } catch (e) {
       return ApiResponse(
         success: false,
         message: 'Failed to add product to inventory',
@@ -119,13 +121,17 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     DateTime? expiryDate,
   }) async {
     final now = DateTime.now();
+    final totalCostInt = int.tryParse(totalCost) ?? 0;
+    
+    // Calculate cost per piece for accurate tracking
+    final costPerPiece = pieceQuantity > 0 ? (totalCostInt / pieceQuantity).round() : 0;
 
     // 1. Create Batch
     final newBatch = SpineBatchData(
       id: Uuid().v4(),
       productId: productId,
       expiryDate: expiryDate,
-      costPricePerUnit: int.tryParse(totalCost) ?? 0,
+      costPricePerUnit: costPerPiece, // Storing cost per piece
       sellingPricePerBulk: bulkPrice,
       sellingPricePerPiece: piecePrice,
       remainingQuantity: pieceQuantity,
@@ -140,52 +146,67 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     );
 
     final stockMovement = StockMovementData(
-      id: Uuid().v4(), 
-      syncStatus: 'pending', 
-      createdAt: now, 
-      updatedAt: now, 
-      productId: productId, 
-      branchId: branchId, 
+      id: Uuid().v4(),
+      syncStatus: 'pending',
+      createdAt: now,
+      updatedAt: now,
+      productId: productId,
+      branchId: branchId,
 
-      type: 'purchase', 
-      quantity: pieceQuantity
+      type: 'purchase',
+      quantity: pieceQuantity,
     );
-    
+
     await _db.into(_db.spineBatch).insert(newBatch);
     await _db.into(_db.stockMovement).insert(stockMovement);
 
     await _db.customUpdate(
       'UPDATE inventory SET quantity = quantity + ? WHERE product_id = ?',
-      variables: [Variable.withInt(pieceQuantity), Variable.withString(productId)],
-      updates: {_db.inventory}, // This tells Drift which table changed so watchers/streams update
+      variables: [
+        Variable.withInt(pieceQuantity),
+        Variable.withString(productId),
+      ],
+      updates: {
+        _db.inventory,
+      }, // This tells Drift which table changed so watchers/streams update
     );
 
     await _db.customUpdate(
       'UPDATE product SET cost_price_per_unit = ? WHERE id = ?',
-      variables: [Variable.withInt(int.tryParse(totalCost) ?? 0), Variable.withString(productId)],
-      updates: {_db.product}, // This tells Drift which table changed so watchers/streams update
+      variables: [
+        Variable.withInt(costPerPiece), // Storing cost per piece as fallback
+        Variable.withString(productId),
+      ],
+      updates: {
+        _db.product,
+      }, // This tells Drift which table changed so watchers/streams update
     );
   }
 
   @override
   Future<double> getStockWorth(String branchId) async {
-    final products = await getInventoryItems(branchId);
+    final inventoryItems = await getInventoryItems(branchId);
     double total = 0.0;
-    for (final item in products) {
-      final costPrice = item.product.costPricePerUnit.toDouble();
-      total += (costPrice * item.totalRemainingQuantity.toDouble());
+    for (final item in inventoryItems) {
+      for (final batch in item.batches) {
+        total += (batch.costPricePerUnit.toDouble() * batch.remainingQuantity.toDouble());
+      }
     }
     return total;
   }
 
   @override
   Future<double> getEstProfit(String branchId) async {
-    final products = await getInventoryItems(branchId);
+    final inventoryItems = await getInventoryItems(branchId);
     double total = 0.0;
-    for (final item in products) {
-      final costPrice = item.product.costPricePerUnit.toDouble();
-      final sellingPrice = item.product.sellingPricePerPiece.toDouble();
-      total += ((sellingPrice - costPrice) * item.totalRemainingQuantity.toDouble());
+    for (final item in inventoryItems) {
+      for (final batch in item.batches) {
+        final sellingPrice = batch.sellingPricePerPiece > 0 
+            ? batch.sellingPricePerPiece.toDouble() 
+            : item.product.sellingPricePerPiece.toDouble();
+        
+        total += ((sellingPrice - batch.costPricePerUnit.toDouble()) * batch.remainingQuantity.toDouble());
+      }
     }
     return total;
   }
@@ -195,20 +216,24 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     String branchId,
     String query,
   ) async {
-    final response = await _db.select(_db.inventory).join([
-      innerJoin(_db.product, _db.product.id.equalsExp(_db.inventory.productId)),
-      leftOuterJoin(
-        _db.spineBatch,
-        _db.spineBatch.productId.equalsExp(_db.product.id),
-      ),
-    ])
-    ..where(_db.inventory.branchId.equals(branchId))
-    ..where(
-      _db.product.name.like('%$query%') 
-      // |
-      // _db.product.sku.like('%$query%') |
-      // _db.product.description.like('%$query%'),
-    );
+    final response =
+        await _db.select(_db.inventory).join([
+            innerJoin(
+              _db.product,
+              _db.product.id.equalsExp(_db.inventory.productId),
+            ),
+            leftOuterJoin(
+              _db.spineBatch,
+              _db.spineBatch.productId.equalsExp(_db.product.id),
+            ),
+          ])
+          ..where(_db.inventory.branchId.equals(branchId))
+          ..where(
+            _db.product.name.like('%$query%'),
+            // |
+            // _db.product.sku.like('%$query%') |
+            // _db.product.description.like('%$query%'),
+          );
 
     final rows = await response.get();
 

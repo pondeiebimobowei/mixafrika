@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/data/repositories/sales/sales_repository_abstract.dart';
+import 'package:spine/ui/sales/state/state.dart';
 import 'package:uuid/uuid.dart';
 
 class SalesRepository implements SalesRepositoryAbstract {
@@ -74,7 +75,9 @@ Future<ApiResponse<void>> createSale(
             id: const Uuid().v4(),
             total: item.unitPrice * take,
             quantity: take,
-            batchId: Value(batch.id), // Ensure your schema links salesItem to the batch
+            
+            costPrice: batch.costPricePerUnit, // Record cost price from batch
+            batchId: Value(batch.id),
           ));
 
           await _db.customUpdate(
@@ -200,6 +203,56 @@ Future<ApiResponse<void>> createSale(
       items: items, 
       payments: payments,
       customer: customer,
+    );
+  }
+
+  @override
+  Future<SalesSummary> getTodaySalesSummary(String branchId) async {
+    final now = DateTime.now();
+    final startOfDay = DateTime(now.year, now.month, now.day);
+
+    // 1. Fetch today's sales for the branch
+    final salesQuery = _db.select(_db.sales)
+      ..where((s) => s.branchId.equals(branchId) & s.createdAt.isBiggerOrEqualValue(startOfDay));
+    final sales = await salesQuery.get();
+
+    if (sales.isEmpty) return SalesSummary();
+
+    int netRevenue = 0;
+    int realized = 0;
+    int pending = 0;
+    final List<String> saleIds = [];
+
+    for (final sale in sales) {
+      netRevenue += sale.totalAmount;
+      realized += sale.amountPaid;
+      pending += sale.balance;
+      saleIds.add(sale.id);
+    }
+
+    // 2. Calculate profit from sales items
+    final itemsQuery = _db.select(_db.salesItem)
+      ..where((si) => si.saleId.isIn(saleIds));
+    final items = await itemsQuery.get();
+    
+    int estProfit = 0;
+    for (final item in items) {
+      estProfit += (item.unitPrice - item.costPrice) * item.quantity;
+    }
+
+    // 3. Physical Inflow (payments made today for today's sales)
+    final paymentsQuery = _db.select(_db.payments)
+      ..where((p) => p.saleId.isIn(saleIds) & p.createdAt.isBiggerOrEqualValue(startOfDay));
+    final payments = await paymentsQuery.get();
+    
+    int physicalInflow = payments.fold(0, (sum, p) => sum + p.amount);
+
+    return SalesSummary(
+      netRevenue: netRevenue,
+      realized: realized,
+      pending: pending,
+      estProfit: estProfit,
+      physicalInflow: physicalInflow,
     );
   }
 }

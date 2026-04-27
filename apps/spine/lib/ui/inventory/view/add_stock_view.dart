@@ -18,20 +18,26 @@ class AddStockView extends ConsumerStatefulWidget {
 }
 
 class _AddStockViewState extends ConsumerState<AddStockView> {
-  late TextEditingController _bulkController;
-  late TextEditingController _pieceController;
+  late final TextEditingController _bulkController;
+  late final TextEditingController _pieceController;
+  late final TextEditingController _bulkPriceController;
+  late final TextEditingController _piecePriceController;
 
   @override
   void initState() {
     super.initState();
     _bulkController = TextEditingController();
     _pieceController = TextEditingController();
+    _bulkPriceController = TextEditingController();
+    _piecePriceController = TextEditingController();
   }
 
   @override
   void dispose() {
     _bulkController.dispose();
     _pieceController.dispose();
+    _bulkPriceController.dispose();
+    _piecePriceController.dispose();
     super.dispose();
   }
 
@@ -228,6 +234,14 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
           next.pieceQuantity != previous?.pieceQuantity) {
         _pieceController.text = next.pieceQuantity;
       }
+      if (next.bulkPrice != _bulkPriceController.text &&
+          next.bulkPrice != previous?.bulkPrice) {
+        _bulkPriceController.text = next.bulkPrice;
+      }
+      if (next.piecePrice != _piecePriceController.text &&
+          next.piecePrice != previous?.piecePrice) {
+        _piecePriceController.text = next.piecePrice;
+      }
     });
 
     return FScaffold(
@@ -276,6 +290,11 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
                     const SizedBox(height: 12),
                     _buildCostAnalysis(context, state),
                   ],
+                  const SizedBox(height: 24),
+
+                  _buildLabel('UPDATE SELLING PRICES'),
+                  const SizedBox(height: 12),
+                  _buildPriceSection(context, state, viewModel),
                   const SizedBox(height: 24),
 
                   _buildLabel('BATCH EXPIRY DATE'),
@@ -752,6 +771,115 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildPriceSection(
+    BuildContext context,
+    AddStockState state,
+    AddStockViewModel viewModel,
+  ) {
+    return Container(
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E2433).withValues(alpha: 0.3),
+        borderRadius: BorderRadius.circular(32),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'SELLING PRICE PER UNIT',
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: 10,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 1.1,
+            ),
+          ),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              Expanded(
+                child: _buildPriceField(
+                  state.selectedProduct?.bulkUnitName.toUpperCase() ?? 'BULK',
+                  _bulkPriceController,
+                  viewModel.updateBulkPrice,
+                ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: _buildPriceField(
+                  state.selectedProduct?.pieceUnitName.toUpperCase() ?? 'UNIT',
+                  _piecePriceController,
+                  viewModel.updatePiecePrice,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPriceField(
+    String label,
+    TextEditingController controller,
+    Function(String) onChanged,
+  ) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            color: Colors.grey,
+            fontSize: 9,
+            fontWeight: FontWeight.w800,
+            letterSpacing: 0.5,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: const Color(0xFF0A0F1A),
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: const Color(0xFF1DB978).withValues(alpha: 0.1),
+            ),
+          ),
+          child: TextField(
+            controller: controller,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w900,
+            ),
+            keyboardType: TextInputType.number,
+            decoration: InputDecoration(
+              prefixIcon: Padding(
+                padding: const EdgeInsets.only(right: 4.0),
+                child: Text(
+                  '₦',
+                  style: TextStyle(
+                    color: Colors.white.withValues(alpha: 0.5),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
+              border: InputBorder.none,
+              hintText: '0',
+              hintStyle: TextStyle(color: Colors.grey.withValues(alpha: 0.3)),
+              contentPadding: const EdgeInsets.symmetric(vertical: 14),
+            ),
+            onChanged: onChanged,
+          ),
+        ),
+      ],
     );
   }
 

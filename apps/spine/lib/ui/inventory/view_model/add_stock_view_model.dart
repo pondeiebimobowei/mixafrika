@@ -33,6 +33,8 @@ class AddStockViewModel extends AutoDisposeNotifier<AddStockState> {
     errorMessage: null,
     bulkQuantity: '',
     pieceQuantity: '',
+    bulkPrice: product?.sellingPricePerBulk.toString() ?? '',
+    piecePrice: product?.sellingPricePerPiece.toString() ?? '',
   );
   void updateSearchQuery(String query) =>
       state = state.copyWith(searchQuery: query);
@@ -70,6 +72,8 @@ class AddStockViewModel extends AutoDisposeNotifier<AddStockState> {
   }
 
   void updateTotalCost(String cost) => state = state.copyWith(totalCost: cost);
+  void updateBulkPrice(String price) => state = state.copyWith(bulkPrice: price);
+  void updatePiecePrice(String price) => state = state.copyWith(piecePrice: price);
   void updateExpiryDate(DateTime? date) =>
       state = state.copyWith(expiryDate: date);
 

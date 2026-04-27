@@ -16,6 +16,7 @@ class EditProductState {
   final String unitsPerBulk;
   final String bulkCostPrice;
   final String pieceSellingPrice;
+  final String bulkSellingPrice;
   final String serialNumber;
 
   EditProductState({
@@ -32,6 +33,7 @@ class EditProductState {
     this.unitsPerBulk = '',
     this.bulkCostPrice = '',
     this.pieceSellingPrice = '',
+    this.bulkSellingPrice = '',
     this.serialNumber = '',
   });
 
@@ -49,6 +51,7 @@ class EditProductState {
     String? unitsPerBulk,
     String? bulkCostPrice,
     String? pieceSellingPrice,
+    String? bulkSellingPrice,
     String? serialNumber,
   }) {
     return EditProductState(
@@ -65,6 +68,7 @@ class EditProductState {
       unitsPerBulk: unitsPerBulk ?? this.unitsPerBulk,
       bulkCostPrice: bulkCostPrice ?? this.bulkCostPrice,
       pieceSellingPrice: pieceSellingPrice ?? this.pieceSellingPrice,
+      bulkSellingPrice: bulkSellingPrice ?? this.bulkSellingPrice,
       serialNumber: serialNumber ?? this.serialNumber,
     );
   }
