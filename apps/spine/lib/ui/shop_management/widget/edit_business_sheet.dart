@@ -266,10 +266,10 @@ class _EditBusinessSheetState extends ConsumerState<EditBusinessSheet> {
   Widget _buildLabel(String text) {
     return Text(
       text,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 11,
         fontWeight: FontWeight.w700,
-        color: Colors.white60,
+        color: context.theme.colors.primaryForeground,
         letterSpacing: 0.5,
       ),
     );
@@ -283,25 +283,25 @@ class _EditBusinessSheetState extends ConsumerState<EditBusinessSheet> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF1E293B).withValues(alpha: 0.6),
+        color: context.theme.colors.secondaryForeground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: TextField(
         controller: controller,
         keyboardType: keyboardType,
-        style: const TextStyle(
-          color: Colors.white,
+        style:  TextStyle(
+          color: context.theme.colors.primaryForeground,
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
         decoration: InputDecoration(
           prefixIcon: prefixIcon != null
-              ? Icon(prefixIcon, color: Colors.white38, size: 20)
+              ? Icon(prefixIcon, color: context.theme.colors.primaryForeground, size: 20)
               : null,
           hintText: hint,
-          hintStyle: const TextStyle(
-            color: Colors.white24,
+          hintStyle:  TextStyle(
+            color: context.theme.colors.primaryForeground.withValues(alpha: .5),
             fontSize: 15,
             fontWeight: FontWeight.w400,
           ),
@@ -337,7 +337,7 @@ class _EditBusinessSheetState extends ConsumerState<EditBusinessSheet> {
                 ),
                 const SizedBox(height: 20),
                 ..._businessTypes.map((type) => ListTile(
-                      title: Text(type),
+                      title: Text(type, style: TextStyle( color: colors.primaryForeground),),
                       onTap: () {
                         setState(() => _selectedType = type);
                         Navigator.pop(context);
@@ -351,24 +351,24 @@ class _EditBusinessSheetState extends ConsumerState<EditBusinessSheet> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
         decoration: BoxDecoration(
-          color: const Color(0xFF1E293B).withValues(alpha: 0.6),
+          color: colors.secondaryForeground,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
         ),
         child: Row(
           children: [
-            const Icon(Icons.category_outlined, color: Colors.white38, size: 20),
+            Icon(Icons.category_outlined, color: context.theme.colors.primaryForeground, size: 20),
             const SizedBox(width: 12),
             Text(
               _selectedType,
               style: const TextStyle(
-                color: Colors.white,
+                // color: Colors.,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
             ),
             const Spacer(),
-            const Icon(Icons.keyboard_arrow_down, color: Colors.white38),
+            Icon(Icons.keyboard_arrow_down, color: context.theme.colors.primaryForeground),
           ],
         ),
       ),

@@ -70,7 +70,7 @@ class ShopManagementView extends ConsumerWidget {
                         FButton(
                           variant: FButtonVariant.outline,
                           // size: FButtonSize.extraSmall,
-                          child: const Icon(Icons.add, size: 14),
+                          child:  Icon(Icons.add, size: 14, color: context.theme.colors.primaryForeground,),
                           onPress: () => _showEditBusinessSheet(context, viewModel),
                         ),
                       ],
@@ -111,7 +111,7 @@ class ShopManagementView extends ConsumerWidget {
                         FButton(
                           variant: FButtonVariant.outline,
                           // size: FButtonSize.extraSmall,
-                          child: const Icon(Icons.add, size: 14),
+                          child: Icon(Icons.add, size: 14, color: context.theme.colors.primaryForeground,),
                           onPress: () => _showEditBranchSheet(context, viewModel),
                         ),
                       ],

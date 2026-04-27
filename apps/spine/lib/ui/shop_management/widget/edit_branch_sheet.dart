@@ -96,13 +96,13 @@ class _EditBranchSheetState extends ConsumerState<EditBranchSheet> {
                   child: Container(
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      color: colors.primaryForeground.withValues(alpha: 0.05),
+                      color: colors.primaryForeground.withValues(alpha: .1),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
                       Icons.close,
                       size: 18,
-                      color: colors.primaryForeground.withValues(alpha: 0.4),
+                      color: colors.primaryForeground,
                     ),
                   ),
                 ),
@@ -173,7 +173,11 @@ class _EditBranchSheetState extends ConsumerState<EditBranchSheet> {
             SizedBox(
               width: double.infinity,
               child: FButton(
-                child: Text(isEditing ? 'Save Changes' : 'Create Shop'),
+                child: Text(isEditing ? 'Save Changes' : 'Create Shop',
+                 style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: .w900
+                 ),),
                 onPress: () {
                   if (_nameController.text.isEmpty) return;
 
@@ -254,10 +258,10 @@ class _EditBranchSheetState extends ConsumerState<EditBranchSheet> {
   Widget _buildLabel(String text) {
     return Text(
       text,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 11,
         fontWeight: FontWeight.w700,
-        color: Colors.white60,
+        color: context.theme.colors.primaryForeground,
         letterSpacing: 0.5,
       ),
     );
@@ -271,25 +275,25 @@ class _EditBranchSheetState extends ConsumerState<EditBranchSheet> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF1E293B).withValues(alpha: 0.6),
+        color: context.theme.colors.secondaryForeground,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: TextField(
         controller: controller,
         keyboardType: keyboardType,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: context.theme.colors.primaryForeground,
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
         decoration: InputDecoration(
           prefixIcon: prefixIcon != null
-              ? Icon(prefixIcon, color: Colors.white38, size: 20)
+              ? Icon(prefixIcon, color: context.theme.colors.primaryForeground, size: 20)
               : null,
           hintText: hint,
-          hintStyle: const TextStyle(
-            color: Colors.white24,
+          hintStyle: TextStyle(
+            color: context.theme.colors.primaryForeground.withValues(alpha: .5),
             fontSize: 15,
             fontWeight: FontWeight.w400,
           ),

@@ -146,25 +146,25 @@ class _InviteMemberSheetState extends ConsumerState<InviteMemberSheet> {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFF1E293B).withAlpha(150),
+        color: context.theme.colors.secondaryForeground,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withAlpha(13)),
+        border: Border.all(color: context.theme.colors.secondaryForeground, width: .8),
       ),
       child: TextField(
         controller: controller,
         keyboardType: keyboardType,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: context.theme.colors.primaryForeground,
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
         decoration: InputDecoration(
           prefixIcon: prefixIcon != null
-              ? Icon(prefixIcon, color: Colors.white38, size: 20)
+              ? Icon(prefixIcon, color: context.theme.colors.primaryForeground, size: 20)
               : null,
           hintText: hint,
-          hintStyle: const TextStyle(
-            color: Colors.white24,
+          hintStyle: TextStyle(
+            color: context.theme.colors.primaryForeground,
             fontSize: 15,
             fontWeight: FontWeight.w400,
           ),
@@ -182,21 +182,25 @@ class _InviteMemberSheetState extends ConsumerState<InviteMemberSheet> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E293B).withAlpha(150),
+        color: context.theme.colors.secondaryForeground,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withAlpha(13)),
+        border: Border.all(color: context.theme.colors.secondaryForeground, width: .8),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: _selectedRole,
           isExpanded: true,
-          dropdownColor: const Color(0xFF1E293B),
-          icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white38),
-          style: const TextStyle(color: Colors.white, fontSize: 16),
+          dropdownColor: context.theme.colors.background,
+          icon: Icon(Icons.keyboard_arrow_down, color: context.theme.colors.primaryForeground),
+          style: TextStyle(
+            color: context.theme.colors.primaryForeground,
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+          ),
           items: _roles.map((role) {
             return DropdownMenuItem(
               value: role,
-              child: Text(role.toUpperCase()),
+              child: Text(role, style: TextStyle( fontSize: 15),),
             );
           }).toList(),
           onChanged: (val) {
@@ -211,18 +215,18 @@ class _InviteMemberSheetState extends ConsumerState<InviteMemberSheet> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: const Color(0xFF1E293B).withAlpha(150),
+        color: context.theme.colors.secondaryForeground,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.white.withAlpha(13)),
+        border: Border.all(color: context.theme.colors.secondaryForeground, width: .8),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: _selectedBranchId,
-          hint: const Text('None', style: TextStyle(color: Colors.white24)),
+          hint:  Text('None', style: TextStyle(color: context.theme.colors.primaryForeground)),
           isExpanded: true,
-          dropdownColor: const Color(0xFF1E293B),
-          icon: const Icon(Icons.keyboard_arrow_down, color: Colors.white38),
-          style: const TextStyle(color: Colors.white, fontSize: 16),
+          dropdownColor: context.theme.colors.background,
+          icon: Icon(Icons.keyboard_arrow_down, color: context.theme.colors.primaryForeground),
+          style: TextStyle(color: context.theme.colors.primaryForeground, fontSize: 15),
           items: [
             const DropdownMenuItem<String>(
               value: '',
