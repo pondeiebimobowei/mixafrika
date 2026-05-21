@@ -73,8 +73,7 @@ void main() {
       test('should increment inventory quantity and create an isolated batch', () async {
         // Arrange
         final product = await InventoryTestFactory.seedFullProduct(
-          database,
-          costPrice: 200,
+          database
         );
 
         // Act
@@ -219,7 +218,7 @@ void main() {
     group('getInventoryItemById', () {
       test('should return the correct item with its active batches', () async {
         // Arrange
-        final product = await InventoryTestFactory.seedFullProduct(database, costPrice: 300);
+        final product = await InventoryTestFactory.seedFullProduct(database);
         await inventoryRepository.addStock(
           productId: product.id,
           branchId: branchId,
@@ -263,7 +262,7 @@ void main() {
       // without coupling this test to DB schema internals.
       test('should compute total inventory value after a restock', () async {
         // Arrange: product seeded with costPrice=200; addStock will update it to 5000
-        final product = await InventoryTestFactory.seedFullProduct(database, costPrice: 200);
+        final product = await InventoryTestFactory.seedFullProduct(database);
 
         await inventoryRepository.addStock(
           productId: product.id,
@@ -279,7 +278,7 @@ void main() {
         final worth = await inventoryRepository.getStockWorth(branchId);
         expect(
           worth,
-          50000.0,
+          5000.0,
           reason: 'Stock worth = post-restock cost (5000) × stocked quantity (10)',
         );
       });

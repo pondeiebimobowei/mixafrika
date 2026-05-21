@@ -102,13 +102,12 @@ abstract final class InventoryTestFactory {
     AppDatabase db, {
     required String productId,
     required String branchId,
-    int quantity = 0,
   }) async {
     final record = InventoryData(
       id: 'inv_$productId',
       productId: productId,
       branchId: branchId,
-      quantity: quantity,
+      quantity: 0,
       syncStatus: 'synced',
       createdAt: fixedNow,
       updatedAt: fixedNow,
@@ -130,10 +129,8 @@ abstract final class InventoryTestFactory {
     String globalProductId = 'gp_1',
     String barcode = 'BARCODE-001',
     String productName = 'Garri 1kg',
-    int costPrice = 500,
     int sellingPricePerPiece = 700,
     int sellingPricePerBulk = 5000,
-    int initialQuantity = 0,
   }) async {
     await seedBranch(db);
     await seedGlobalProduct(db, id: globalProductId, barcode: barcode);
@@ -142,11 +139,10 @@ abstract final class InventoryTestFactory {
       id: productId,
       globalProductId: globalProductId,
       name: productName,
-      costPrice: costPrice,
       sellingPricePerPiece: sellingPricePerPiece,
       sellingPricePerBulk: sellingPricePerBulk,
     );
-    await seedInventory(db, productId: product.id, branchId: testBranchId, quantity: initialQuantity);
+    await seedInventory(db, productId: product.id, branchId: testBranchId);
     return product;
   }
 }

@@ -3,147 +3,144 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spine/routing/routes.dart';
-import 'package:spine/theme/typography.dart';
 import 'package:spine/ui/auth/view_model/login_view_model.dart';
-import 'package:spine/widget/spinner_widget.dart';
+import 'package:spine/ui/auth/widget/auth_widgets.dart';
 import 'package:spine/widget/toast_widget.dart';
 
-class LoginView extends ConsumerWidget {
-  LoginView({super.key});
-
-  final _key = GlobalKey<FormState>();
-
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+class LoginView extends ConsumerStatefulWidget {
+  const LoginView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final state = ref.watch(loginViewModelProvider);
+  ConsumerState<LoginView> createState() => _LoginViewState();
+}
+
+class _LoginViewState extends ConsumerState<LoginView> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submit() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
     final viewModel = ref.read(loginViewModelProvider.notifier);
-    final FColors colors = context.theme.colors;
+    final res = await viewModel.login(
+      email: _emailController.text.trim(),
+      password: _passwordController.text,
+    );
 
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(12.0),
+    if (!mounted) {
+      return;
+    }
 
+    ToastWidget.makeToast(
+      context: context,
+      description: res.message,
+      icon: res.success ? FIcons.circleCheck : FIcons.circleX,
+      color: res.success ? Colors.green : Colors.red,
+    );
+
+    if (res.success) {
+      context.go(Routes.selectBusiness);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final state = ref.watch(loginViewModelProvider);
+    final colors = context.theme.colors;
+    final typography = context.theme.typography;
+
+    return AuthShell(
+      child: AutofillGroup(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const AuthHeader(
+                eyebrow: 'Secure workspace',
+                title: 'Welcome back',
+                subtitle:
+                    'Sign in to keep stock, sales, branches, and teams moving from one focused mobile workspace.',
+              ),
+              const SizedBox(height: 28),
+              AuthSurface(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const SizedBox(height: 50),
-                    const SizedBox(height: 30),
-                    const Icon(Icons.storefront_outlined, size: 50),
-                    const SizedBox(height: 5),
-
-                    const HeadingText(title: 'Login'),
-                    const SizedBox(height: 5),
-                    const RegularText(title: 'Login in to account'),
-                    const SizedBox(height: 50),
-
-                    Form(
-                      key: _key,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          FTextFormField.email(
-                            control: FTextFieldControl.managed(
-                              controller: _emailController,
-                            ),
-                            hint: 'trader@mixafrika.com',
-                            label: const SmallText(title: 'Email', bold: true),
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) =>
-                                (value?.contains('@') ?? false)
-                                ? null
-                                : 'Please enter a valid email.',
-                          ),
-                          const SizedBox(height: 30),
-                          FTextFormField.password(
-                            control: FTextFieldControl.managed(
-                              controller: _passwordController,
-                            ),
-                            label: const SmallText(title: 'Password', bold: true),
-                            // style: (style) => style.,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            validator: (value) => 8 <= (value?.length ?? 0)
-                                ? null
-                                : 'Password must be at least 8 characters long.',
-                          ),
-                          const SizedBox(height: 10),
-
-                          Align(
-                            alignment: AlignmentGeometry.centerRight,
-                            child: RegularText(
-                              title: 'Forgot password!',
-                              color: colors.primary,
-                            ),
-                          ),
-
-                          const SizedBox(height: 30),
-
-                          SizedBox(
-                            height: 60,
-                            child: FButton(
-                              // style: buttonStyle(colors: colors, color: colors.primary, typography: typography, style: style, foregroundColor: colors.primaryForeground),
-                              onPress: state.isLoading ? null : () async {
-                                if (!_key.currentState!.validate()) {
-                                  return; // Form is invalid.
-                                }
-
-                                final res = await viewModel.login(email: _emailController.text, password: _passwordController.text);
-                                
-                                if (context.mounted) {
-                                  ToastWidget.makeToast(
-                                    context: context, 
-                                    description: res.message, 
-                                    
-                                    icon: res.success ? FIcons.circleCheck : FIcons.circleX, 
-                                    color: res.success ? Colors.green : Colors.red
-                                  );
-
-                                  if (res.success) {
-                                    context.go(Routes.selectBusiness); 
-                                  }
-                                }
-                              },
-                              child: state.isLoading 
-                                ? SpinnerWidget.spinner()
-                                : const RegularText(
-                                    title: 'Sign In',
-                                    bold: true,
-                                  ),
-                            ),
-                          ),
-
-                          const SizedBox(height: 20),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                children: [
-                                  XSmallText(title: "Don't have an account?"),
-                                  GestureDetector(
-                                    onTap: () => context.go(Routes.signup),
-                                    child: XSmallText(
-                                      title: " Register as Trader",
-                                      color: colors.primary,
-                                      bold: true,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                    Text(
+                      'Access your account',
+                      style: typography.lg.copyWith(
+                        color: colors.primaryForeground,
+                        fontWeight: FontWeight.w900,
                       ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Use the same trader account you created for SPINE.',
+                      style: typography.sm.copyWith(
+                        color: colors.mutedForeground,
+                        height: 1.4,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    AuthTextField(
+                      controller: _emailController,
+                      label: 'Email address',
+                      hint: 'trader@mixafrika.com',
+                      icon: Icons.alternate_email_rounded,
+                      keyboardType: TextInputType.emailAddress,
+                      textInputAction: TextInputAction.next,
+                      autofillHints: const [AutofillHints.email],
+                      validator: (value) {
+                        final text = value?.trim() ?? '';
+                        if (text.contains('@')) {
+                          return null;
+                        }
+                        return 'Please enter a valid email.';
+                      },
+                    ),
+                    const SizedBox(height: 18),
+                    AuthTextField(
+                      controller: _passwordController,
+                      label: 'Password',
+                      hint: 'Enter your password',
+                      icon: Icons.lock_outline_rounded,
+                      obscureText: true,
+                      textInputAction: TextInputAction.done,
+                      autofillHints: const [AutofillHints.password],
+                      validator: (value) => 8 <= (value?.length ?? 0)
+                          ? null
+                          : 'Password must be at least 8 characters long.',
+                    ),
+                    const SizedBox(height: 24),
+                    AuthPrimaryButton(
+                      label: 'Sign In',
+                      icon: Icons.login_rounded,
+                      isLoading: state.isLoading,
+                      onPressed: _submit,
                     ),
                   ],
                 ),
               ),
-            ),
+              const SizedBox(height: 22),
+              AuthInlineLink(
+                prompt: "Don't have an account? ",
+                action: 'Register as Trader',
+                onTap: () => context.go(Routes.signup),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

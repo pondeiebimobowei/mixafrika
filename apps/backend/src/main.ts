@@ -14,6 +14,7 @@ dayjs.extend(isoWeek);
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
+  
 
   const cors = configService.get('CORS_ORIGINS')?.split('\n') || [];
   app.enableCors({
