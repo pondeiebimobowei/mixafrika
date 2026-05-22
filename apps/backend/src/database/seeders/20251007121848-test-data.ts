@@ -15,6 +15,8 @@ import { LoanAccount } from '../models/loan-account.model';
 import { mockBusinessUserSeed } from '../data/business_user.mock';
 import { mockBranchUserSeed } from '../data/branch_user.mock';
 import { mockBranchSeed } from '../data/branch.mock';
+import { IUser } from '@shared/shared/src/types/user';
+import { IBusiness } from '@shared/shared/src/types/business';
   
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -34,8 +36,8 @@ module.exports = {
       await queryInterface.bulkInsert('collection', collection, { returning: true, transaction: t });
       await queryInterface.bulkInsert('cluster', clusters, { returning: true, transaction: t });
 
-      const responseUser = await queryInterface.bulkInsert('user', users, { returning: true, transaction: t });
-      const responseInvestor = await queryInterface.bulkInsert('user', investors, { returning: true, transaction: t });
+      const responseUser = await queryInterface.bulkInsert('user', users, { returning: true, transaction: t }) as IUser[];
+      const responseInvestor = await queryInterface.bulkInsert('user', investors, { returning: true, transaction: t }) as IUser[];
       await queryInterface.bulkInsert('transaction', transactions, { returning: true, transaction: t });
 
       await queryInterface.bulkInsert('bank_card', bankCards, { returning: true, transaction: t });
@@ -50,7 +52,7 @@ module.exports = {
         updatedAt: new Date(),
       }));
 
-      const Business = [...responseUser].map((u) => ({
+      const Business: IBusiness[] = [...responseUser].map((u) => ({
         id: uuidv4(),
         name: 'Trader Business1',
         type: 'business',
@@ -61,15 +63,15 @@ module.exports = {
         country: 'Nigeria',
         is_verified: true,
         sync_status: 'pending',
-        sync_date: new Date(),
+        sync_date: "2025-11-20T23:05:31.906Z",
         
 
-        deletedAt: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        deletedAt: undefined,
+        createdAt: "2025-11-20T23:05:31.906Z",
+        updatedAt: "2025-11-20T23:05:31.906Z",
       }));
 
-      const Business2 = [...responseUser].map((u) => ({
+      const Business2 = [...responseInvestor].map((u) => ({
         id: uuidv4(),
         name: 'Trader Business2',
         type: 'business',
@@ -82,9 +84,9 @@ module.exports = {
         sync_status: 'pending',
         sync_date: new Date(),
 
-        deletedAt: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        deletedAt: undefined,
+        createdAt: "2025-11-20T23:05:31.906Z",
+        updatedAt: "2025-11-20T23:05:31.906Z",
       }));
       
       const application = await mockApplicationSeed(users, clusters, Business)
@@ -97,10 +99,10 @@ module.exports = {
       await queryInterface.bulkInsert('business', Business2, { transaction: t });
       await queryInterface.bulkInsert('funding_application', application, { returning: true, transaction: t });
       
-      const branch = await mockBranchSeed(responseUser, Business);
-      const responseBranch = await queryInterface.bulkInsert('branch', branch, { returning: true, transaction: t });
+      const branch = await mockBranchSeed([...responseUser, ...responseInvestor], Business);
+      await queryInterface.bulkInsert('branch', branch, { returning: true, transaction: t });
 
-      const businessUsers = await mockBusinessUserSeed(users, [...Business, ...Business2])
+      const businessUsers = await mockBusinessUserSeed([...users, ...investors], [...Business, ...Business2])
       const branchUser = await mockBranchUserSeed(responseUser, branch)
 
       await queryInterface.bulkInsert('business_user', businessUsers, { returning: true, transaction: t });

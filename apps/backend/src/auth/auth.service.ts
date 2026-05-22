@@ -19,7 +19,7 @@ export class AuthService {
 
   constructor(private readonly configService: ConfigService) { }
 
-  async handleSignup(create_user_dto: Create_user_dto) {
+    async handleSignup(create_user_dto: Create_user_dto) {
     const jwtSecret = this.configService.get('access_token_secret');
     const jwtSecretRefresh = this.configService.get('refresh_token_secret');
 

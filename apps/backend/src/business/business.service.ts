@@ -3,6 +3,7 @@ import { Response } from '@shared/shared/src/types/api/responses';
 import { IBusiness, IBusinessWithBranch } from '@shared/shared/src/types/business';
 import { Submit_business } from '@shared/shared/src/validation/submit-business-dto';
 import { Branch } from 'src/database/models/branch.model';
+import { BusinessUser } from 'src/database/models/business-user';
 import { BusinessVerification } from 'src/database/models/business-verification.model';
 import { Business } from 'src/database/models/business.model';
 import { User } from 'src/database/models/user.model';
@@ -63,6 +64,7 @@ export class BusinessService {
     }
 
     async handleSubmitBusiness(user_id: string, { street_address, city, state, country, name, phone, type, cac_document, national_id_document }: Submit_business): Promise<Response<IBusinessWithBranch>> {
+        const now =  new Date().toDateString();
 
         const business = await Business.create({
             city,
@@ -74,7 +76,9 @@ export class BusinessService {
             type,
         
             is_verified: true,
-            sync_status: 'pending',
+            sync_status: 'completed',
+            sync_date: now,
+            
 
         })
 
@@ -86,9 +90,11 @@ export class BusinessService {
             city: business.city,
             state: business.state,
             country: business.country,
-            sync_status: 'pending',
+            sync_status: 'completed',
+            sync_date: now,
             is_head_office: true,
             user_id: user_id,
+
             
         })
 
@@ -101,10 +107,23 @@ export class BusinessService {
             status: 'verified',
             type: '',
             rejection_reason: '',
-            reviewed_at: new Date().toDateString(),
+            reviewed_at: now,
             reviewed_by: user_id,
 
         })
+
+        await BusinessUser.create({
+            business_id: business.id,
+            user_id: user_id,
+            role: 'admin',
+            sync_status: 'completed',
+            sync_date: now,
+            has_full_access: true,
+            is_active: false,
+            joined_at: now,
+        })
+
+
 
         const businessWithBranch = await Business.findOne({
             where: { id: business.id },

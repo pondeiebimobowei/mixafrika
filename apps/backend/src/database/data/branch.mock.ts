@@ -1,8 +1,10 @@
 import { v4 as uuidv4 } from 'uuid';
 import { IBranch } from '@shared/shared/src/types/branch';
-export const mockBranchSeed: (user: { id: string }[], business: { id: string}[]) => Promise<IBranch[]> = (async (user: { id: string }[], business: { id: string}[]) => {
-  const business_id = business.map((u) => u.id);
-  const user_id = user.map((u) => u.id);
+import { IUser } from '@shared/shared/src/types/user';
+import { IBusiness } from '@shared/shared/src/types/business';
+export const mockBranchSeed: (user: IUser[], business: IBusiness[]) => Promise<IBranch[]> = (async (user: IUser[], business: IBusiness[]) => {
+  const business_id = business.map((u) => u.id) as string[];
+  const user_id = user.map((u) => u.id) as string[];
   
   return [
     {
@@ -33,7 +35,7 @@ export const mockBranchSeed: (user: { id: string }[], business: { id: string}[])
       state: 'State',
       country: 'Country',
       business_id: business_id[0],
-      user_id: user_id[0],
+      user_id: user_id[1],
       sync_status: 'pending',
       sync_date: "2025-11-12T16:13:42.425Z",
 

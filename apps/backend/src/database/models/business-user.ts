@@ -4,8 +4,6 @@ import {
   Column,
   Model,
   DataType,
-  HasOne,
-  HasMany,
   CreatedAt,
   UpdatedAt,
   DeletedAt,
@@ -56,6 +54,9 @@ export class BusinessUser extends Model<IBusinessUser> implements IBusinessUser 
 
   @Column({ type: DataType.STRING, allowNull: false })
   declare sync_status: syncStatus;
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  declare sync_date?: syncStatus;
 
   @CreatedAt
   declare createdAt: string;
