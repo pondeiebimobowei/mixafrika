@@ -11,7 +11,7 @@ import {
   Default,
   ForeignKey,
 } from 'sequelize-typescript';
-import { roles, syncStatus, type Roles } from '@shared/shared/src/enums';
+import { roles, SyncStatus, type Roles } from '@shared/shared/src/enums';
 import { CreationOptional } from 'sequelize';
 import { IBusinessUser } from '@shared/shared/src/types/business-user';
 import { User } from './user.model';
@@ -53,10 +53,10 @@ export class BusinessUser extends Model<IBusinessUser> implements IBusinessUser 
   declare business_id: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  declare sync_status: syncStatus;
+  declare sync_status: SyncStatus;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  declare sync_date?: syncStatus;
+  declare sync_date?: SyncStatus;
 
   @CreatedAt
   declare createdAt: string;

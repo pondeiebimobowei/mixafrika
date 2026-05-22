@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { LoanStatus } from '@shared/shared/src/enums';
+import { loanStatus } from '@shared/shared/src/enums';
 import { LoanAccount } from 'src/database/models/loan-account.model';
 import { RepaymentHistory } from 'src/database/models/repayment-history.model';
 
@@ -8,7 +8,7 @@ export class LoanRepaymentHistoryService {
 
     async handleGetLoanRepaymentHistory(user_id: string){
 
-        const loan_acount = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED}})
+        const loan_acount = await LoanAccount.findOne({ where: { user_id, status: loanStatus.APPROVED}})
 
         const history = await RepaymentHistory.findAll({ where: { loan_account_id: loan_acount?.id }})
 

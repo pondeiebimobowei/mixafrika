@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Types } from '@shared/shared/src/enums';
+import { types } from '@shared/shared/src/enums';
 import { Transaction } from 'src/database/models/transaction.model';
 
 @Injectable()
@@ -7,12 +7,12 @@ export class TransactionService {
   async handleGetTransactions(user_id: string, type?: string) {
     const where: any = { user_id };
     if (type && type !== 'All') {
-      if (type === Types.DEPOSIT) where.type = Types.DEPOSIT;
-      else if (type === Types.WITHDRAWAL) where.type = Types.WITHDRAWAL;
-      else if (type === Types.DISBURSEMENT) where.type = Types.DISBURSEMENT;
-      else if (type === Types.INVESTMENT) where.type = Types.INVESTMENT;
-      else if (type === Types.LOAN) where.type = Types.LOAN;
-      else if (type === Types.REPAYMENT) where.type = Types.REPAYMENT;
+      if (type === types.DEPOSIT) where.type = types.DEPOSIT;
+      else if (type === types.WITHDRAWAL) where.type = types.WITHDRAWAL;
+      else if (type === types.DISBURSEMENT) where.type = types.DISBURSEMENT;
+      else if (type === types.INVESTMENT) where.type = types.INVESTMENT;
+      else if (type === types.LOAN) where.type = types.LOAN;
+      else if (type === types.REPAYMENT) where.type = types.REPAYMENT;
     }
 
     const transactions = await Transaction.findAll({

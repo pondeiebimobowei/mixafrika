@@ -8,14 +8,14 @@ export const roles = {
 
 export type Roles = (typeof roles)[keyof typeof roles];
 
-export const LoanStatus = {
+export const loanStatus = {
     PENDING: "pending",
     APPROVED: "approved",
     REPAID: "repaid",
     COMPLETED: 'completed'
 } as const;
 
-export type LoanStatus = (typeof LoanStatus)[keyof typeof LoanStatus];
+export type LoanStatus = (typeof loanStatus)[keyof typeof loanStatus];
 
 export const duration = {
     THIRITY: 30,
@@ -44,7 +44,7 @@ export const savingsFrequency = {
 
 export type SavingsFrequency = (typeof savingsFrequency)[keyof typeof savingsFrequency];
 
-export const RepaymentStatus = {
+export const repaymentStatus = {
     PAID: "paid",
     "PAID (LATE)": "paid (late)",
     MISSED: "missed",
@@ -58,7 +58,7 @@ export const cardType = {
 
 export type CardType = (typeof cardType)[keyof typeof cardType];
 
-export type RepaymentStatus = (typeof RepaymentStatus)[keyof typeof RepaymentStatus];
+export type RepaymentStatus = (typeof repaymentStatus)[keyof typeof repaymentStatus];
 
 export const savingsType = {
     TARGET: 'target',
@@ -70,7 +70,7 @@ export const savingsType = {
 
 export type SavingsType = (typeof savingsType)[keyof typeof savingsType];
 
-export const Status = {
+export const status = {
     ACTIVE: "active",
     DEFAULTED: "defaulted",
     FAILED: "failed",
@@ -78,9 +78,9 @@ export const Status = {
     COMPLETED: "completed",
 } as const;
 
-export type Status = (typeof Status)[keyof typeof Status];
+export type Status = (typeof status)[keyof typeof status];
 
-export const Types = {
+export const types = {
     DEPOSIT: "deposit",
     WITHDRAWAL: "withdrawal",
     DISBURSEMENT: "disbursement",
@@ -89,10 +89,10 @@ export const Types = {
     REPAYMENT: "repayment",
 } as const;
 
-export type Types = (typeof Types)[keyof typeof Types];
+export type Types = (typeof types)[keyof typeof types];
 
-export const NotificationType = {
-    ...Types,
+export const notificationType = {
+    ...types,
 
     GOAL: "goal",
     SYSTEM: "system",
@@ -100,41 +100,50 @@ export const NotificationType = {
     FOLLOWING: "following",
 } as const;
 
-export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType];
+export type NotificationType = (typeof notificationType)[keyof typeof notificationType];
 
-export const PaymentStatus = {
+export const paymentStatus = {
     PENDING: "pending",
     SUCCESSFUL: "successful",
     FAILED: "failed",
 } as const;
 
-export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus];
+export type PaymentStatus = (typeof paymentStatus)[keyof typeof paymentStatus];
 
-export const ApplicationStatus = {
+export const applicationStatus = {
     PENDING: "pending",
     APPROVED: "approved",
     REJECTED: "rejected",
 } as const;
 
-export type ApplicationStatus = (typeof ApplicationStatus)[keyof typeof ApplicationStatus];
+export type ApplicationStatus = (typeof applicationStatus)[keyof typeof applicationStatus];
 
-export const VerificationStatus = {
+export const verificationStatus = {
     PENDING: "pending",
     VERIFIED: "verified",
     UNVERIFIED: 'unverified',
     REJECTED: "rejected",
 } as const;
 
-export type VerificationStatus = (typeof VerificationStatus)[keyof typeof VerificationStatus];
+export type VerificationStatus = (typeof verificationStatus)[keyof typeof verificationStatus];
 
-export const SalesStatus = {
+export const salesStatus = {
     PENDING: "pending",
     VERIFIED: "verified",
     UNVERIFIED: 'unverified',
     REJECTED: "rejected",
 } as const;
 
-export type SalesStatus = (typeof SalesStatus)[keyof typeof SalesStatus];
+export type SalesStatus = (typeof salesStatus)[keyof typeof salesStatus];
+
+export const transferStatus = {
+    PENDING: "pending",
+    COMPLETED: "completed",
+    CANCELLED: "cancelled",
+    FAILED: "failed",
+} as const;
+
+export type TransferStatus = (typeof transferStatus)[keyof typeof transferStatus];
 
 export const syncStatus = {
     PENDING: "pending",
@@ -142,4 +151,4 @@ export const syncStatus = {
     FAILED: "failed",
 } as const;
 
-export type syncStatus = (typeof syncStatus)[keyof typeof syncStatus];
+export type SyncStatus = (typeof syncStatus)[keyof typeof syncStatus];

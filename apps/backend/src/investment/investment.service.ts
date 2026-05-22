@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateInvestmentDto } from '@shared/shared/src/dto/investment/create-investment.dto';
-import { Status, Types } from '@shared/shared/src/enums';
+import { status, types } from '@shared/shared/src/enums';
 import { Cluster } from 'src/database/models/cluster.model';
 import { Collection } from 'src/database/models/collection.model';
 import { Investment } from 'src/database/models/investment.model';
@@ -75,8 +75,8 @@ export class InvestmentService {
         {
           amount,
           user_id,
-          type: Types.INVESTMENT,
-          status: Status.COMPLETED,
+          type: types.INVESTMENT,
+          status: status.COMPLETED,
           title: `Investment in ${cluster.name}`,
           category: 'Investment',
         },
@@ -89,7 +89,7 @@ export class InvestmentService {
           cluster_id,
           transaction_id: tx.id,
           amount_invested: amount,
-          status: Status.ACTIVE,
+          status: status.ACTIVE,
           total_earnings: 0,
         },
         { transaction: t },

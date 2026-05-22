@@ -12,7 +12,7 @@ import {
   BelongsToMany,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { syncStatus } from '@shared/shared/src/enums';
+import { SyncStatus } from '@shared/shared/src/enums';
 import { IBranch } from '@shared/shared/src/types/branch';
 import { Business } from './business.model';
 import { User } from './user.model';
@@ -50,7 +50,7 @@ export class Branch
 
 
   @Column(DataType.STRING)
-  declare sync_status: syncStatus;
+  declare sync_status: SyncStatus;
 
   @Column(DataType.DATE)
   declare sync_date?: string;

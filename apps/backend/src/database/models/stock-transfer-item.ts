@@ -10,7 +10,7 @@ import {
   Default,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { syncStatus } from '@shared/shared/src/enums';
+import { SyncStatus } from '@shared/shared/src/enums';
 import { IStockTransferItem } from '@shared/shared/src/types/stock-transfer-item';
 
 @Table({ tableName: 'stock_transfer_item' })
@@ -32,7 +32,7 @@ export class StockTransferItem
   declare quantity: number;
 
   @Column(DataType.STRING)
-  declare sync_status: syncStatus;
+  declare sync_status: SyncStatus;
 
   @Column(DataType.DATE)
   declare sync_date?: string;

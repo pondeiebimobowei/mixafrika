@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Wallet } from 'src/database/models/wallet.model';
 import { Transaction } from 'src/database/models/transaction.model';
-import { Status, Types } from '@shared/shared/src/enums';
+import { status, types } from '@shared/shared/src/enums';
 
 @Injectable()
 export class WalletService {
@@ -22,8 +22,8 @@ export class WalletService {
 
     const transaction = await Transaction.create({
       user_id,
-      type: Types.DEPOSIT,
-      status: Status.COMPLETED,
+      type: types.DEPOSIT,
+      status: status.COMPLETED,
       title: 'Wallet Funding',
       amount: amount,
       category: 'Funding',
@@ -47,8 +47,8 @@ export class WalletService {
 
     const transaction = await Transaction.create({
       user_id,
-      type: Types.WITHDRAWAL,
-      status: Status.COMPLETED,
+      type: types.WITHDRAWAL,
+      status: status.COMPLETED,
       title: 'Savings Top Up',
       amount,
       category: 'Savings',

@@ -13,7 +13,7 @@ import {
 import { CreationOptional, DataTypes } from 'sequelize';
 import { ICollection } from '@shared/shared/src/types/collection';
 import { Cluster } from './cluster.model';
-import { syncStatus } from '@shared/shared/src/enums';
+import { syncStatus, SyncStatus } from '@shared/shared/src/enums';
 
 @Table({ tableName: 'collection' })
 export class Collection extends Model<ICollection> implements ICollection {
@@ -53,7 +53,7 @@ export class Collection extends Model<ICollection> implements ICollection {
   declare country: string;
 
   @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
-  declare sync_status: syncStatus;
+  declare sync_status: SyncStatus;
 
   @Column(DataType.DATE)
   declare sync_date?: string;

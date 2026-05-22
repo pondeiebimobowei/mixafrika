@@ -1,4 +1,4 @@
-import { syncStatus } from "../enums";
+import { SyncStatus } from "../enums";
 
 export interface BaseModel {
     id?: string,
@@ -10,6 +10,6 @@ export interface BaseModel {
 
 
 export interface SyncableModel {
-    sync_status: syncStatus;
+    sync_status: SyncStatus;
     sync_date?: string;
 }

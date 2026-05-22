@@ -14,7 +14,7 @@ import {
 } from 'sequelize-typescript';
 import { IBusiness } from '@shared/shared/src/types/business';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { syncStatus } from '@shared/shared/src/enums';
+import { SyncStatus } from '@shared/shared/src/enums';
 import { User } from './user.model';
 import { Branch } from './branch.model';
 import { BusinessUser } from './business-user';
@@ -54,7 +54,7 @@ export class Business
   declare is_verified: boolean;
 
   @Column(DataType.STRING)
-  declare sync_status: syncStatus;
+  declare sync_status: SyncStatus;
 
   @Column(DataType.DATE)
   declare sync_date?: string;

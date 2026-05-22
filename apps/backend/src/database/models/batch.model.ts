@@ -14,7 +14,7 @@ import {
 import { CreationOptional, DataTypes } from 'sequelize';
 import { IBatch } from '@shared/shared/src/types/batch';
 import { Product } from './product.model';
-import { syncStatus } from '@shared/shared/src/enums';
+import { SyncStatus, syncStatus } from '@shared/shared/src/enums';
 import { Branch } from './branch.model';
 
 @Table({ tableName: 'batch' })
@@ -64,7 +64,7 @@ export class Batch
     declare quantity: number;
 
     @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
-    declare sync_status: syncStatus;
+    declare sync_status: SyncStatus;
 
     @Column({ type: DataType.STRING, allowNull: false })
     declare sync_date: string;

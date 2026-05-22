@@ -13,7 +13,7 @@ import {
 } from 'sequelize-typescript';
 import { IInvites } from '@shared/shared/src/types/invites';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { syncStatus } from '@shared/shared/src/enums';
+import { SyncStatus } from '@shared/shared/src/enums';
 import { Business } from './business.model';
 import { Branch } from './branch.model';
 import { User } from './user.model';
@@ -58,7 +58,7 @@ export class Invitation
   declare expires_at: string;
 
   @Column(DataType.STRING)
-  declare sync_status: syncStatus;
+  declare sync_status: SyncStatus;
 
   @Column(DataType.DATE)
   declare sync_date?: string;

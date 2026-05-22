@@ -13,7 +13,7 @@ import {
   Validate,
 } from 'sequelize-typescript';
 import { ITransaction } from '@shared/shared/src/types/transaction';
-import { RepaymentStatus, Status, Types } from '@shared/shared/src/enums';
+import { repaymentStatus, Status, RepaymentStatus, status, Types } from '@shared/shared/src/enums';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { User } from './user.model';
 
@@ -40,7 +40,7 @@ export class Transaction extends Model<ITransaction> implements ITransaction {
   @Column(DataType.STRING)
   declare category: string;
 
-  @Validate({ isIn: [[...Object.values(Status), ...Object.values(RepaymentStatus)]] })
+  @Validate({ isIn: [[...Object.values(status), ...Object.values(repaymentStatus)]] })
   @Column(DataType.STRING)
   declare status: Status | RepaymentStatus;
 

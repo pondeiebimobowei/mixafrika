@@ -11,7 +11,7 @@ import {
   BelongsTo,
   ForeignKey,
 } from 'sequelize-typescript';
-import { syncStatus, VerificationStatus } from '@shared/shared/src/enums';
+import { SyncStatus, VerificationStatus, verificationStatus } from '@shared/shared/src/enums';
 import { CreationOptional } from 'sequelize';
 import { IBusinessVerification } from '@shared/shared/src/types/business-verification';
 import { Business } from './business.model';
@@ -30,7 +30,7 @@ export class BusinessVerification extends Model<IBusinessVerification> implement
   @Column({ type: DataType.UUID, allowNull: false })
   declare business_id: string;
 
-  @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(VerificationStatus)] } })
+  @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(verificationStatus)] } })
   declare status: VerificationStatus;
 
   @Column({ type: DataType.STRING, allowNull: false })
@@ -55,7 +55,7 @@ export class BusinessVerification extends Model<IBusinessVerification> implement
   declare sync_date?: string;
 
   @Column({ type: DataType.DATE, allowNull: false })
-  declare sync_status: syncStatus;
+  declare sync_status: SyncStatus;
 
   @Column({ type: DataType.STRING, allowNull: false })
   declare reviewed_at: string;

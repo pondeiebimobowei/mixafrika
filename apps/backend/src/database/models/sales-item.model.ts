@@ -15,7 +15,7 @@ import { CreationOptional, DataTypes } from 'sequelize';
 import { ISalesItem } from '@shared/shared/src/types/sales-item';
 import { Product } from './product.model';
 import { Sales } from './sales.model';
-import { syncStatus } from '@shared/shared/src/enums';
+import { syncStatus, SyncStatus } from '@shared/shared/src/enums';
 
 @Table({ tableName: 'sales_item' })
 export class SalesItem
@@ -61,7 +61,7 @@ export class SalesItem
     declare sale: Sales;
 
     @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
-    declare sync_status: syncStatus;
+    declare sync_status: SyncStatus;
 
     @Column({ type: DataType.STRING, allowNull: false })
     declare sync_date: string;

@@ -11,8 +11,7 @@ import {
   BelongsTo,
   ForeignKey,
 } from 'sequelize-typescript';
-import { Wallet } from './wallet.model';
-import { roles, syncStatus, type Roles } from '@shared/shared/src/enums';
+import { roles, SyncStatus, type Roles } from '@shared/shared/src/enums';
 import { CreationOptional } from 'sequelize';
 import { User } from './user.model';
 import { IBranchUser } from '@shared/shared/src/types/branch-user';
@@ -56,7 +55,7 @@ export class BranchUser extends Model<IBranchUser> implements IBranchUser {
   declare branch_id: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  declare sync_status: syncStatus;
+  declare sync_status: SyncStatus;
 
   @Column({ type: DataType.DATE, allowNull: true })
   declare sync_date?: string;

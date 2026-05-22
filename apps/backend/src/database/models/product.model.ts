@@ -11,7 +11,7 @@ import {
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { IProduct } from '@shared/shared/src/types/product';
-import { syncStatus } from '@shared/shared/src/enums';
+import { SyncStatus, syncStatus } from '@shared/shared/src/enums';
 
 @Table({ tableName: 'product' })
 export class Product
@@ -56,7 +56,7 @@ export class Product
   declare reviews: string;
 
   @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
-  declare sync_status: syncStatus;
+  declare sync_status: SyncStatus;
 
   @Column({ type: DataType.STRING, allowNull: false })
   declare sync_date: string;

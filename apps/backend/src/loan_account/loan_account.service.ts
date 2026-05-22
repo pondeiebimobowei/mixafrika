@@ -3,7 +3,7 @@ import { LoanAccount } from 'src/database/models/loan-account.model';
 import { Wallet } from 'src/database/models/wallet.model';
 import { Transaction } from 'src/database/models/transaction.model';
 import { RepaymentHistory } from 'src/database/models/repayment-history.model';
-import { LoanStatus, RepaymentStatus, Types, Status } from '@shared/shared/src/enums';
+import { loanStatus, repaymentStatus, types, status } from '@shared/shared/src/enums';
 import Decimal from 'decimal.js';
 import { FundingApplication } from 'src/database/models/funding_application';
 import { Cluster } from 'src/database/models/cluster.model';
@@ -18,7 +18,7 @@ export class LoanAccountService {
     }
 
     async getLoanAccount(user_id: string,) {
-        const loan_account = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED }, include: { model: Cluster } })
+        const loan_account = await LoanAccount.findOne({ where: { user_id, status: loanStatus.APPROVED }, include: { model: Cluster } })
         return {
             success: true,
             message: "Loan account record found!",
@@ -33,8 +33,8 @@ export class LoanAccountService {
         const tx = await Transaction.create({
             amount: Number(application?.allocated_amount),
             user_id,
-            type: Types.LOAN,
-            status: Status.COMPLETED,
+            type: types.LOAN,
+            status: status.COMPLETED,
             title: 'Loan Disbursement',
             category: 'Loan',
         })
@@ -48,7 +48,7 @@ export class LoanAccountService {
             disbursed_amount: Number(application?.allocated_amount),
             total_repayment_amount: total_loan_amount,
             repaid_amount: 0,
-            status: LoanStatus.APPROVED,
+            status: loanStatus.APPROVED,
             user_id,
         })
         return {
@@ -71,17 +71,17 @@ export class LoanAccountService {
 
         await LoanAccount.increment( 'repaid_amount', {  by: amount, where: { user_id } });
 
-        let loan_account = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED }, include: { model: Cluster } });
+        let loan_account = await LoanAccount.findOne({ where: { user_id, status: loanStatus.APPROVED }, include: { model: Cluster } });
 
 
         if(Number(loan_account?.dataValues.repaid_amount) >= Number(loan_account?.dataValues.total_repayment_amount)) {
-            await LoanAccount.update({ status: LoanStatus.COMPLETED }, { where: { user_id } });
+            await LoanAccount.update({ status: loanStatus.COMPLETED }, { where: { user_id } });
         }
 
         const tx = await Transaction.create({
             user_id,
-            type: Types.REPAYMENT,
-            status: Status.COMPLETED,
+            type: types.REPAYMENT,
+            status: status.COMPLETED,
             title: 'Loan Repayment',
             amount,
             category: 'Loan',
@@ -91,7 +91,7 @@ export class LoanAccountService {
             transaction_id: tx.id,
             loan_account_id: loan_account?.id as string,
             amount: amount,
-            status: RepaymentStatus.PAID,
+            status: repaymentStatus.PAID,
         });
 
         return {
@@ -102,7 +102,7 @@ export class LoanAccountService {
     }
 
     async calculateDynamicRepayment(user_id: string, daysToPay: number): Promise<number> {
-        const loan = await LoanAccount.findOne({ where: { user_id, status: LoanStatus.APPROVED }, include: [{ model: Cluster }] });
+        const loan = await LoanAccount.findOne({ where: { user_id, status: loanStatus.APPROVED }, include: [{ model: Cluster }] });
         if (!loan) throw new HttpException({ success: false, message: "No Active Loan Found!"}, 500 );
         const outstandingBalance = new Decimal(loan.dataValues.total_repayment_amount).minus(loan.dataValues.repaid_amount);
         const regularInstallment = new Decimal(loan.dataValues.total_repayment_amount).div(loan?.cluster?.duration as number);
