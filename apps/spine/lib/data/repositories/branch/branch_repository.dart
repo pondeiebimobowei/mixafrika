@@ -1,31 +1,28 @@
 import 'package:spine/data/repositories/branch/branch_repository_abstract.dart';
+import 'package:spine/data/services/api/branch/branch_api_services.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/drift/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class BranchRepository implements BranchRepositoryAbstract {
-  BranchRepository({required AppDatabase database}) : _database = database;
+  BranchRepository({required AppDatabase database, required BranchApiServices branchApiServices }) 
+  : _database = database,
+    _branchApiServices = branchApiServices;
 
   final AppDatabase _database;
+  final BranchApiServices _branchApiServices;
 
   @override
   Future<ApiResponse<void>> createBranch(
     BranchData branch,
   ) async {
-    try {
-      await _database.into(_database.branch).insert(branch);
-      return ApiResponse(
-        data: null,
-        message: 'branch created successfully',
-        success: true,
-      );
-    } catch (e) {
-      return ApiResponse(
-        data: null,
-        message: 'Failed to create branch: $e',
-        success: false,
-      );
-    }
+
+    final res = await _branchApiServices.createBranch(branch);
+    return ApiResponse(
+      data: null,
+      message: res.message,
+      success: res.success,
+    );
   }
 
   @override
@@ -86,5 +83,5 @@ class BranchRepository implements BranchRepositoryAbstract {
 }
 
 final branchRepositoryLocalProvider = Provider(
-  (ref) => BranchRepository(database: ref.watch(databaseProvider)),
+  (ref) => BranchRepository(branchApiServices: ref.read(branchApiServiceProvider), database: ref.watch(databaseProvider)),
 );

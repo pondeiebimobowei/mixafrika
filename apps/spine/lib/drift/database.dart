@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:spine/drift/model/product.model.dart';
 import 'package:spine/drift/model/inventory.model.dart';
 import 'package:spine/drift/model/batch.model.dart';
+import 'package:spine/drift/model/stock_adjustment_item.dart';
 import 'package:spine/drift/model/user.model.dart';
 import 'package:spine/drift/model/businesses.dart';
 import 'package:spine/drift/model/business_verification.model.dart';
@@ -30,8 +31,6 @@ import 'package:spine/drift/model/verification_token.model.dart';
 import 'package:spine/drift/model/user_verification.model.dart';
 import 'package:spine/drift/model/invites.model.dart';
 
-import 'package:spine/drift/seed.dart';
-
 part 'database.g.dart';
 
 @DriftDatabase(
@@ -41,6 +40,7 @@ part 'database.g.dart';
     Inventory,
     Payments,
     ProductImage,
+    StockAdjustmentItem,
     Product,
     ProductCategory,
     SalesItem,
@@ -112,6 +112,7 @@ class AppDatabase extends _$AppDatabase {
       // ),
       beforeOpen: (details) async {
         // Optional: Enable foreign keys or perform checks every time the app opens
+        await customStatement('PRAGMA foreign_keys = ON');
         if (details.wasCreated) {
           // This also runs only on the very first creation
         }

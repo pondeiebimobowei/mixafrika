@@ -17,8 +17,8 @@ class AddStockViewModel extends AutoDisposeNotifier<AddStockState> {
     final branch = ref.read(activeBranchProvider);
     if (branch != null) {
       final products = await ref
-          .read(productRepositoryProvider)
-          .getProductsByBranchId(branch.id);
+          .read(productRepositoryProvider).getProducts();
+          // .getProductsByBranchId(branch.id);
       state = state.copyWith(products: products, isLoading: false);
     } else {
       state = state.copyWith(

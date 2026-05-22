@@ -1068,7 +1068,6 @@ class ShopManagementView extends ConsumerWidget {
           FButton(
             variant: FButtonVariant.destructive,
             onPress: () async {
-              Navigator.pop(context);
               await viewModel.logout();
               if (context.mounted) {
                 ToastWidget.makeToast(

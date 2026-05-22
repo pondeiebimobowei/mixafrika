@@ -1,10 +1,12 @@
 import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:spine/data/repositories/branch/branch_repository.dart';
+import 'package:spine/data/services/api/branch/branch_api_services.dart';
 import 'package:spine/drift/database.dart';
 
 void main() {
   late AppDatabase database;
+  late BranchApiServices branchApiServices;
   late BranchRepository branchRepository;
 
   // Fixed DateTime to ensure deterministic test behavior
@@ -13,7 +15,8 @@ void main() {
 
   setUp(() {
     database = AppDatabase(NativeDatabase.memory());
-    branchRepository = BranchRepository(database: database);
+    branchApiServices = BranchApiServices();
+    branchRepository = BranchRepository(branchApiServices: branchApiServices, database: database);
   });
 
   tearDown(() async {

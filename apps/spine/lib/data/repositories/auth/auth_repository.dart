@@ -30,9 +30,14 @@ class AuthRepository implements AuthRepositoryAbstract {
     await AppPreferences.clearAll();
 
     await _database.transaction(() async {
+    await _database.customStatement('PRAGMA foreign_keys = OFF');
+
     for (final table in _database.allTables) {
+      print("deleting ${table.actualTableName}");
       await _database.delete(table).go();
     }
+
+    await _database.customStatement('PRAGMA foreign_keys = ON');
   });
     return ApiResponse(
       data: null,
