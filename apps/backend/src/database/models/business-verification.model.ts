@@ -15,6 +15,7 @@ import { SyncStatus, VerificationStatus, verificationStatus } from '@shared/shar
 import { CreationOptional } from 'sequelize';
 import { IBusinessVerification } from '@shared/shared/src/types/business-verification';
 import { Business } from './business.model';
+import { User } from './user.model';
 
 @Table({
   tableName: 'business_verification',
@@ -26,30 +27,25 @@ export class BusinessVerification extends Model<IBusinessVerification> implement
   @Column(DataType.UUID)
   declare id: CreationOptional<string>;
 
-  @ForeignKey(() => Business)
-  @Column({ type: DataType.UUID, allowNull: false })
-  declare business_id: string;
-
-  @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(verificationStatus)] } })
-  declare status: VerificationStatus;
-
   @Column({ type: DataType.STRING, allowNull: false })
-  declare doc_url: string;
-
-  @Column({ type: DataType.STRING, allowNull: false })
-  declare rejection_reason: string;
+  declare type: string;
 
   @Column({ type: DataType.STRING, allowNull: true })
   declare doc_number?: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  declare reviewed_by: string;
+  declare doc_url: string;
+
+  @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(verificationStatus)] } })
+  declare status: VerificationStatus;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  declare type: string;
+  declare rejection_reason: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  declare submitted_by: string;
+  declare reviewed_at: string;
+
+
 
   @Column({ type: DataType.DATE, allowNull: true })
   declare sync_date?: string;
@@ -57,9 +53,8 @@ export class BusinessVerification extends Model<IBusinessVerification> implement
   @Column({ type: DataType.DATE, allowNull: false })
   declare sync_status: SyncStatus;
 
-  @Column({ type: DataType.STRING, allowNull: false })
-  declare reviewed_at: string;
 
+  
   @CreatedAt
   declare createdAt: string;
 
@@ -68,6 +63,20 @@ export class BusinessVerification extends Model<IBusinessVerification> implement
 
   @DeletedAt
   declare deletedAt?: string;
+
+
+
+  @ForeignKey(() => Business)
+  @Column({ type: DataType.UUID, allowNull: false })
+  declare business_id: string;
+
+  @ForeignKey(() => User)
+  @Column({ type: DataType.UUID, allowNull: false })
+  declare submitted_by: string;
+
+  @ForeignKey(() => User)
+  @Column({ type: DataType.UUID, allowNull: false })
+  declare reviewed_by: string;
 
   @BelongsTo(() => Business)
   declare business: Business;

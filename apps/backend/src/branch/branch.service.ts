@@ -6,10 +6,10 @@ import { Branch } from 'src/database/models/branch.model';
 @Injectable()
 export class BranchService {
 
-    async handleGetUserBranches(user_id: string): Promise<Response<IBranch[]>> {
+    async handleGetUserBranches(business_id: string): Promise<Response<IBranch[]>> {
 
         const branches = await Branch.findAll({
-            where: { user_id },
+            where: { business_id },
         });
 
         return {

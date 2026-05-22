@@ -13,7 +13,7 @@ export interface IBranch extends BaseModel, SyncableModel {
   country: string;
 
   business_id: string;
-  user_id: string;
+  collection_id?: string;
 
 }
 

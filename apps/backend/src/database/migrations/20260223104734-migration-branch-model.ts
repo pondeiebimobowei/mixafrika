@@ -19,18 +19,14 @@ module.exports = {
           primaryKey: true,
         },
 
-        user_id: {
-          type: Sequelize.UUID,
-          allowNull: false,
-          references: {
-            model: 'user',
-            key: 'id',
-            
-          },
-          onDelete: 'CASCADE',
-          onUpdate: 'CASCADE'
-          
-        },
+        name: { type: Sequelize.STRING, allowNull: false },
+        is_head_office: { type: Sequelize.BOOLEAN, allowNull: false },
+        phone: { type: Sequelize.STRING, allowNull: false },
+        street_address: { type: Sequelize.STRING, allowNull: false },
+        city: { type: Sequelize.STRING, allowNull: false },
+        state: { type: Sequelize.STRING, allowNull: false },
+        country: { type: Sequelize.STRING, allowNull: false },
+        
 
         business_id: {
           type: Sequelize.UUID,
@@ -44,21 +40,19 @@ module.exports = {
           onUpdate: 'CASCADE'
           
         },
+        collection_id: {
+          type: Sequelize.UUID,
+          allowNull: true,
+          references: {
+            model: 'collection',
+            key: 'id',
+          },
+          onDelete: 'CASCADE',
+          onUpdate: 'CASCADE'
+          
+        },
+        
 
-      
-
-        name: { type: Sequelize.STRING, allowNull: false },
-        is_head_office: { type: Sequelize.BOOLEAN, allowNull: false },
-        
-        phone: { type: Sequelize.STRING, allowNull: false },
-        street_address: { type: Sequelize.STRING, allowNull: false },
-        city: { type: Sequelize.STRING, allowNull: false },
-        state: { type: Sequelize.STRING, allowNull: false },
-        country: { type: Sequelize.STRING, allowNull: false },
-        
-        // user_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'business', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        // branch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'product', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        
         sync_status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)]} },
         sync_date: { allowNull: true, type: Sequelize.DATE },
 

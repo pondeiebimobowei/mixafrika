@@ -14,6 +14,6 @@ export interface IProduct extends BaseModel, SyncableModel {
     reviews: string;
 
 
-    branch?: string,
-    global_product?: string
+    branch_id?: string,
+    global_product_id?: string
 }

@@ -4,5 +4,6 @@ export interface ICustomer extends BaseModel, SyncableModel {
   name: string,
   phone?: string,
 
-  branchId: string,
+
+  branch_id: string,
 }

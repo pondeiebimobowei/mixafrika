@@ -2,7 +2,7 @@
 import sequelize from 'sequelize';
 import { QueryInterface, DataTypes } from 'sequelize';
 
-const VerificationStatus = {
+const verificationStatus = {
     PENDING: "pending",
     VERIFIED: "verified",
     UNVERIFIED: 'unverified',
@@ -20,35 +20,25 @@ module.exports = {
           primaryKey: true,
         },
 
-        user_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(VerificationStatus)]} },
         type: { type: Sequelize.STRING, allowNull: false },
         id_number: { type: Sequelize.STRING, allowNull: false },
         id_image_front_url: { type: Sequelize.STRING, allowNull: false },
         id_image_back_url: { type: Sequelize.STRING, allowNull: false },
+        status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(verificationStatus)]} },
         rejection_reason: { type: Sequelize.STRING, allowNull: false },
-        reviewed_by: { type: Sequelize.UUID, allowNull: true, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        reviewed_at: {
-          allowNull: true,
-          type: Sequelize.DATE,
-        },
         submitted_at: {
           allowNull: false,
           type: Sequelize.DATE,
           defaultValue: Sequelize.NOW,
         },
+        reviewed_at: {
+          allowNull: true,
+          type: Sequelize.DATE,
+        },
 
-        sync_status: { 
-          type: Sequelize.STRING, 
-          allowNull: false, 
-          defaultValue: 'pending' 
-        },
-        
-        sync_date: { 
-          type: Sequelize.DATE, 
-          allowNull: true, 
-          defaultValue: Sequelize.NOW 
-        },
+        reviewed_by: { type: Sequelize.UUID, allowNull: true, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        user_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+
 
         createdAt: {
           allowNull: false,

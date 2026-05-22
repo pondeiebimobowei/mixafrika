@@ -19,11 +19,19 @@ module.exports = {
           primaryKey: true,
         },
 
-        product_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'product', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        name: { type: Sequelize.STRING, allowNull: false },
         quantity: { type: Sequelize.STRING, allowNull: false },
-        unit_price: { type: Sequelize.STRING, allowNull: false },
-        total: { type: Sequelize.STRING, allowNull: false },
+        type: { type: Sequelize.STRING, allowNull: false },
+        unit_price: { type: Sequelize.DECIMAL(15,2), allowNull: false },
+        cost_price: { type: Sequelize.DECIMAL(15,2), allowNull: false },
+        total: { type: Sequelize.DECIMAL(15,2), allowNull: false },
+        description: { type: Sequelize.TEXT, allowNull: true },
+
+
         sale_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'sales', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        product_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'product', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        batch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'batch', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        
         
         syncStatus: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)]} },
         syncDate: {

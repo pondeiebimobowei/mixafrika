@@ -16,6 +16,7 @@ import { ISalesItem } from '@shared/shared/src/types/sales-item';
 import { Product } from './product.model';
 import { Sales } from './sales.model';
 import { syncStatus, SyncStatus } from '@shared/shared/src/enums';
+import { Batch } from './batch.model';
 
 @Table({ tableName: 'sales_item' })
 export class SalesItem
@@ -42,23 +43,11 @@ export class SalesItem
     
     @Column(DataType.INTEGER)
     declare total: number;
-
-    @ForeignKey(() => Product)
-    @Column(DataType.STRING)
-    declare product_id: string;
-
+    
     @Column(DataType.STRING)
     declare description: string;
 
-    @ForeignKey(() => Sales)
-    @Column(DataType.STRING)
-    declare sale_id: string;
 
-    @BelongsTo(() => Product, 'product_id')
-    declare product: Product;
-
-    @BelongsTo(() => Sales, 'sale_id')
-    declare sale: Sales;
 
     @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
     declare sync_status: SyncStatus;
@@ -76,4 +65,28 @@ export class SalesItem
 
     @DeletedAt
     declare deletedAt?: string;
+
+
+
+    
+    @ForeignKey(() => Sales)
+    @Column(DataType.STRING)
+    declare sale_id: string;
+    
+    @ForeignKey(() => Product)
+    @Column(DataType.STRING)
+    declare product_id: string;
+    
+    @ForeignKey(() => Batch)
+    @Column(DataType.STRING)
+    declare batch_id: string;
+
+    @BelongsTo(() => Product, 'product_id')
+    declare product: Product;
+
+    @BelongsTo(() => Sales, 'sale_id')
+    declare sale: Sales;
+
+    @BelongsTo(() => Batch, 'batch_id')
+    declare batch: Batch;
 }

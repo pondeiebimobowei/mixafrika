@@ -8,21 +8,31 @@ const syncStatus = {
     FAILED: "failed",
 } as const;
 
+const paymentStatus = {
+    PENDING: "pending",
+    SUCCESSFUL: "successful",
+    FAILED: "failed",
+} as const;
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
     await queryInterface.sequelize.transaction(async (t) => {
-      await queryInterface.createTable('batch', {
+      await queryInterface.createTable('payment', {
         id: {
           type: Sequelize.UUID,
           defaultValue: sequelize.UUIDV4,
           primaryKey: true,
         },
 
-        product_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'product', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        expiry_date: { type: Sequelize.STRING, allowNull: false },
-        quantity: { type: Sequelize.STRING, allowNull: false },
-        batch_number: { type: Sequelize.STRING, allowNull: false },
+        amount: { type: Sequelize.DECIMAL(15,2), allowNull: false },
+        reference: { type: Sequelize.STRING, allowNull: false },
+        payment_method: { type: Sequelize.STRING, allowNull: false },
+        status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(paymentStatus)]} },
+         
+
+        sale_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'sales', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        
         
         syncStatus: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)]} },
         syncDate: {
@@ -49,8 +59,6 @@ module.exports = {
     });
   },
   async down(queryInterface: QueryInterface) {
-    await queryInterface.dropTable('batch');
+    await queryInterface.dropTable('payment');
   },
 };
-
-

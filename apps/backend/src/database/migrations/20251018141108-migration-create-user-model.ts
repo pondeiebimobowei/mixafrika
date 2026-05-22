@@ -1,4 +1,4 @@
-const Roles = {
+const roles = {
   USER: 'user',
   TRADER: 'trader',
   AGENT: 'agent',
@@ -6,12 +6,6 @@ const Roles = {
   SUBADMIN: 'subadmin',
 } as const;
 
-export const VerificationStatus = {
-    PENDING: "pending",
-    VERIFIED: "verified",
-    UNVERIFIED: 'unverified',
-    REJECTED: "rejected",
-} as const;
 
 
 import sequelize from 'sequelize';
@@ -31,8 +25,23 @@ module.exports = {
         first_name: { type: Sequelize.STRING, allowNull: false },
         last_name: { type: Sequelize.STRING, allowNull: false },
         email: { type: Sequelize.STRING, allowNull: false, unique: true },
-        image: { type: Sequelize.STRING, allowNull: true },
         password: { type: Sequelize.STRING, allowNull: false },
+        role: {
+          type: Sequelize.STRING,
+          validate: { isIn: [Object.values(roles)] },
+          defaultValue: 'user',
+        },
+        is_email_verified: {
+          type: Sequelize.BOOLEAN,
+          allowNull: false,
+          defaultValue: false,
+        },
+        is_verified: {
+          type: Sequelize.BOOLEAN,
+          allowNull: false,
+          defaultValue: false,
+        },
+        avatar: { type: Sequelize.STRING, allowNull: true },
         credit_score: {
           type: Sequelize.DECIMAL(5, 2),
           allowNull: false,
@@ -43,33 +52,7 @@ module.exports = {
           allowNull: false,
           defaultValue: 'not set',
         },
-        verification_status: {
-          type: Sequelize.STRING,
-          allowNull: false,
-          defaultValue: 'unverified',
-          validate: { isIn: [Object.values(VerificationStatus)] },
-        },
-        is_email_verified: {
-          type: Sequelize.BOOLEAN,
-          allowNull: false,
-          defaultValue: false,
-        },
-        business_verification_status: {
-          type: Sequelize.STRING,
-          allowNull: false,
-          defaultValue: 'unverified',
-          validate: { isIn: [Object.values(VerificationStatus)] },
-        },
-        role: {
-          type: Sequelize.STRING,
-          validate: { isIn: [Object.values(Roles)] },
-          defaultValue: 'user',
-        },
-        is_verified: {
-          type: Sequelize.BOOLEAN,
-          allowNull: false,
-          defaultValue: false,
-        },
+
 
         sync_status: { 
           type: Sequelize.STRING, 

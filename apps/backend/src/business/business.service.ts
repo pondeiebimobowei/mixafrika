@@ -92,10 +92,7 @@ export class BusinessService {
             country: business.country,
             sync_status: 'completed',
             sync_date: now,
-            is_head_office: true,
-            user_id: user_id,
-
-            
+            is_head_office: true,            
         })
 
         await BusinessVerification.create({

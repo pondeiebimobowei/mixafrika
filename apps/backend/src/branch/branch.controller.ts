@@ -7,8 +7,8 @@ import { IBranch } from '@shared/shared/src/types/branch';
 export class BranchController {
     constructor(private readonly branchService: BranchService) { }
 
-    @Get(':user_id')
-    async getBranchesByUserId(@Param('user_id') user_id: string): Promise<Response<IBranch[]>> {
-        return this.branchService.handleGetUserBranches(user_id);
+    @Get(':business_id')
+    async getBranchesByUserId(@Param('business_id') business_id: string): Promise<Response<IBranch[]>> {
+        return this.branchService.handleGetUserBranches(business_id);
     }
 }

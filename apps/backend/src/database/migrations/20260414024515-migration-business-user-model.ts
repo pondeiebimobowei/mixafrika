@@ -32,7 +32,6 @@ module.exports = {
         has_full_access: { type: Sequelize.BOOLEAN, allowNull: false },
         joined_at: { type: Sequelize.DATE, allowNull: true },
         
-        
 
         business_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'business', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         user_id: { type: Sequelize.UUID, allowNull: true, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },

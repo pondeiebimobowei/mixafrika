@@ -15,7 +15,7 @@ import { CreationOptional, DataTypes } from 'sequelize';
 import { IInventory } from '@shared/shared/src/types/inventory';
 import { Product } from './product.model';
 import { Batch } from './batch.model';
-import { syncStatus } from '@shared/shared/src/enums';
+import { syncStatus, SyncStatus } from '@shared/shared/src/enums';
 import { Branch } from './branch.model';
 
 @Table({ tableName: 'inventory' })
@@ -28,6 +28,27 @@ export class Inventory
 
     @Column(DataType.INTEGER)
     declare quantity: number;
+
+
+
+    @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
+    declare sync_status: SyncStatus;
+
+    @Column({ type: DataType.STRING, allowNull: false })
+    declare sync_date: string;
+
+
+
+    @CreatedAt
+    declare createdAt: string;
+
+    @UpdatedAt
+    declare updatedAt: string;
+
+    @DeletedAt
+    declare deletedAt?: string;
+
+
 
     @ForeignKey(() => Product)
     @Column(DataType.STRING)
@@ -44,27 +65,10 @@ export class Inventory
     @BelongsTo(() => Product, 'product_id')
     declare product: Product;
 
-    @BelongsTo(() => Branch, 'business_id')
-    declare business: Branch;
+    @BelongsTo(() => Branch, 'branch_id')
+    declare branch: Branch;
 
     @BelongsTo(() => Batch, 'batch_id')
     declare batch: Batch;
 
-
-    @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
-    declare sync_status: syncStatus;
-
-    @Column({ type: DataType.STRING, allowNull: false })
-    declare sync_date: string;
-
-
-
-    @CreatedAt
-    declare createdAt: string;
-
-    @UpdatedAt
-    declare updatedAt: string;
-
-    @DeletedAt
-    declare deletedAt?: string;
 }

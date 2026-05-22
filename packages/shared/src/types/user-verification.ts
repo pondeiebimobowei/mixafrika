@@ -10,10 +10,9 @@ export interface IUserVerification extends BaseModel {
   status: VerificationStatus;
   rejection_reason: string;
   submitted_at: string,
-  
-  
-  
-  user_id: string;
-  reviewed_by: string;
   reviewed_at?: string;
+  
+  
+  reviewed_by: string;
+  user_id: string;
 }

@@ -9,16 +9,16 @@ import {
   PrimaryKey,
   Default,
   ForeignKey,
+  Unique,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { IProduct } from '@shared/shared/src/types/product';
 import { SyncStatus, syncStatus } from '@shared/shared/src/enums';
-import { Branch } from './branch.model';
-import { GlobalProduct } from './global-product';
+import { IGlobalProduct } from '@shared/shared/src/types/global-product';
+import { ProductCategory } from './product-category';
 
-@Table({ tableName: 'product' })
-export class Product
-  extends Model<IProduct> implements IProduct
+@Table({ tableName: 'global_product' })
+export class GlobalProduct
+  extends Model<IGlobalProduct> implements IGlobalProduct
 {
   @PrimaryKey
   @Default(DataTypes.UUIDV4)
@@ -29,34 +29,17 @@ export class Product
   declare name: string;
 
   @Column(DataType.STRING)
+  declare normalized_name: string;
+
+  @Column(DataType.STRING)
   declare description: string;
 
+  @Unique(true)
   @Column(DataType.STRING)
-  declare bulk_unit_name: string;
-
-  @Column(DataType.STRING)
-  declare piece_unit_name: string;
-
-  @Column(DataType.INTEGER)
-  declare units_per_bulk: number;
-
-  @Column(DataType.INTEGER)
-  declare cost_price_per_unit: number;
-
-  @Column(DataType.INTEGER)
-  declare selling_price_per_piece: number;
-
-  @Column(DataType.INTEGER)
-  declare selling_price_per_bulk: number;
-
-  @Column(DataType.STRING)
-  declare category: string;
+  declare barcode: string;
 
   @Column(DataType.STRING)
   declare image_url: string;
-
-  @Column(DataType.STRING)
-  declare reviews: string;
 
 
 
@@ -79,12 +62,8 @@ export class Product
 
 
 
-  @ForeignKey(() => Branch)
-  @Column(DataType.STRING)
-  declare branch_id: string;
-
-  @ForeignKey(() => GlobalProduct)
-  @Column(DataType.STRING)
-  declare global_product_id: string;
+  @ForeignKey(() => ProductCategory)
+  @Column({ type: DataType.UUID, allowNull: false, references: { model: 'product_category', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' })
+  declare product_category_id: string;
 
 }

@@ -5,7 +5,6 @@ import 'package:spine/drift/model/customer.model.dart';
 import 'package:spine/drift/model/user.model.dart';
 
 class Sales extends Table with TableMixin {
-    late final customerId = text().nullable().references(Customer, #id)();
     late final totalAmount = integer()();
     late final amountPaid = integer().withDefault(const Constant(0))();
     late final balance = integer().withDefault(const Constant(0))();
@@ -13,8 +12,8 @@ class Sales extends Table with TableMixin {
     late final status = text()(); //'completed','cancelled','refunded', 'pending'
     late final note = text().nullable()();
 
-    late final branchId = text().references(Branch, #id)();
 
-    
+    late final customerId = text().nullable().references(Customer, #id)();
+    late final branchId = text().references(Branch, #id)();
     late final createdBy = text().references(User, #id).nullable()();
 }

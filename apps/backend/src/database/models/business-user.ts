@@ -43,20 +43,15 @@ export class BusinessUser extends Model<IBusinessUser> implements IBusinessUser 
   @Column({ type: DataType.DATE, allowNull: true })
   declare joined_at?: string;
 
-  @ForeignKey(() => User)
-  @Column
-  declare user_id: string;
 
-
-  @ForeignKey(() => Business)
-  @Column(DataType.UUID)
-  declare business_id: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
   declare sync_status: SyncStatus;
 
   @Column({ type: DataType.STRING, allowNull: false })
   declare sync_date?: SyncStatus;
+
+
 
   @CreatedAt
   declare createdAt: string;
@@ -68,4 +63,12 @@ export class BusinessUser extends Model<IBusinessUser> implements IBusinessUser 
   declare deletedAt?: string;
 
 
+
+  @ForeignKey(() => User)
+  @Column(DataType.UUID)
+  declare user_id: string;
+
+  @ForeignKey(() => Business)
+  @Column(DataType.UUID)
+  declare business_id: string;
 }

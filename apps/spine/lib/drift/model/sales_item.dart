@@ -11,9 +11,9 @@ class SalesItem extends Table with TableMixin {
   late final unitPrice = integer()();
   late final costPrice = integer()();
   late final total = integer()();
+  late final description = text().nullable()();
 
   late final saleId = text().references(Sales, #id)();
   late final productId = text().nullable().references(Product, #id)();
   late final batchId = text().nullable().references(SpineBatch, #id)();
-  late final description = text().nullable()();
 }

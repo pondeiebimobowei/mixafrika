@@ -59,26 +59,7 @@ export class Business
   @Column(DataType.DATE)
   declare sync_date?: string;
 
-  // @BelongsTo(() => User)
-  // declare user: User;
-
-  // @ForeignKey(() => BusinessUser)
-  // @Column(DataType.UUID)
-  // declare business_user_id: string;
-
   
-
-  @BelongsToMany(() => User, () => BusinessUser)
-  users: User[];
-
-  @HasOne(() => BusinessVerification)
-  declare verification: BusinessVerification;
-
-  // @BelongsTo(() => BusinessUser)
-  // declare business_user: BusinessUser;
-
-  @HasMany(() => Branch)
-  declare branches: Branch
 
   @CreatedAt
   declare createdAt: string;
@@ -88,4 +69,15 @@ export class Business
 
   @DeletedAt
   declare deletedAt?: string;
+
+
+
+  @BelongsToMany(() => User, () => BusinessUser)
+  users: User[];
+
+  @HasOne(() => BusinessVerification)
+  declare verification: BusinessVerification;
+
+  @HasMany(() => Branch)
+  declare branches: Branch
 }

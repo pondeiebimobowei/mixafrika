@@ -14,6 +14,5 @@ export const test_user:IUser = {
     credit_score_status: 'not set',
     createdAt: String(new Date()),
     updatedAt: String(new Date()),
-    image: null,
 
 }

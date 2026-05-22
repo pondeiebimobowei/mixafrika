@@ -19,7 +19,7 @@ import { Branch } from './branch.model';
 import { User } from './user.model';
 
 @Table({ tableName: 'invites' })
-export class Invitation
+export class Invites
   extends Model<IInvites>
   implements IInvites {
   @PrimaryKey
@@ -36,26 +36,13 @@ export class Invitation
   @Column(DataType.STRING)
   declare token: string;
 
-  @Column({
-    type: DataType.ENUM('pending', 'accepted', 'declined', 'expired', 'cancelled'),
-    defaultValue: 'pending',
-  })
-  declare status: 'pending' | 'accepted' | 'declined' | 'expired' | 'cancelled';
-
-  @ForeignKey(() => Business)
-  @Column(DataType.UUID)
-  declare business_id: string;
-
-  @ForeignKey(() => Branch)
-  @Column({ type: DataType.UUID, allowNull: true })
-  declare branch_id: string;
-
-  @ForeignKey(() => User)
-  @Column(DataType.UUID)
-  declare invited_by: string;
+  @Column(DataType.BOOLEAN)
+  declare accepted: boolean;
 
   @Column(DataType.DATE)
   declare expires_at: string;
+
+
 
   @Column(DataType.STRING)
   declare sync_status: SyncStatus;
@@ -63,14 +50,7 @@ export class Invitation
   @Column(DataType.DATE)
   declare sync_date?: string;
 
-  @BelongsTo(() => Business)
-  declare business: Business;
 
-  @BelongsTo(() => Branch)
-  declare branch: Branch;
-
-  @BelongsTo(() => User, 'invited_by')
-  declare inviter: User;
 
   @CreatedAt
   declare createdAt: string;
@@ -80,4 +60,28 @@ export class Invitation
 
   @DeletedAt
   declare deletedAt?: string;
+
+
+
+  @ForeignKey(() => Branch)
+  @Column({ type: DataType.UUID, allowNull: true })
+  declare branch_id: string;
+
+  @ForeignKey(() => Business)
+  @Column(DataType.UUID)
+  declare business_id: string;
+
+  @ForeignKey(() => User)
+  @Column(DataType.UUID)
+  declare invited_by: string;
+
+  @BelongsTo(() => Business)
+  declare business: Business;
+
+  @BelongsTo(() => Branch)
+  declare branch: Branch;
+
+  @BelongsTo(() => User, 'invited_by')
+  declare invitee: User;
+
 }

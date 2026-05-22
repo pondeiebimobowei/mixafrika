@@ -8,24 +8,34 @@ const syncStatus = {
     FAILED: "failed",
 } as const;
 
+const transferStatus = {
+    PENDING: "pending",
+    COMPLETED: "completed",
+    CANCELLED: "cancelled",
+    FAILED: "failed",
+} as const;
+
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
     await queryInterface.sequelize.transaction(async (t) => {
-      await queryInterface.createTable('inventory', {
+      await queryInterface.createTable('stock_adjustment', {
         id: {
           type: Sequelize.UUID,
           defaultValue: sequelize.UUIDV4,
           primaryKey: true,
         },
 
-        branch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'branch', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        product_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'product', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        batch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'batch', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        quantity: { type: Sequelize.STRING, allowNull: false },
+        reason: { type: Sequelize.TEXT, allowNull: false },
         
-        syncStatus: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)]} },
-        syncDate: {
+    
+        branch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'branch', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        created_by: { type: Sequelize.UUID, allowNull: false, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        
+
+        sync_status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)]} },
+        sync_date: {
           allowNull: false,
           type: Sequelize.DATE,
         },
@@ -49,7 +59,7 @@ module.exports = {
     });
   },
   async down(queryInterface: QueryInterface) {
-    await queryInterface.dropTable('inventory');
+    await queryInterface.dropTable('stock_adjustment');
   },
 };
 

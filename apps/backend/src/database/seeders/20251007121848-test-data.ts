@@ -33,7 +33,7 @@ module.exports = {
       const transactions = await mockTransactionsSeed([...users, ...investors])
       const clusters = await mockClusterSeed(collection);
       const bankCards = await mockBankCardSeed(users);
-      await queryInterface.bulkInsert('collection', collection, { returning: true, transaction: t });
+      const responseCollection = await queryInterface.bulkInsert('collection', collection, { returning: true, transaction: t });
       await queryInterface.bulkInsert('cluster', clusters, { returning: true, transaction: t });
 
       const responseUser = await queryInterface.bulkInsert('user', users, { returning: true, transaction: t }) as IUser[];
@@ -99,7 +99,7 @@ module.exports = {
       await queryInterface.bulkInsert('business', Business2, { transaction: t });
       await queryInterface.bulkInsert('funding_application', application, { returning: true, transaction: t });
       
-      const branch = await mockBranchSeed([...responseUser, ...responseInvestor], Business);
+      const branch = await mockBranchSeed(Business, responseCollection);
       await queryInterface.bulkInsert('branch', branch, { returning: true, transaction: t });
 
       const businessUsers = await mockBusinessUserSeed([...users, ...investors], [...Business, ...Business2])

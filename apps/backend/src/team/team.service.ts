@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
-import { Invitation } from 'src/database/models/invites.model';
+import { Invites } from 'src/database/models/invites.model';
 import { BusinessUser } from 'src/database/models/business-user';
 import { BranchUser } from 'src/database/models/branch-user';
 import { User } from 'src/database/models/user.model';
@@ -7,6 +7,7 @@ import { Business } from 'src/database/models/business.model';
 import { v4 as uuidv4 } from 'uuid';
 import * as dayjs from 'dayjs';
 import { syncStatus } from '@shared/shared/src/enums';
+import { boolean } from 'zod';
 
 @Injectable()
 export class TeamService {
@@ -19,8 +20,8 @@ export class TeamService {
     if (!business) throw new NotFoundException('Business not found');
 
     // Check if invitation already exists for this email and business
-    const existingInvite = await Invitation.findOne({
-      where: { email: data.email, business_id: businessId, status: 'pending' }
+    const existingInvite = await Invites.findOne({
+      where: { email: data.email, business_id: businessId }
     });
 
     if (existingInvite) {
@@ -30,7 +31,7 @@ export class TeamService {
     const token = uuidv4();
     const expiresAt = dayjs().add(7, 'days').toDate();
 
-    const invitation = await Invitation.create({
+    const invitation = await Invites.create({
       email: data.email,
       role: data.role,
       business_id: businessId,
@@ -38,8 +39,9 @@ export class TeamService {
       token,
       invited_by: invitedBy,
       expires_at: expiresAt.toISOString(),
-      status: 'pending',
       sync_status: syncStatus.PENDING,
+      accepted: false,
+
     });
 
     console.log(`Invitation created for ${data.email}. Token: ${token}`);
@@ -65,8 +67,8 @@ export class TeamService {
   }
 
   async handleGetBranchPendingInvitations(branchId: string) {
-    const invitations = await Invitation.findAll({
-      where: { branch_id: branchId, status: 'pending' },
+    const invitations = await Invites.findAll({
+      where: { branch_id: branchId },
     });
 
     return {
@@ -77,14 +79,13 @@ export class TeamService {
   }
 
   async handleAcceptInvitation(token: string, userId: string) {
-    const invitation = await Invitation.findOne({
-      where: { token, status: 'pending' },
+    const invitation = await Invites.findOne({
+      where: { token },
     });
 
     if (!invitation) throw new NotFoundException('Invitation not found or already processed');
 
     if (dayjs().isAfter(dayjs(invitation.expires_at))) {
-      invitation.status = 'expired';
       await invitation.save();
       throw new BadRequestException('Invitation has expired');
     }
@@ -112,7 +113,6 @@ export class TeamService {
       });
     }
 
-    invitation.status = 'accepted';
     await invitation.save();
 
     return {
@@ -133,10 +133,9 @@ export class TeamService {
   }
 
   async handleCancelInvitation(invitationId: string) {
-    const invitation = await Invitation.findByPk(invitationId);
+    const invitation = await Invites.findByPk(invitationId);
     if (!invitation) throw new NotFoundException('Invitation not found');
 
-    invitation.status = 'cancelled';
     await invitation.save();
 
     return {

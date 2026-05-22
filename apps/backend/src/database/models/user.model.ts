@@ -20,7 +20,7 @@ import { Goal } from './goal.model';
 import { Investment } from './investment.model';
 import { Notification } from './notification.model';
 import { Feed } from './feed.model';
-import { roles, type Roles } from '@shared/shared/src/enums';
+import { roles, SyncStatus, type Roles } from '@shared/shared/src/enums';
 import { CreationOptional } from 'sequelize';
 import { LoanAccount } from './loan-account.model';
 import { Business } from './business.model';
@@ -61,20 +61,11 @@ export class User extends Model<IUser> implements IUser {
   @Column({ type: DataType.STRING, allowNull: false })
   declare last_name: string;
 
+  @Column({ type: DataType.STRING, allowNull: false, unique: true })
+  declare email: string;
+
   @Column({ type: DataType.STRING, allowNull: false })
   declare password: string;
-
-  @Column({ type: DataType.BOOLEAN, allowNull: false })
-  declare is_email_verified: boolean;
-
-  @Column({ type: DataType.BOOLEAN, allowNull: false })
-  declare is_verified: boolean;
-
-  @Column({ type: DataType.DECIMAL(5, 2), allowNull: false })
-  declare credit_score: number;
-
-  @Column({ type: DataType.STRING, allowNull: false })
-  declare credit_score_status: string;
 
   @Column({
     type: DataType.STRING,
@@ -83,11 +74,30 @@ export class User extends Model<IUser> implements IUser {
   })
   declare role: Roles;
 
-  @Column({ type: DataType.STRING, allowNull: false, unique: true })
-  declare email: string;
+  @Column({ type: DataType.BOOLEAN, allowNull: false })
+  declare is_email_verified: boolean;
+
+  @Column({ type: DataType.BOOLEAN, allowNull: false })
+  declare is_verified: boolean;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  declare image: string;
+  declare avatar?: string;
+
+  @Column({ type: DataType.DECIMAL(5, 2), allowNull: false })
+  declare credit_score: number;
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  declare credit_score_status: string;
+
+  
+  
+  @Column(DataType.STRING)
+  declare sync_status: SyncStatus;
+
+  @Column(DataType.DATE)
+  declare sync_date?: string;
+
+
 
   @CreatedAt
   declare createdAt: string;
@@ -97,6 +107,8 @@ export class User extends Model<IUser> implements IUser {
 
   @DeletedAt
   declare deletedAt?: string;
+
+
 
   @HasOne(() => Wallet)
   declare wallet: Wallet;

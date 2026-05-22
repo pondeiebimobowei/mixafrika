@@ -12,17 +12,16 @@ const syncStatus = {
 module.exports = {
   async up(queryInterface: QueryInterface, Sequelize: typeof DataTypes) {
     await queryInterface.sequelize.transaction(async (t) => {
-      await queryInterface.createTable('inventory', {
+      await queryInterface.createTable('product_image', {
         id: {
           type: Sequelize.UUID,
           defaultValue: sequelize.UUIDV4,
           primaryKey: true,
         },
 
-        branch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'branch', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        product_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'product', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        batch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'batch', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        quantity: { type: Sequelize.STRING, allowNull: false },
+        local_path: { type: Sequelize.STRING, allowNull: true },
+        remote_url: { type: Sequelize.STRING, allowNull: true },
+        
         
         syncStatus: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)]} },
         syncDate: {
@@ -49,8 +48,6 @@ module.exports = {
     });
   },
   async down(queryInterface: QueryInterface) {
-    await queryInterface.dropTable('inventory');
+    await queryInterface.dropTable('product_image');
   },
 };
-
-

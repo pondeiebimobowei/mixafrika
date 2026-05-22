@@ -26,12 +26,18 @@ module.exports = {
           primaryKey: true,
         },
 
-        branch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'business', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        customer_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        total_amount: { type: Sequelize.STRING, allowNull: false },
+        total_amount: { type: Sequelize.DECIMAL(15,2), allowNull: false },
+        amount_paid: { type: Sequelize.DECIMAL(15,2), allowNull: false },
+        balance: { type: Sequelize.DECIMAL(15,2), allowNull: false },
         payment_method: { type: Sequelize.STRING, allowNull: false },
         status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(salesStatus)]} },
+        notes: { type: Sequelize.STRING, allowNull: true },
+
+
+        branch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'business', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        customer_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         created_by_id: { type: Sequelize.UUID, allowNull: true, references: { model: 'user', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+
         
         syncStatus: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)]} },
         syncDate: {

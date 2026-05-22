@@ -11,14 +11,13 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { IProduct } from '@shared/shared/src/types/product';
 import { SyncStatus, syncStatus } from '@shared/shared/src/enums';
+import { ICustomer } from '@shared/shared/src/types/customer';
 import { Branch } from './branch.model';
-import { GlobalProduct } from './global-product';
 
-@Table({ tableName: 'product' })
-export class Product
-  extends Model<IProduct> implements IProduct
+@Table({ tableName: 'customer' })
+export class Customer
+  extends Model<ICustomer> implements ICustomer
 {
   @PrimaryKey
   @Default(DataTypes.UUIDV4)
@@ -29,34 +28,7 @@ export class Product
   declare name: string;
 
   @Column(DataType.STRING)
-  declare description: string;
-
-  @Column(DataType.STRING)
-  declare bulk_unit_name: string;
-
-  @Column(DataType.STRING)
-  declare piece_unit_name: string;
-
-  @Column(DataType.INTEGER)
-  declare units_per_bulk: number;
-
-  @Column(DataType.INTEGER)
-  declare cost_price_per_unit: number;
-
-  @Column(DataType.INTEGER)
-  declare selling_price_per_piece: number;
-
-  @Column(DataType.INTEGER)
-  declare selling_price_per_bulk: number;
-
-  @Column(DataType.STRING)
-  declare category: string;
-
-  @Column(DataType.STRING)
-  declare image_url: string;
-
-  @Column(DataType.STRING)
-  declare reviews: string;
+  declare phone?: string;
 
 
 
@@ -80,11 +52,7 @@ export class Product
 
 
   @ForeignKey(() => Branch)
-  @Column(DataType.STRING)
+  @Column({ type: DataType.UUID, allowNull: false, references: { model: 'product_category', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' })
   declare branch_id: string;
-
-  @ForeignKey(() => GlobalProduct)
-  @Column(DataType.STRING)
-  declare global_product_id: string;
 
 }

@@ -6,5 +6,6 @@ class Customer extends Table with TableMixin {
   late final name = text()();
   late final phone = text().nullable()();
 
+
   late final branchId = text().references(Branch, #id)();
 }

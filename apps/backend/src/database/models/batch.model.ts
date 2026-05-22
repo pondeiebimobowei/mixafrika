@@ -46,22 +46,7 @@ export class Batch
     @Column(DataType.INTEGER)
     declare remaining_quantity: number;
 
-    @ForeignKey(() => Product)
-    @Column(DataType.STRING)
-    declare product_id: string;
-
-    @ForeignKey(() => Branch)
-    @Column(DataType.STRING)
-    declare branch_id: string;
-
-    @BelongsTo(() => Product, 'product_id')
-    declare product: Product;
-
-    @BelongsTo(() => Product, 'branch_id')
-    declare branch: Product;
-
-    @Column(DataType.INTEGER)
-    declare quantity: number;
+    
 
     @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
     declare sync_status: SyncStatus;
@@ -79,4 +64,20 @@ export class Batch
 
     @DeletedAt
     declare deletedAt?: string;
+
+
+
+    @ForeignKey(() => Product)
+    @Column(DataType.STRING)
+    declare product_id: string;
+
+    @ForeignKey(() => Branch)
+    @Column(DataType.STRING)
+    declare branch_id: string;
+
+    @BelongsTo(() => Product, 'product_id')
+    declare product: Product;
+
+    @BelongsTo(() => Branch, 'branch_id')
+    declare branch: Product;
 }

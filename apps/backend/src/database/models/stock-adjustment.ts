@@ -12,32 +12,21 @@ import {
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { SyncStatus } from '@shared/shared/src/enums';
-import { IStockMovement } from '@shared/shared/src/types/stock-movement';
-import { Product } from './product.model';
+import { IStockAdjustment } from '@shared/shared/src/types/stock-adjustment';
 import { Branch } from './branch.model';
-import { Batch } from './batch.model';
 import { User } from './user.model';
 
-@Table({ tableName: 'stock_movement' })
-export class StockMovement
-  extends Model<IStockMovement>
-  implements IStockMovement {
+@Table({ tableName: 'stock_adjustment' })
+export class StockAdjustment
+  extends Model<IStockAdjustment>
+  implements IStockAdjustment {
   @PrimaryKey
   @Default(DataTypes.UUIDV4)
   @Column(DataTypes.UUID)
   declare id: CreationOptional<string>;
 
-  @Column(DataType.STRING)
-  declare type: string;
-
-  @Column(DataType.DECIMAL(15,2))
-  declare quantity: number;
-
-  @Column(DataType.STRING)
-  declare reference_id?: string;
-
   @Column(DataType.TEXT)
-  declare notes?: string;
+  declare reason: string;
 
 
 
@@ -60,17 +49,9 @@ export class StockMovement
 
 
 
-  @ForeignKey(() => Product)
-  @Column(DataType.UUID)
-  declare product_id: string;
-
   @ForeignKey(() => Branch)
   @Column(DataType.UUID)
   declare branch_id: string;
-
-  @ForeignKey(() => Batch)
-  @Column(DataType.UUID)
-  declare batch_id: string;
 
   @ForeignKey(() => User)
   @Column(DataType.UUID)

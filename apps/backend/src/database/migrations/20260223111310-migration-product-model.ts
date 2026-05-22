@@ -32,6 +32,10 @@ module.exports = {
         image_url: { type: Sequelize.STRING, allowNull: false },
         reviews: { type: Sequelize.STRING, allowNull: false },
         
+
+        branch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'branch', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        global_product_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'global_product', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
+        
         
         syncStatus: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)]} },
         syncDate: {

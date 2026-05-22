@@ -11,33 +11,35 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { SyncStatus } from '@shared/shared/src/enums';
-import { IStockTransferItem } from '@shared/shared/src/types/stock-transfer-item';
-import { StockTransfer } from './stock-transfer.model';
+import { IProductImage } from '@shared/shared/src/types/product-image';
+import { SyncStatus, syncStatus } from '@shared/shared/src/enums';
 import { Product } from './product.model';
 
-@Table({ tableName: 'stock_transfer_item' })
-export class StockTransferItem
-  extends Model<IStockTransferItem>
-  implements IStockTransferItem {
+@Table({ tableName: 'product_image' })
+export class ProductImage
+  extends Model<IProductImage> implements IProductImage
+{
   @PrimaryKey
   @Default(DataTypes.UUIDV4)
   @Column(DataTypes.UUID)
   declare id: CreationOptional<string>;
 
-  @Column(DataType.INTEGER)
-  declare quantity: number;
-
-
+  @Column(DataType.STRING)
+  declare local_path?: string;
 
   @Column(DataType.STRING)
+  declare remote_url?: string;
+
+
+
+  @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
   declare sync_status: SyncStatus;
 
-  @Column(DataType.DATE)
-  declare sync_date?: string;
- 
+  @Column({ type: DataType.STRING, allowNull: false })
+  declare sync_date: string;
 
 
+  
   @CreatedAt
   declare createdAt: string;
 
@@ -49,11 +51,8 @@ export class StockTransferItem
 
 
 
-  @ForeignKey(() => StockTransfer)
-  @Column(DataType.STRING)
-  declare transfer_id: string;
-
   @ForeignKey(() => Product)
-  @Column(DataType.STRING)
+  @Column(DataType.UUID)
   declare product_id: string;
+
 }

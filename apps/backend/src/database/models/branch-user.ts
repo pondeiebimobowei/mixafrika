@@ -43,6 +43,27 @@ export class BranchUser extends Model<IBranchUser> implements IBranchUser {
   @BelongsTo(() => User)
   declare user: User;
 
+  
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  declare sync_status: SyncStatus;
+
+  @Column({ type: DataType.DATE, allowNull: true })
+  declare sync_date?: string;
+
+
+
+  @CreatedAt
+  declare createdAt: string;
+
+  @UpdatedAt
+  declare updatedAt: string;
+
+  @DeletedAt
+  declare deletedAt?: string;
+
+
+
   @BelongsTo(() => Branch)
   declare branch: Branch;
 
@@ -53,20 +74,5 @@ export class BranchUser extends Model<IBranchUser> implements IBranchUser {
   @ForeignKey(() => Branch)
   @Column(DataType.UUID)
   declare branch_id: string;
-
-  @Column({ type: DataType.STRING, allowNull: false })
-  declare sync_status: SyncStatus;
-
-  @Column({ type: DataType.DATE, allowNull: true })
-  declare sync_date?: string;
-
-  @CreatedAt
-  declare createdAt: string;
-
-  @UpdatedAt
-  declare updatedAt: string;
-
-  @DeletedAt
-  declare deletedAt?: string;
 
 }

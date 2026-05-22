@@ -8,10 +8,13 @@ import {
   CreatedAt,
   PrimaryKey,
   Default,
+  ForeignKey,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { syncStatus } from '@shared/shared/src/enums';
+import { SyncStatus, TransferStatus } from '@shared/shared/src/enums';
 import { IStockTransfer } from '@shared/shared/src/types/stock-transfer';
+import { Branch } from './branch.model';
+import { User } from './user.model';
 
 @Table({ tableName: 'stock_transfer' })
 export class StockTransfer
@@ -22,26 +25,21 @@ export class StockTransfer
   @Column(DataTypes.UUID)
   declare id: CreationOptional<string>;
 
-  @Column(DataType.STRING)
-  declare from_branch_id: string;
-
-  @Column(DataType.STRING)
-  declare to_branch_id: string;
-
   @Column(DataType.INTEGER)
   declare reason: string;
+  
+  @Column(DataType.STRING)
+  declare status: TransferStatus;
+
+
 
   @Column(DataType.STRING)
-  declare status: string;
-
-  @Column(DataType.STRING)
-  declare created_by: string;
-
-  @Column(DataType.STRING)
-  declare sync_status: syncStatus;
+  declare sync_status: SyncStatus;
 
   @Column(DataType.DATE)
   declare sync_date?: string;
+
+
 
   @CreatedAt
   declare createdAt: string;
@@ -51,4 +49,18 @@ export class StockTransfer
 
   @DeletedAt
   declare deletedAt?: string;
+
+
+    
+  @ForeignKey(() => User)
+  @Column(DataTypes.UUID)
+  declare created_by: string;
+  
+  @ForeignKey(() => Branch)
+  @Column(DataTypes.UUID)
+  declare from_branch_id: string;
+
+  @ForeignKey(() => Branch)
+  @Column(DataTypes.UUID)
+  declare to_branch_id: string;
 }

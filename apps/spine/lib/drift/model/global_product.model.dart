@@ -7,10 +7,9 @@ class GlobalProduct extends Table with TableMixin {
     late final name = text()();
     late final normalizedName = text().unique()();
     late final description = text()();
-
     late final barcode = text().unique()();
     late final imageUrl = text()();
 
 
-    late final category = text().nullable().references(ProductCategory, #id)();
+    late final productCategoryId = text().nullable().references(ProductCategory, #id)();
 }

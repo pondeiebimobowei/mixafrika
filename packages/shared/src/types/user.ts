@@ -8,7 +8,6 @@ import { type IBusiness } from "./business";
 import { type IUserVerification } from "./user-verification";
 
 export interface IUser extends BaseModel {
-  image: string | null;
   user_name?: string;
   first_name: string;
   last_name: string;
@@ -21,10 +20,6 @@ export interface IUser extends BaseModel {
   
   credit_score: number;
   credit_score_status: string;
-  verification?: IUserVerification;
-  business_verification?: IBusinessVerification;
-
-  trader?: ITrader,
 
 }
 

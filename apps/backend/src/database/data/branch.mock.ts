@@ -1,10 +1,11 @@
 import { v4 as uuidv4 } from 'uuid';
 import { IBranch } from '@shared/shared/src/types/branch';
-import { IUser } from '@shared/shared/src/types/user';
 import { IBusiness } from '@shared/shared/src/types/business';
-export const mockBranchSeed: (user: IUser[], business: IBusiness[]) => Promise<IBranch[]> = (async (user: IUser[], business: IBusiness[]) => {
+import { ICollection } from '@shared/shared/src/types/collection';
+export const mockBranchSeed: ( business: IBusiness[], collection: ICollection[]) => Promise<IBranch[]> = (async (business: IBusiness[], collection: ICollection[]) => {
   const business_id = business.map((u) => u.id) as string[];
-  const user_id = user.map((u) => u.id) as string[];
+  const collection_id = collection.map((u)=> u.id) as string[];
+
   
   return [
     {
@@ -17,7 +18,7 @@ export const mockBranchSeed: (user: IUser[], business: IBusiness[]) => Promise<I
       state: 'State',
       country: 'Country',
       business_id: business_id[0],
-      user_id: user_id[0],
+      collection_id: collection_id[0],
       sync_status: 'pending',
       sync_date: "2025-11-12T16:13:42.425Z",
 
@@ -35,7 +36,7 @@ export const mockBranchSeed: (user: IUser[], business: IBusiness[]) => Promise<I
       state: 'State',
       country: 'Country',
       business_id: business_id[0],
-      user_id: user_id[1],
+      collection_id: collection_id[0],
       sync_status: 'pending',
       sync_date: "2025-11-12T16:13:42.425Z",
 

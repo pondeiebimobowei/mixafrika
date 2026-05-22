@@ -25,38 +25,25 @@ export class Sales
     @Column(DataTypes.UUID)
     declare id: CreationOptional<string>;
 
-    @ForeignKey(() => Business)
-    @Column(DataType.STRING)
-    declare branch_id: string;
-
-    @ForeignKey(() => User)
-    @Column(DataType.STRING)
-    declare customer_id: string;
-
     @Column(DataType.INTEGER)
     declare total_amount: number;
-
-    @Column(DataType.STRING)
-    declare payment_method: string;
-
-    @Column(DataType.STRING)
-    declare status: SalesStatus;
 
     @Column(DataType.INTEGER)
     declare amount_paid: number;
 
     @Column(DataType.INTEGER)
     declare balance: number;
+    
+    @Column(DataType.STRING)
+    declare payment_method: string;
 
-    @ForeignKey(() => User)
-    @Column(DataType.UUID)
-    declare created_by: string;
+    @Column(DataType.STRING)
+    declare status: SalesStatus;
 
-    @BelongsTo(() => Business, 'branch_id')
-    declare branch: Business;
+    @Column(DataType.STRING)
+    declare note?: string;
 
-    @BelongsTo(() => User, 'customer_id')
-    declare customer: User;
+
 
     @Column({ type: DataType.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } })
     declare sync_status: SyncStatus;
@@ -74,4 +61,24 @@ export class Sales
 
     @DeletedAt
     declare deletedAt?: string;
+
+
+
+    @ForeignKey(() => User)
+    @Column(DataType.STRING)
+    declare customer_id: string;
+
+    @ForeignKey(() => Business)
+    @Column(DataType.STRING)
+    declare branch_id: string;
+
+    @ForeignKey(() => User)
+    @Column(DataType.UUID)
+    declare created_by: string;
+
+    @BelongsTo(() => Business, 'branch_id')
+    declare branch: Business;
+
+    @BelongsTo(() => User, 'customer_id')
+    declare customer: User;
 }

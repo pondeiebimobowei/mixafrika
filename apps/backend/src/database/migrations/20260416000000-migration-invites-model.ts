@@ -30,11 +30,16 @@ module.exports = {
           type: Sequelize.STRING,
           allowNull: false,
         },
-        status: {
-          type: Sequelize.ENUM('pending', 'accepted', 'declined', 'expired', 'cancelled'),
-          defaultValue: 'pending',
-          allowNull: false,
+        accepted: {
+          type: Sequelize.BOOLEAN,
+          allowNull: false
         },
+        expires_at: {
+          type: Sequelize.DATE,
+          allowNull: false
+        },
+
+
         business_id: {
           type: Sequelize.UUID,
           allowNull: false,
@@ -56,10 +61,8 @@ module.exports = {
           onDelete: 'CASCADE',
           onUpdate: 'CASCADE',
         },
-        expires_at: {
-          type: Sequelize.DATE,
-          allowNull: false,
-        },
+
+
         sync_status: {
           type: Sequelize.STRING,
           allowNull: false,
@@ -69,6 +72,8 @@ module.exports = {
           allowNull: true,
           type: Sequelize.DATE,
         },
+
+        
         createdAt: {
           allowNull: false,
           type: Sequelize.DATE,

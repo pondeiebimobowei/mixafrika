@@ -17,6 +17,7 @@ import { IBranch } from '@shared/shared/src/types/branch';
 import { Business } from './business.model';
 import { User } from './user.model';
 import { BranchUser } from './branch-user';
+import { Collection } from './collection.model';
 
 @Table({ tableName: 'branch' })
 export class Branch
@@ -49,25 +50,14 @@ export class Branch
   declare country: string;
 
 
+
   @Column(DataType.STRING)
   declare sync_status: SyncStatus;
 
   @Column(DataType.DATE)
   declare sync_date?: string;
 
-  @ForeignKey(() => Business)
-  @Column(DataType.UUID)
-  declare business_id: string;
 
-  @ForeignKey(() => User)
-  @Column(DataType.UUID)
-  declare user_id: string;
-
-  // @BelongsTo(() => User)
-  // declare user: User;
-
-  @BelongsToMany(() => User, () => BranchUser)
-  declare users: User[];
 
   @CreatedAt
   declare createdAt: string;
@@ -77,4 +67,15 @@ export class Branch
 
   @DeletedAt
   declare deletedAt?: string;
+
+
+
+  @ForeignKey(() => Business)
+  @Column(DataType.UUID)
+  declare business_id: string;
+
+  @ForeignKey(() => Collection)
+  @Column(DataType.UUID)
+  declare collection_id?: string;
+
 }
