@@ -16,6 +16,7 @@ class BranchRepository implements BranchRepositoryAbstract {
   Future<ApiResponse<void>> createBranch(
     BranchData branch,
   ) async {
+    await _database.into(_database.branch).insertReturning(branch);
 
     final res = await _branchApiServices.createBranch(branch);
     return ApiResponse(

@@ -10,6 +10,7 @@ import 'package:spine/data/services/api/config/api_response.dart';
 class InventoryRepository implements InventoryRepositoryAbstract {
   final AppDatabase _db;
   final ProductRepository productRepository;
+  
 
   InventoryRepository(this._db, {required this.productRepository});
 
@@ -137,7 +138,7 @@ class InventoryRepository implements InventoryRepositoryAbstract {
       remainingQuantity: pieceQuantity,
       initialQuantity: pieceQuantity,
       branchId: branchId,
-      batchNumber: 'BATCH-${now.millisecondsSinceEpoch}',
+      batchNumber: 'BATCH-${Uuid().v4()}',
       createdAt: now,
       updatedAt: now,
       deletedAt: null,
@@ -229,10 +230,9 @@ class InventoryRepository implements InventoryRepositoryAbstract {
           ])
           ..where(_db.inventory.branchId.equals(branchId))
           ..where(
-            _db.product.name.like('%$query%'),
-            // |
-            // _db.product.sku.like('%$query%') |
-            // _db.product.description.like('%$query%'),
+            _db.product.name.lower().contains(
+              query.toLowerCase(),
+            ),
           );
 
     final rows = await response.get();

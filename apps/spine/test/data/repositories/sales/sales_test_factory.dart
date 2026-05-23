@@ -1,5 +1,7 @@
 import 'package:spine/drift/database.dart';
 
+import '../constants.dart';
+
 /// Centralized factory for seeding deterministic test data for [SalesRepository]
 /// integration tests. All methods use named parameters with sensible defaults
 /// so each test only specifies the fields it cares about.
@@ -9,10 +11,10 @@ import 'package:spine/drift/database.dart';
 abstract final class SalesTestFactory {
   // ─── Shared constants ──────────────────────────────────────────────────────
 
-  static final fixedNow = DateTime(2026, 4, 21, 12, 0, 0);
+  static final fixedNow = Constants.fixedNow;
 
-  static const testBranchId = 'branch_test1';
-  static const testBusinessId = 'biz_test';
+  static const testBranchId = Constants.testBranchId;
+  static const testBusinessId = Constants.testBusinessId1;
 
   // ─── Primitive seed helpers ────────────────────────────────────────────────
 
@@ -44,7 +46,7 @@ abstract final class SalesTestFactory {
 
   static Future<GlobalProductData> seedGlobalProduct(
     AppDatabase db, {
-    String id = 'gp_1',
+    String id = Constants.globalProductId,
     required String name,
     String barcode = 'BARCODE-001',
   }) async {
@@ -262,7 +264,7 @@ abstract final class SalesTestFactory {
   /// Returns a record containing the seeded [ProductData] and [SpineBatchData].
   static Future<({ProductData product, SpineBatchData batch})> seedProductReadyForSale(
     AppDatabase db, {
-    String productId = 'prod_1',
+    String productId = Constants.productId,
     String batchId = 'batch_1',
     String productName = 'Garri 1kg',
     int stockQuantity = 50,
@@ -272,11 +274,11 @@ abstract final class SalesTestFactory {
     bool skipBranch = false,
   }) async {
     if (!skipBranch) await seedBranch(db);
-    await seedGlobalProduct(db, id: 'gp_$productId', barcode: barcode, name: productName);
+    await seedGlobalProduct(db, id: Constants.globalProductId, barcode: barcode, name: productName);
     final product = await seedProduct(
       db,
       id: productId,
-      globalProductId: 'gp_$productId',
+      globalProductId: Constants.globalProductId,
       name: productName,
       costPrice: costPrice,
       sellingPricePerPiece: sellingPricePerPiece,

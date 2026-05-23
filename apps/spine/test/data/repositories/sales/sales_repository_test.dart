@@ -2,6 +2,8 @@ import 'package:drift/native.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:spine/data/repositories/sales/sales_repository.dart';
 import 'package:spine/drift/database.dart';
+import '../business/business_test_factory.dart';
+import '../constants.dart';
 import 'sales_test_factory.dart';
 
 void main() {
@@ -225,12 +227,14 @@ void main() {
       });
 
       test('should filter sales by branchId ensuring branch isolation', () async {
+        await BusinessTestFactory.seedBusiness(database, businessId: Constants.testBusinessId1 );
+        
         // Arrange
         await SalesTestFactory.seedBranch(database, id: 'branches_1');
         await SalesTestFactory.seedBranch(database, id: 'b2');
 
-        final (product:p2, batch: _) = await SalesTestFactory.seedProductReadyForSale(database, skipBranch: true, productId: 'prod_3', productName: 'Garri 1kg', batchId: 'batch_3', barcode: '123456789013', stockQuantity: 100);
-        final (product: p1, batch: _) = await SalesTestFactory.seedProductReadyForSale(database, productId: 'prod_4', productName: 'Rice 5kg', batchId: 'batch_4', barcode: '000000000000', stockQuantity: 100);
+        final (product:p2, batch: _) = await SalesTestFactory.seedProductReadyForSale(database, skipBranch: true, productId: Constants.productId, productName: 'Garri 1kg', batchId: 'batch_3', barcode: '123456789013', stockQuantity: 100);
+        final (product: p1, batch: _) = await SalesTestFactory.seedProductReadyForSale(database, productId: Constants.productId2, productName: 'Rice 5kg', batchId: 'batch_4', barcode: '000000000000', stockQuantity: 100);
 
         final sale1 = SalesTestFactory.buildSale(id: 'sale_b1', branchId: 'b1');
         final sale2 = SalesTestFactory.buildSale(id: 'sale_b2', branchId: 'b2');
@@ -239,8 +243,8 @@ void main() {
         // final saleItem2 = SalesTestFactory.buildProductSaleItem(id: 'sale_b2', saleId: 'sale_b2');
 
         
-        final saleItem1 = SalesTestFactory.buildProductSaleItem(id: 'sale_b1', saleId: 'sale_b1', productId: 'prod_3');
-        final saleItem2 = SalesTestFactory.buildProductSaleItem(id: 'sale_b2', saleId: 'sale_b2', productId: 'prod_4');
+        final saleItem1 = SalesTestFactory.buildProductSaleItem(id: 'sale_b1', saleId: 'sale_b1', productId: Constants.productId);
+        final saleItem2 = SalesTestFactory.buildProductSaleItem(id: 'sale_b2', saleId: 'sale_b2', productId: Constants.productId2,);
 
         // Manual seed for speed/isolation in this test
         await database.into(database.sales).insert(sale1);
@@ -265,6 +269,8 @@ void main() {
 
     group('getSaleById', () {
       test('should return correct sale with full joins or null if missing', () async {
+        await BusinessTestFactory.seedBusiness(database, businessId: Constants.testBusinessId1 );
+        
         // Arrange
         final (:product, batch: _) = await SalesTestFactory.seedProductReadyForSale(database, stockQuantity: 20, batchId: 'batch_6', productName: 'Rice 2kg', barcode: '123456789015');
         final sale = SalesTestFactory.buildSale(id: 'sale_found');

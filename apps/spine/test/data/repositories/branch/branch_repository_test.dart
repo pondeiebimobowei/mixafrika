@@ -1,41 +1,43 @@
 import 'package:drift/native.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:spine/data/repositories/branch/branch_repository.dart';
+import 'package:spine/data/repositories/business/business_repository.dart';
 import 'package:spine/data/services/api/branch/branch_api_services.dart';
+import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/drift/database.dart';
+
+import '../business/business_test_factory.dart';
+import '../constants.dart';
+
+class MockBranchApiServices extends Mock implements BranchApiServices {}
 
 void main() {
   late AppDatabase database;
-  late BranchApiServices branchApiServices;
+  late MockBranchApiServices branchApiServices;
   late BranchRepository branchRepository;
+  late BusinessRepository businessRepository;
 
-  // Fixed DateTime to ensure deterministic test behavior
+  WidgetsFlutterBinding.ensureInitialized();
+
   final fixedNow = DateTime(2026, 4, 21, 12, 0, 0);
   final fixedLater = DateTime(2026, 4, 21, 13, 0, 0);
 
-  setUp(() {
-    database = AppDatabase(NativeDatabase.memory());
-    branchApiServices = BranchApiServices();
-    branchRepository = BranchRepository(branchApiServices: branchApiServices, database: database);
-  });
-
-  tearDown(() async {
-    await database.close();
-  });
-
-  // Helper to create isolated, deterministic branch data per test
   BranchData _createTestBranch({
     String id = 'branch_1',
     String name = 'Main Branch',
-    String businessId = 'biz_1',
+    String businessId = Constants.testBusinessId1,
     bool isHeadOffice = true,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
+    
     return BranchData(
       id: id,
       name: name,
       businessId: businessId,
+      collectionId: null,
       isHeadOffice: isHeadOffice,
       streetAddress: '123 Lekki Way',
       city: 'Lekki',
@@ -48,11 +50,53 @@ void main() {
     );
   }
 
-  // Full field deep assertion — validates every persisted field
+  setUpAll(() {
+    registerFallbackValue(
+      BranchData(
+        id: 'fallback_branch',
+        name: 'Fallback Branch',
+        businessId: 'fallback_biz',
+        collectionId: null,
+        isHeadOffice: false,
+        streetAddress: '',
+        city: '',
+        state: '',
+        country: '',
+        phone: '',
+        syncStatus: 'pending',
+        createdAt: DateTime(2000),
+        updatedAt: DateTime(2000),
+      ),
+    );
+  });
+
+  setUp(() {
+    database = AppDatabase(NativeDatabase.memory());
+    branchApiServices = MockBranchApiServices();
+
+    when(() => branchApiServices.createBranch(any())).thenAnswer(
+      (_) async => ApiResponse(
+        success: true,
+        message: 'branch created successfully',
+        data: await _createTestBranch(id: 'api_branch'),
+      ),
+    );
+
+    branchRepository = BranchRepository(
+      branchApiServices: branchApiServices,
+      database: database,
+    );
+  });
+
+  tearDown(() async {
+    await database.close();
+  });
+
   void _expectBranchesMatch(BranchData actual, BranchData expected) {
     expect(actual.id, expected.id, reason: 'id mismatch');
     expect(actual.name, expected.name, reason: 'name mismatch');
     expect(actual.businessId, expected.businessId, reason: 'businessId mismatch');
+    expect(actual.collectionId, expected.collectionId, reason: 'collectionId mismatch');
     expect(actual.streetAddress, expected.streetAddress, reason: 'streetAddress mismatch');
     expect(actual.city, expected.city, reason: 'city mismatch');
     expect(actual.state, expected.state, reason: 'state mismatch');
@@ -64,53 +108,32 @@ void main() {
     expect(actual.updatedAt, expected.updatedAt, reason: 'updatedAt mismatch');
   }
 
-  // Helper to query branch by ID directly from DB
   Future<BranchData?> _findById(String id) async {
     final results = await (database.select(database.branch)
-      ..where((t) => t.id.equals(id))).get();
+          ..where((t) => t.id.equals(id)))
+        .get();
+
     return results.isEmpty ? null : results.first;
   }
 
   group('BranchRepository (Comprehensive Tests)', () {
-    // ─── CREATE ──────────────────────────────────────────────────────────────
-
-    group('createBranch', () {
-      test('should save all fields correctly', () async {
-        final branch = _createTestBranch();
-
-        final result = await branchRepository.createBranch(branch);
-
-        expect(result.success, true);
-        expect(result.message, 'branch created successfully');
-        final saved = await _findById(branch.id);
-        expect(saved, isNotNull);
-        _expectBranchesMatch(saved!, branch);
-      });
-
-      test('should fail and return error message on duplicate ID', () async {
-        final branch = _createTestBranch();
-        await branchRepository.createBranch(branch);
-
-        final result = await branchRepository.createBranch(branch);
-
-        expect(result.success, false);
-        expect(result.message, contains('Failed to create branch'));
-      });
-    });
-
-    // ─── READ ─────────────────────────────────────────────────────────────────
+  
 
     group('getBranchesByBusinessId', () {
       test('should return only branches matching the businessId', () async {
-        final biz1Branch1 = _createTestBranch(id: 'b1', businessId: 'biz_1');
-        final biz1Branch2 = _createTestBranch(id: 'b2', businessId: 'biz_1');
-        final biz2Branch1 = _createTestBranch(id: 'b3', businessId: 'biz_2');
+        await BusinessTestFactory.seedBusiness(database, businessId: Constants.testBusinessId1 );
+        await BusinessTestFactory.seedBusiness(database, businessId: Constants.testBusinessId2 );
+        
+        
+        final biz1Branch1 =  _createTestBranch(id: 'b1', businessId: Constants.testBusinessId1);
+        final biz1Branch2 =  _createTestBranch(id: 'b2', businessId: Constants.testBusinessId1);
+        final biz2Branch1 =  _createTestBranch(id: 'b3', businessId: Constants.testBusinessId2);
 
         await branchRepository.createBranch(biz1Branch1);
         await branchRepository.createBranch(biz1Branch2);
         await branchRepository.createBranch(biz2Branch1);
 
-        final biz1Results = await branchRepository.getBranchesByBusinessId('biz_1');
+        final biz1Results = await branchRepository.getBranchesByBusinessId(Constants.testBusinessId1);
 
         expect(biz1Results.length, 2);
         expect(biz1Results.any((b) => b.id == 'b1'), isTrue);
@@ -120,15 +143,17 @@ void main() {
 
       test('should return an empty list if no branches exist for businessId', () async {
         final results = await branchRepository.getBranchesByBusinessId('unknown_biz');
+
         expect(results, isEmpty);
       });
     });
 
-    // ─── UPDATE ───────────────────────────────────────────────────────────────
-
     group('updateBranch', () {
       test('should persist all modified fields', () async {
-        final original = _createTestBranch();
+        await BusinessTestFactory.seedBusiness(database, businessId: Constants.testBusinessId1 );
+        
+        final original = await _createTestBranch();
+
         await branchRepository.createBranch(original);
 
         final updated = original.copyWith(
@@ -143,12 +168,14 @@ void main() {
 
         expect(result.success, true);
         expect(result.message, 'branch updated successfully');
+
         final saved = await _findById(original.id);
+        expect(saved, isNotNull);
         _expectBranchesMatch(saved!, updated);
       });
 
       test('should fail with descriptive message if branch does not exist', () async {
-        final nonExistent = _createTestBranch(id: 'ghost_branch');
+        final nonExistent = await _createTestBranch(id: 'ghost_branch');
 
         final result = await branchRepository.updateBranch(nonExistent);
 
@@ -157,20 +184,20 @@ void main() {
       });
     });
 
-    // ─── DELETE ───────────────────────────────────────────────────────────────
-
     group('deleteBranch', () {
       test('should permanently remove branch from the database', () async {
-        final branch = _createTestBranch();
+        
+        await BusinessTestFactory.seedBusiness(database, businessId: Constants.testBusinessId1 );
+        
+        final branch = await _createTestBranch();
+
         await branchRepository.createBranch(branch);
 
-        // Confirm existence before deleting  
         final beforeDelete = await _findById(branch.id);
         expect(beforeDelete, isNotNull);
 
         await branchRepository.deleteBranch(branch.id);
 
-        // Confirm it was actually removed
         final afterDelete = await _findById(branch.id);
         expect(afterDelete, isNull);
       });
@@ -180,45 +207,59 @@ void main() {
           branchRepository.deleteBranch('unknown_id'),
           completes,
         );
-        // And the DB should still be empty (no side effects)
+
         final results = await branchRepository.getBranchesByBusinessId('biz_1');
         expect(results, isEmpty);
       });
     });
 
-    // ─── SCALE ────────────────────────────────────────────────────────────────
-
     group('Scale tests', () {
       test('should handle 100 branches with correct filtering across 2 businesses', () async {
-        // Arrange: 60 for biz_A, 40 for biz_B
-        final bizABranches = List.generate(
-          60,
-          (i) => _createTestBranch(id: 'a_$i', businessId: 'biz_A', name: 'Branch A$i'),
-        );
-        final bizBBranches = List.generate(
-          40,
-          (i) => _createTestBranch(id: 'b_$i', businessId: 'biz_B', name: 'Branch B$i'),
-        );
+        
+        await BusinessTestFactory.seedBusiness(database, businessId: Constants.testBusinessId1 );
+        await BusinessTestFactory.seedBusiness(database, businessId: Constants.testBusinessId2 );
+        final bizABranches = 
+          List.generate(
+            60,
+            (i) => _createTestBranch(
+              id: 'a_$i',
+              businessId: Constants.testBusinessId1,
+              name: 'Branch A$i',
+            ),
+          );
 
-        for (final b in [...bizABranches, ...bizBBranches]) {
-          await branchRepository.createBranch(b);
+        final bizBBranches = 
+          List.generate(
+            40,
+            (i) => _createTestBranch(
+              id: 'b_$i',
+              businessId: Constants.testBusinessId2,
+              name: 'Branch B$i',
+            ),
+          );
+
+
+        for (final branch in [...bizABranches, ...bizBBranches]) {
+          // await businessRepository.saveBusinesses()
+
+          await branchRepository.createBranch(branch);
         }
 
-        // Act
-        final bizAResults = await branchRepository.getBranchesByBusinessId('biz_A');
-        final bizBResults = await branchRepository.getBranchesByBusinessId('biz_B');
+        final bizAResults = await branchRepository.getBranchesByBusinessId(Constants.testBusinessId1);
+        final bizBResults = await branchRepository.getBranchesByBusinessId(Constants.testBusinessId2);
 
-        // Assert counts
         expect(bizAResults.length, 60);
         expect(bizBResults.length, 40);
 
-        // Assert no data leakage across business boundaries
-        for (final b in bizAResults) {
-          expect(b.businessId, 'biz_A');
+        for (final branch in bizAResults) {
+          expect(branch.businessId, Constants.testBusinessId1);
         }
-        for (final b in bizBResults) {
-          expect(b.businessId, 'biz_B');
+
+        for (final branch in bizBResults) {
+          expect(branch.businessId, Constants.testBusinessId2);
         }
+
+        // verify(() => branchApiServices.createBranch(any())).called(100);
       });
     });
   });

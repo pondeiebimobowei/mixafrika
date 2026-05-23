@@ -1,5 +1,7 @@
 import 'package:spine/drift/database.dart';
 
+import '../constants.dart';
+
 /// Centralized factory for seeding deterministic test data into an in-memory
 /// [AppDatabase]. All helpers use named parameters with sensible defaults so
 /// each test only needs to specify the fields it cares about.
@@ -11,18 +13,39 @@ abstract final class InventoryTestFactory {
 
   /// Fully deterministic timestamp used across all seeded rows.
   /// Avoids any hidden dependency on [DateTime.now()] in test data.
-  static final fixedNow = DateTime(2026, 4, 21, 12, 0, 0);
 
-  static const testBranchId = 'branch_test';
-  static const testBusinessId = 'biz_test';
 
   // ─── Seed helpers ──────────────────────────────────────────────────────────
 
   /// Seeds a [BranchData] row and returns it.
+
+  static Future<BusinessesData> seedBusiness(
+    AppDatabase db,
+  )async {
+    
+    final businessRecord = BusinessesData(
+      id: Constants.testBusinessId,
+      name: 'Test Business',
+      phone: '+234000',
+      city: 'Lagos',
+      state: 'Lagos',
+      country: 'Nigeria',
+      syncStatus: 'synced',
+      isVerified: true,
+      streetAddress: '1 Test St',
+      type: "Retail Store",
+
+      createdAt: Constants.fixedNow,
+      updatedAt: Constants.fixedNow,
+    );
+    await db.into(db.businesses).insert(businessRecord);
+    return businessRecord;
+  }
+
   static Future<BranchData> seedBranch(
     AppDatabase db, {
-    String id = testBranchId,
-    String businessId = testBusinessId,
+    String id = Constants.testBranchId,
+    String businessId = Constants.testBusinessId,
     String name = 'Test Branch',
     bool isHeadOffice = true,
     String phone = '+234000',
@@ -38,8 +61,8 @@ abstract final class InventoryTestFactory {
       country: 'Nigeria',
       phone: phone,
       syncStatus: 'synced',
-      createdAt: fixedNow,
-      updatedAt: fixedNow,
+      createdAt: Constants.fixedNow,
+      updatedAt: Constants.fixedNow,
     );
     await db.into(db.branch).insert(record);
     return record;
@@ -60,8 +83,8 @@ abstract final class InventoryTestFactory {
       barcode: barcode,
       syncStatus: 'pending',
       imageUrl: '',
-      createdAt: fixedNow,
-      updatedAt: fixedNow,
+      createdAt: Constants.fixedNow,
+      updatedAt: Constants.fixedNow,
     ));
   }
 
@@ -70,7 +93,7 @@ abstract final class InventoryTestFactory {
     AppDatabase db, {
     String id = 'prod_1',
     String globalProductId = 'gp_1',
-    String branchId = testBranchId,
+    String branchId = Constants.testBranchId,
     String name = 'Garri 1kg',
     int costPrice = 500,
     int sellingPricePerPiece = 700,
@@ -92,8 +115,8 @@ abstract final class InventoryTestFactory {
       imageUrl: '',
       reviews: '',
       syncStatus: 'pending',
-      createdAt: fixedNow,
-      updatedAt: fixedNow,
+      createdAt: Constants.fixedNow,
+      updatedAt: Constants.fixedNow,
     ));
   }
 
@@ -109,8 +132,8 @@ abstract final class InventoryTestFactory {
       branchId: branchId,
       quantity: 0,
       syncStatus: 'synced',
-      createdAt: fixedNow,
-      updatedAt: fixedNow,
+      createdAt: Constants.fixedNow,
+      updatedAt: Constants.fixedNow,
     );
     await db.into(db.inventory).insert(record);
     return record;
@@ -125,15 +148,16 @@ abstract final class InventoryTestFactory {
   /// re-querying the database.
   static Future<ProductData> seedFullProduct(
     AppDatabase db, {
-    String productId = 'prod_1',
-    String globalProductId = 'gp_1',
-    String barcode = 'BARCODE-001',
-    String productName = 'Garri 1kg',
-    int sellingPricePerPiece = 700,
-    int sellingPricePerBulk = 5000,
+    String productId = Constants.productId,
+    String globalProductId = Constants.globalProductId,
+    String barcode = Constants.barCode,
+    String productName = Constants.productName,
+    int sellingPricePerPiece = Constants.sellingPricePerPiece,
+    int sellingPricePerBulk = Constants.sellingPricePerBulk,
   }) async {
-    await seedBranch(db);
+    await seedBusiness(db);
     await seedGlobalProduct(db, id: globalProductId, barcode: barcode);
+    await seedBranch(db);
     final product = await seedProduct(
       db,
       id: productId,
@@ -142,7 +166,7 @@ abstract final class InventoryTestFactory {
       sellingPricePerPiece: sellingPricePerPiece,
       sellingPricePerBulk: sellingPricePerBulk,
     );
-    await seedInventory(db, productId: product.id, branchId: testBranchId);
+    await seedInventory(db, productId: product.id, branchId: Constants.testBranchId);
     return product;
   }
 }
