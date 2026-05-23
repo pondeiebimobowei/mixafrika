@@ -1,3 +1,4 @@
+import 'package:spine/data/services/models/collection_model.dart';
 import 'package:spine/data/services/models/user_model.dart';
 import 'package:spine/data/services/models/business_model.dart';
 import 'package:spine/data/services/models/branch_model.dart';
@@ -9,6 +10,7 @@ class SyncResponse {
   final List<BusinessUserModel> businessUsers;
   final List<BusinessMapper> businesses;
   final List<BranchUserModel> branchUsers;
+  final List<CollectionModel> collections;
   final List<BranchMapper> branches;
 
   SyncResponse({
@@ -16,6 +18,7 @@ class SyncResponse {
     required this.businessUsers,
     required this.businesses,
     required this.branchUsers,
+    required this.collections,  
     required this.branches,
   });
 
@@ -27,6 +30,9 @@ class SyncResponse {
           .toList(),
       businesses: (json['businesses'] as List)
           .map((e) => BusinessMapper.fromJson(e))
+          .toList(),
+      collections: (json['collections'] as List)
+          .map((e) => CollectionModel.fromJson(e))
           .toList(),
       branchUsers: (json['branch_users'] as List)
           .map((e) => BranchUserModel.fromJson(e))

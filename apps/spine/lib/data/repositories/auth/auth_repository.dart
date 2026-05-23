@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart';
 import 'package:spine/data/repositories/auth/auth_repository_abstract.dart';
 import 'package:spine/data/services/api/auth/auth_api_services.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
@@ -29,15 +30,39 @@ class AuthRepository implements AuthRepositoryAbstract {
     
     await AppPreferences.clearAll();
 
-    await _database.transaction(() async {
-    await _database.customStatement('PRAGMA foreign_keys = OFF');
+    final List<TableInfo<Table, dynamic>> tablesInDeleteOrder  = [
+      _database.stockMovement,
+      _database.stockTransferItem,
+      _database.stockTransfer,
+      _database.stockAdjustment,
+      _database.payments,
+      _database.salesItem,
+      _database.sales,
+      _database.invites,
+      _database.inventory,
+      _database.customer,
+      _database.businessUser,
+      _database.globalProduct,
+      _database.cluster,
+      _database.businessVerification,
+      _database.spineBatch,
+      _database.productImage,
+      _database.productCategory,
+      _database.product,
+      _database.branchUser,
+      _database.branch,
+      _database.businesses,
+      _database.collection,
+      _database.user,
+    ];
 
-    for (final table in _database.allTables) {
-      print("deleting ${table.actualTableName}");
+
+    await _database.transaction(() async {
+
+    for (final table in tablesInDeleteOrder) {
       await _database.delete(table).go();
     }
 
-    await _database.customStatement('PRAGMA foreign_keys = ON');
   });
     return ApiResponse(
       data: null,
@@ -72,6 +97,11 @@ class AuthRepository implements AuthRepositoryAbstract {
         // Upsert Businesses
         for (final business in data.businesses) {
           await _database.into(_database.businesses).insertOnConflictUpdate(business.toData());
+        }
+
+        // Upsert Collections
+        for (final collection in data.collections) {
+          await _database.into(_database.collection).insertOnConflictUpdate(collection.toData());
         }
 
         // Upsert BusinessUsers

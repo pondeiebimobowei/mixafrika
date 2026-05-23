@@ -79,6 +79,7 @@ class AuthApiServices implements AuthApiServicesAbstract {
           user: null,
           businessUsers: [],
           businesses: [],
+          collections: [],
           branchUsers: [],
           branches: [],
         ),

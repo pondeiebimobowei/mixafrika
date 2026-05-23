@@ -103,8 +103,6 @@ class AppDatabase extends _$AppDatabase {
         // 1. Create all tables
         await m.createAll();
 
-        // 2. Insert seed data
-        await _insertSeedData(this);
       },
 
       // onUpgrade: stepByStep(
@@ -118,24 +116,6 @@ class AppDatabase extends _$AppDatabase {
         }
       },
     );
-  }
-
-  Future<void> _insertSeedData(AppDatabase db) async {
-    // await db.into(db.businesses).insert(userBiz1);
-    // await db.into(db.businesses).insert(userBiz2);
-    
-    // await db.into(db.branch).insert(biz1branch1);
-    // await db.into(db.branch).insert(biz1branch2);
-
-    // await db.into(db.branch).insert(biz2branch1);
-    // await db.into(db.branch).insert(biz2branch2);
-
-    
-
-    // await db.into(db.bankDetails).insert(bankDetail1);
-    // await db.into(db.bankDetails).insert(bankDetail2);
-    // await db.into(db.bankDetails).insert(bankDetail3);
-    // await db.into(db.bankDetails).insert(bankDetail4);
   }
 }
 

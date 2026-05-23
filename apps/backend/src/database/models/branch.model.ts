@@ -9,7 +9,7 @@ import {
   PrimaryKey,
   Default,
   ForeignKey,
-  BelongsToMany,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { SyncStatus } from '@shared/shared/src/enums';
@@ -73,6 +73,9 @@ export class Branch
   @ForeignKey(() => Business)
   @Column(DataType.UUID)
   declare business_id: string;
+
+  @BelongsTo(() => Business)
+  declare business: Business[];
 
   @ForeignKey(() => Collection)
   @Column(DataType.UUID)

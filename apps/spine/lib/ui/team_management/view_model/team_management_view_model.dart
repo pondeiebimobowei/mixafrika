@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:spine/data/repositories/team/team_repository_local.dart';
+import 'package:spine/data/repositories/team/team_repository.dart';
 import 'package:spine/data/services/models/branch_user_model.dart';
 import 'package:spine/data/shared_preference.dart';
 
@@ -55,8 +55,8 @@ class TeamManagementViewModel extends StateNotifier<TeamManagementState> {
 
 
     try {
-      final membersRes = await ref.read(teamRepositoryLocalProvider).getBranchTeamMembers(businessBranchId);
-      final invitesRes = await ref.read(teamRepositoryLocalProvider).getBranchPendingInvitations(businessBranchId);
+      final membersRes = await ref.read(teamRepositoryProvider).local.getBranchTeamMembers(businessBranchId);
+      final invitesRes = await ref.read(teamRepositoryProvider).local.getBranchPendingInvitations(businessBranchId);
 
       if (membersRes.success && invitesRes.success) {
         state = state.copyWith(
@@ -84,7 +84,7 @@ class TeamManagementViewModel extends StateNotifier<TeamManagementState> {
     if (businessId == null) return false;
 
     state = state.copyWith(isLoading: true, error: null);
-    final res = await ref.read(teamRepositoryLocalProvider).inviteMember(
+    final res = await ref.read(teamRepositoryProvider).remote.inviteMember(
       businessId: businessId,
       email: email,
       role: role,
@@ -105,7 +105,7 @@ class TeamManagementViewModel extends StateNotifier<TeamManagementState> {
     final businessId = await AppPreferences.getActiveBusinessId();
     if (businessId == null) return;
 
-    final res = await ref.read(teamRepositoryLocalProvider).removeMember(businessId, userId);
+    final res = await ref.read(teamRepositoryProvider).remote.removeMember(businessId, userId);
     if (res.success) {
       await loadTeamData();
     } else {
@@ -114,7 +114,7 @@ class TeamManagementViewModel extends StateNotifier<TeamManagementState> {
   }
 
   Future<void> cancelInvitation(String invitationId) async {
-    final res = await ref.read(teamRepositoryLocalProvider).cancelInvitation(invitationId);
+    final res = await ref.read(teamRepositoryProvider).remote.cancelInvitation(invitationId);
     if (res.success) {
       await loadTeamData();
     } else {

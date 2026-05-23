@@ -2,11 +2,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:spine/data/repositories/team/team_repository_local.dart';
+import 'package:spine/data/repositories/team/team_repository.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/ui/team_management/view_model/team_management_view_model.dart';
 
-class MockTeamRepositoryLocal extends Mock implements TeamRepositoryLocal {}
+class MockTeamRepositoryLocal extends Mock implements TeamRepositoryImpl {}
 
 void main() {
   late ProviderContainer container;
@@ -22,7 +22,7 @@ void main() {
     
     container = ProviderContainer(
       overrides: [
-        teamRepositoryLocalProvider.overrideWithValue(mockTeamRepository),
+        teamRepositoryProvider.overrideWithValue(mockTeamRepository),
       ],
     );
   });
@@ -35,8 +35,6 @@ void main() {
       when(() => mockTeamRepository.getBranchPendingInvitations(any()))
           .thenAnswer((_) async => ApiResponse(success: true, message: 'Success', data: []));
 
-      // Act
-      final viewModel = container.read(teamManagementViewModelProvider.notifier);
       
       // Wait for the async constructor logic to complete
       await Future.delayed(Duration.zero);
@@ -56,7 +54,7 @@ void main() {
           .thenAnswer((_) async => ApiResponse(success: true, message: 'Success', data: []));
       when(() => mockTeamRepository.getBranchPendingInvitations(any()))
           .thenAnswer((_) async => ApiResponse(success: true, message: 'Success', data: []));
-      when(() => mockTeamRepository.inviteMember(
+      when(() => mockTeamRepository.remote.inviteMember(
         businessId: any(named: 'businessId'),
         email: any(named: 'email'),
         role: any(named: 'role'),
@@ -75,7 +73,7 @@ void main() {
 
       // Assert
       expect(result, true);
-      verify(() => mockTeamRepository.inviteMember(
+      verify(() => mockTeamRepository.remote.inviteMember(
         businessId: 'biz_123',
         email: 'new@member.com',
         role: 'admin',

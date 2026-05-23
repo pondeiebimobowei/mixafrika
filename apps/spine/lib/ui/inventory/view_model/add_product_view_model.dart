@@ -47,7 +47,6 @@ class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {
         barcode: state.barcode,
         imageUrl: '',
         normalizedName: normalizeName(state.name),
-        category: '',
 
         syncStatus: 'pending',
         syncDate: DateTime.now(),

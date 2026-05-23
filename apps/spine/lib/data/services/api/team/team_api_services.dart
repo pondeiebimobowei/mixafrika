@@ -1,12 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:spine/data/repositories/team/team_local_repository_abstract.dart';
+import 'package:spine/data/repositories/team/team_remote_repository_abstract.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/data/services/api/config/base_api_config.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:spine/data/services/api/team/team_api_services_abstract.dart';
 import 'package:spine/data/services/models/branch_user_model.dart';
 import 'package:spine/drift/database.dart';
 
-class TeamApiServices implements TeamApiServicesAbstract {
+class TeamApiServices implements TeamRemoteRepository, TeamLocalRepository {
   @override
   Future<ApiResponse> inviteMember({
     required String businessId,

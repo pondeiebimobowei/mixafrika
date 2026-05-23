@@ -12,6 +12,8 @@ import { Create_user_dto } from '@shared/shared/src/validation/create-user-dto';
 import { BusinessUser } from 'src/database/models/business-user';
 import { Branch } from 'src/database/models/branch.model';
 import { BranchUser } from 'src/database/models/branch-user';
+import { Collection } from 'src/database/models/collection.model';
+import { Op } from 'sequelize';
 
 
 @Injectable()
@@ -124,7 +126,7 @@ export class AuthService {
   }
 
   async handleSync(userId: string) {
-    const user = await User.findByPk(userId);
+    const user = await User.findOne({ where: { id: userId } });
     if (!user) {
       throw new UnauthorizedException('User not found');
     }
@@ -154,20 +156,32 @@ export class AuthService {
     const branches = await Branch.findAll({
       include: [
         {
-          model: User,
-          // where: { user_id: userId },
+          model: Business,
           attributes: [],
         },
       ],
+    });
+
+    const collectionIds: string[] = branches
+      .map(b => b.collection_id)
+      .filter((id): id is string => Boolean(id));
+
+    const collections = await Collection.findAll({
+          where: {
+            id: {
+              [Op.in]: collectionIds,
+        },
+      },
     });
 
     return {
       success: true,
       message: 'Sync data fetched successfully',
       data: {
-        user,
+        user: user,
         business_users: businessUsers,
         businesses,
+        collections,
         branch_users: branchUsers,
         branches,
       },
