@@ -13,102 +13,120 @@ class SalesRepository implements SalesRepositoryAbstract {
 
   SalesRepository(this._db);
 
-@override
-Future<ApiResponse<void>> createSale(
-  Sale sale,
-  List<SalesItemData> items,
-  List<Payment> payments,
-) async {
-  try {
-    final res = await _db.transaction(() async {
-      final now = DateTime.now();
+  @override
+  Future<ApiResponse<void>> createSale(
+    Sale sale,
+    List<SalesItemData> items,
+    List<Payment> payments,
+  ) async {
+    try {
+      await _db.transaction(() async {
+        final now = DateTime.now();
 
-      await _db.into(_db.sales).insert(sale);
+        await _db.into(_db.sales).insert(sale);
 
-      for (final item in items) {
-        if (item.type != 'product') {
-          await _db.into(_db.salesItem).insert(item);
-          continue;
-        }
+        for (final item in items) {
+          if (item.type != 'product') {
+            await _db.into(_db.salesItem).insert(item);
+            continue;
+          }
 
-        if (item.productId == null) {
-          throw Exception('Product item must have productId');
-        }
+          if (item.productId == null) {
+            throw Exception('Product item must have productId');
+          }
 
-        final batchQuery = _db.select(_db.spineBatch)
-          ..where((tbl) => 
-            tbl.productId.equals(item.productId!) & 
-            tbl.remainingQuantity.isBiggerThanValue(0) & 
-            ( tbl.expiryDate.isNull() |
-              tbl.expiryDate.isBiggerThanValue(now)
+          final batchQuery = _db.select(_db.spineBatch)
+            ..where(
+              (tbl) =>
+                  tbl.productId.equals(item.productId!) &
+                  tbl.branchId.equals(sale.branchId) &
+                  tbl.deletedAt.isNull() &
+                  tbl.remainingQuantity.isBiggerThanValue(0) &
+                  (tbl.expiryDate.isNull() |
+                      tbl.expiryDate.isBiggerThanValue(now)),
             )
-          )
-          ..orderBy([
-            (t) => OrderingTerm(
-              expression: t.expiryDate, 
-              mode: OrderingMode.asc, 
-              nulls: .last,
-            ),
-            (t) => OrderingTerm(expression: t.createdAt, mode: OrderingMode.asc),
-          ]);
+            ..orderBy([
+              (t) => OrderingTerm(
+                expression: t.expiryDate,
+                mode: OrderingMode.asc,
+                nulls: .last,
+              ),
+              (t) =>
+                  OrderingTerm(expression: t.createdAt, mode: OrderingMode.asc),
+            ]);
 
-        final batches = await batchQuery.get();
+          final batches = await batchQuery.get();
 
-        final totalAvailable = batches.fold<int>(
-          0,
-          (sum, b) => sum + b.remainingQuantity,
-        );
-
-        if (totalAvailable < item.quantity) {
-          throw Exception('Insufficient stock for ${item.name}');
-        }
-
-        int remaining = item.quantity;
-
-
-        for (final batch in batches) {
-          if (remaining <= 0) break;
-
-          final take = min(batch.remainingQuantity, remaining);
-
-          await _db.into(_db.salesItem).insert(item.copyWith(
-            id: const Uuid().v4(),
-            total: item.unitPrice * take,
-            quantity: take,
-            
-            costPrice: batch.costPricePerUnit, // Record cost price from batch
-            batchId: Value(batch.id),
-          ));
-
-          await _db.customUpdate(
-            'UPDATE spine_batch SET remaining_quantity = remaining_quantity - ? WHERE id = ?',
-            variables: [Variable.withInt(take), Variable.withString(batch.id)],
-            updates: {_db.spineBatch}, 
-          );
-          await _db.customUpdate(
-            'UPDATE inventory SET quantity = quantity - ? WHERE product_id = ?',
-            variables: [Variable.withInt(take), Variable.withString(batch.productId)],
-            updates: {_db.inventory}, 
+          final totalAvailable = batches.fold<int>(
+            0,
+            (sum, b) => sum + b.remainingQuantity,
           );
 
-          remaining -= take;
-        }
-        
-        if (remaining > 0) {
-          throw Exception('Insufficient stock for ${item.name}');
-        }
-      }
+          if (totalAvailable < item.quantity) {
+            throw Exception('Insufficient stock for ${item.name}');
+          }
 
-      for (final payment in payments) {
-        await _db.into(_db.payments).insert(payment);
-      }
-    });
-    return ApiResponse(success: true, message: 'Sale record created successfully', data: null);
-  } catch (e) {
-    print(e);
-    rethrow; 
+          int remaining = item.quantity;
+
+          for (final batch in batches) {
+            if (remaining <= 0) break;
+
+            final take = min(batch.remainingQuantity, remaining);
+
+            await _db
+                .into(_db.salesItem)
+                .insert(
+                  item.copyWith(
+                    id: const Uuid().v4(),
+                    total: item.unitPrice * take,
+                    quantity: take,
+                    costPrice: batch.costPricePerUnit,
+                    batchId: Value(batch.id),
+                  ),
+                );
+
+            await _db.customUpdate(
+              'UPDATE spine_batch SET remaining_quantity = remaining_quantity - ? WHERE id = ? AND product_id = ? AND branch_id = ? AND deleted_at IS NULL',
+              variables: [
+                Variable.withInt(take),
+                Variable.withString(batch.id),
+                Variable.withString(batch.productId),
+                Variable.withString(sale.branchId),
+              ],
+              updates: {_db.spineBatch},
+            );
+            await _db.customUpdate(
+              'UPDATE inventory SET quantity = quantity - ? WHERE product_id = ? AND branch_id = ? AND deleted_at IS NULL',
+              variables: [
+                Variable.withInt(take),
+                Variable.withString(batch.productId),
+                Variable.withString(sale.branchId),
+              ],
+              updates: {_db.inventory},
+            );
+
+            remaining -= take;
+          }
+
+          if (remaining > 0) {
+            throw Exception('Insufficient stock for ${item.name}');
+          }
+        }
+
+        for (final payment in payments) {
+          await _db.into(_db.payments).insert(payment);
+        }
+      });
+      return ApiResponse(
+        success: true,
+        message: 'Sale record created successfully',
+        data: null,
+      );
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
   }
-}
 
   @override
   Future<List<SaleWithItems>> getSalesWithItems({String? branchId}) async {
@@ -143,8 +161,8 @@ Future<ApiResponse<void>> createSale(
 
       if (!salesMap.containsKey(sale.id)) {
         salesMap[sale.id] = SaleWithItems(
-          sale: sale, 
-          items: [], 
+          sale: sale,
+          items: [],
           payments: [],
           customer: customer,
         );
@@ -199,8 +217,8 @@ Future<ApiResponse<void>> createSale(
     )..where((p) => p.saleId.equals(id))).get();
 
     return SaleWithItems(
-      sale: sale, 
-      items: items, 
+      sale: sale,
+      items: items,
       payments: payments,
       customer: customer,
     );
@@ -213,7 +231,11 @@ Future<ApiResponse<void>> createSale(
 
     // 1. Fetch today's sales for the branch
     final salesQuery = _db.select(_db.sales)
-      ..where((s) => s.branchId.equals(branchId) & s.createdAt.isBiggerOrEqualValue(startOfDay));
+      ..where(
+        (s) =>
+            s.branchId.equals(branchId) &
+            s.createdAt.isBiggerOrEqualValue(startOfDay),
+      );
     final sales = await salesQuery.get();
 
     if (sales.isEmpty) return SalesSummary();
@@ -234,7 +256,7 @@ Future<ApiResponse<void>> createSale(
     final itemsQuery = _db.select(_db.salesItem)
       ..where((si) => si.saleId.isIn(saleIds));
     final items = await itemsQuery.get();
-    
+
     int estProfit = 0;
     for (final item in items) {
       estProfit += (item.unitPrice - item.costPrice) * item.quantity;
@@ -242,9 +264,13 @@ Future<ApiResponse<void>> createSale(
 
     // 3. Physical Inflow (payments made today for today's sales)
     final paymentsQuery = _db.select(_db.payments)
-      ..where((p) => p.saleId.isIn(saleIds) & p.createdAt.isBiggerOrEqualValue(startOfDay));
+      ..where(
+        (p) =>
+            p.saleId.isIn(saleIds) &
+            p.createdAt.isBiggerOrEqualValue(startOfDay),
+      );
     final payments = await paymentsQuery.get();
-    
+
     int physicalInflow = payments.fold(0, (sum, p) => sum + p.amount);
 
     return SalesSummary(

@@ -10,7 +10,6 @@ import 'package:spine/data/services/api/config/api_response.dart';
 class InventoryRepository implements InventoryRepositoryAbstract {
   final AppDatabase _db;
   final ProductRepository productRepository;
-  
 
   InventoryRepository(this._db, {required this.productRepository});
 
@@ -20,9 +19,16 @@ class InventoryRepository implements InventoryRepositoryAbstract {
       innerJoin(_db.product, _db.product.id.equalsExp(_db.inventory.productId)),
       leftOuterJoin(
         _db.spineBatch,
-        _db.spineBatch.productId.equalsExp(_db.product.id),
+        _db.spineBatch.productId.equalsExp(_db.product.id) &
+            _db.spineBatch.branchId.equalsExp(_db.inventory.branchId) &
+            _db.spineBatch.deletedAt.isNull(),
       ),
-    ])..where(_db.inventory.branchId.equals(branchId));
+    ])
+      ..where(
+        _db.inventory.branchId.equals(branchId) &
+            _db.inventory.deletedAt.isNull() &
+            _db.product.deletedAt.isNull(),
+      );
 
     final rows = await query.get();
 
@@ -54,21 +60,28 @@ class InventoryRepository implements InventoryRepositoryAbstract {
   @override
   Future<InventoryItemData?> getInventoryItemById(String productId) async {
     final productQuery = _db.select(_db.product)
-      ..where((p) => p.id.equals(productId));
+      ..where((p) => p.id.equals(productId) & p.deletedAt.isNull());
     final product = await productQuery.getSingleOrNull();
 
     if (product == null) return null;
 
     final inventoryQuery = _db.select(_db.inventory)
-      ..where((i) => i.productId.equals(productId));
+      ..where(
+        (i) =>
+            i.productId.equals(productId) &
+            i.branchId.equals(product.branchId) &
+            i.deletedAt.isNull(),
+      );
     final inventoryRecords = await inventoryQuery.getSingleOrNull();
 
     final batchQuery = _db.select(_db.spineBatch)
       ..where(
         (b) =>
             b.productId.equals(productId) &
+            b.branchId.equals(product.branchId) &
             b.remainingQuantity.isBiggerThanValue(0),
       )
+      ..where((b) => b.deletedAt.isNull())
       ..orderBy([
         (b) => OrderingTerm(expression: b.expiryDate, mode: OrderingMode.asc),
         (b) => OrderingTerm(expression: b.createdAt, mode: OrderingMode.asc),
@@ -123,9 +136,11 @@ class InventoryRepository implements InventoryRepositoryAbstract {
   }) async {
     final now = DateTime.now();
     final totalCostInt = int.tryParse(totalCost) ?? 0;
-    
+
     // Calculate cost per piece for accurate tracking
-    final costPerPiece = pieceQuantity > 0 ? (totalCostInt / pieceQuantity).round() : 0;
+    final costPerPiece = pieceQuantity > 0
+        ? (totalCostInt / pieceQuantity).round()
+        : 0;
 
     // 1. Create Batch
     final newBatch = SpineBatchData(
@@ -162,10 +177,11 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     await _db.into(_db.stockMovement).insert(stockMovement);
 
     await _db.customUpdate(
-      'UPDATE inventory SET quantity = quantity + ? WHERE product_id = ?',
+      'UPDATE inventory SET quantity = quantity + ? WHERE product_id = ? AND branch_id = ? AND deleted_at IS NULL',
       variables: [
         Variable.withInt(pieceQuantity),
         Variable.withString(productId),
+        Variable.withString(branchId),
       ],
       updates: {
         _db.inventory,
@@ -190,7 +206,9 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     double total = 0.0;
     for (final item in inventoryItems) {
       for (final batch in item.batches) {
-        total += (batch.costPricePerUnit.toDouble() * batch.remainingQuantity.toDouble());
+        total +=
+            (batch.costPricePerUnit.toDouble() *
+            batch.remainingQuantity.toDouble());
       }
     }
     return total;
@@ -202,11 +220,13 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     double total = 0.0;
     for (final item in inventoryItems) {
       for (final batch in item.batches) {
-        final sellingPrice = batch.sellingPricePerPiece > 0 
-            ? batch.sellingPricePerPiece.toDouble() 
+        final sellingPrice = batch.sellingPricePerPiece > 0
+            ? batch.sellingPricePerPiece.toDouble()
             : item.product.sellingPricePerPiece.toDouble();
-        
-        total += ((sellingPrice - batch.costPricePerUnit.toDouble()) * batch.remainingQuantity.toDouble());
+
+        total +=
+            ((sellingPrice - batch.costPricePerUnit.toDouble()) *
+            batch.remainingQuantity.toDouble());
       }
     }
     return total;
@@ -217,23 +237,21 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     String branchId,
     String query,
   ) async {
-    final response =
-        await _db.select(_db.inventory).join([
-            innerJoin(
-              _db.product,
-              _db.product.id.equalsExp(_db.inventory.productId),
-            ),
-            leftOuterJoin(
-              _db.spineBatch,
-              _db.spineBatch.productId.equalsExp(_db.product.id),
-            ),
-          ])
-          ..where(_db.inventory.branchId.equals(branchId))
-          ..where(
-            _db.product.name.lower().contains(
-              query.toLowerCase(),
-            ),
-          );
+    final response = _db.select(_db.inventory).join([
+      innerJoin(_db.product, _db.product.id.equalsExp(_db.inventory.productId)),
+      leftOuterJoin(
+        _db.spineBatch,
+        _db.spineBatch.productId.equalsExp(_db.product.id) &
+            _db.spineBatch.branchId.equalsExp(_db.inventory.branchId) &
+            _db.spineBatch.deletedAt.isNull(),
+      ),
+    ])
+      ..where(
+        _db.inventory.branchId.equals(branchId) &
+            _db.inventory.deletedAt.isNull() &
+            _db.product.deletedAt.isNull(),
+      )
+      ..where(_db.product.name.lower().contains(query.toLowerCase()));
 
     final rows = await response.get();
 
