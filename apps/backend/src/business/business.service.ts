@@ -2,58 +2,30 @@ import { Injectable } from '@nestjs/common';
 import { Response } from '@shared/shared/src/types/api/responses';
 import { IBusiness, IBusinessWithBranch } from '@shared/shared/src/types/business';
 import { Submit_business } from '@shared/shared/src/validation/submit-business-dto';
+import { Op } from 'sequelize';
+import { TenantAccessService } from 'src/access/tenant-access.service';
 import { Branch } from 'src/database/models/branch.model';
 import { BusinessUser } from 'src/database/models/business-user';
 import { BusinessVerification } from 'src/database/models/business-verification.model';
 import { Business } from 'src/database/models/business.model';
-import { User } from 'src/database/models/user.model';
 
 @Injectable()
 export class BusinessService {
+    constructor(private readonly tenantAccessService: TenantAccessService) {}
 
     async handleGetBusiness(user_id: string): Promise<Response<IBusiness[]>> {
-
-        const directBusinesses = await Business.findAll({
-            include: [
-                {
-                    model: User,
-                    attributes: [],
-                    // where: { user_id: user_id },
-                    through: {
-                        attributes: ['role']
-                    },
-                    required: true
-                }
-            ],
-        });
-
-        const branchBusinesses = await Business.findAll({
-            include: [
-                {
-                    model: Branch,
-                    required: true,
-                    include: [
-                        {
-                            model: User,
-                            // where: { id: user_id },
-                            attributes: [],
-                            // through: {
-                            //     attributes: ['role'],
-                            // },
-                            required: true,
+        const businessIds =
+            await this.tenantAccessService.getAccessibleBusinessIds(user_id);
+        const businesses =
+            businessIds.length > 0
+                ? await Business.findAll({
+                    where: {
+                        id: {
+                            [Op.in]: businessIds,
                         },
-                    ],
-                },
-            ],
-        });
-
-        const businessMap = new Map();
-
-        [...directBusinesses, ...branchBusinesses].forEach((b) => {
-            businessMap.set(b.id, b);
-        });
-
-        const businesses = Array.from(businessMap.values());
+                    },
+                })
+                : [];
 
 
         return {

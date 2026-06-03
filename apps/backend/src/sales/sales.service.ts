@@ -1,14 +1,26 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Response } from '@shared/shared/src/types/api/responses';
 import { ISales } from '@shared/shared/src/types/sales';
+import { Op } from 'sequelize';
+import { TenantAccessService } from 'src/access/tenant-access.service';
 import { Sales } from 'src/database/models/sales.model';
 
 @Injectable()
 export class SalesService {
-    async findAll(): Promise<Response<ISales[]>> {
-        const sales = await Sales.findAll({
-            include: ['customer', 'branch', 'created_by']
-        });
+    constructor(private readonly tenantAccessService: TenantAccessService) {}
+
+    async findAll(userId: string): Promise<Response<ISales[]>> {
+        const branchIds = await this.tenantAccessService.getAccessibleBranchIds(userId);
+        const sales = branchIds.length > 0
+            ? await Sales.findAll({
+                where: {
+                    branch_id: {
+                        [Op.in]: branchIds,
+                    },
+                },
+                include: ['customer', 'branch']
+            })
+            : [];
         return {
             success: true,
             data: sales,
@@ -16,9 +28,9 @@ export class SalesService {
         };
     }
 
-    async findOne(id: string): Promise<Response<ISales | null>> {
+    async findOne(userId: string, id: string): Promise<Response<ISales | null>> {
         const sale = await Sales.findByPk(id, {
-            include: ['customer', 'branch', 'created_by']
+            include: ['customer', 'branch']
         });
         if (!sale) {
             return {
@@ -27,6 +39,9 @@ export class SalesService {
                 message: 'Sale not found'
             };
         }
+
+        await this.tenantAccessService.assertBranchAccess(userId, sale.branch_id);
+
         return {
             success: true,
             data: sale,
@@ -34,8 +49,17 @@ export class SalesService {
         };
     }
 
-    async create(saleData: Partial<ISales>): Promise<Response<ISales>> {
-        const sale = await Sales.create(saleData as any);
+    async create(userId: string, saleData: Partial<ISales>): Promise<Response<ISales>> {
+        if (!saleData.branch_id) {
+            throw new BadRequestException('branch_id is required');
+        }
+
+        await this.tenantAccessService.assertBranchAccess(userId, saleData.branch_id);
+
+        const sale = await Sales.create({
+            ...saleData,
+            created_by: userId,
+        } as any);
         return {
             success: true,
             data: sale,
@@ -43,7 +67,7 @@ export class SalesService {
         };
     }
 
-    async update(id: string, saleData: Partial<ISales>): Promise<Response<ISales | null>> {
+    async update(userId: string, id: string, saleData: Partial<ISales>): Promise<Response<ISales | null>> {
         const sale = await Sales.findByPk(id);
         if (!sale) {
             return {
@@ -52,6 +76,13 @@ export class SalesService {
                 message: 'Sale not found'
             };
         }
+
+        await this.tenantAccessService.assertBranchAccess(userId, sale.branch_id);
+
+        if (saleData.branch_id && saleData.branch_id !== sale.branch_id) {
+            await this.tenantAccessService.assertBranchAccess(userId, saleData.branch_id);
+        }
+
         await sale.update(saleData);
         return {
             success: true,
@@ -60,7 +91,7 @@ export class SalesService {
         };
     }
 
-    async remove(id: string): Promise<Response<void>> {
+    async remove(userId: string, id: string): Promise<Response<void>> {
         const sale = await Sales.findByPk(id);
         if (!sale) {
             return {
@@ -69,6 +100,9 @@ export class SalesService {
                 message: 'Sale not found'
             };
         }
+
+        await this.tenantAccessService.assertBranchAccess(userId, sale.branch_id);
+
         await sale.destroy();
         return {
             success: true,

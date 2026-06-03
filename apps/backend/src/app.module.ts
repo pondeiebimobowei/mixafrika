@@ -68,6 +68,7 @@ import { Invites } from './database/models/invites.model';
 import { BranchUser } from './database/models/branch-user';
 import { TeamModule } from './team/team.module';
 import { BranchModule } from './branch/branch.module';
+import { AccessModule } from './access/access.module';
 
 @Module({
   imports: [
@@ -108,6 +109,7 @@ import { BranchModule } from './branch/branch.module';
     ProductModule,
     TeamModule,
     BranchModule,
+    AccessModule,
   ],
   controllers: [AppController],
   providers: [

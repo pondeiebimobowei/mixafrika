@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from 'src/database/models/user.model';
 import { UserVerification } from 'src/database/models/user-verification';
 import { Verify_identity } from '@shared/shared/src/validation/verify-identity-dto';
+import { sanitizeUser } from 'src/utils/user-response.util';
 
 @Injectable()
 export class UserService {
@@ -16,7 +17,7 @@ export class UserService {
     return {
       success: true,
       message: '',
-      data: user,
+      data: sanitizeUser(user),
     };
   }
 

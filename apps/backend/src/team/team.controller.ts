@@ -17,13 +17,19 @@ export class TeamController {
   }
 
   @Get('branch/members/:branchId')
-  getBranchTeamMembers(@Param('branchId') branchId: string) {
-    return this.teamService.handleGetBranchTeamMembers(branchId);
+  getBranchTeamMembers(
+    @ParsedToken() user: User,
+    @Param('branchId') branchId: string,
+  ) {
+    return this.teamService.handleGetBranchTeamMembers(user.id, branchId);
   }
 
   @Get('branch/invites/:branchId')
-  getBranchPendingInvitations(@Param('branchId') branchId: string) {
-    return this.teamService.handleGetBranchPendingInvitations(branchId);
+  getBranchPendingInvitations(
+    @ParsedToken() user: User,
+    @Param('branchId') branchId: string,
+  ) {
+    return this.teamService.handleGetBranchPendingInvitations(user.id, branchId);
   }
 
   @Post('accept-invite')
@@ -36,14 +42,18 @@ export class TeamController {
 
   @Delete('members/:businessId/:userId')
   removeMember(
+    @ParsedToken() user: User,
     @Param('businessId') businessId: string,
     @Param('userId') userId: string,
   ) {
-    return this.teamService.handleRemoveMember(businessId, userId);
+    return this.teamService.handleRemoveMember(user.id, businessId, userId);
   }
 
   @Delete('invitations/:invitationId')
-  cancelInvitation(@Param('invitationId') invitationId: string) {
-    return this.teamService.handleCancelInvitation(invitationId);
+  cancelInvitation(
+    @ParsedToken() user: User,
+    @Param('invitationId') invitationId: string,
+  ) {
+    return this.teamService.handleCancelInvitation(user.id, invitationId);
   }
 }

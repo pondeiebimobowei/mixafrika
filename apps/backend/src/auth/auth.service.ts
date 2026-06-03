@@ -14,12 +14,17 @@ import { Branch } from 'src/database/models/branch.model';
 import { BranchUser } from 'src/database/models/branch-user';
 import { Collection } from 'src/database/models/collection.model';
 import { Op } from 'sequelize';
+import { TenantAccessService } from 'src/access/tenant-access.service';
+import { sanitizeUser } from 'src/utils/user-response.util';
 
 
 @Injectable()
 export class AuthService {
 
-  constructor(private readonly configService: ConfigService) { }
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly tenantAccessService: TenantAccessService,
+  ) { }
 
     async handleSignup(create_user_dto: Create_user_dto) {
     const jwtSecret = this.configService.get('access_token_secret');
@@ -61,7 +66,7 @@ export class AuthService {
     return {
       success: true,
       message: "User created successfully",
-      data: { token, refresh_token, user },
+      data: { token, refresh_token, user: sanitizeUser(user) },
     };
   }
 
@@ -81,7 +86,11 @@ export class AuthService {
     const token = sign(payload, jwtSecret, { expiresIn: '1h' });
     const refresh_token = sign(payload, jwtSecretRefresh, { expiresIn: '1d' });
 
-    return { success: true, data: { token, refresh_token, user }, message: "Login Successful" };
+    return {
+      success: true,
+      data: { token, refresh_token, user: sanitizeUser(user) },
+      message: "Login Successful",
+    };
   }
 
 
@@ -131,36 +140,40 @@ export class AuthService {
       throw new UnauthorizedException('User not found');
     }
 
+    const [accessibleBusinessIds, accessibleBranchIds] = await Promise.all([
+      this.tenantAccessService.getAccessibleBusinessIds(userId),
+      this.tenantAccessService.getAccessibleBranchIds(userId),
+    ]);
+
     const businessUsers = await BusinessUser.findAll({
       where: { user_id: userId },
     });
 
-    const businesses = await Business.findAll({
-      include: [
-        {
-          model: User,
-          where: { id: userId },
-          attributes: [],
-          through: {
-            attributes: ['role'], // optional
-          },
-          required: true,
-        },
-      ],
-    });
+    const businesses =
+      accessibleBusinessIds.length > 0
+        ? await Business.findAll({
+            where: {
+              id: {
+                [Op.in]: accessibleBusinessIds,
+              },
+            },
+          })
+        : [];
 
     const branchUsers = await BranchUser.findAll({
       where: { user_id: userId },
     });
 
-    const branches = await Branch.findAll({
-      include: [
-        {
-          model: Business,
-          attributes: [],
-        },
-      ],
-    });
+    const branches =
+      accessibleBranchIds.length > 0
+        ? await Branch.findAll({
+            where: {
+              id: {
+                [Op.in]: accessibleBranchIds,
+              },
+            },
+          })
+        : [];
 
     const collectionIds: string[] = branches
       .map(b => b.collection_id)
@@ -178,7 +191,7 @@ export class AuthService {
       success: true,
       message: 'Sync data fetched successfully',
       data: {
-        user: user,
+        user: sanitizeUser(user),
         business_users: businessUsers,
         businesses,
         collections,
