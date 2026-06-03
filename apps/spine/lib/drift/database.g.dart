@@ -13021,7 +13021,7 @@ class $BusinessUserTable extends BusinessUser
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'UNIQUE REFERENCES user (id)',
+      'REFERENCES user (id)',
     ),
   );
   static const VerificationMeta _businessIdMeta = const VerificationMeta(
@@ -13035,7 +13035,7 @@ class $BusinessUserTable extends BusinessUser
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'UNIQUE REFERENCES businesses (id)',
+      'REFERENCES businesses (id)',
     ),
   );
   @override
@@ -13152,6 +13152,10 @@ class $BusinessUserTable extends BusinessUser
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {businessId, userId},
+  ];
   @override
   BusinessUserData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
@@ -16900,7 +16904,7 @@ class $BranchUserTable extends BranchUser
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'UNIQUE REFERENCES user (id)',
+      'REFERENCES user (id)',
     ),
   );
   static const VerificationMeta _branchIdMeta = const VerificationMeta(
@@ -16914,7 +16918,7 @@ class $BranchUserTable extends BranchUser
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'UNIQUE REFERENCES branch (id)',
+      'REFERENCES branch (id)',
     ),
   );
   @override
@@ -17021,6 +17025,10 @@ class $BranchUserTable extends BranchUser
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  List<Set<GeneratedColumn>> get uniqueKeys => [
+    {branchId, userId},
+  ];
   @override
   BranchUserData map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';

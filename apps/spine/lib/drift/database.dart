@@ -75,8 +75,6 @@ class AppDatabase extends _$AppDatabase {
     return driftDatabase(
       name: 'spinedbbbbbbBbXfDughUu1dediDdrf2fQ-1',
 
-      
-
       native: const DriftNativeOptions(
         databaseDirectory: getApplicationSupportDirectory,
       ),
@@ -108,6 +106,13 @@ class AppDatabase extends _$AppDatabase {
       // onUpgrade: stepByStep(
 
       // ),
+
+      // onUpgrade: (Migrator m, int from, int to) async {
+      //   if (from < 2) {
+      //     await m.alterTable(TableMigration(businessUser));
+      //     await m.alterTable(TableMigration(branchUser));
+      //   }
+      // },
       beforeOpen: (details) async {
         // Optional: Enable foreign keys or perform checks every time the app opens
         await customStatement('PRAGMA foreign_keys = ON');
