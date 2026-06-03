@@ -1,13 +1,27 @@
 require('ts-node/register');
 
-const development= {
-  username: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
+const requiredEnv = (name) => {
+  const value = process.env[name];
+  if (value === undefined || value === '') {
+    throw new Error(
+      `Missing ${name}. Copy .env.test.example to .env.test for test commands, or set ${name} in the active environment.`,
+    );
+  }
+  return value;
+};
+
+const databaseConfig = () => ({
+  username: requiredEnv('DB_USER'),
+  password: requiredEnv('DB_PASS'),
+  database: requiredEnv('DB_NAME'),
+  host: requiredEnv('DB_HOST'),
+  port: Number(requiredEnv('DB_PORT')),
   seederStorage: 'sequelize',
-  dialect: process.env.DB_DIALECT,
+  dialect: requiredEnv('DB_DIALECT'),
+});
+
+const development= {
+  ...databaseConfig(),
 //   dialectOptions: {
 //       ssl: {
 //           require: true,
@@ -17,13 +31,7 @@ const development= {
 }
 
 const test = {
-    username: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    seederStorage: 'sequelize',
-    dialect: process.env.DB_DIALECT,
+    ...databaseConfig(),
     // dialectOptions: {
     //     ssl: {
     //         require: true,
@@ -33,13 +41,7 @@ const test = {
 }
 
 const production = {
-    username: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    dialect: process.env.DB_DIALECT,
-    seederStorage: 'sequelize',
+    ...databaseConfig(),
     dialectOptions: {
       ssl: {
           require: true,

@@ -9,6 +9,7 @@
   },
   "moduleNameMapper": {
     "^src/(.*)$": "<rootDir>/src/$1",
-    "^@shared/(.*)$": "<rootDir>/dist/packages/$1"
+    "^@shared/shared/src/(.*)$": "<rootDir>/../../packages/shared/src/$1",
+    "^@shared/(.*)$": "<rootDir>/../../packages/$1"
   }
 }

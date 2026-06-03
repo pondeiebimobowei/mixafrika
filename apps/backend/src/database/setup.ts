@@ -2,16 +2,29 @@ import { SequelizeModuleOptions } from '@nestjs/sequelize';
 import { ConfigService } from '@nestjs/config';
 import { Dialect } from 'sequelize';
 
+const requiredConfig = <T = string>(
+  configService: ConfigService,
+  key: string,
+): T => {
+  const value = configService.get<T>(key);
+  if (value === undefined || value === '') {
+    throw new Error(
+      `Missing ${key}. Copy .env.test.example to .env.test for test commands, or set ${key} in the active environment.`,
+    );
+  }
+  return value;
+};
+
 export const getSequelizeConfig = (
   configService: ConfigService,
 ): SequelizeModuleOptions => {
   const baseConfig: SequelizeModuleOptions = {
-    database: configService.get<string>('DB_NAME'),
-    username: configService.get<string>('DB_USER'),
-    password: configService.get<string>('DB_PASS'),
-    host: configService.get<string>('DB_HOST'),
-    port: configService.get<number>('DB_PORT'),
-    dialect: configService.get<Dialect>('DB_DIALECT'),
+    database: requiredConfig(configService, 'DB_NAME'),
+    username: requiredConfig(configService, 'DB_USER'),
+    password: requiredConfig(configService, 'DB_PASS'),
+    host: requiredConfig(configService, 'DB_HOST'),
+    port: Number(requiredConfig(configService, 'DB_PORT')),
+    dialect: requiredConfig<Dialect>(configService, 'DB_DIALECT'),
     autoLoadModels: true,
     synchronize: false,
     logging: false,

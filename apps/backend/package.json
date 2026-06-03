@@ -17,15 +17,15 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "pretest:e2e": "npm run clear:test",
+    "pretest:e2e": "npm run reset:test",
     "test:e2e": "dotenv -e .env.test -- jest --no-cache --config ./test/jest-e2e.json",
     "migrate:test": "dotenv -e .env.test -- cross-env NODE_ENV=test npx sequelize-cli db:migrate",
-    "migrate:undo:test": "dotenv -e .env.test -- sequelize-cli db:migrate:undo",
-    "migrate:undo:all:test": "dotenv -e .env.test -- sequelize-cli db:migrate:undo:all",
-    "migrate:seed:all:test": "dotenv -e .env.test -- sequelize-cli db:seed:all",
-    "migrate:seed:undo:test": "dotenv -e .env.test -- sequelize-cli db:seed:undo",
-    "clear:test": "dotenv -e .env.test -- sequelize-cli db:seed:undo:all && dotenv -e .env.test -- sequelize-cli db:seed:all",
-    "reset:test": "dotenv -e .env.test -- sequelize-cli db:migrate:undo:all && dotenv -e .env.test -- sequelize-cli db:migrate && dotenv -e .env.test sequelize-cli db:seed:all",
+    "migrate:undo:test": "dotenv -e .env.test -- cross-env NODE_ENV=test sequelize-cli db:migrate:undo",
+    "migrate:undo:all:test": "dotenv -e .env.test -- cross-env NODE_ENV=test sequelize-cli db:migrate:undo:all",
+    "migrate:seed:all:test": "dotenv -e .env.test -- cross-env NODE_ENV=test sequelize-cli db:seed:all",
+    "migrate:seed:undo:test": "dotenv -e .env.test -- cross-env NODE_ENV=test sequelize-cli db:seed:undo",
+    "clear:test": "dotenv -e .env.test -- cross-env NODE_ENV=test sequelize-cli db:seed:undo:all && dotenv -e .env.test -- cross-env NODE_ENV=test sequelize-cli db:seed:all",
+    "reset:test": "dotenv -e .env.test -- cross-env NODE_ENV=test sequelize-cli db:migrate:undo:all && dotenv -e .env.test -- cross-env NODE_ENV=test sequelize-cli db:migrate && dotenv -e .env.test -- cross-env NODE_ENV=test sequelize-cli db:seed:all",
     "migrate": "dotenv -- sequelize-cli db:migrate",
     "migrate:prod": "dotenv -e .env -- cross-env NODE_ENV=production npx sequelize-cli db:migrate",
     "migrate:prod:undo": "dotenv -e .env -- cross-env NODE_ENV=production npx sequelize-cli db:migrate:undo:all",
@@ -102,6 +102,11 @@
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "moduleNameMapper": {
+      "^src/(.*)$": "<rootDir>/$1",
+      "^@shared/shared/src/(.*)$": "<rootDir>/../../../packages/shared/src/$1",
+      "^@shared/(.*)$": "<rootDir>/../../../packages/$1"
     },
     "collectCoverageFrom": [
       "**/*.(t|j)s"
