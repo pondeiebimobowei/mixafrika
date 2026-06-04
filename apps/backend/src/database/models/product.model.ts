@@ -37,13 +37,13 @@ export class Product
   @Column(DataType.STRING)
   declare piece_unit_name: string;
 
-  @Column(DataType.INTEGER)
+  @Column(DataType.BIGINT)
   declare units_per_bulk: number;
 
-  @Column(DataType.INTEGER)
+  @Column(DataType.BIGINT)
   declare selling_price_per_piece: number;
 
-  @Column(DataType.INTEGER)
+  @Column(DataType.BIGINT)
   declare selling_price_per_bulk: number;
 
   @Column(DataType.STRING)

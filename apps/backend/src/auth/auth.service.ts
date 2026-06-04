@@ -190,7 +190,15 @@ export class AuthService {
       },
     });
 
-    const syncChanges = await this.syncService.pullChanges(userId);
+    const {
+      user: _syncUser,
+      business_users: _syncBusinessUsers,
+      businesses: _syncBusinesses,
+      collections: _syncCollections,
+      branch_users: _syncBranchUsers,
+      branches: _syncBranches,
+      ...posChanges
+    } = await this.syncService.pullChanges(userId);
 
     return {
       success: true,
@@ -202,7 +210,7 @@ export class AuthService {
         collections,
         branch_users: branchUsers,
         branches,
-        ...syncChanges,
+        ...posChanges,
       },
     };
   }

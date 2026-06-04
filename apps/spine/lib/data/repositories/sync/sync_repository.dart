@@ -99,6 +99,8 @@ class SyncRepository {
       }
     });
 
+    await _ensureDefaultTenantSelection();
+
     if (payload.cursor.isNotEmpty) {
       await AppPreferences.saveSyncCursor(payload.cursor);
     }
@@ -127,9 +129,9 @@ class SyncRepository {
     final mutations = <SyncMutation>[];
     const statuses = ['pending', 'failed'];
 
-    final globalProducts = await (_db.select(_db.globalProduct)
-          ..where((table) => table.syncStatus.isIn(statuses)))
-        .get();
+    final globalProducts = await (_db.select(
+      _db.globalProduct,
+    )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       globalProducts.map(
         (row) => SyncMutation(
@@ -140,9 +142,9 @@ class SyncRepository {
       ),
     );
 
-    final products = await (_db.select(_db.product)
-          ..where((table) => table.syncStatus.isIn(statuses)))
-        .get();
+    final products = await (_db.select(
+      _db.product,
+    )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       products.map(
         (row) => SyncMutation(
@@ -153,9 +155,9 @@ class SyncRepository {
       ),
     );
 
-    final customers = await (_db.select(_db.customer)
-          ..where((table) => table.syncStatus.isIn(statuses)))
-        .get();
+    final customers = await (_db.select(
+      _db.customer,
+    )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       customers.map(
         (row) => SyncMutation(
@@ -166,9 +168,9 @@ class SyncRepository {
       ),
     );
 
-    final inventory = await (_db.select(_db.inventory)
-          ..where((table) => table.syncStatus.isIn(statuses)))
-        .get();
+    final inventory = await (_db.select(
+      _db.inventory,
+    )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       inventory.map(
         (row) => SyncMutation(
@@ -179,9 +181,9 @@ class SyncRepository {
       ),
     );
 
-    final batches = await (_db.select(_db.spineBatch)
-          ..where((table) => table.syncStatus.isIn(statuses)))
-        .get();
+    final batches = await (_db.select(
+      _db.spineBatch,
+    )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       batches.map(
         (row) => SyncMutation(
@@ -192,9 +194,9 @@ class SyncRepository {
       ),
     );
 
-    final stockMovements = await (_db.select(_db.stockMovement)
-          ..where((table) => table.syncStatus.isIn(statuses)))
-        .get();
+    final stockMovements = await (_db.select(
+      _db.stockMovement,
+    )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       stockMovements.map(
         (row) => SyncMutation(
@@ -205,22 +207,19 @@ class SyncRepository {
       ),
     );
 
-    final sales = await (_db.select(_db.sales)
-          ..where((table) => table.syncStatus.isIn(statuses)))
-        .get();
+    final sales = await (_db.select(
+      _db.sales,
+    )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       sales.map(
-        (row) => SyncMutation(
-          entity: 'sales',
-          localId: row.id,
-          data: row.toJson(),
-        ),
+        (row) =>
+            SyncMutation(entity: 'sales', localId: row.id, data: row.toJson()),
       ),
     );
 
-    final salesItems = await (_db.select(_db.salesItem)
-          ..where((table) => table.syncStatus.isIn(statuses)))
-        .get();
+    final salesItems = await (_db.select(
+      _db.salesItem,
+    )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       salesItems.map(
         (row) => SyncMutation(
@@ -231,9 +230,9 @@ class SyncRepository {
       ),
     );
 
-    final payments = await (_db.select(_db.payments)
-          ..where((table) => table.syncStatus.isIn(statuses)))
-        .get();
+    final payments = await (_db.select(
+      _db.payments,
+    )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       payments.map(
         (row) => SyncMutation(
@@ -244,9 +243,9 @@ class SyncRepository {
       ),
     );
 
-    final transfers = await (_db.select(_db.stockTransfer)
-          ..where((table) => table.syncStatus.isIn(statuses)))
-        .get();
+    final transfers = await (_db.select(
+      _db.stockTransfer,
+    )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       transfers.map(
         (row) => SyncMutation(
@@ -257,9 +256,9 @@ class SyncRepository {
       ),
     );
 
-    final transferItems = await (_db.select(_db.stockTransferItem)
-          ..where((table) => table.syncStatus.isIn(statuses)))
-        .get();
+    final transferItems = await (_db.select(
+      _db.stockTransferItem,
+    )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       transferItems.map(
         (row) => SyncMutation(
@@ -277,6 +276,12 @@ class SyncRepository {
     Map<String, List<Map<String, dynamic>>> changes,
   ) async {
     const order = [
+      'user',
+      'businesses',
+      'collections',
+      'business_users',
+      'branches',
+      'branch_users',
       'global_products',
       'products',
       'customers',
@@ -298,52 +303,123 @@ class SyncRepository {
   }
 
   Future<void> _upsertServerRecord(String entity, Map<String, dynamic> row) {
+    final normalizedRow = _normalizeServerRecord(row);
+
     switch (entity) {
+      case 'user':
+        return _db
+            .into(_db.user)
+            .insertOnConflictUpdate(UserData.fromJson(normalizedRow));
+      case 'businesses':
+        return _db
+            .into(_db.businesses)
+            .insertOnConflictUpdate(BusinessesData.fromJson(normalizedRow));
+      case 'collections':
+        return _db
+            .into(_db.collection)
+            .insertOnConflictUpdate(CollectionData.fromJson(normalizedRow));
+      case 'business_users':
+        return _db
+            .into(_db.businessUser)
+            .insertOnConflictUpdate(BusinessUserData.fromJson(normalizedRow));
+      case 'branches':
+        return _db
+            .into(_db.branch)
+            .insertOnConflictUpdate(BranchData.fromJson(normalizedRow));
+      case 'branch_users':
+        return _db
+            .into(_db.branchUser)
+            .insertOnConflictUpdate(BranchUserData.fromJson(normalizedRow));
       case 'global_products':
         return _db
             .into(_db.globalProduct)
-            .insertOnConflictUpdate(GlobalProductData.fromJson(row));
+            .insertOnConflictUpdate(GlobalProductData.fromJson(normalizedRow));
       case 'products':
         return _db
             .into(_db.product)
-            .insertOnConflictUpdate(ProductData.fromJson(row));
+            .insertOnConflictUpdate(ProductData.fromJson(normalizedRow));
       case 'customers':
         return _db
             .into(_db.customer)
-            .insertOnConflictUpdate(CustomerData.fromJson(row));
+            .insertOnConflictUpdate(CustomerData.fromJson(normalizedRow));
       case 'batches':
         return _db
             .into(_db.spineBatch)
-            .insertOnConflictUpdate(SpineBatchData.fromJson(row));
+            .insertOnConflictUpdate(SpineBatchData.fromJson(normalizedRow));
       case 'inventory':
         return _db
             .into(_db.inventory)
-            .insertOnConflictUpdate(InventoryData.fromJson(row));
+            .insertOnConflictUpdate(InventoryData.fromJson(normalizedRow));
       case 'stock_movements':
         return _db
             .into(_db.stockMovement)
-            .insertOnConflictUpdate(StockMovementData.fromJson(row));
+            .insertOnConflictUpdate(StockMovementData.fromJson(normalizedRow));
       case 'sales':
-        return _db.into(_db.sales).insertOnConflictUpdate(Sale.fromJson(row));
+        return _db
+            .into(_db.sales)
+            .insertOnConflictUpdate(Sale.fromJson(normalizedRow));
       case 'sales_items':
         return _db
             .into(_db.salesItem)
-            .insertOnConflictUpdate(SalesItemData.fromJson(row));
+            .insertOnConflictUpdate(SalesItemData.fromJson(normalizedRow));
       case 'payments':
         return _db
             .into(_db.payments)
-            .insertOnConflictUpdate(Payment.fromJson(row));
+            .insertOnConflictUpdate(Payment.fromJson(normalizedRow));
       case 'stock_transfers':
         return _db
             .into(_db.stockTransfer)
-            .insertOnConflictUpdate(StockTransferData.fromJson(row));
+            .insertOnConflictUpdate(StockTransferData.fromJson(normalizedRow));
       case 'stock_transfer_items':
         return _db
             .into(_db.stockTransferItem)
-            .insertOnConflictUpdate(StockTransferItemData.fromJson(row));
+            .insertOnConflictUpdate(
+              StockTransferItemData.fromJson(normalizedRow),
+            );
       default:
         return Future.value();
     }
+  }
+
+  Map<String, dynamic> _normalizeServerRecord(Map<String, dynamic> row) {
+    const dateKeys = {
+      'assignedAt',
+      'createdAt',
+      'deletedAt',
+      'expiryDate',
+      'joinedAt',
+      'reviewedAt',
+      'syncDate',
+      'updatedAt',
+    };
+
+    return row.map((key, value) {
+      if (!dateKeys.contains(key) || value == null) {
+        return MapEntry(key, value);
+      }
+
+      if (value is int) {
+        return MapEntry(
+          key,
+          DateTime.fromMillisecondsSinceEpoch(
+            value,
+            isUtc: true,
+          ).toIso8601String(),
+        );
+      }
+
+      if (value is double) {
+        return MapEntry(
+          key,
+          DateTime.fromMillisecondsSinceEpoch(
+            value.toInt(),
+            isUtc: true,
+          ).toIso8601String(),
+        );
+      }
+
+      return MapEntry(key, value);
+    });
   }
 
   Future<void> _markRecord(
@@ -370,6 +446,12 @@ class SyncRepository {
 
   String? _tableNameForEntity(String entity) {
     return const {
+      'user': 'user',
+      'businesses': 'businesses',
+      'collections': 'collection',
+      'business_users': 'business_user',
+      'branches': 'branch',
+      'branch_users': 'branch_user',
       'global_products': 'global_product',
       'products': 'product',
       'inventory': 'inventory',
@@ -382,6 +464,40 @@ class SyncRepository {
       'stock_transfers': 'stock_transfer',
       'stock_transfer_items': 'stock_transfer_item',
     }[entity];
+  }
+
+  Future<void> _ensureDefaultTenantSelection() async {
+    final activeBusinessId = await AppPreferences.getActiveBusinessId();
+    final activeBranchId = await AppPreferences.getActiveBranchId();
+
+    if (activeBusinessId != null &&
+        activeBusinessId.isNotEmpty &&
+        activeBranchId != null &&
+        activeBranchId.isNotEmpty) {
+      return;
+    }
+
+    final businesses = await _db.select(_db.businesses).get();
+    if (businesses.isEmpty) return;
+
+    final selectedBusinessId = activeBusinessId?.isNotEmpty == true
+        ? activeBusinessId!
+        : businesses.first.id;
+    if (activeBusinessId == null || activeBusinessId.isEmpty) {
+      await AppPreferences.saveActiveBusinessId(selectedBusinessId);
+    }
+
+    if (activeBranchId != null && activeBranchId.isNotEmpty) return;
+
+    final branches = await (_db.select(
+      _db.branch,
+    )..where((table) => table.businessId.equals(selectedBusinessId))).get();
+    if (branches.isEmpty) return;
+
+    final headOffice = branches
+        .where((branch) => branch.isHeadOffice)
+        .firstOrNull;
+    await AppPreferences.saveActiveBranchId((headOffice ?? branches.first).id);
   }
 }
 

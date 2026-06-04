@@ -76,6 +76,7 @@ import { StockMovement } from './database/models/stock-movement';
 import { StockTransfer } from './database/models/stock-transfer.model';
 import { StockTransferItem } from './database/models/stock-transfer-item';
 import { GlobalProduct } from './database/models/global-product';
+import { ProductCategory } from './database/models/product-category';
 
 @Module({
   imports: [
@@ -95,7 +96,7 @@ import { GlobalProduct } from './database/models/global-product';
     AdminModule,
     LoanAccountHistoryModule,
     SettingsModule,
-    SequelizeModule.forFeature([User, BusinessUser, BusinessUser, BranchUser, Invites, UserVerification, Branch, BusinessVerification, Savings, FundingApplication, Goal, BankCard, Investment, Notification, Feed, Cluster, Collection, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, Business, Transaction, Wallet, LoanAccount, Product, Batch, Inventory, Sales, SalesItem, Customer, Payment, StockMovement, StockTransfer, StockTransferItem, GlobalProduct]),
+    SequelizeModule.forFeature([User, BusinessUser, BusinessUser, BranchUser, Invites, UserVerification, Branch, BusinessVerification, Savings, FundingApplication, Goal, BankCard, Investment, Notification, Feed, Cluster, Collection, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, Business, Transaction, Wallet, LoanAccount, Product, Batch, Inventory, Sales, SalesItem, Customer, Payment, StockMovement, StockTransfer, StockTransferItem, GlobalProduct, ProductCategory]),
     ConfigModule.forRoot({ isGlobal: true }),
     SequelizeModule.forRootAsync({
       useFactory: getSequelizeConfig,

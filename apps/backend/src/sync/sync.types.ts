@@ -1,4 +1,10 @@
 export type SyncEntity =
+  | 'user'
+  | 'businesses'
+  | 'collections'
+  | 'business_users'
+  | 'branches'
+  | 'branch_users'
   | 'global_products'
   | 'products'
   | 'inventory'
@@ -23,7 +29,7 @@ export interface SyncMutation {
 }
 
 export interface SyncRequest {
-  cursor?: string;
+  cursor?: string | null;
   mutations?: SyncMutation[];
 }
 

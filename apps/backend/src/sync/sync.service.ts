@@ -2,6 +2,11 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Op } from 'sequelize';
 import { TenantAccessService } from 'src/access/tenant-access.service';
 import { Batch } from 'src/database/models/batch.model';
+import { Branch } from 'src/database/models/branch.model';
+import { BranchUser } from 'src/database/models/branch-user';
+import { BusinessUser } from 'src/database/models/business-user';
+import { Business } from 'src/database/models/business.model';
+import { Collection } from 'src/database/models/collection.model';
 import { Customer } from 'src/database/models/customer';
 import { GlobalProduct } from 'src/database/models/global-product';
 import { Inventory } from 'src/database/models/inventory.model';
@@ -12,6 +17,7 @@ import { Sales } from 'src/database/models/sales.model';
 import { StockMovement } from 'src/database/models/stock-movement';
 import { StockTransferItem } from 'src/database/models/stock-transfer-item';
 import { StockTransfer } from 'src/database/models/stock-transfer.model';
+import { User } from 'src/database/models/user.model';
 import {
   SyncAck,
   SyncChanges,
@@ -26,6 +32,12 @@ import { ProductCategory } from 'src/database/models/product-category';
 type SyncModel = typeof Product;
 
 const syncOrder: SyncEntity[] = [
+  'user',
+  'businesses',
+  'collections',
+  'business_users',
+  'branches',
+  'branch_users',
   'product_category',
   'global_products',
   'products',
@@ -40,7 +52,22 @@ const syncOrder: SyncEntity[] = [
   'stock_transfer_items',
 ];
 
+const serverManagedEntities = new Set<SyncEntity>([
+  'user',
+  'businesses',
+  'collections',
+  'business_users',
+  'branches',
+  'branch_users',
+]);
+
 const entityModels: Record<SyncEntity, SyncModel> = {
+  user: User as unknown as SyncModel,
+  businesses: Business as unknown as SyncModel,
+  collections: Collection as unknown as SyncModel,
+  business_users: BusinessUser as unknown as SyncModel,
+  branches: Branch as unknown as SyncModel,
+  branch_users: BranchUser as unknown as SyncModel,
   global_products: GlobalProduct as unknown as SyncModel,
   products: Product,
   product_category: ProductCategory as unknown as SyncModel,
@@ -58,6 +85,25 @@ const entityModels: Record<SyncEntity, SyncModel> = {
 const camelToSnake: Record<string, string> = {
   syncStatus: 'sync_status',
   syncDate: 'sync_date',
+  userName: 'user_name',
+  firstName: 'first_name',
+  lastName: 'last_name',
+  isEmailVerified: 'is_email_verified',
+  isVerified: 'is_verified',
+  creditScore: 'credit_score',
+  creditScoreStatus: 'credit_score_status',
+  streetAddress: 'street_address',
+  isHeadOffice: 'is_head_office',
+  businessId: 'business_id',
+  collectionId: 'collection_id',
+  userId: 'user_id',
+  isActive: 'is_active',
+  hasFullAccess: 'has_full_access',
+  joinedAt: 'joined_at',
+  assignedAt: 'assigned_at',
+  totalTraders: 'total_traders',
+  coverImage: 'cover_image',
+  minInvestment: 'min_investment',
   bulkUnitName: 'bulk_unit_name',
   pieceUnitName: 'piece_unit_name',
   unitsPerBulk: 'units_per_bulk',
@@ -92,6 +138,37 @@ const snakeToCamel = Object.entries(camelToSnake).reduce(
   (acc, [camel, snake]) => ({ ...acc, [snake]: camel }),
   {} as Record<string, string>,
 );
+
+const numericClientKeys = new Set([
+  'amount',
+  'amountPaid',
+  'balance',
+  'costPrice',
+  'costPricePerUnit',
+  'creditScore',
+  'initialQuantity',
+  'minInvestment',
+  'quantity',
+  'remainingQuantity',
+  'roi',
+  'sellingPricePerBulk',
+  'sellingPricePerPiece',
+  'totalAmount',
+  'totalTraders',
+  'unitPrice',
+  'unitsPerBulk',
+]);
+
+const dateClientKeys = new Set([
+  'assignedAt',
+  'createdAt',
+  'deletedAt',
+  'expiryDate',
+  'joinedAt',
+  'reviewedAt',
+  'syncDate',
+  'updatedAt',
+]);
 
 @Injectable()
 export class SyncService {
@@ -151,6 +228,10 @@ export class SyncService {
       throw new Error(`Unsupported sync entity: ${mutation.entity}`);
     }
 
+    if (serverManagedEntities.has(mutation.entity)) {
+      throw new Error(`Sync entity is server-managed: ${mutation.entity}`);
+    }
+
     const data = this.normalizeIncomingRecord(mutation.data);
     const id = String(data.id ?? mutation.localId ?? mutation.local_id);
 
@@ -200,21 +281,65 @@ export class SyncService {
 
   public async pullChanges(
     userId: string,
-    cursor?: string,
+    cursor?: string | null,
   ): Promise<SyncChanges> {
-    const branchIds = await this.tenantAccessService.getAccessibleBranchIds(
-      userId,
-    );
+    const [businessIds, branchIds] = await Promise.all([
+      this.tenantAccessService.getAccessibleBusinessIds(userId),
+      this.tenantAccessService.getAccessibleBranchIds(userId),
+    ]);
     const since = this.toDate(cursor);
     const updatedSince = since ? { updatedAt: { [Op.gt]: since } } : {};
     const empty = this.emptyChanges();
 
-    if (branchIds.length === 0) {
+    if (businessIds.length === 0 && branchIds.length === 0) {
       return empty;
     }
 
-    const [accessibleProducts, accessibleSales, accessibleTransfers] =
+    const [user, businesses, businessUsers, branchUsers, accessibleBranches] =
       await Promise.all([
+        User.findByPk(userId, { paranoid: false }),
+        businessIds.length > 0
+          ? Business.findAll({
+              where: { ...updatedSince, id: { [Op.in]: businessIds } },
+              paranoid: false,
+            })
+          : [],
+        BusinessUser.findAll({
+          where: { ...updatedSince, user_id: userId },
+          paranoid: false,
+        }),
+        
+        BranchUser.findAll({
+          where: { ...updatedSince, user_id: userId },
+          paranoid: false,
+        }),
+        branchIds.length > 0
+          ? Branch.findAll({
+              where: { id: { [Op.in]: branchIds } },
+              attributes: ['id', 'collection_id'],
+              paranoid: false,
+            })
+          : [],
+      ]);
+
+    const collectionIds = accessibleBranches
+      .map((branch) => branch.collection_id)
+      .filter(Boolean);
+
+    const [branches, collections, accessibleProducts, accessibleSales, accessibleTransfers] =
+      await Promise.all([
+        branchIds.length > 0
+          ? Branch.findAll({
+              where: { ...updatedSince, id: { [Op.in]: branchIds } },
+              paranoid: false,
+            })
+          : [],
+        collectionIds.length > 0
+          ? Collection.findAll({
+              where: { ...updatedSince, id: { [Op.in]: collectionIds } },
+              paranoid: false,
+            })
+          : [],
         Product.findAll({
           where: { branch_id: { [Op.in]: branchIds } },
           attributes: ['id', 'global_product_id'],
@@ -343,6 +468,12 @@ export class SyncService {
 
     return {
       ...empty,
+      user: user ? [this.toClientRecord(user)] : [],
+      businesses: businesses.map((record) => this.toClientRecord(record)),
+      collections: collections.map((record) => this.toClientRecord(record)),
+      business_users: businessUsers.map((record) => this.toClientRecord(record)),
+      branches: branches.map((record) => this.toClientRecord(record)),
+      branch_users: branchUsers.map((record) => this.toClientRecord(record)),
       global_products: globalProducts.map((record) =>
         this.toClientRecord(record),
       ),
@@ -422,7 +553,15 @@ export class SyncService {
           return normalized;
         }
 
-        normalized[camelToSnake[key] ?? key] = value;
+        const normalizedKey = camelToSnake[key] ?? key;
+        const clientKey = snakeToCamel[normalizedKey] ?? normalizedKey;
+
+        if (numericClientKeys.has(clientKey)) {
+          normalized[normalizedKey] = this.toNumber(value, clientKey);
+          return normalized;
+        }
+
+        normalized[normalizedKey] = value;
         return normalized;
       },
       {} as Record<string, any>,
@@ -435,9 +574,23 @@ export class SyncService {
 
     return Object.entries(plain).reduce(
       (clientRecord, [key, value]) => {
+        if (key === 'password') {
+          clientRecord.password = '';
+          return clientRecord;
+        }
+
         const clientKey = snakeToCamel[key] ?? key;
-        clientRecord[clientKey] =
-          value instanceof Date ? value.toISOString() : value;
+        if (dateClientKeys.has(clientKey)) {
+          clientRecord[clientKey] = this.toClientDate(value, clientKey);
+          return clientRecord;
+        }
+
+        if (numericClientKeys.has(clientKey)) {
+          clientRecord[clientKey] = this.toNumber(value ?? 0, clientKey);
+          return clientRecord;
+        }
+
+        clientRecord[clientKey] = value;
         return clientRecord;
       },
       {} as Record<string, unknown>,
@@ -461,8 +614,46 @@ export class SyncService {
     return Number.isNaN(parsed.getTime()) ? null : parsed;
   }
 
+  private toNumber(value: unknown, field: string) {
+    if (value === null) return value;
+    const numberValue = Number(value);
+
+    if (Number.isNaN(numberValue)) {
+      throw new Error(`Invalid numeric value for ${field}`);
+    }
+
+    return numberValue;
+  }
+
+  private toClientDate(value: unknown, field: string) {
+    if (value === null || value === undefined || value === '') {
+      return value;
+    }
+
+    if (value instanceof Date) {
+      return value.toISOString();
+    }
+
+    const parsed =
+      typeof value === 'number' || /^\d+$/.test(String(value))
+        ? new Date(Number(value))
+        : new Date(String(value));
+
+    if (Number.isNaN(parsed.getTime())) {
+      throw new Error(`Invalid date value for ${field}`);
+    }
+
+    return parsed.toISOString();
+  }
+
   private emptyChanges(): SyncChanges {
     return {
+      user: [],
+      businesses: [],
+      collections: [],
+      business_users: [],
+      branches: [],
+      branch_users: [],
       global_products: [],
       products: [],
       inventory: [],
