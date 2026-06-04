@@ -33,7 +33,7 @@ class SaleWithItems {
           .where((item) => item.product != null)
           .map((item) => (
                 unitPrice: item.item.unitPrice,
-                costPrice: item.product!.costPricePerUnit,
+                costPrice: item.item.costPrice,
                 quantity: item.item.quantity,
               ))
           .toList(),
@@ -51,7 +51,7 @@ class SaleItemWithProduct {
     if (product == null) return 0; // Manual charges have no defined profit yet
     return SalesLogic.calculateItemProfit(
       unitPrice: item.unitPrice,
-      costPrice: product!.costPricePerUnit,
+      costPrice: item.costPrice,
       quantity: item.quantity,
     );
   }

@@ -38,13 +38,13 @@ export class Cluster extends Model<ICluster> implements ICluster {
   @Column(DataType.STRING)
   declare duration: Duration;
 
-  @Column(DataType.DECIMAL(15,2))
+  @Column(DataType.BIGINT)
   declare roi: number;
 
-  @Column(DataType.DECIMAL(15,2))
+  @Column(DataType.BIGINT)
   declare total_funds_raised: number;
 
-  @Column(DataType.DECIMAL(15,2))
+  @Column(DataType.BIGINT)
   declare target_fundraising_amount: number;
 
   @Column(DataType.STRING)
@@ -52,19 +52,19 @@ export class Cluster extends Model<ICluster> implements ICluster {
 
   @Column(DataType.BOOLEAN)
   declare is_active: boolean;
-  
+
   @Column(DataType.STRING)
   declare cover_image: string;
-  
+
   @Column(DataType.STRING)
   declare start_date: string;
-  
+
   @Column(DataType.STRING)
   declare end_date: string;
 
   @Column(DataType.STRING)
   declare description: string;
-  
+
   @Column(DataType.DATE)
   declare sync_date: string;
 

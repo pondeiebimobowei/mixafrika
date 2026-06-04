@@ -22,13 +22,11 @@ module.exports = {
         name: { type: Sequelize.STRING, allowNull: false },
         description: { type: Sequelize.STRING, allowNull: false },
         bulk_unit_name: { type: Sequelize.STRING, allowNull: false },
-        price_unit_name: { type: Sequelize.STRING, allowNull: false },
-        units_per_bulk: { type: Sequelize.STRING, allowNull: false },
-        cost_price: { type: Sequelize.STRING, allowNull: false },
-        selling_price_per_piece: { type: Sequelize.STRING, allowNull: false },
-        selling_price_per_bulk: { type: Sequelize.STRING, allowNull: false },
+        piece_unit_name: { type: Sequelize.STRING, allowNull: false },
+        units_per_bulk: { type: Sequelize.BIGINT, allowNull: false },
+        selling_price_per_piece: { type: Sequelize.BIGINT, allowNull: false },
+        selling_price_per_bulk: { type: Sequelize.BIGINT, allowNull: false },
         category: { type: Sequelize.STRING, allowNull: false },
-        serial_number: { type: Sequelize.STRING, allowNull: false },
         image_url: { type: Sequelize.STRING, allowNull: false },
         reviews: { type: Sequelize.STRING, allowNull: false },
         
@@ -37,8 +35,8 @@ module.exports = {
         global_product_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'global_product', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         
         
-        syncStatus: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)]} },
-        syncDate: {
+        sync_status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)]} },
+        sync_date: {
           allowNull: false,
           type: Sequelize.DATE,
         },

@@ -3887,17 +3887,6 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
     requiredDuringInsert: false,
     defaultValue: const Constant(0),
   );
-  static const VerificationMeta _costPricePerUnitMeta = const VerificationMeta(
-    'costPricePerUnit',
-  );
-  @override
-  late final GeneratedColumn<int> costPricePerUnit = GeneratedColumn<int>(
-    'cost_price_per_unit',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
   static const VerificationMeta _sellingPricePerPieceMeta =
       const VerificationMeta('sellingPricePerPiece');
   @override
@@ -3992,7 +3981,6 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
     bulkUnitName,
     pieceUnitName,
     unitsPerBulk,
-    costPricePerUnit,
     sellingPricePerPiece,
     sellingPricePerBulk,
     category,
@@ -4099,17 +4087,6 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
           _unitsPerBulkMeta,
         ),
       );
-    }
-    if (data.containsKey('cost_price_per_unit')) {
-      context.handle(
-        _costPricePerUnitMeta,
-        costPricePerUnit.isAcceptableOrUnknown(
-          data['cost_price_per_unit']!,
-          _costPricePerUnitMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_costPricePerUnitMeta);
     }
     if (data.containsKey('selling_price_per_piece')) {
       context.handle(
@@ -4229,10 +4206,6 @@ class $ProductTable extends Product with TableInfo<$ProductTable, ProductData> {
         DriftSqlType.int,
         data['${effectivePrefix}units_per_bulk'],
       )!,
-      costPricePerUnit: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}cost_price_per_unit'],
-      )!,
       sellingPricePerPiece: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}selling_price_per_piece'],
@@ -4282,7 +4255,6 @@ class ProductData extends DataClass implements Insertable<ProductData> {
   final String bulkUnitName;
   final String pieceUnitName;
   final int unitsPerBulk;
-  final int costPricePerUnit;
   final int sellingPricePerPiece;
   final int sellingPricePerBulk;
   final String category;
@@ -4302,7 +4274,6 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     required this.bulkUnitName,
     required this.pieceUnitName,
     required this.unitsPerBulk,
-    required this.costPricePerUnit,
     required this.sellingPricePerPiece,
     required this.sellingPricePerBulk,
     required this.category,
@@ -4329,7 +4300,6 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     map['bulk_unit_name'] = Variable<String>(bulkUnitName);
     map['piece_unit_name'] = Variable<String>(pieceUnitName);
     map['units_per_bulk'] = Variable<int>(unitsPerBulk);
-    map['cost_price_per_unit'] = Variable<int>(costPricePerUnit);
     map['selling_price_per_piece'] = Variable<int>(sellingPricePerPiece);
     map['selling_price_per_bulk'] = Variable<int>(sellingPricePerBulk);
     map['category'] = Variable<String>(category);
@@ -4357,7 +4327,6 @@ class ProductData extends DataClass implements Insertable<ProductData> {
       bulkUnitName: Value(bulkUnitName),
       pieceUnitName: Value(pieceUnitName),
       unitsPerBulk: Value(unitsPerBulk),
-      costPricePerUnit: Value(costPricePerUnit),
       sellingPricePerPiece: Value(sellingPricePerPiece),
       sellingPricePerBulk: Value(sellingPricePerBulk),
       category: Value(category),
@@ -4385,7 +4354,6 @@ class ProductData extends DataClass implements Insertable<ProductData> {
       bulkUnitName: serializer.fromJson<String>(json['bulkUnitName']),
       pieceUnitName: serializer.fromJson<String>(json['pieceUnitName']),
       unitsPerBulk: serializer.fromJson<int>(json['unitsPerBulk']),
-      costPricePerUnit: serializer.fromJson<int>(json['costPricePerUnit']),
       sellingPricePerPiece: serializer.fromJson<int>(
         json['sellingPricePerPiece'],
       ),
@@ -4414,7 +4382,6 @@ class ProductData extends DataClass implements Insertable<ProductData> {
       'bulkUnitName': serializer.toJson<String>(bulkUnitName),
       'pieceUnitName': serializer.toJson<String>(pieceUnitName),
       'unitsPerBulk': serializer.toJson<int>(unitsPerBulk),
-      'costPricePerUnit': serializer.toJson<int>(costPricePerUnit),
       'sellingPricePerPiece': serializer.toJson<int>(sellingPricePerPiece),
       'sellingPricePerBulk': serializer.toJson<int>(sellingPricePerBulk),
       'category': serializer.toJson<String>(category),
@@ -4437,7 +4404,6 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     String? bulkUnitName,
     String? pieceUnitName,
     int? unitsPerBulk,
-    int? costPricePerUnit,
     int? sellingPricePerPiece,
     int? sellingPricePerBulk,
     String? category,
@@ -4457,7 +4423,6 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     bulkUnitName: bulkUnitName ?? this.bulkUnitName,
     pieceUnitName: pieceUnitName ?? this.pieceUnitName,
     unitsPerBulk: unitsPerBulk ?? this.unitsPerBulk,
-    costPricePerUnit: costPricePerUnit ?? this.costPricePerUnit,
     sellingPricePerPiece: sellingPricePerPiece ?? this.sellingPricePerPiece,
     sellingPricePerBulk: sellingPricePerBulk ?? this.sellingPricePerBulk,
     category: category ?? this.category,
@@ -4489,9 +4454,6 @@ class ProductData extends DataClass implements Insertable<ProductData> {
       unitsPerBulk: data.unitsPerBulk.present
           ? data.unitsPerBulk.value
           : this.unitsPerBulk,
-      costPricePerUnit: data.costPricePerUnit.present
-          ? data.costPricePerUnit.value
-          : this.costPricePerUnit,
       sellingPricePerPiece: data.sellingPricePerPiece.present
           ? data.sellingPricePerPiece.value
           : this.sellingPricePerPiece,
@@ -4522,7 +4484,6 @@ class ProductData extends DataClass implements Insertable<ProductData> {
           ..write('bulkUnitName: $bulkUnitName, ')
           ..write('pieceUnitName: $pieceUnitName, ')
           ..write('unitsPerBulk: $unitsPerBulk, ')
-          ..write('costPricePerUnit: $costPricePerUnit, ')
           ..write('sellingPricePerPiece: $sellingPricePerPiece, ')
           ..write('sellingPricePerBulk: $sellingPricePerBulk, ')
           ..write('category: $category, ')
@@ -4547,7 +4508,6 @@ class ProductData extends DataClass implements Insertable<ProductData> {
     bulkUnitName,
     pieceUnitName,
     unitsPerBulk,
-    costPricePerUnit,
     sellingPricePerPiece,
     sellingPricePerBulk,
     category,
@@ -4571,7 +4531,6 @@ class ProductData extends DataClass implements Insertable<ProductData> {
           other.bulkUnitName == this.bulkUnitName &&
           other.pieceUnitName == this.pieceUnitName &&
           other.unitsPerBulk == this.unitsPerBulk &&
-          other.costPricePerUnit == this.costPricePerUnit &&
           other.sellingPricePerPiece == this.sellingPricePerPiece &&
           other.sellingPricePerBulk == this.sellingPricePerBulk &&
           other.category == this.category &&
@@ -4593,7 +4552,6 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
   final Value<String> bulkUnitName;
   final Value<String> pieceUnitName;
   final Value<int> unitsPerBulk;
-  final Value<int> costPricePerUnit;
   final Value<int> sellingPricePerPiece;
   final Value<int> sellingPricePerBulk;
   final Value<String> category;
@@ -4614,7 +4572,6 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
     this.bulkUnitName = const Value.absent(),
     this.pieceUnitName = const Value.absent(),
     this.unitsPerBulk = const Value.absent(),
-    this.costPricePerUnit = const Value.absent(),
     this.sellingPricePerPiece = const Value.absent(),
     this.sellingPricePerBulk = const Value.absent(),
     this.category = const Value.absent(),
@@ -4636,7 +4593,6 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
     required String bulkUnitName,
     required String pieceUnitName,
     this.unitsPerBulk = const Value.absent(),
-    required int costPricePerUnit,
     required int sellingPricePerPiece,
     required int sellingPricePerBulk,
     required String category,
@@ -4651,7 +4607,6 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
        description = Value(description),
        bulkUnitName = Value(bulkUnitName),
        pieceUnitName = Value(pieceUnitName),
-       costPricePerUnit = Value(costPricePerUnit),
        sellingPricePerPiece = Value(sellingPricePerPiece),
        sellingPricePerBulk = Value(sellingPricePerBulk),
        category = Value(category),
@@ -4671,7 +4626,6 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
     Expression<String>? bulkUnitName,
     Expression<String>? pieceUnitName,
     Expression<int>? unitsPerBulk,
-    Expression<int>? costPricePerUnit,
     Expression<int>? sellingPricePerPiece,
     Expression<int>? sellingPricePerBulk,
     Expression<String>? category,
@@ -4693,7 +4647,6 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
       if (bulkUnitName != null) 'bulk_unit_name': bulkUnitName,
       if (pieceUnitName != null) 'piece_unit_name': pieceUnitName,
       if (unitsPerBulk != null) 'units_per_bulk': unitsPerBulk,
-      if (costPricePerUnit != null) 'cost_price_per_unit': costPricePerUnit,
       if (sellingPricePerPiece != null)
         'selling_price_per_piece': sellingPricePerPiece,
       if (sellingPricePerBulk != null)
@@ -4719,7 +4672,6 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
     Value<String>? bulkUnitName,
     Value<String>? pieceUnitName,
     Value<int>? unitsPerBulk,
-    Value<int>? costPricePerUnit,
     Value<int>? sellingPricePerPiece,
     Value<int>? sellingPricePerBulk,
     Value<String>? category,
@@ -4741,7 +4693,6 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
       bulkUnitName: bulkUnitName ?? this.bulkUnitName,
       pieceUnitName: pieceUnitName ?? this.pieceUnitName,
       unitsPerBulk: unitsPerBulk ?? this.unitsPerBulk,
-      costPricePerUnit: costPricePerUnit ?? this.costPricePerUnit,
       sellingPricePerPiece: sellingPricePerPiece ?? this.sellingPricePerPiece,
       sellingPricePerBulk: sellingPricePerBulk ?? this.sellingPricePerBulk,
       category: category ?? this.category,
@@ -4789,9 +4740,6 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
     if (unitsPerBulk.present) {
       map['units_per_bulk'] = Variable<int>(unitsPerBulk.value);
     }
-    if (costPricePerUnit.present) {
-      map['cost_price_per_unit'] = Variable<int>(costPricePerUnit.value);
-    }
     if (sellingPricePerPiece.present) {
       map['selling_price_per_piece'] = Variable<int>(
         sellingPricePerPiece.value,
@@ -4835,7 +4783,6 @@ class ProductCompanion extends UpdateCompanion<ProductData> {
           ..write('bulkUnitName: $bulkUnitName, ')
           ..write('pieceUnitName: $pieceUnitName, ')
           ..write('unitsPerBulk: $unitsPerBulk, ')
-          ..write('costPricePerUnit: $costPricePerUnit, ')
           ..write('sellingPricePerPiece: $sellingPricePerPiece, ')
           ..write('sellingPricePerBulk: $sellingPricePerBulk, ')
           ..write('category: $category, ')
@@ -8922,12 +8869,12 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
       'REFERENCES branch (id)',
     ),
   );
-  static const VerificationMeta _createdByMeta = const VerificationMeta(
-    'createdBy',
+  static const VerificationMeta _createdByIdMeta = const VerificationMeta(
+    'createdById',
   );
   @override
-  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
-    'created_by',
+  late final GeneratedColumn<String> createdById = GeneratedColumn<String>(
+    'created_by_id',
     aliasedName,
     true,
     type: DriftSqlType.string,
@@ -8952,7 +8899,7 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
     note,
     customerId,
     branchId,
-    createdBy,
+    createdById,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -9065,10 +9012,13 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
     } else if (isInserting) {
       context.missing(_branchIdMeta);
     }
-    if (data.containsKey('created_by')) {
+    if (data.containsKey('created_by_id')) {
       context.handle(
-        _createdByMeta,
-        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+        _createdByIdMeta,
+        createdById.isAcceptableOrUnknown(
+          data['created_by_id']!,
+          _createdByIdMeta,
+        ),
       );
     }
     return context;
@@ -9136,9 +9086,9 @@ class $SalesTable extends Sales with TableInfo<$SalesTable, Sale> {
         DriftSqlType.string,
         data['${effectivePrefix}branch_id'],
       )!,
-      createdBy: attachedDatabase.typeMapping.read(
+      createdById: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}created_by'],
+        data['${effectivePrefix}created_by_id'],
       ),
     );
   }
@@ -9164,7 +9114,7 @@ class Sale extends DataClass implements Insertable<Sale> {
   final String? note;
   final String? customerId;
   final String branchId;
-  final String? createdBy;
+  final String? createdById;
   const Sale({
     required this.id,
     required this.syncStatus,
@@ -9180,7 +9130,7 @@ class Sale extends DataClass implements Insertable<Sale> {
     this.note,
     this.customerId,
     required this.branchId,
-    this.createdBy,
+    this.createdById,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -9207,8 +9157,8 @@ class Sale extends DataClass implements Insertable<Sale> {
       map['customer_id'] = Variable<String>(customerId);
     }
     map['branch_id'] = Variable<String>(branchId);
-    if (!nullToAbsent || createdBy != null) {
-      map['created_by'] = Variable<String>(createdBy);
+    if (!nullToAbsent || createdById != null) {
+      map['created_by_id'] = Variable<String>(createdById);
     }
     return map;
   }
@@ -9235,9 +9185,9 @@ class Sale extends DataClass implements Insertable<Sale> {
           ? const Value.absent()
           : Value(customerId),
       branchId: Value(branchId),
-      createdBy: createdBy == null && nullToAbsent
+      createdById: createdById == null && nullToAbsent
           ? const Value.absent()
-          : Value(createdBy),
+          : Value(createdById),
     );
   }
 
@@ -9261,7 +9211,7 @@ class Sale extends DataClass implements Insertable<Sale> {
       note: serializer.fromJson<String?>(json['note']),
       customerId: serializer.fromJson<String?>(json['customerId']),
       branchId: serializer.fromJson<String>(json['branchId']),
-      createdBy: serializer.fromJson<String?>(json['createdBy']),
+      createdById: serializer.fromJson<String?>(json['createdById']),
     );
   }
   @override
@@ -9282,7 +9232,7 @@ class Sale extends DataClass implements Insertable<Sale> {
       'note': serializer.toJson<String?>(note),
       'customerId': serializer.toJson<String?>(customerId),
       'branchId': serializer.toJson<String>(branchId),
-      'createdBy': serializer.toJson<String?>(createdBy),
+      'createdById': serializer.toJson<String?>(createdById),
     };
   }
 
@@ -9301,7 +9251,7 @@ class Sale extends DataClass implements Insertable<Sale> {
     Value<String?> note = const Value.absent(),
     Value<String?> customerId = const Value.absent(),
     String? branchId,
-    Value<String?> createdBy = const Value.absent(),
+    Value<String?> createdById = const Value.absent(),
   }) => Sale(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
@@ -9317,7 +9267,7 @@ class Sale extends DataClass implements Insertable<Sale> {
     note: note.present ? note.value : this.note,
     customerId: customerId.present ? customerId.value : this.customerId,
     branchId: branchId ?? this.branchId,
-    createdBy: createdBy.present ? createdBy.value : this.createdBy,
+    createdById: createdById.present ? createdById.value : this.createdById,
   );
   Sale copyWithCompanion(SalesCompanion data) {
     return Sale(
@@ -9345,7 +9295,9 @@ class Sale extends DataClass implements Insertable<Sale> {
           ? data.customerId.value
           : this.customerId,
       branchId: data.branchId.present ? data.branchId.value : this.branchId,
-      createdBy: data.createdBy.present ? data.createdBy.value : this.createdBy,
+      createdById: data.createdById.present
+          ? data.createdById.value
+          : this.createdById,
     );
   }
 
@@ -9366,7 +9318,7 @@ class Sale extends DataClass implements Insertable<Sale> {
           ..write('note: $note, ')
           ..write('customerId: $customerId, ')
           ..write('branchId: $branchId, ')
-          ..write('createdBy: $createdBy')
+          ..write('createdById: $createdById')
           ..write(')'))
         .toString();
   }
@@ -9387,7 +9339,7 @@ class Sale extends DataClass implements Insertable<Sale> {
     note,
     customerId,
     branchId,
-    createdBy,
+    createdById,
   );
   @override
   bool operator ==(Object other) =>
@@ -9407,7 +9359,7 @@ class Sale extends DataClass implements Insertable<Sale> {
           other.note == this.note &&
           other.customerId == this.customerId &&
           other.branchId == this.branchId &&
-          other.createdBy == this.createdBy);
+          other.createdById == this.createdById);
 }
 
 class SalesCompanion extends UpdateCompanion<Sale> {
@@ -9425,7 +9377,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
   final Value<String?> note;
   final Value<String?> customerId;
   final Value<String> branchId;
-  final Value<String?> createdBy;
+  final Value<String?> createdById;
   final Value<int> rowid;
   const SalesCompanion({
     this.id = const Value.absent(),
@@ -9442,7 +9394,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     this.note = const Value.absent(),
     this.customerId = const Value.absent(),
     this.branchId = const Value.absent(),
-    this.createdBy = const Value.absent(),
+    this.createdById = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   SalesCompanion.insert({
@@ -9460,7 +9412,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     this.note = const Value.absent(),
     this.customerId = const Value.absent(),
     required String branchId,
-    this.createdBy = const Value.absent(),
+    this.createdById = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        syncStatus = Value(syncStatus),
@@ -9483,7 +9435,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     Expression<String>? note,
     Expression<String>? customerId,
     Expression<String>? branchId,
-    Expression<String>? createdBy,
+    Expression<String>? createdById,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -9501,7 +9453,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
       if (note != null) 'note': note,
       if (customerId != null) 'customer_id': customerId,
       if (branchId != null) 'branch_id': branchId,
-      if (createdBy != null) 'created_by': createdBy,
+      if (createdById != null) 'created_by_id': createdById,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -9521,7 +9473,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     Value<String?>? note,
     Value<String?>? customerId,
     Value<String>? branchId,
-    Value<String?>? createdBy,
+    Value<String?>? createdById,
     Value<int>? rowid,
   }) {
     return SalesCompanion(
@@ -9539,7 +9491,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
       note: note ?? this.note,
       customerId: customerId ?? this.customerId,
       branchId: branchId ?? this.branchId,
-      createdBy: createdBy ?? this.createdBy,
+      createdById: createdById ?? this.createdById,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -9589,8 +9541,8 @@ class SalesCompanion extends UpdateCompanion<Sale> {
     if (branchId.present) {
       map['branch_id'] = Variable<String>(branchId.value);
     }
-    if (createdBy.present) {
-      map['created_by'] = Variable<String>(createdBy.value);
+    if (createdById.present) {
+      map['created_by_id'] = Variable<String>(createdById.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -9615,7 +9567,7 @@ class SalesCompanion extends UpdateCompanion<Sale> {
           ..write('note: $note, ')
           ..write('customerId: $customerId, ')
           ..write('branchId: $branchId, ')
-          ..write('createdBy: $createdBy, ')
+          ..write('createdById: $createdById, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -10941,12 +10893,12 @@ class $StockAdjustmentTable extends StockAdjustment
       'REFERENCES branch (id)',
     ),
   );
-  static const VerificationMeta _createdByMeta = const VerificationMeta(
-    'createdBy',
+  static const VerificationMeta _createdByIdMeta = const VerificationMeta(
+    'createdById',
   );
   @override
-  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
-    'created_by',
+  late final GeneratedColumn<String> createdById = GeneratedColumn<String>(
+    'created_by_id',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -10965,7 +10917,7 @@ class $StockAdjustmentTable extends StockAdjustment
     deletedAt,
     reason,
     branchId,
-    createdBy,
+    createdById,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -11032,13 +10984,16 @@ class $StockAdjustmentTable extends StockAdjustment
     } else if (isInserting) {
       context.missing(_branchIdMeta);
     }
-    if (data.containsKey('created_by')) {
+    if (data.containsKey('created_by_id')) {
       context.handle(
-        _createdByMeta,
-        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+        _createdByIdMeta,
+        createdById.isAcceptableOrUnknown(
+          data['created_by_id']!,
+          _createdByIdMeta,
+        ),
       );
     } else if (isInserting) {
-      context.missing(_createdByMeta);
+      context.missing(_createdByIdMeta);
     }
     return context;
   }
@@ -11081,9 +11036,9 @@ class $StockAdjustmentTable extends StockAdjustment
         DriftSqlType.string,
         data['${effectivePrefix}branch_id'],
       )!,
-      createdBy: attachedDatabase.typeMapping.read(
+      createdById: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}created_by'],
+        data['${effectivePrefix}created_by_id'],
       )!,
     );
   }
@@ -11104,7 +11059,7 @@ class StockAdjustmentData extends DataClass
   final DateTime? deletedAt;
   final String reason;
   final String branchId;
-  final String createdBy;
+  final String createdById;
   const StockAdjustmentData({
     required this.id,
     required this.syncStatus,
@@ -11114,7 +11069,7 @@ class StockAdjustmentData extends DataClass
     this.deletedAt,
     required this.reason,
     required this.branchId,
-    required this.createdBy,
+    required this.createdById,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -11131,7 +11086,7 @@ class StockAdjustmentData extends DataClass
     }
     map['reason'] = Variable<String>(reason);
     map['branch_id'] = Variable<String>(branchId);
-    map['created_by'] = Variable<String>(createdBy);
+    map['created_by_id'] = Variable<String>(createdById);
     return map;
   }
 
@@ -11149,7 +11104,7 @@ class StockAdjustmentData extends DataClass
           : Value(deletedAt),
       reason: Value(reason),
       branchId: Value(branchId),
-      createdBy: Value(createdBy),
+      createdById: Value(createdById),
     );
   }
 
@@ -11167,7 +11122,7 @@ class StockAdjustmentData extends DataClass
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
       reason: serializer.fromJson<String>(json['reason']),
       branchId: serializer.fromJson<String>(json['branchId']),
-      createdBy: serializer.fromJson<String>(json['createdBy']),
+      createdById: serializer.fromJson<String>(json['createdById']),
     );
   }
   @override
@@ -11182,7 +11137,7 @@ class StockAdjustmentData extends DataClass
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
       'reason': serializer.toJson<String>(reason),
       'branchId': serializer.toJson<String>(branchId),
-      'createdBy': serializer.toJson<String>(createdBy),
+      'createdById': serializer.toJson<String>(createdById),
     };
   }
 
@@ -11195,7 +11150,7 @@ class StockAdjustmentData extends DataClass
     Value<DateTime?> deletedAt = const Value.absent(),
     String? reason,
     String? branchId,
-    String? createdBy,
+    String? createdById,
   }) => StockAdjustmentData(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
@@ -11205,7 +11160,7 @@ class StockAdjustmentData extends DataClass
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
     reason: reason ?? this.reason,
     branchId: branchId ?? this.branchId,
-    createdBy: createdBy ?? this.createdBy,
+    createdById: createdById ?? this.createdById,
   );
   StockAdjustmentData copyWithCompanion(StockAdjustmentCompanion data) {
     return StockAdjustmentData(
@@ -11219,7 +11174,9 @@ class StockAdjustmentData extends DataClass
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
       reason: data.reason.present ? data.reason.value : this.reason,
       branchId: data.branchId.present ? data.branchId.value : this.branchId,
-      createdBy: data.createdBy.present ? data.createdBy.value : this.createdBy,
+      createdById: data.createdById.present
+          ? data.createdById.value
+          : this.createdById,
     );
   }
 
@@ -11234,7 +11191,7 @@ class StockAdjustmentData extends DataClass
           ..write('deletedAt: $deletedAt, ')
           ..write('reason: $reason, ')
           ..write('branchId: $branchId, ')
-          ..write('createdBy: $createdBy')
+          ..write('createdById: $createdById')
           ..write(')'))
         .toString();
   }
@@ -11249,7 +11206,7 @@ class StockAdjustmentData extends DataClass
     deletedAt,
     reason,
     branchId,
-    createdBy,
+    createdById,
   );
   @override
   bool operator ==(Object other) =>
@@ -11263,7 +11220,7 @@ class StockAdjustmentData extends DataClass
           other.deletedAt == this.deletedAt &&
           other.reason == this.reason &&
           other.branchId == this.branchId &&
-          other.createdBy == this.createdBy);
+          other.createdById == this.createdById);
 }
 
 class StockAdjustmentCompanion extends UpdateCompanion<StockAdjustmentData> {
@@ -11275,7 +11232,7 @@ class StockAdjustmentCompanion extends UpdateCompanion<StockAdjustmentData> {
   final Value<DateTime?> deletedAt;
   final Value<String> reason;
   final Value<String> branchId;
-  final Value<String> createdBy;
+  final Value<String> createdById;
   final Value<int> rowid;
   const StockAdjustmentCompanion({
     this.id = const Value.absent(),
@@ -11286,7 +11243,7 @@ class StockAdjustmentCompanion extends UpdateCompanion<StockAdjustmentData> {
     this.deletedAt = const Value.absent(),
     this.reason = const Value.absent(),
     this.branchId = const Value.absent(),
-    this.createdBy = const Value.absent(),
+    this.createdById = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   StockAdjustmentCompanion.insert({
@@ -11298,13 +11255,13 @@ class StockAdjustmentCompanion extends UpdateCompanion<StockAdjustmentData> {
     this.deletedAt = const Value.absent(),
     required String reason,
     required String branchId,
-    required String createdBy,
+    required String createdById,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        syncStatus = Value(syncStatus),
        reason = Value(reason),
        branchId = Value(branchId),
-       createdBy = Value(createdBy);
+       createdById = Value(createdById);
   static Insertable<StockAdjustmentData> custom({
     Expression<String>? id,
     Expression<String>? syncStatus,
@@ -11314,7 +11271,7 @@ class StockAdjustmentCompanion extends UpdateCompanion<StockAdjustmentData> {
     Expression<DateTime>? deletedAt,
     Expression<String>? reason,
     Expression<String>? branchId,
-    Expression<String>? createdBy,
+    Expression<String>? createdById,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -11326,7 +11283,7 @@ class StockAdjustmentCompanion extends UpdateCompanion<StockAdjustmentData> {
       if (deletedAt != null) 'deleted_at': deletedAt,
       if (reason != null) 'reason': reason,
       if (branchId != null) 'branch_id': branchId,
-      if (createdBy != null) 'created_by': createdBy,
+      if (createdById != null) 'created_by_id': createdById,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -11340,7 +11297,7 @@ class StockAdjustmentCompanion extends UpdateCompanion<StockAdjustmentData> {
     Value<DateTime?>? deletedAt,
     Value<String>? reason,
     Value<String>? branchId,
-    Value<String>? createdBy,
+    Value<String>? createdById,
     Value<int>? rowid,
   }) {
     return StockAdjustmentCompanion(
@@ -11352,7 +11309,7 @@ class StockAdjustmentCompanion extends UpdateCompanion<StockAdjustmentData> {
       deletedAt: deletedAt ?? this.deletedAt,
       reason: reason ?? this.reason,
       branchId: branchId ?? this.branchId,
-      createdBy: createdBy ?? this.createdBy,
+      createdById: createdById ?? this.createdById,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -11384,8 +11341,8 @@ class StockAdjustmentCompanion extends UpdateCompanion<StockAdjustmentData> {
     if (branchId.present) {
       map['branch_id'] = Variable<String>(branchId.value);
     }
-    if (createdBy.present) {
-      map['created_by'] = Variable<String>(createdBy.value);
+    if (createdById.present) {
+      map['created_by_id'] = Variable<String>(createdById.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -11404,7 +11361,7 @@ class StockAdjustmentCompanion extends UpdateCompanion<StockAdjustmentData> {
           ..write('deletedAt: $deletedAt, ')
           ..write('reason: $reason, ')
           ..write('branchId: $branchId, ')
-          ..write('createdBy: $createdBy, ')
+          ..write('createdById: $createdById, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -13714,10 +13671,10 @@ class $StockMovementTable extends StockMovement
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
+  static const VerificationMeta _noteMeta = const VerificationMeta('note');
   @override
-  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
-    'notes',
+  late final GeneratedColumn<String> note = GeneratedColumn<String>(
+    'note',
     aliasedName,
     true,
     type: DriftSqlType.string,
@@ -13765,12 +13722,12 @@ class $StockMovementTable extends StockMovement
       'REFERENCES spine_batch (id)',
     ),
   );
-  static const VerificationMeta _createdByMeta = const VerificationMeta(
-    'createdBy',
+  static const VerificationMeta _createdByIdMeta = const VerificationMeta(
+    'createdById',
   );
   @override
-  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
-    'created_by',
+  late final GeneratedColumn<String> createdById = GeneratedColumn<String>(
+    'created_by_id',
     aliasedName,
     true,
     type: DriftSqlType.string,
@@ -13790,11 +13747,11 @@ class $StockMovementTable extends StockMovement
     type,
     quantity,
     referenceId,
-    notes,
+    note,
     productId,
     branchId,
     batchId,
-    createdBy,
+    createdById,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -13870,10 +13827,10 @@ class $StockMovementTable extends StockMovement
         ),
       );
     }
-    if (data.containsKey('notes')) {
+    if (data.containsKey('note')) {
       context.handle(
-        _notesMeta,
-        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
+        _noteMeta,
+        note.isAcceptableOrUnknown(data['note']!, _noteMeta),
       );
     }
     if (data.containsKey('product_id')) {
@@ -13898,10 +13855,13 @@ class $StockMovementTable extends StockMovement
         batchId.isAcceptableOrUnknown(data['batch_id']!, _batchIdMeta),
       );
     }
-    if (data.containsKey('created_by')) {
+    if (data.containsKey('created_by_id')) {
       context.handle(
-        _createdByMeta,
-        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+        _createdByIdMeta,
+        createdById.isAcceptableOrUnknown(
+          data['created_by_id']!,
+          _createdByIdMeta,
+        ),
       );
     }
     return context;
@@ -13949,9 +13909,9 @@ class $StockMovementTable extends StockMovement
         DriftSqlType.string,
         data['${effectivePrefix}reference_id'],
       ),
-      notes: attachedDatabase.typeMapping.read(
+      note: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}notes'],
+        data['${effectivePrefix}note'],
       ),
       productId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -13965,9 +13925,9 @@ class $StockMovementTable extends StockMovement
         DriftSqlType.string,
         data['${effectivePrefix}batch_id'],
       ),
-      createdBy: attachedDatabase.typeMapping.read(
+      createdById: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}created_by'],
+        data['${effectivePrefix}created_by_id'],
       ),
     );
   }
@@ -13989,11 +13949,11 @@ class StockMovementData extends DataClass
   final String type;
   final int quantity;
   final String? referenceId;
-  final String? notes;
+  final String? note;
   final String productId;
   final String branchId;
   final String? batchId;
-  final String? createdBy;
+  final String? createdById;
   const StockMovementData({
     required this.id,
     required this.syncStatus,
@@ -14004,11 +13964,11 @@ class StockMovementData extends DataClass
     required this.type,
     required this.quantity,
     this.referenceId,
-    this.notes,
+    this.note,
     required this.productId,
     required this.branchId,
     this.batchId,
-    this.createdBy,
+    this.createdById,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -14028,16 +13988,16 @@ class StockMovementData extends DataClass
     if (!nullToAbsent || referenceId != null) {
       map['reference_id'] = Variable<String>(referenceId);
     }
-    if (!nullToAbsent || notes != null) {
-      map['notes'] = Variable<String>(notes);
+    if (!nullToAbsent || note != null) {
+      map['note'] = Variable<String>(note);
     }
     map['product_id'] = Variable<String>(productId);
     map['branch_id'] = Variable<String>(branchId);
     if (!nullToAbsent || batchId != null) {
       map['batch_id'] = Variable<String>(batchId);
     }
-    if (!nullToAbsent || createdBy != null) {
-      map['created_by'] = Variable<String>(createdBy);
+    if (!nullToAbsent || createdById != null) {
+      map['created_by_id'] = Variable<String>(createdById);
     }
     return map;
   }
@@ -14059,17 +14019,15 @@ class StockMovementData extends DataClass
       referenceId: referenceId == null && nullToAbsent
           ? const Value.absent()
           : Value(referenceId),
-      notes: notes == null && nullToAbsent
-          ? const Value.absent()
-          : Value(notes),
+      note: note == null && nullToAbsent ? const Value.absent() : Value(note),
       productId: Value(productId),
       branchId: Value(branchId),
       batchId: batchId == null && nullToAbsent
           ? const Value.absent()
           : Value(batchId),
-      createdBy: createdBy == null && nullToAbsent
+      createdById: createdById == null && nullToAbsent
           ? const Value.absent()
-          : Value(createdBy),
+          : Value(createdById),
     );
   }
 
@@ -14088,11 +14046,11 @@ class StockMovementData extends DataClass
       type: serializer.fromJson<String>(json['type']),
       quantity: serializer.fromJson<int>(json['quantity']),
       referenceId: serializer.fromJson<String?>(json['referenceId']),
-      notes: serializer.fromJson<String?>(json['notes']),
+      note: serializer.fromJson<String?>(json['note']),
       productId: serializer.fromJson<String>(json['productId']),
       branchId: serializer.fromJson<String>(json['branchId']),
       batchId: serializer.fromJson<String?>(json['batchId']),
-      createdBy: serializer.fromJson<String?>(json['createdBy']),
+      createdById: serializer.fromJson<String?>(json['createdById']),
     );
   }
   @override
@@ -14108,11 +14066,11 @@ class StockMovementData extends DataClass
       'type': serializer.toJson<String>(type),
       'quantity': serializer.toJson<int>(quantity),
       'referenceId': serializer.toJson<String?>(referenceId),
-      'notes': serializer.toJson<String?>(notes),
+      'note': serializer.toJson<String?>(note),
       'productId': serializer.toJson<String>(productId),
       'branchId': serializer.toJson<String>(branchId),
       'batchId': serializer.toJson<String?>(batchId),
-      'createdBy': serializer.toJson<String?>(createdBy),
+      'createdById': serializer.toJson<String?>(createdById),
     };
   }
 
@@ -14126,11 +14084,11 @@ class StockMovementData extends DataClass
     String? type,
     int? quantity,
     Value<String?> referenceId = const Value.absent(),
-    Value<String?> notes = const Value.absent(),
+    Value<String?> note = const Value.absent(),
     String? productId,
     String? branchId,
     Value<String?> batchId = const Value.absent(),
-    Value<String?> createdBy = const Value.absent(),
+    Value<String?> createdById = const Value.absent(),
   }) => StockMovementData(
     id: id ?? this.id,
     syncStatus: syncStatus ?? this.syncStatus,
@@ -14141,11 +14099,11 @@ class StockMovementData extends DataClass
     type: type ?? this.type,
     quantity: quantity ?? this.quantity,
     referenceId: referenceId.present ? referenceId.value : this.referenceId,
-    notes: notes.present ? notes.value : this.notes,
+    note: note.present ? note.value : this.note,
     productId: productId ?? this.productId,
     branchId: branchId ?? this.branchId,
     batchId: batchId.present ? batchId.value : this.batchId,
-    createdBy: createdBy.present ? createdBy.value : this.createdBy,
+    createdById: createdById.present ? createdById.value : this.createdById,
   );
   StockMovementData copyWithCompanion(StockMovementCompanion data) {
     return StockMovementData(
@@ -14162,11 +14120,13 @@ class StockMovementData extends DataClass
       referenceId: data.referenceId.present
           ? data.referenceId.value
           : this.referenceId,
-      notes: data.notes.present ? data.notes.value : this.notes,
+      note: data.note.present ? data.note.value : this.note,
       productId: data.productId.present ? data.productId.value : this.productId,
       branchId: data.branchId.present ? data.branchId.value : this.branchId,
       batchId: data.batchId.present ? data.batchId.value : this.batchId,
-      createdBy: data.createdBy.present ? data.createdBy.value : this.createdBy,
+      createdById: data.createdById.present
+          ? data.createdById.value
+          : this.createdById,
     );
   }
 
@@ -14182,11 +14142,11 @@ class StockMovementData extends DataClass
           ..write('type: $type, ')
           ..write('quantity: $quantity, ')
           ..write('referenceId: $referenceId, ')
-          ..write('notes: $notes, ')
+          ..write('note: $note, ')
           ..write('productId: $productId, ')
           ..write('branchId: $branchId, ')
           ..write('batchId: $batchId, ')
-          ..write('createdBy: $createdBy')
+          ..write('createdById: $createdById')
           ..write(')'))
         .toString();
   }
@@ -14202,11 +14162,11 @@ class StockMovementData extends DataClass
     type,
     quantity,
     referenceId,
-    notes,
+    note,
     productId,
     branchId,
     batchId,
-    createdBy,
+    createdById,
   );
   @override
   bool operator ==(Object other) =>
@@ -14221,11 +14181,11 @@ class StockMovementData extends DataClass
           other.type == this.type &&
           other.quantity == this.quantity &&
           other.referenceId == this.referenceId &&
-          other.notes == this.notes &&
+          other.note == this.note &&
           other.productId == this.productId &&
           other.branchId == this.branchId &&
           other.batchId == this.batchId &&
-          other.createdBy == this.createdBy);
+          other.createdById == this.createdById);
 }
 
 class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
@@ -14238,11 +14198,11 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
   final Value<String> type;
   final Value<int> quantity;
   final Value<String?> referenceId;
-  final Value<String?> notes;
+  final Value<String?> note;
   final Value<String> productId;
   final Value<String> branchId;
   final Value<String?> batchId;
-  final Value<String?> createdBy;
+  final Value<String?> createdById;
   final Value<int> rowid;
   const StockMovementCompanion({
     this.id = const Value.absent(),
@@ -14254,11 +14214,11 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
     this.type = const Value.absent(),
     this.quantity = const Value.absent(),
     this.referenceId = const Value.absent(),
-    this.notes = const Value.absent(),
+    this.note = const Value.absent(),
     this.productId = const Value.absent(),
     this.branchId = const Value.absent(),
     this.batchId = const Value.absent(),
-    this.createdBy = const Value.absent(),
+    this.createdById = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   StockMovementCompanion.insert({
@@ -14271,11 +14231,11 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
     required String type,
     required int quantity,
     this.referenceId = const Value.absent(),
-    this.notes = const Value.absent(),
+    this.note = const Value.absent(),
     required String productId,
     required String branchId,
     this.batchId = const Value.absent(),
-    this.createdBy = const Value.absent(),
+    this.createdById = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        syncStatus = Value(syncStatus),
@@ -14293,11 +14253,11 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
     Expression<String>? type,
     Expression<int>? quantity,
     Expression<String>? referenceId,
-    Expression<String>? notes,
+    Expression<String>? note,
     Expression<String>? productId,
     Expression<String>? branchId,
     Expression<String>? batchId,
-    Expression<String>? createdBy,
+    Expression<String>? createdById,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
@@ -14310,11 +14270,11 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
       if (type != null) 'type': type,
       if (quantity != null) 'quantity': quantity,
       if (referenceId != null) 'reference_id': referenceId,
-      if (notes != null) 'notes': notes,
+      if (note != null) 'note': note,
       if (productId != null) 'product_id': productId,
       if (branchId != null) 'branch_id': branchId,
       if (batchId != null) 'batch_id': batchId,
-      if (createdBy != null) 'created_by': createdBy,
+      if (createdById != null) 'created_by_id': createdById,
       if (rowid != null) 'rowid': rowid,
     });
   }
@@ -14329,11 +14289,11 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
     Value<String>? type,
     Value<int>? quantity,
     Value<String?>? referenceId,
-    Value<String?>? notes,
+    Value<String?>? note,
     Value<String>? productId,
     Value<String>? branchId,
     Value<String?>? batchId,
-    Value<String?>? createdBy,
+    Value<String?>? createdById,
     Value<int>? rowid,
   }) {
     return StockMovementCompanion(
@@ -14346,11 +14306,11 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
       type: type ?? this.type,
       quantity: quantity ?? this.quantity,
       referenceId: referenceId ?? this.referenceId,
-      notes: notes ?? this.notes,
+      note: note ?? this.note,
       productId: productId ?? this.productId,
       branchId: branchId ?? this.branchId,
       batchId: batchId ?? this.batchId,
-      createdBy: createdBy ?? this.createdBy,
+      createdById: createdById ?? this.createdById,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -14385,8 +14345,8 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
     if (referenceId.present) {
       map['reference_id'] = Variable<String>(referenceId.value);
     }
-    if (notes.present) {
-      map['notes'] = Variable<String>(notes.value);
+    if (note.present) {
+      map['note'] = Variable<String>(note.value);
     }
     if (productId.present) {
       map['product_id'] = Variable<String>(productId.value);
@@ -14397,8 +14357,8 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
     if (batchId.present) {
       map['batch_id'] = Variable<String>(batchId.value);
     }
-    if (createdBy.present) {
-      map['created_by'] = Variable<String>(createdBy.value);
+    if (createdById.present) {
+      map['created_by_id'] = Variable<String>(createdById.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -14418,11 +14378,11 @@ class StockMovementCompanion extends UpdateCompanion<StockMovementData> {
           ..write('type: $type, ')
           ..write('quantity: $quantity, ')
           ..write('referenceId: $referenceId, ')
-          ..write('notes: $notes, ')
+          ..write('note: $note, ')
           ..write('productId: $productId, ')
           ..write('branchId: $branchId, ')
           ..write('batchId: $batchId, ')
-          ..write('createdBy: $createdBy, ')
+          ..write('createdById: $createdById, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -14519,12 +14479,12 @@ class $StockTransferTable extends StockTransfer
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _createdByMeta = const VerificationMeta(
-    'createdBy',
+  static const VerificationMeta _createdByIdMeta = const VerificationMeta(
+    'createdById',
   );
   @override
-  late final GeneratedColumn<String> createdBy = GeneratedColumn<String>(
-    'created_by',
+  late final GeneratedColumn<String> createdById = GeneratedColumn<String>(
+    'created_by_id',
     aliasedName,
     false,
     type: DriftSqlType.string,
@@ -14571,7 +14531,7 @@ class $StockTransferTable extends StockTransfer
     deletedAt,
     reason,
     status,
-    createdBy,
+    createdById,
     fromBranchId,
     toBranchId,
   ];
@@ -14640,13 +14600,16 @@ class $StockTransferTable extends StockTransfer
     } else if (isInserting) {
       context.missing(_statusMeta);
     }
-    if (data.containsKey('created_by')) {
+    if (data.containsKey('created_by_id')) {
       context.handle(
-        _createdByMeta,
-        createdBy.isAcceptableOrUnknown(data['created_by']!, _createdByMeta),
+        _createdByIdMeta,
+        createdById.isAcceptableOrUnknown(
+          data['created_by_id']!,
+          _createdByIdMeta,
+        ),
       );
     } else if (isInserting) {
-      context.missing(_createdByMeta);
+      context.missing(_createdByIdMeta);
     }
     if (data.containsKey('from_branch_id')) {
       context.handle(
@@ -14711,9 +14674,9 @@ class $StockTransferTable extends StockTransfer
         DriftSqlType.string,
         data['${effectivePrefix}status'],
       )!,
-      createdBy: attachedDatabase.typeMapping.read(
+      createdById: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}created_by'],
+        data['${effectivePrefix}created_by_id'],
       )!,
       fromBranchId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -14742,7 +14705,7 @@ class StockTransferData extends DataClass
   final DateTime? deletedAt;
   final String reason;
   final String status;
-  final String createdBy;
+  final String createdById;
   final String fromBranchId;
   final String toBranchId;
   const StockTransferData({
@@ -14754,7 +14717,7 @@ class StockTransferData extends DataClass
     this.deletedAt,
     required this.reason,
     required this.status,
-    required this.createdBy,
+    required this.createdById,
     required this.fromBranchId,
     required this.toBranchId,
   });
@@ -14773,7 +14736,7 @@ class StockTransferData extends DataClass
     }
     map['reason'] = Variable<String>(reason);
     map['status'] = Variable<String>(status);
-    map['created_by'] = Variable<String>(createdBy);
+    map['created_by_id'] = Variable<String>(createdById);
     map['from_branch_id'] = Variable<String>(fromBranchId);
     map['to_branch_id'] = Variable<String>(toBranchId);
     return map;
@@ -14793,7 +14756,7 @@ class StockTransferData extends DataClass
           : Value(deletedAt),
       reason: Value(reason),
       status: Value(status),
-      createdBy: Value(createdBy),
+      createdById: Value(createdById),
       fromBranchId: Value(fromBranchId),
       toBranchId: Value(toBranchId),
     );
@@ -14813,7 +14776,7 @@ class StockTransferData extends DataClass
       deletedAt: serializer.fromJson<DateTime?>(json['deletedAt']),
       reason: serializer.fromJson<String>(json['reason']),
       status: serializer.fromJson<String>(json['status']),
-      createdBy: serializer.fromJson<String>(json['createdBy']),
+      createdById: serializer.fromJson<String>(json['createdById']),
       fromBranchId: serializer.fromJson<String>(json['fromBranchId']),
       toBranchId: serializer.fromJson<String>(json['toBranchId']),
     );
@@ -14830,7 +14793,7 @@ class StockTransferData extends DataClass
       'deletedAt': serializer.toJson<DateTime?>(deletedAt),
       'reason': serializer.toJson<String>(reason),
       'status': serializer.toJson<String>(status),
-      'createdBy': serializer.toJson<String>(createdBy),
+      'createdById': serializer.toJson<String>(createdById),
       'fromBranchId': serializer.toJson<String>(fromBranchId),
       'toBranchId': serializer.toJson<String>(toBranchId),
     };
@@ -14845,7 +14808,7 @@ class StockTransferData extends DataClass
     Value<DateTime?> deletedAt = const Value.absent(),
     String? reason,
     String? status,
-    String? createdBy,
+    String? createdById,
     String? fromBranchId,
     String? toBranchId,
   }) => StockTransferData(
@@ -14857,7 +14820,7 @@ class StockTransferData extends DataClass
     deletedAt: deletedAt.present ? deletedAt.value : this.deletedAt,
     reason: reason ?? this.reason,
     status: status ?? this.status,
-    createdBy: createdBy ?? this.createdBy,
+    createdById: createdById ?? this.createdById,
     fromBranchId: fromBranchId ?? this.fromBranchId,
     toBranchId: toBranchId ?? this.toBranchId,
   );
@@ -14873,7 +14836,9 @@ class StockTransferData extends DataClass
       deletedAt: data.deletedAt.present ? data.deletedAt.value : this.deletedAt,
       reason: data.reason.present ? data.reason.value : this.reason,
       status: data.status.present ? data.status.value : this.status,
-      createdBy: data.createdBy.present ? data.createdBy.value : this.createdBy,
+      createdById: data.createdById.present
+          ? data.createdById.value
+          : this.createdById,
       fromBranchId: data.fromBranchId.present
           ? data.fromBranchId.value
           : this.fromBranchId,
@@ -14894,7 +14859,7 @@ class StockTransferData extends DataClass
           ..write('deletedAt: $deletedAt, ')
           ..write('reason: $reason, ')
           ..write('status: $status, ')
-          ..write('createdBy: $createdBy, ')
+          ..write('createdById: $createdById, ')
           ..write('fromBranchId: $fromBranchId, ')
           ..write('toBranchId: $toBranchId')
           ..write(')'))
@@ -14911,7 +14876,7 @@ class StockTransferData extends DataClass
     deletedAt,
     reason,
     status,
-    createdBy,
+    createdById,
     fromBranchId,
     toBranchId,
   );
@@ -14927,7 +14892,7 @@ class StockTransferData extends DataClass
           other.deletedAt == this.deletedAt &&
           other.reason == this.reason &&
           other.status == this.status &&
-          other.createdBy == this.createdBy &&
+          other.createdById == this.createdById &&
           other.fromBranchId == this.fromBranchId &&
           other.toBranchId == this.toBranchId);
 }
@@ -14941,7 +14906,7 @@ class StockTransferCompanion extends UpdateCompanion<StockTransferData> {
   final Value<DateTime?> deletedAt;
   final Value<String> reason;
   final Value<String> status;
-  final Value<String> createdBy;
+  final Value<String> createdById;
   final Value<String> fromBranchId;
   final Value<String> toBranchId;
   final Value<int> rowid;
@@ -14954,7 +14919,7 @@ class StockTransferCompanion extends UpdateCompanion<StockTransferData> {
     this.deletedAt = const Value.absent(),
     this.reason = const Value.absent(),
     this.status = const Value.absent(),
-    this.createdBy = const Value.absent(),
+    this.createdById = const Value.absent(),
     this.fromBranchId = const Value.absent(),
     this.toBranchId = const Value.absent(),
     this.rowid = const Value.absent(),
@@ -14968,7 +14933,7 @@ class StockTransferCompanion extends UpdateCompanion<StockTransferData> {
     this.deletedAt = const Value.absent(),
     required String reason,
     required String status,
-    required String createdBy,
+    required String createdById,
     required String fromBranchId,
     required String toBranchId,
     this.rowid = const Value.absent(),
@@ -14976,7 +14941,7 @@ class StockTransferCompanion extends UpdateCompanion<StockTransferData> {
        syncStatus = Value(syncStatus),
        reason = Value(reason),
        status = Value(status),
-       createdBy = Value(createdBy),
+       createdById = Value(createdById),
        fromBranchId = Value(fromBranchId),
        toBranchId = Value(toBranchId);
   static Insertable<StockTransferData> custom({
@@ -14988,7 +14953,7 @@ class StockTransferCompanion extends UpdateCompanion<StockTransferData> {
     Expression<DateTime>? deletedAt,
     Expression<String>? reason,
     Expression<String>? status,
-    Expression<String>? createdBy,
+    Expression<String>? createdById,
     Expression<String>? fromBranchId,
     Expression<String>? toBranchId,
     Expression<int>? rowid,
@@ -15002,7 +14967,7 @@ class StockTransferCompanion extends UpdateCompanion<StockTransferData> {
       if (deletedAt != null) 'deleted_at': deletedAt,
       if (reason != null) 'reason': reason,
       if (status != null) 'status': status,
-      if (createdBy != null) 'created_by': createdBy,
+      if (createdById != null) 'created_by_id': createdById,
       if (fromBranchId != null) 'from_branch_id': fromBranchId,
       if (toBranchId != null) 'to_branch_id': toBranchId,
       if (rowid != null) 'rowid': rowid,
@@ -15018,7 +14983,7 @@ class StockTransferCompanion extends UpdateCompanion<StockTransferData> {
     Value<DateTime?>? deletedAt,
     Value<String>? reason,
     Value<String>? status,
-    Value<String>? createdBy,
+    Value<String>? createdById,
     Value<String>? fromBranchId,
     Value<String>? toBranchId,
     Value<int>? rowid,
@@ -15032,7 +14997,7 @@ class StockTransferCompanion extends UpdateCompanion<StockTransferData> {
       deletedAt: deletedAt ?? this.deletedAt,
       reason: reason ?? this.reason,
       status: status ?? this.status,
-      createdBy: createdBy ?? this.createdBy,
+      createdById: createdById ?? this.createdById,
       fromBranchId: fromBranchId ?? this.fromBranchId,
       toBranchId: toBranchId ?? this.toBranchId,
       rowid: rowid ?? this.rowid,
@@ -15066,8 +15031,8 @@ class StockTransferCompanion extends UpdateCompanion<StockTransferData> {
     if (status.present) {
       map['status'] = Variable<String>(status.value);
     }
-    if (createdBy.present) {
-      map['created_by'] = Variable<String>(createdBy.value);
+    if (createdById.present) {
+      map['created_by_id'] = Variable<String>(createdById.value);
     }
     if (fromBranchId.present) {
       map['from_branch_id'] = Variable<String>(fromBranchId.value);
@@ -15092,7 +15057,7 @@ class StockTransferCompanion extends UpdateCompanion<StockTransferData> {
           ..write('deletedAt: $deletedAt, ')
           ..write('reason: $reason, ')
           ..write('status: $status, ')
-          ..write('createdBy: $createdBy, ')
+          ..write('createdById: $createdById, ')
           ..write('fromBranchId: $fromBranchId, ')
           ..write('toBranchId: $toBranchId, ')
           ..write('rowid: $rowid')
@@ -24549,7 +24514,6 @@ typedef $$ProductTableCreateCompanionBuilder =
       required String bulkUnitName,
       required String pieceUnitName,
       Value<int> unitsPerBulk,
-      required int costPricePerUnit,
       required int sellingPricePerPiece,
       required int sellingPricePerBulk,
       required String category,
@@ -24572,7 +24536,6 @@ typedef $$ProductTableUpdateCompanionBuilder =
       Value<String> bulkUnitName,
       Value<String> pieceUnitName,
       Value<int> unitsPerBulk,
-      Value<int> costPricePerUnit,
       Value<int> sellingPricePerPiece,
       Value<int> sellingPricePerBulk,
       Value<String> category,
@@ -24830,11 +24793,6 @@ class $$ProductTableFilterComposer
 
   ColumnFilters<int> get unitsPerBulk => $composableBuilder(
     column: $table.unitsPerBulk,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get costPricePerUnit => $composableBuilder(
-    column: $table.costPricePerUnit,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -25149,11 +25107,6 @@ class $$ProductTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get costPricePerUnit => $composableBuilder(
-    column: $table.costPricePerUnit,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<int> get sellingPricePerPiece => $composableBuilder(
     column: $table.sellingPricePerPiece,
     builder: (column) => ColumnOrderings(column),
@@ -25275,11 +25228,6 @@ class $$ProductTableAnnotationComposer
 
   GeneratedColumn<int> get unitsPerBulk => $composableBuilder(
     column: $table.unitsPerBulk,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<int> get costPricePerUnit => $composableBuilder(
-    column: $table.costPricePerUnit,
     builder: (column) => column,
   );
 
@@ -25575,7 +25523,6 @@ class $$ProductTableTableManager
                 Value<String> bulkUnitName = const Value.absent(),
                 Value<String> pieceUnitName = const Value.absent(),
                 Value<int> unitsPerBulk = const Value.absent(),
-                Value<int> costPricePerUnit = const Value.absent(),
                 Value<int> sellingPricePerPiece = const Value.absent(),
                 Value<int> sellingPricePerBulk = const Value.absent(),
                 Value<String> category = const Value.absent(),
@@ -25596,7 +25543,6 @@ class $$ProductTableTableManager
                 bulkUnitName: bulkUnitName,
                 pieceUnitName: pieceUnitName,
                 unitsPerBulk: unitsPerBulk,
-                costPricePerUnit: costPricePerUnit,
                 sellingPricePerPiece: sellingPricePerPiece,
                 sellingPricePerBulk: sellingPricePerBulk,
                 category: category,
@@ -25619,7 +25565,6 @@ class $$ProductTableTableManager
                 required String bulkUnitName,
                 required String pieceUnitName,
                 Value<int> unitsPerBulk = const Value.absent(),
-                required int costPricePerUnit,
                 required int sellingPricePerPiece,
                 required int sellingPricePerBulk,
                 required String category,
@@ -25640,7 +25585,6 @@ class $$ProductTableTableManager
                 bulkUnitName: bulkUnitName,
                 pieceUnitName: pieceUnitName,
                 unitsPerBulk: unitsPerBulk,
-                costPricePerUnit: costPricePerUnit,
                 sellingPricePerPiece: sellingPricePerPiece,
                 sellingPricePerBulk: sellingPricePerBulk,
                 category: category,
@@ -26919,14 +26863,14 @@ final class $$UserTableReferences
     _$AppDatabase db,
   ) => MultiTypedResultKey.fromTable(
     db.sales,
-    aliasName: $_aliasNameGenerator(db.user.id, db.sales.createdBy),
+    aliasName: $_aliasNameGenerator(db.user.id, db.sales.createdById),
   );
 
   $$SalesTableProcessedTableManager get salesRefs {
     final manager = $$SalesTableTableManager(
       $_db,
       $_db.sales,
-    ).filter((f) => f.createdBy.id.sqlEquals($_itemColumn<String>('id')!));
+    ).filter((f) => f.createdById.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_salesRefsTable($_db));
     return ProcessedTableManager(
@@ -26937,14 +26881,14 @@ final class $$UserTableReferences
   static MultiTypedResultKey<$StockAdjustmentTable, List<StockAdjustmentData>>
   _stockAdjustmentRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.stockAdjustment,
-    aliasName: $_aliasNameGenerator(db.user.id, db.stockAdjustment.createdBy),
+    aliasName: $_aliasNameGenerator(db.user.id, db.stockAdjustment.createdById),
   );
 
   $$StockAdjustmentTableProcessedTableManager get stockAdjustmentRefs {
     final manager = $$StockAdjustmentTableTableManager(
       $_db,
       $_db.stockAdjustment,
-    ).filter((f) => f.createdBy.id.sqlEquals($_itemColumn<String>('id')!));
+    ).filter((f) => f.createdById.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(
       _stockAdjustmentRefsTable($_db),
@@ -26975,14 +26919,14 @@ final class $$UserTableReferences
   static MultiTypedResultKey<$StockMovementTable, List<StockMovementData>>
   _stockMovementRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.stockMovement,
-    aliasName: $_aliasNameGenerator(db.user.id, db.stockMovement.createdBy),
+    aliasName: $_aliasNameGenerator(db.user.id, db.stockMovement.createdById),
   );
 
   $$StockMovementTableProcessedTableManager get stockMovementRefs {
     final manager = $$StockMovementTableTableManager(
       $_db,
       $_db.stockMovement,
-    ).filter((f) => f.createdBy.id.sqlEquals($_itemColumn<String>('id')!));
+    ).filter((f) => f.createdById.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_stockMovementRefsTable($_db));
     return ProcessedTableManager(
@@ -26993,14 +26937,14 @@ final class $$UserTableReferences
   static MultiTypedResultKey<$StockTransferTable, List<StockTransferData>>
   _stockTransferRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
     db.stockTransfer,
-    aliasName: $_aliasNameGenerator(db.user.id, db.stockTransfer.createdBy),
+    aliasName: $_aliasNameGenerator(db.user.id, db.stockTransfer.createdById),
   );
 
   $$StockTransferTableProcessedTableManager get stockTransferRefs {
     final manager = $$StockTransferTableTableManager(
       $_db,
       $_db.stockTransfer,
-    ).filter((f) => f.createdBy.id.sqlEquals($_itemColumn<String>('id')!));
+    ).filter((f) => f.createdById.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_stockTransferRefsTable($_db));
     return ProcessedTableManager(
@@ -27259,7 +27203,7 @@ class $$UserTableFilterComposer extends Composer<_$AppDatabase, $UserTable> {
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.sales,
-      getReferencedColumn: (t) => t.createdBy,
+      getReferencedColumn: (t) => t.createdById,
       builder:
           (
             joinBuilder, {
@@ -27284,7 +27228,7 @@ class $$UserTableFilterComposer extends Composer<_$AppDatabase, $UserTable> {
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.stockAdjustment,
-      getReferencedColumn: (t) => t.createdBy,
+      getReferencedColumn: (t) => t.createdById,
       builder:
           (
             joinBuilder, {
@@ -27334,7 +27278,7 @@ class $$UserTableFilterComposer extends Composer<_$AppDatabase, $UserTable> {
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.stockMovement,
-      getReferencedColumn: (t) => t.createdBy,
+      getReferencedColumn: (t) => t.createdById,
       builder:
           (
             joinBuilder, {
@@ -27359,7 +27303,7 @@ class $$UserTableFilterComposer extends Composer<_$AppDatabase, $UserTable> {
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.stockTransfer,
-      getReferencedColumn: (t) => t.createdBy,
+      getReferencedColumn: (t) => t.createdById,
       builder:
           (
             joinBuilder, {
@@ -27726,7 +27670,7 @@ class $$UserTableAnnotationComposer
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.sales,
-      getReferencedColumn: (t) => t.createdBy,
+      getReferencedColumn: (t) => t.createdById,
       builder:
           (
             joinBuilder, {
@@ -27751,7 +27695,7 @@ class $$UserTableAnnotationComposer
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.stockAdjustment,
-      getReferencedColumn: (t) => t.createdBy,
+      getReferencedColumn: (t) => t.createdById,
       builder:
           (
             joinBuilder, {
@@ -27801,7 +27745,7 @@ class $$UserTableAnnotationComposer
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.stockMovement,
-      getReferencedColumn: (t) => t.createdBy,
+      getReferencedColumn: (t) => t.createdById,
       builder:
           (
             joinBuilder, {
@@ -27826,7 +27770,7 @@ class $$UserTableAnnotationComposer
       composer: this,
       getCurrentColumn: (t) => t.id,
       referencedTable: $db.stockTransfer,
-      getReferencedColumn: (t) => t.createdBy,
+      getReferencedColumn: (t) => t.createdById,
       builder:
           (
             joinBuilder, {
@@ -28180,7 +28124,7 @@ class $$UserTableTableManager
                               $$UserTableReferences(db, table, p0).salesRefs,
                           referencedItemsForCurrentItem:
                               (item, referencedItems) => referencedItems.where(
-                                (e) => e.createdBy == item.id,
+                                (e) => e.createdById == item.id,
                               ),
                           typedResults: items,
                         ),
@@ -28200,7 +28144,7 @@ class $$UserTableTableManager
                           ).stockAdjustmentRefs,
                           referencedItemsForCurrentItem:
                               (item, referencedItems) => referencedItems.where(
-                                (e) => e.createdBy == item.id,
+                                (e) => e.createdById == item.id,
                               ),
                           typedResults: items,
                         ),
@@ -28240,7 +28184,7 @@ class $$UserTableTableManager
                           ).stockMovementRefs,
                           referencedItemsForCurrentItem:
                               (item, referencedItems) => referencedItems.where(
-                                (e) => e.createdBy == item.id,
+                                (e) => e.createdById == item.id,
                               ),
                           typedResults: items,
                         ),
@@ -28260,7 +28204,7 @@ class $$UserTableTableManager
                           ).stockTransferRefs,
                           referencedItemsForCurrentItem:
                               (item, referencedItems) => referencedItems.where(
-                                (e) => e.createdBy == item.id,
+                                (e) => e.createdById == item.id,
                               ),
                           typedResults: items,
                         ),
@@ -30198,7 +30142,7 @@ typedef $$SalesTableCreateCompanionBuilder =
       Value<String?> note,
       Value<String?> customerId,
       required String branchId,
-      Value<String?> createdBy,
+      Value<String?> createdById,
       Value<int> rowid,
     });
 typedef $$SalesTableUpdateCompanionBuilder =
@@ -30217,7 +30161,7 @@ typedef $$SalesTableUpdateCompanionBuilder =
       Value<String?> note,
       Value<String?> customerId,
       Value<String> branchId,
-      Value<String?> createdBy,
+      Value<String?> createdById,
       Value<int> rowid,
     });
 
@@ -30260,17 +30204,18 @@ final class $$SalesTableReferences
     );
   }
 
-  static $UserTable _createdByTable(_$AppDatabase db) =>
-      db.user.createAlias($_aliasNameGenerator(db.sales.createdBy, db.user.id));
+  static $UserTable _createdByIdTable(_$AppDatabase db) => db.user.createAlias(
+    $_aliasNameGenerator(db.sales.createdById, db.user.id),
+  );
 
-  $$UserTableProcessedTableManager? get createdBy {
-    final $_column = $_itemColumn<String>('created_by');
+  $$UserTableProcessedTableManager? get createdById {
+    final $_column = $_itemColumn<String>('created_by_id');
     if ($_column == null) return null;
     final manager = $$UserTableTableManager(
       $_db,
       $_db.user,
     ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_createdByTable($_db));
+    final item = $_typedResult.readTableOrNull(_createdByIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
@@ -30429,10 +30374,10 @@ class $$SalesTableFilterComposer extends Composer<_$AppDatabase, $SalesTable> {
     return composer;
   }
 
-  $$UserTableFilterComposer get createdBy {
+  $$UserTableFilterComposer get createdById {
     final $$UserTableFilterComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.createdBy,
+      getCurrentColumn: (t) => t.createdById,
       referencedTable: $db.user,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -30618,10 +30563,10 @@ class $$SalesTableOrderingComposer
     return composer;
   }
 
-  $$UserTableOrderingComposer get createdBy {
+  $$UserTableOrderingComposer get createdById {
     final $$UserTableOrderingComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.createdBy,
+      getCurrentColumn: (t) => t.createdById,
       referencedTable: $db.user,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -30741,10 +30686,10 @@ class $$SalesTableAnnotationComposer
     return composer;
   }
 
-  $$UserTableAnnotationComposer get createdBy {
+  $$UserTableAnnotationComposer get createdById {
     final $$UserTableAnnotationComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.createdBy,
+      getCurrentColumn: (t) => t.createdById,
       referencedTable: $db.user,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -30831,7 +30776,7 @@ class $$SalesTableTableManager
           PrefetchHooks Function({
             bool customerId,
             bool branchId,
-            bool createdBy,
+            bool createdById,
             bool paymentsRefs,
             bool salesItemRefs,
           })
@@ -30863,7 +30808,7 @@ class $$SalesTableTableManager
                 Value<String?> note = const Value.absent(),
                 Value<String?> customerId = const Value.absent(),
                 Value<String> branchId = const Value.absent(),
-                Value<String?> createdBy = const Value.absent(),
+                Value<String?> createdById = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SalesCompanion(
                 id: id,
@@ -30880,7 +30825,7 @@ class $$SalesTableTableManager
                 note: note,
                 customerId: customerId,
                 branchId: branchId,
-                createdBy: createdBy,
+                createdById: createdById,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -30899,7 +30844,7 @@ class $$SalesTableTableManager
                 Value<String?> note = const Value.absent(),
                 Value<String?> customerId = const Value.absent(),
                 required String branchId,
-                Value<String?> createdBy = const Value.absent(),
+                Value<String?> createdById = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => SalesCompanion.insert(
                 id: id,
@@ -30916,7 +30861,7 @@ class $$SalesTableTableManager
                 note: note,
                 customerId: customerId,
                 branchId: branchId,
-                createdBy: createdBy,
+                createdById: createdById,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -30929,7 +30874,7 @@ class $$SalesTableTableManager
               ({
                 customerId = false,
                 branchId = false,
-                createdBy = false,
+                createdById = false,
                 paymentsRefs = false,
                 salesItemRefs = false,
               }) {
@@ -30981,15 +30926,15 @@ class $$SalesTableTableManager
                                   )
                                   as T;
                         }
-                        if (createdBy) {
+                        if (createdById) {
                           state =
                               state.withJoin(
                                     currentTable: table,
-                                    currentColumn: table.createdBy,
+                                    currentColumn: table.createdById,
                                     referencedTable: $$SalesTableReferences
-                                        ._createdByTable(db),
+                                        ._createdByIdTable(db),
                                     referencedColumn: $$SalesTableReferences
-                                        ._createdByTable(db)
+                                        ._createdByIdTable(db)
                                         .id,
                                   )
                                   as T;
@@ -31060,7 +31005,7 @@ typedef $$SalesTableProcessedTableManager =
       PrefetchHooks Function({
         bool customerId,
         bool branchId,
-        bool createdBy,
+        bool createdById,
         bool paymentsRefs,
         bool salesItemRefs,
       })
@@ -31909,7 +31854,7 @@ typedef $$StockAdjustmentTableCreateCompanionBuilder =
       Value<DateTime?> deletedAt,
       required String reason,
       required String branchId,
-      required String createdBy,
+      required String createdById,
       Value<int> rowid,
     });
 typedef $$StockAdjustmentTableUpdateCompanionBuilder =
@@ -31922,7 +31867,7 @@ typedef $$StockAdjustmentTableUpdateCompanionBuilder =
       Value<DateTime?> deletedAt,
       Value<String> reason,
       Value<String> branchId,
-      Value<String> createdBy,
+      Value<String> createdById,
       Value<int> rowid,
     });
 
@@ -31957,18 +31902,18 @@ final class $$StockAdjustmentTableReferences
     );
   }
 
-  static $UserTable _createdByTable(_$AppDatabase db) => db.user.createAlias(
-    $_aliasNameGenerator(db.stockAdjustment.createdBy, db.user.id),
+  static $UserTable _createdByIdTable(_$AppDatabase db) => db.user.createAlias(
+    $_aliasNameGenerator(db.stockAdjustment.createdById, db.user.id),
   );
 
-  $$UserTableProcessedTableManager get createdBy {
-    final $_column = $_itemColumn<String>('created_by')!;
+  $$UserTableProcessedTableManager get createdById {
+    final $_column = $_itemColumn<String>('created_by_id')!;
 
     final manager = $$UserTableTableManager(
       $_db,
       $_db.user,
     ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_createdByTable($_db));
+    final item = $_typedResult.readTableOrNull(_createdByIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
@@ -32070,10 +32015,10 @@ class $$StockAdjustmentTableFilterComposer
     return composer;
   }
 
-  $$UserTableFilterComposer get createdBy {
+  $$UserTableFilterComposer get createdById {
     final $$UserTableFilterComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.createdBy,
+      getCurrentColumn: (t) => t.createdById,
       referencedTable: $db.user,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -32186,10 +32131,10 @@ class $$StockAdjustmentTableOrderingComposer
     return composer;
   }
 
-  $$UserTableOrderingComposer get createdBy {
+  $$UserTableOrderingComposer get createdById {
     final $$UserTableOrderingComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.createdBy,
+      getCurrentColumn: (t) => t.createdById,
       referencedTable: $db.user,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -32265,10 +32210,10 @@ class $$StockAdjustmentTableAnnotationComposer
     return composer;
   }
 
-  $$UserTableAnnotationComposer get createdBy {
+  $$UserTableAnnotationComposer get createdById {
     final $$UserTableAnnotationComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.createdBy,
+      getCurrentColumn: (t) => t.createdById,
       referencedTable: $db.user,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -32330,7 +32275,7 @@ class $$StockAdjustmentTableTableManager
           StockAdjustmentData,
           PrefetchHooks Function({
             bool branchId,
-            bool createdBy,
+            bool createdById,
             bool stockAdjustmentItemRefs,
           })
         > {
@@ -32357,7 +32302,7 @@ class $$StockAdjustmentTableTableManager
                 Value<DateTime?> deletedAt = const Value.absent(),
                 Value<String> reason = const Value.absent(),
                 Value<String> branchId = const Value.absent(),
-                Value<String> createdBy = const Value.absent(),
+                Value<String> createdById = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => StockAdjustmentCompanion(
                 id: id,
@@ -32368,7 +32313,7 @@ class $$StockAdjustmentTableTableManager
                 deletedAt: deletedAt,
                 reason: reason,
                 branchId: branchId,
-                createdBy: createdBy,
+                createdById: createdById,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -32381,7 +32326,7 @@ class $$StockAdjustmentTableTableManager
                 Value<DateTime?> deletedAt = const Value.absent(),
                 required String reason,
                 required String branchId,
-                required String createdBy,
+                required String createdById,
                 Value<int> rowid = const Value.absent(),
               }) => StockAdjustmentCompanion.insert(
                 id: id,
@@ -32392,7 +32337,7 @@ class $$StockAdjustmentTableTableManager
                 deletedAt: deletedAt,
                 reason: reason,
                 branchId: branchId,
-                createdBy: createdBy,
+                createdById: createdById,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -32406,7 +32351,7 @@ class $$StockAdjustmentTableTableManager
           prefetchHooksCallback:
               ({
                 branchId = false,
-                createdBy = false,
+                createdById = false,
                 stockAdjustmentItemRefs = false,
               }) {
                 return PrefetchHooks(
@@ -32445,17 +32390,17 @@ class $$StockAdjustmentTableTableManager
                                   )
                                   as T;
                         }
-                        if (createdBy) {
+                        if (createdById) {
                           state =
                               state.withJoin(
                                     currentTable: table,
-                                    currentColumn: table.createdBy,
+                                    currentColumn: table.createdById,
                                     referencedTable:
                                         $$StockAdjustmentTableReferences
-                                            ._createdByTable(db),
+                                            ._createdByIdTable(db),
                                     referencedColumn:
                                         $$StockAdjustmentTableReferences
-                                            ._createdByTable(db)
+                                            ._createdByIdTable(db)
                                             .id,
                                   )
                                   as T;
@@ -32508,7 +32453,7 @@ typedef $$StockAdjustmentTableProcessedTableManager =
       StockAdjustmentData,
       PrefetchHooks Function({
         bool branchId,
-        bool createdBy,
+        bool createdById,
         bool stockAdjustmentItemRefs,
       })
     >;
@@ -34282,11 +34227,11 @@ typedef $$StockMovementTableCreateCompanionBuilder =
       required String type,
       required int quantity,
       Value<String?> referenceId,
-      Value<String?> notes,
+      Value<String?> note,
       required String productId,
       required String branchId,
       Value<String?> batchId,
-      Value<String?> createdBy,
+      Value<String?> createdById,
       Value<int> rowid,
     });
 typedef $$StockMovementTableUpdateCompanionBuilder =
@@ -34300,11 +34245,11 @@ typedef $$StockMovementTableUpdateCompanionBuilder =
       Value<String> type,
       Value<int> quantity,
       Value<String?> referenceId,
-      Value<String?> notes,
+      Value<String?> note,
       Value<String> productId,
       Value<String> branchId,
       Value<String?> batchId,
-      Value<String?> createdBy,
+      Value<String?> createdById,
       Value<int> rowid,
     });
 
@@ -34373,18 +34318,18 @@ final class $$StockMovementTableReferences
     );
   }
 
-  static $UserTable _createdByTable(_$AppDatabase db) => db.user.createAlias(
-    $_aliasNameGenerator(db.stockMovement.createdBy, db.user.id),
+  static $UserTable _createdByIdTable(_$AppDatabase db) => db.user.createAlias(
+    $_aliasNameGenerator(db.stockMovement.createdById, db.user.id),
   );
 
-  $$UserTableProcessedTableManager? get createdBy {
-    final $_column = $_itemColumn<String>('created_by');
+  $$UserTableProcessedTableManager? get createdById {
+    final $_column = $_itemColumn<String>('created_by_id');
     if ($_column == null) return null;
     final manager = $$UserTableTableManager(
       $_db,
       $_db.user,
     ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_createdByTable($_db));
+    final item = $_typedResult.readTableOrNull(_createdByIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
@@ -34446,8 +34391,8 @@ class $$StockMovementTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get notes => $composableBuilder(
-    column: $table.notes,
+  ColumnFilters<String> get note => $composableBuilder(
+    column: $table.note,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -34520,10 +34465,10 @@ class $$StockMovementTableFilterComposer
     return composer;
   }
 
-  $$UserTableFilterComposer get createdBy {
+  $$UserTableFilterComposer get createdById {
     final $$UserTableFilterComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.createdBy,
+      getCurrentColumn: (t) => t.createdById,
       referencedTable: $db.user,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -34598,8 +34543,8 @@ class $$StockMovementTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get notes => $composableBuilder(
-    column: $table.notes,
+  ColumnOrderings<String> get note => $composableBuilder(
+    column: $table.note,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -34672,10 +34617,10 @@ class $$StockMovementTableOrderingComposer
     return composer;
   }
 
-  $$UserTableOrderingComposer get createdBy {
+  $$UserTableOrderingComposer get createdById {
     final $$UserTableOrderingComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.createdBy,
+      getCurrentColumn: (t) => t.createdById,
       referencedTable: $db.user,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -34736,8 +34681,8 @@ class $$StockMovementTableAnnotationComposer
     builder: (column) => column,
   );
 
-  GeneratedColumn<String> get notes =>
-      $composableBuilder(column: $table.notes, builder: (column) => column);
+  GeneratedColumn<String> get note =>
+      $composableBuilder(column: $table.note, builder: (column) => column);
 
   $$ProductTableAnnotationComposer get productId {
     final $$ProductTableAnnotationComposer composer = $composerBuilder(
@@ -34808,10 +34753,10 @@ class $$StockMovementTableAnnotationComposer
     return composer;
   }
 
-  $$UserTableAnnotationComposer get createdBy {
+  $$UserTableAnnotationComposer get createdById {
     final $$UserTableAnnotationComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.createdBy,
+      getCurrentColumn: (t) => t.createdById,
       referencedTable: $db.user,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -34849,7 +34794,7 @@ class $$StockMovementTableTableManager
             bool productId,
             bool branchId,
             bool batchId,
-            bool createdBy,
+            bool createdById,
           })
         > {
   $$StockMovementTableTableManager(_$AppDatabase db, $StockMovementTable table)
@@ -34874,11 +34819,11 @@ class $$StockMovementTableTableManager
                 Value<String> type = const Value.absent(),
                 Value<int> quantity = const Value.absent(),
                 Value<String?> referenceId = const Value.absent(),
-                Value<String?> notes = const Value.absent(),
+                Value<String?> note = const Value.absent(),
                 Value<String> productId = const Value.absent(),
                 Value<String> branchId = const Value.absent(),
                 Value<String?> batchId = const Value.absent(),
-                Value<String?> createdBy = const Value.absent(),
+                Value<String?> createdById = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => StockMovementCompanion(
                 id: id,
@@ -34890,11 +34835,11 @@ class $$StockMovementTableTableManager
                 type: type,
                 quantity: quantity,
                 referenceId: referenceId,
-                notes: notes,
+                note: note,
                 productId: productId,
                 branchId: branchId,
                 batchId: batchId,
-                createdBy: createdBy,
+                createdById: createdById,
                 rowid: rowid,
               ),
           createCompanionCallback:
@@ -34908,11 +34853,11 @@ class $$StockMovementTableTableManager
                 required String type,
                 required int quantity,
                 Value<String?> referenceId = const Value.absent(),
-                Value<String?> notes = const Value.absent(),
+                Value<String?> note = const Value.absent(),
                 required String productId,
                 required String branchId,
                 Value<String?> batchId = const Value.absent(),
-                Value<String?> createdBy = const Value.absent(),
+                Value<String?> createdById = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => StockMovementCompanion.insert(
                 id: id,
@@ -34924,11 +34869,11 @@ class $$StockMovementTableTableManager
                 type: type,
                 quantity: quantity,
                 referenceId: referenceId,
-                notes: notes,
+                note: note,
                 productId: productId,
                 branchId: branchId,
                 batchId: batchId,
-                createdBy: createdBy,
+                createdById: createdById,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -34944,7 +34889,7 @@ class $$StockMovementTableTableManager
                 productId = false,
                 branchId = false,
                 batchId = false,
-                createdBy = false,
+                createdById = false,
               }) {
                 return PrefetchHooks(
                   db: db,
@@ -35010,17 +34955,17 @@ class $$StockMovementTableTableManager
                                   )
                                   as T;
                         }
-                        if (createdBy) {
+                        if (createdById) {
                           state =
                               state.withJoin(
                                     currentTable: table,
-                                    currentColumn: table.createdBy,
+                                    currentColumn: table.createdById,
                                     referencedTable:
                                         $$StockMovementTableReferences
-                                            ._createdByTable(db),
+                                            ._createdByIdTable(db),
                                     referencedColumn:
                                         $$StockMovementTableReferences
-                                            ._createdByTable(db)
+                                            ._createdByIdTable(db)
                                             .id,
                                   )
                                   as T;
@@ -35053,7 +34998,7 @@ typedef $$StockMovementTableProcessedTableManager =
         bool productId,
         bool branchId,
         bool batchId,
-        bool createdBy,
+        bool createdById,
       })
     >;
 typedef $$StockTransferTableCreateCompanionBuilder =
@@ -35066,7 +35011,7 @@ typedef $$StockTransferTableCreateCompanionBuilder =
       Value<DateTime?> deletedAt,
       required String reason,
       required String status,
-      required String createdBy,
+      required String createdById,
       required String fromBranchId,
       required String toBranchId,
       Value<int> rowid,
@@ -35081,7 +35026,7 @@ typedef $$StockTransferTableUpdateCompanionBuilder =
       Value<DateTime?> deletedAt,
       Value<String> reason,
       Value<String> status,
-      Value<String> createdBy,
+      Value<String> createdById,
       Value<String> fromBranchId,
       Value<String> toBranchId,
       Value<int> rowid,
@@ -35096,18 +35041,18 @@ final class $$StockTransferTableReferences
     super.$_typedResult,
   );
 
-  static $UserTable _createdByTable(_$AppDatabase db) => db.user.createAlias(
-    $_aliasNameGenerator(db.stockTransfer.createdBy, db.user.id),
+  static $UserTable _createdByIdTable(_$AppDatabase db) => db.user.createAlias(
+    $_aliasNameGenerator(db.stockTransfer.createdById, db.user.id),
   );
 
-  $$UserTableProcessedTableManager get createdBy {
-    final $_column = $_itemColumn<String>('created_by')!;
+  $$UserTableProcessedTableManager get createdById {
+    final $_column = $_itemColumn<String>('created_by_id')!;
 
     final manager = $$UserTableTableManager(
       $_db,
       $_db.user,
     ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_createdByTable($_db));
+    final item = $_typedResult.readTableOrNull(_createdByIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
@@ -35229,10 +35174,10 @@ class $$StockTransferTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  $$UserTableFilterComposer get createdBy {
+  $$UserTableFilterComposer get createdById {
     final $$UserTableFilterComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.createdBy,
+      getCurrentColumn: (t) => t.createdById,
       referencedTable: $db.user,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -35373,10 +35318,10 @@ class $$StockTransferTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  $$UserTableOrderingComposer get createdBy {
+  $$UserTableOrderingComposer get createdById {
     final $$UserTableOrderingComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.createdBy,
+      getCurrentColumn: (t) => t.createdById,
       referencedTable: $db.user,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -35478,10 +35423,10 @@ class $$StockTransferTableAnnotationComposer
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
 
-  $$UserTableAnnotationComposer get createdBy {
+  $$UserTableAnnotationComposer get createdById {
     final $$UserTableAnnotationComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.createdBy,
+      getCurrentColumn: (t) => t.createdById,
       referencedTable: $db.user,
       getReferencedColumn: (t) => t.id,
       builder:
@@ -35588,7 +35533,7 @@ class $$StockTransferTableTableManager
           (StockTransferData, $$StockTransferTableReferences),
           StockTransferData,
           PrefetchHooks Function({
-            bool createdBy,
+            bool createdById,
             bool fromBranchId,
             bool toBranchId,
             bool stockTransferItemRefs,
@@ -35615,7 +35560,7 @@ class $$StockTransferTableTableManager
                 Value<DateTime?> deletedAt = const Value.absent(),
                 Value<String> reason = const Value.absent(),
                 Value<String> status = const Value.absent(),
-                Value<String> createdBy = const Value.absent(),
+                Value<String> createdById = const Value.absent(),
                 Value<String> fromBranchId = const Value.absent(),
                 Value<String> toBranchId = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
@@ -35628,7 +35573,7 @@ class $$StockTransferTableTableManager
                 deletedAt: deletedAt,
                 reason: reason,
                 status: status,
-                createdBy: createdBy,
+                createdById: createdById,
                 fromBranchId: fromBranchId,
                 toBranchId: toBranchId,
                 rowid: rowid,
@@ -35643,7 +35588,7 @@ class $$StockTransferTableTableManager
                 Value<DateTime?> deletedAt = const Value.absent(),
                 required String reason,
                 required String status,
-                required String createdBy,
+                required String createdById,
                 required String fromBranchId,
                 required String toBranchId,
                 Value<int> rowid = const Value.absent(),
@@ -35656,7 +35601,7 @@ class $$StockTransferTableTableManager
                 deletedAt: deletedAt,
                 reason: reason,
                 status: status,
-                createdBy: createdBy,
+                createdById: createdById,
                 fromBranchId: fromBranchId,
                 toBranchId: toBranchId,
                 rowid: rowid,
@@ -35671,7 +35616,7 @@ class $$StockTransferTableTableManager
               .toList(),
           prefetchHooksCallback:
               ({
-                createdBy = false,
+                createdById = false,
                 fromBranchId = false,
                 toBranchId = false,
                 stockTransferItemRefs = false,
@@ -35697,17 +35642,17 @@ class $$StockTransferTableTableManager
                           dynamic
                         >
                       >(state) {
-                        if (createdBy) {
+                        if (createdById) {
                           state =
                               state.withJoin(
                                     currentTable: table,
-                                    currentColumn: table.createdBy,
+                                    currentColumn: table.createdById,
                                     referencedTable:
                                         $$StockTransferTableReferences
-                                            ._createdByTable(db),
+                                            ._createdByIdTable(db),
                                     referencedColumn:
                                         $$StockTransferTableReferences
-                                            ._createdByTable(db)
+                                            ._createdByIdTable(db)
                                             .id,
                                   )
                                   as T;
@@ -35789,7 +35734,7 @@ typedef $$StockTransferTableProcessedTableManager =
       (StockTransferData, $$StockTransferTableReferences),
       StockTransferData,
       PrefetchHooks Function({
-        bool createdBy,
+        bool createdById,
         bool fromBranchId,
         bool toBranchId,
         bool stockTransferItemRefs,

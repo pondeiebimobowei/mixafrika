@@ -25,7 +25,7 @@ export class StockAdjustmentItem
   @Column(DataTypes.UUID)
   declare id: CreationOptional<string>;
 
-  @Column(DataType.DECIMAL(15,2))
+  @Column(DataType.BIGINT)
   declare quantity: number;
 
 
@@ -37,7 +37,7 @@ export class StockAdjustmentItem
   declare sync_date?: string;
 
 
-  
+
   @CreatedAt
   declare createdAt: string;
 
@@ -57,6 +57,6 @@ export class StockAdjustmentItem
   @Column(DataType.UUID)
   declare product_id: string;
 
-  
+
 
 }

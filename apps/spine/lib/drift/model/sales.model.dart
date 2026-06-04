@@ -15,5 +15,5 @@ class Sales extends Table with TableMixin {
 
     late final customerId = text().nullable().references(Customer, #id)();
     late final branchId = text().references(Branch, #id)();
-    late final createdBy = text().references(User, #id).nullable()();
+    late final createdById = text().references(User, #id).nullable()();
 }

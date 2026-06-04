@@ -126,7 +126,6 @@ abstract final class QaSeedFactory {
             bulkUnitName: 'Bag',
             pieceUnitName: 'Piece',
             unitsPerBulk: 10,
-            costPricePerUnit: costPricePerUnit,
             sellingPricePerPiece: sellingPricePerPiece,
             sellingPricePerBulk: sellingPricePerBulk,
             category: 'Food',

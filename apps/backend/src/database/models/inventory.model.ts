@@ -60,7 +60,7 @@ export class Inventory
 
     @ForeignKey(() => Batch)
     @Column(DataType.STRING)
-    declare batch_id: string;
+    declare batch_id?: string;
 
     @BelongsTo(() => Product, 'product_id')
     declare product: Product;

@@ -55,7 +55,7 @@ export class StockAdjustment
 
   @ForeignKey(() => User)
   @Column(DataType.UUID)
-  declare created_by: string;
+  declare created_by_id: string;
 
   
 

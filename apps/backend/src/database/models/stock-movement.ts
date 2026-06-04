@@ -30,14 +30,14 @@ export class StockMovement
   @Column(DataType.STRING)
   declare type: string;
 
-  @Column(DataType.DECIMAL(15,2))
+  @Column(DataType.BIGINT)
   declare quantity: number;
 
   @Column(DataType.STRING)
   declare reference_id?: string;
 
   @Column(DataType.TEXT)
-  declare notes?: string;
+  declare note?: string;
 
 
 
@@ -48,7 +48,7 @@ export class StockMovement
   declare sync_date?: string;
 
 
-  
+
   @CreatedAt
   declare createdAt: string;
 
@@ -74,8 +74,8 @@ export class StockMovement
 
   @ForeignKey(() => User)
   @Column(DataType.UUID)
-  declare created_by: string;
+  declare created_by_id: string;
 
-  
+
 
 }

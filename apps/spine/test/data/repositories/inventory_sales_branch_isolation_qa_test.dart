@@ -56,7 +56,7 @@ void main() {
       status: 'completed',
       note: null,
       branchId: 'branch_from',
-      createdBy: 'user_qa',
+      createdById: 'user_qa',
       syncStatus: 'pending',
       createdAt: QaSeedFactory.now,
       updatedAt: QaSeedFactory.now,

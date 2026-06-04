@@ -20,6 +20,9 @@ import { BankCard } from './database/models/bank-card.model';
 import { BusinessVerification } from './database/models/business-verification.model';
 import { UserVerification } from './database/models/user-verification';
 import { BusinessUser } from './database/models/business-user';
+import { Branch } from './database/models/branch.model';
+import { Inventory } from './database/models/inventory.model';
+import { Product } from './database/models/product.model';
 
 @Injectable()
 export class AppService {
@@ -42,7 +45,14 @@ export class AppService {
             model: User,
             attributes: [],
             required: true,
-          }]
+          }, {
+            model: Branch,
+            include: [
+              { model: Product }
+
+            ]
+          },
+        ]
         },
         { model: FundingApplication },
         { model: Setting }

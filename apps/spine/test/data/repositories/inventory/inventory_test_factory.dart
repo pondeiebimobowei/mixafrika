@@ -108,7 +108,6 @@ abstract final class InventoryTestFactory {
       bulkUnitName: 'Bag',
       pieceUnitName: 'Piece',
       unitsPerBulk: 10,
-      costPricePerUnit: costPrice,
       sellingPricePerPiece: sellingPricePerPiece,
       sellingPricePerBulk: sellingPricePerBulk,
       category: 'Grains',

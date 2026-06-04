@@ -16,6 +16,8 @@ import { Collection } from 'src/database/models/collection.model';
 import { Op } from 'sequelize';
 import { TenantAccessService } from 'src/access/tenant-access.service';
 import { sanitizeUser } from 'src/utils/user-response.util';
+import { SyncService } from 'src/sync/sync.service';
+
 
 
 @Injectable()
@@ -24,6 +26,7 @@ export class AuthService {
   constructor(
     private readonly configService: ConfigService,
     private readonly tenantAccessService: TenantAccessService,
+    private readonly syncService: SyncService,
   ) { }
 
     async handleSignup(create_user_dto: Create_user_dto) {
@@ -187,6 +190,8 @@ export class AuthService {
       },
     });
 
+    const syncChanges = await this.syncService.pullChanges(userId);
+
     return {
       success: true,
       message: 'Sync data fetched successfully',
@@ -197,6 +202,7 @@ export class AuthService {
         collections,
         branch_users: branchUsers,
         branches,
+        ...syncChanges,
       },
     };
   }

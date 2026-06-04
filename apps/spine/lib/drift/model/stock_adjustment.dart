@@ -8,6 +8,6 @@ class StockAdjustment extends Table with TableMixin {
 
     
     late final branchId = text().references(Branch, #id)();
-    late final createdBy = text().references(User, #id)();
+    late final createdById = text().references(User, #id)();
 
 }

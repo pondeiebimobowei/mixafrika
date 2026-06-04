@@ -15,12 +15,30 @@ import { Op } from 'sequelize';
 describe('AuthService', () => {
   let service: AuthService;
   let tenantAccessService: jest.Mocked<TenantAccessService>;
+  let syncService: jest.Mocked<any>;
 
   beforeEach(() => {
     tenantAccessService = {
       getAccessibleBusinessIds: jest.fn(),
       getAccessibleBranchIds: jest.fn(),
     } as unknown as jest.Mocked<TenantAccessService>;
+
+    syncService = {
+      pullChanges: jest.fn().mockResolvedValue({
+        global_products: [],
+        products: [],
+        inventory: [],
+        batches: [],
+        product_category: [],
+        stock_movements: [],
+        customers: [],
+        sales: [],
+        sales_items: [],
+        payments: [],
+        stock_transfers: [],
+        stock_transfer_items: [],
+      }),
+    } as unknown as jest.Mocked<any>;
 
     service = new AuthService(
       {
@@ -29,6 +47,7 @@ describe('AuthService', () => {
         ),
       } as unknown as ConfigService,
       tenantAccessService,
+      syncService,
     );
   });
 

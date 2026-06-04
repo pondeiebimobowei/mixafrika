@@ -54,7 +54,7 @@ export class StockTransfer
     
   @ForeignKey(() => User)
   @Column(DataTypes.UUID)
-  declare created_by: string;
+  declare created_by_id: string;
   
   @ForeignKey(() => Branch)
   @Column(DataTypes.UUID)

@@ -63,7 +63,6 @@ class AddProductViewModel extends AutoDisposeNotifier<AddProductState> {
         bulkUnitName: state.bulkUnit,
         pieceUnitName: state.pieceUnit,
         unitsPerBulk: int.parse(state.conversionFactor),
-        costPricePerUnit: 0,
         sellingPricePerPiece: int.parse(state.sellPricePerRetail),
         sellingPricePerBulk: int.parse(state.sellPricePerBulk),
         category: '',

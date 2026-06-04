@@ -927,16 +927,6 @@
             "dsl_features": []
           },
           {
-            "name": "cost_price_per_unit",
-            "getter_name": "costPricePerUnit",
-            "moor_type": "int",
-            "nullable": false,
-            "customConstraints": null,
-            "default_dart": null,
-            "default_client_dart": null,
-            "dsl_features": []
-          },
-          {
             "name": "selling_price_per_piece",
             "getter_name": "sellingPricePerPiece",
             "moor_type": "int",
@@ -2147,8 +2137,8 @@
             ]
           },
           {
-            "name": "created_by",
-            "getter_name": "createdBy",
+            "name": "created_by_id",
+            "getter_name": "createdById",
             "moor_type": "string",
             "nullable": true,
             "customConstraints": null,
@@ -2559,8 +2549,8 @@
             ]
           },
           {
-            "name": "created_by",
-            "getter_name": "createdBy",
+            "name": "created_by_id",
+            "getter_name": "createdById",
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
@@ -3254,8 +3244,8 @@
             "dsl_features": []
           },
           {
-            "name": "notes",
-            "getter_name": "notes",
+            "name": "note",
+            "getter_name": "note",
             "moor_type": "string",
             "nullable": true,
             "customConstraints": null,
@@ -3342,8 +3332,8 @@
             ]
           },
           {
-            "name": "created_by",
-            "getter_name": "createdBy",
+            "name": "created_by_id",
+            "getter_name": "createdById",
             "moor_type": "string",
             "nullable": true,
             "customConstraints": null,
@@ -3468,8 +3458,8 @@
             "dsl_features": []
           },
           {
-            "name": "created_by",
-            "getter_name": "createdBy",
+            "name": "created_by_id",
+            "getter_name": "createdById",
             "moor_type": "string",
             "nullable": false,
             "customConstraints": null,
@@ -4853,7 +4843,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"product\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"name\" TEXT NOT NULL, \"description\" TEXT NOT NULL, \"bulk_unit_name\" TEXT NOT NULL, \"piece_unit_name\" TEXT NOT NULL, \"units_per_bulk\" INTEGER NOT NULL DEFAULT 0, \"cost_price_per_unit\" INTEGER NOT NULL, \"selling_price_per_piece\" INTEGER NOT NULL, \"selling_price_per_bulk\" INTEGER NOT NULL, \"category\" TEXT NOT NULL, \"image_url\" TEXT NOT NULL, \"reviews\" TEXT NOT NULL, \"branch_id\" TEXT NOT NULL REFERENCES branch (id), \"global_product_id\" TEXT NOT NULL REFERENCES global_product (id), PRIMARY KEY (\"id\"));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"product\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"name\" TEXT NOT NULL, \"description\" TEXT NOT NULL, \"bulk_unit_name\" TEXT NOT NULL, \"piece_unit_name\" TEXT NOT NULL, \"units_per_bulk\" INTEGER NOT NULL DEFAULT 0, \"selling_price_per_piece\" INTEGER NOT NULL, \"selling_price_per_bulk\" INTEGER NOT NULL, \"category\" TEXT NOT NULL, \"image_url\" TEXT NOT NULL, \"reviews\" TEXT NOT NULL, \"branch_id\" TEXT NOT NULL REFERENCES branch (id), \"global_product_id\" TEXT NOT NULL REFERENCES global_product (id), PRIMARY KEY (\"id\"));"
         }
       ]
     },
@@ -4907,7 +4897,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"sales\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"total_amount\" INTEGER NOT NULL, \"amount_paid\" INTEGER NOT NULL DEFAULT 0, \"balance\" INTEGER NOT NULL DEFAULT 0, \"payment_method\" TEXT NOT NULL, \"status\" TEXT NOT NULL, \"note\" TEXT NULL, \"customer_id\" TEXT NULL REFERENCES customer (id), \"branch_id\" TEXT NOT NULL REFERENCES branch (id), \"created_by\" TEXT NULL REFERENCES user (id), PRIMARY KEY (\"id\"));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"sales\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"total_amount\" INTEGER NOT NULL, \"amount_paid\" INTEGER NOT NULL DEFAULT 0, \"balance\" INTEGER NOT NULL DEFAULT 0, \"payment_method\" TEXT NOT NULL, \"status\" TEXT NOT NULL, \"note\" TEXT NULL, \"customer_id\" TEXT NULL REFERENCES customer (id), \"branch_id\" TEXT NOT NULL REFERENCES branch (id), \"created_by_id\" TEXT NULL REFERENCES user (id), PRIMARY KEY (\"id\"));"
         }
       ]
     },
@@ -4934,7 +4924,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"stock_adjustment\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"reason\" TEXT NOT NULL, \"branch_id\" TEXT NOT NULL REFERENCES branch (id), \"created_by\" TEXT NOT NULL REFERENCES user (id), PRIMARY KEY (\"id\"));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"stock_adjustment\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"reason\" TEXT NOT NULL, \"branch_id\" TEXT NOT NULL REFERENCES branch (id), \"created_by_id\" TEXT NOT NULL REFERENCES user (id), PRIMARY KEY (\"id\"));"
         }
       ]
     },
@@ -4970,7 +4960,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"stock_movement\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"type\" TEXT NOT NULL, \"quantity\" INTEGER NOT NULL, \"reference_id\" TEXT NULL, \"notes\" TEXT NULL, \"product_id\" TEXT NOT NULL REFERENCES product (id), \"branch_id\" TEXT NOT NULL REFERENCES branch (id), \"batch_id\" TEXT NULL REFERENCES spine_batch (id), \"created_by\" TEXT NULL REFERENCES user (id), PRIMARY KEY (\"id\"));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"stock_movement\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"type\" TEXT NOT NULL, \"quantity\" INTEGER NOT NULL, \"reference_id\" TEXT NULL, \"note\" TEXT NULL, \"product_id\" TEXT NOT NULL REFERENCES product (id), \"branch_id\" TEXT NOT NULL REFERENCES branch (id), \"batch_id\" TEXT NULL REFERENCES spine_batch (id), \"created_by_id\" TEXT NULL REFERENCES user (id), PRIMARY KEY (\"id\"));"
         }
       ]
     },
@@ -4979,7 +4969,7 @@
       "sql": [
         {
           "dialect": "sqlite",
-          "sql": "CREATE TABLE IF NOT EXISTS \"stock_transfer\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"reason\" TEXT NOT NULL, \"status\" TEXT NOT NULL, \"created_by\" TEXT NOT NULL REFERENCES user (id), \"from_branch_id\" TEXT NOT NULL REFERENCES branch (id), \"to_branch_id\" TEXT NOT NULL REFERENCES branch (id), PRIMARY KEY (\"id\"));"
+          "sql": "CREATE TABLE IF NOT EXISTS \"stock_transfer\" (\"id\" TEXT NOT NULL, \"sync_status\" TEXT NOT NULL, \"sync_date\" TEXT NULL, \"created_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"updated_at\" TEXT NOT NULL DEFAULT (CURRENT_TIMESTAMP), \"deleted_at\" TEXT NULL, \"reason\" TEXT NOT NULL, \"status\" TEXT NOT NULL, \"created_by_id\" TEXT NOT NULL REFERENCES user (id), \"from_branch_id\" TEXT NOT NULL REFERENCES branch (id), \"to_branch_id\" TEXT NOT NULL REFERENCES branch (id), PRIMARY KEY (\"id\"));"
         }
       ]
     },

@@ -3,6 +3,7 @@ import 'package:spine/data/repositories/auth/auth_repository.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/data/shared_preference.dart';
 import 'package:spine/ui/auth/state/login_state.dart';
+import 'package:spine/ui/sync/sync_view_model.dart';
 
 class LoginViewModel extends Notifier<LoginState> {
   @override
@@ -19,7 +20,8 @@ class LoginViewModel extends Notifier<LoginState> {
 
     if (res.success) {
       await TokenManager.saveToken(res.data.token);
-      await ref.read(authRepositoryProvider).syncData();
+      await ref.read(syncViewModelProvider.notifier).runSync();
+      // await ref.read(authRepositoryProvider).syncData();
       state = state.copyWith(isLoading: false, isSuccess: true);
     } else {
       state = state.copyWith(isLoading: false, errorMessage: res.message);

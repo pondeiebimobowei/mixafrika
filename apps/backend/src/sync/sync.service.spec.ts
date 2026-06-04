@@ -1,4 +1,5 @@
 import { TenantAccessService } from 'src/access/tenant-access.service';
+import { Op } from 'sequelize';
 import { Batch } from 'src/database/models/batch.model';
 import { Customer } from 'src/database/models/customer';
 import { GlobalProduct } from 'src/database/models/global-product';
@@ -81,6 +82,7 @@ describe('SyncService', () => {
         entity: 'products',
         localId: 'product-1',
         serverId: 'product-1',
+        serverUpdatedAt: expect.any(String),
       }),
     ]);
   });
@@ -126,5 +128,81 @@ describe('SyncService', () => {
         syncStatus: 'completed',
       },
     ]);
+  });
+
+  it('does not resend unchanged global products after the cursor', async () => {
+    const productFindAll = jest.spyOn(Product, 'findAll');
+    productFindAll.mockResolvedValueOnce([
+      {
+        get: () => ({
+          id: 'product-1',
+          branch_id: 'branch-1',
+          global_product_id: 'global-1',
+        }),
+        id: 'product-1',
+        global_product_id: 'global-1',
+      },
+    ] as any);
+    productFindAll.mockResolvedValueOnce([] as any);
+    const globalFindAll = jest
+      .spyOn(GlobalProduct, 'findAll')
+      .mockResolvedValue([]);
+
+    await service.runSync('user-1', {
+      cursor: '2026-06-03T07:00:00.000Z',
+      mutations: [],
+    });
+
+    expect(globalFindAll).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          updatedAt: expect.any(Object),
+          id: expect.any(Object),
+        }),
+      }),
+    );
+  });
+
+  it('includes catalog parents for changed products even when the catalog row is older than the cursor', async () => {
+    const productFindAll = jest.spyOn(Product, 'findAll');
+    productFindAll.mockResolvedValueOnce([
+      {
+        get: () => ({
+          id: 'product-1',
+          branch_id: 'branch-1',
+          global_product_id: 'global-1',
+        }),
+        id: 'product-1',
+        global_product_id: 'global-1',
+      },
+    ] as any);
+    productFindAll.mockResolvedValueOnce([
+      {
+        get: () => ({
+          id: 'product-1',
+          branch_id: 'branch-1',
+          global_product_id: 'global-1',
+        }),
+        id: 'product-1',
+        global_product_id: 'global-1',
+      },
+    ] as any);
+    const globalFindAll = jest
+      .spyOn(GlobalProduct, 'findAll')
+      .mockResolvedValue([]);
+
+    await service.runSync('user-1', {
+      cursor: '2026-06-03T07:00:00.000Z',
+      mutations: [],
+    });
+
+    const where = globalFindAll.mock.calls[0]?.[0]?.where as any;
+    expect(where?.id).toEqual(expect.any(Object));
+    expect(where?.[Op.or]).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ updatedAt: expect.any(Object) }),
+        expect.objectContaining({ id: expect.any(Object) }),
+      ]),
+    );
   });
 });

@@ -5,11 +5,11 @@ export interface IStockMovement extends BaseModel, SyncableModel {
     type: string,
     quantity: number,
     reference_id?: string,
-    notes?: string,
+    note?: string,
 
 
     product_id: string,
     branch_id: string,
     batch_id?: string,
-    created_by?: string
+    created_by_id?: string
 }

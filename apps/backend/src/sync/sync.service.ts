@@ -21,10 +21,12 @@ import {
   SyncMutation,
   SyncRequest,
 } from './sync.types';
+import { ProductCategory } from 'src/database/models/product-category';
 
 type SyncModel = typeof Product;
 
 const syncOrder: SyncEntity[] = [
+  'product_category',
   'global_products',
   'products',
   'customers',
@@ -41,6 +43,7 @@ const syncOrder: SyncEntity[] = [
 const entityModels: Record<SyncEntity, SyncModel> = {
   global_products: GlobalProduct as unknown as SyncModel,
   products: Product,
+  product_category: ProductCategory as unknown as SyncModel,
   inventory: Inventory as unknown as SyncModel,
   batches: Batch as unknown as SyncModel,
   stock_movements: StockMovement as unknown as SyncModel,
@@ -78,7 +81,7 @@ const camelToSnake: Record<string, string> = {
   toBranchId: 'to_branch_id',
   transferId: 'transfer_id',
   referenceId: 'reference_id',
-  createdBy: 'created_by',
+  createdById: 'created_by_id',
   initialQuantity: 'initial_quantity',
   remainingQuantity: 'remaining_quantity',
   batchNumber: 'batch_number',
@@ -191,11 +194,11 @@ export class SyncService {
       localId: this.getMutationId(mutation),
       serverId: id,
       status: 'completed',
-      serverUpdatedAt: this.toDate(data.updatedAt ?? data.updated_at)?.toISOString(),
+      serverUpdatedAt: serverTime.toISOString(),
     };
   }
 
-  private async pullChanges(
+  public async pullChanges(
     userId: string,
     cursor?: string,
   ): Promise<SyncChanges> {
@@ -284,6 +287,22 @@ export class SyncService {
     const globalProductIds = accessibleProducts
       .map((product) => product.global_product_id)
       .filter(Boolean);
+    const changedProductGlobalIds = products
+      .map((product) => product.global_product_id)
+      .filter(Boolean);
+    const globalProductWhere =
+      since && changedProductGlobalIds.length > 0
+        ? {
+            id: { [Op.in]: globalProductIds },
+            [Op.or]: [
+              updatedSince,
+              { id: { [Op.in]: changedProductGlobalIds } },
+            ],
+          }
+        : {
+            ...updatedSince,
+            id: { [Op.in]: globalProductIds },
+          };
 
     const [salesItems, payments, stockTransferItems, globalProducts] =
       await Promise.all([
@@ -316,9 +335,7 @@ export class SyncService {
           : [],
         globalProductIds.length > 0
           ? GlobalProduct.findAll({
-              where: {
-                id: { [Op.in]: globalProductIds },
-              },
+              where: globalProductWhere,
               paranoid: false,
             })
           : [],
@@ -450,6 +467,7 @@ export class SyncService {
       products: [],
       inventory: [],
       batches: [],
+      product_category: [],
       stock_movements: [],
       customers: [],
       sales: [],

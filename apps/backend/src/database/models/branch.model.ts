@@ -10,6 +10,7 @@ import {
   Default,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { SyncStatus } from '@shared/shared/src/enums';
@@ -18,6 +19,7 @@ import { Business } from './business.model';
 import { User } from './user.model';
 import { BranchUser } from './branch-user';
 import { Collection } from './collection.model';
+import { Product } from './product.model';
 
 @Table({ tableName: 'branch' })
 export class Branch
@@ -80,5 +82,8 @@ export class Branch
   @ForeignKey(() => Collection)
   @Column(DataType.UUID)
   declare collection_id?: string;
+
+  @HasMany(() => Product)
+  declare products: Product[];
 
 }

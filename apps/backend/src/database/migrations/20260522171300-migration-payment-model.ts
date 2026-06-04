@@ -25,7 +25,7 @@ module.exports = {
           primaryKey: true,
         },
 
-        amount: { type: Sequelize.DECIMAL(15,2), allowNull: false },
+        amount: { type: Sequelize.BIGINT, allowNull: false },
         reference: { type: Sequelize.STRING, allowNull: false },
         payment_method: { type: Sequelize.STRING, allowNull: false },
         status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(paymentStatus)]} },
@@ -34,8 +34,8 @@ module.exports = {
         sale_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'sales', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
         
         
-        syncStatus: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)]} },
-        syncDate: {
+        sync_status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)]} },
+        sync_date: {
           allowNull: false,
           type: Sequelize.DATE,
         },

@@ -110,7 +110,6 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
                 syncStatus: 'pending',
                 createdAt: Value(now),
                 updatedAt: Value(now),
-                costPricePerUnit: product.costPricePerUnit,
                 category: product.category,
                 description: product.description,
                 imageUrl: product.imageUrl,
@@ -174,7 +173,7 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
               toBranchId: toBranchId,
               reason: reason,
               status: 'completed',
-              createdBy: userId,
+              createdById: userId,
             ),
           );
 
@@ -222,8 +221,8 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
                 quantity: take,
                 batchId: Value(batch.id),
                 referenceId: Value(transferId),
-                notes: Value(reason),
-                createdBy: Value(userId),
+                note: Value(reason),
+                createdById: Value(userId),
               ),
             );
 
@@ -299,8 +298,8 @@ class StockTransferRepository implements StockTransferRepositoryAbstract {
                 quantity: take,
                 batchId: Value(destinationBatchId),
                 referenceId: Value(transferId),
-                notes: Value(reason),
-                createdBy: Value(userId),
+                note: Value(reason),
+                createdById: Value(userId),
               ),
             );
 

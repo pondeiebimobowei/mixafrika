@@ -18,14 +18,13 @@ import { Sales } from './sales.model';
 
 @Table({ tableName: 'payment' })
 export class Payment
-  extends Model<IPayment> implements IPayment
-{
+  extends Model<IPayment> implements IPayment {
   @PrimaryKey
   @Default(DataTypes.UUIDV4)
   @Column(DataTypes.UUID)
   declare id: CreationOptional<string>;
 
-  @Column(DataType.DECIMAL(15,2))
+  @Column(DataType.BIGINT)
   declare amount: number;
 
   @Column(DataType.STRING)
@@ -34,7 +33,7 @@ export class Payment
   @Column(DataType.STRING)
   declare payment_method: string;
 
-  @Validate({isIn: [Object.values(paymentStatus)]})
+  @Validate({ isIn: [Object.values(paymentStatus)] })
   @Column(DataType.STRING)
   declare status: PaymentStatus;
 
@@ -47,7 +46,7 @@ export class Payment
   declare sync_date: string;
 
 
-  
+
   @CreatedAt
   declare createdAt: string;
 

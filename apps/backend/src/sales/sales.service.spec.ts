@@ -24,7 +24,7 @@ describe('SalesService', () => {
     } as unknown as TenantAccessService);
     const create = jest.spyOn(Sales, 'create').mockResolvedValue({
       id: 'sale-1',
-      created_by: 'user-1',
+      created_by_id: 'user-1',
     } as any);
 
     await service.create('user-1', {
@@ -35,7 +35,7 @@ describe('SalesService', () => {
     expect(create).toHaveBeenCalledWith(
       expect.objectContaining({
         branch_id: 'branch-1',
-        created_by: 'user-1',
+        created_by_id: 'user-1',
       }),
     );
   });

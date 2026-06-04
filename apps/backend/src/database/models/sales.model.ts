@@ -74,7 +74,7 @@ export class Sales
 
     @ForeignKey(() => User)
     @Column(DataType.UUID)
-    declare created_by: string;
+    declare created_by_id: string;
 
     @BelongsTo(() => Business, 'branch_id')
     declare branch: Business;

@@ -12,5 +12,5 @@ export interface ISales extends BaseModel, SyncableModel {
 
 
     branch_id: string;
-    created_by?: string;
+    created_by_id?: string;
 }

@@ -9,7 +9,6 @@ class Product extends Table with TableMixin {
     late final bulkUnitName = text()();
     late final pieceUnitName = text()();
     late final unitsPerBulk = integer().withDefault(const Constant(0))();
-    late final costPricePerUnit = integer()(); // considering removal
     late final sellingPricePerPiece = integer()();
     late final sellingPricePerBulk = integer()();
     late final category = text()();

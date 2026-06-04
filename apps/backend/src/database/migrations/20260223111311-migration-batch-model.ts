@@ -3,9 +3,9 @@ import sequelize from 'sequelize';
 import { QueryInterface, DataTypes } from 'sequelize';
 
 const syncStatus = {
-    PENDING: "pending",
-    COMPLETED: "completed",
-    FAILED: "failed",
+  PENDING: "pending",
+  COMPLETED: "completed",
+  FAILED: "failed",
 } as const;
 
 /** @type {import('sequelize-cli').Migration} */
@@ -21,19 +21,19 @@ module.exports = {
 
         expiry_date: { type: Sequelize.STRING, allowNull: false },
         batch_number: { type: Sequelize.STRING, allowNull: false },
-        cost_price_per_unit: { type: Sequelize.DECIMAL(15,2), allowNull: false },
-        selling_price_per_piece: { type: Sequelize.DECIMAL(15,2), allowNull: false },
-        selling_price_per_bulk: { type: Sequelize.DECIMAL(15,2), allowNull: false },
-        initial_quantity: { type: Sequelize.DECIMAL(15,2), allowNull: false },
-        remaining_quantity: { type: Sequelize.DECIMAL(15,2), allowNull: false },
-        
+        cost_price_per_unit: { type: Sequelize.BIGINT, allowNull: false },
+        selling_price_per_piece: { type: Sequelize.BIGINT, allowNull: false },
+        selling_price_per_bulk: { type: Sequelize.BIGINT, allowNull: false },
+        initial_quantity: { type: Sequelize.BIGINT, allowNull: false },
+        remaining_quantity: { type: Sequelize.BIGINT, allowNull: false },
 
-        product_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'product', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        branch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'branch', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        
 
-        syncStatus: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)]} },
-        syncDate: {
+        product_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'product', key: 'id' }, onDelete: 'Cascade', onUpdate: 'cascade' },
+        branch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'branch', key: 'id' }, onDelete: 'Cascade', onUpdate: 'cascade' },
+
+
+        sync_status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } },
+        sync_date: {
           allowNull: false,
           type: Sequelize.DATE,
         },

@@ -6,7 +6,6 @@ export interface IProduct extends BaseModel, SyncableModel {
     bulk_unit_name: string;
     piece_unit_name: string;
     units_per_bulk: number;
-    cost_price_per_unit: number;
     selling_price_per_piece: number;
     selling_price_per_bulk: number;
     category: string;

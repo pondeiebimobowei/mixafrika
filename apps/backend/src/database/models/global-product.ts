@@ -63,7 +63,7 @@ export class GlobalProduct
 
 
   @ForeignKey(() => ProductCategory)
-  @Column({ type: DataType.UUID, allowNull: false, references: { model: 'product_category', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' })
-  declare product_category_id: string;
+  @Column({ type: DataType.UUID, allowNull: true, references: { model: 'product_category', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' })
+  declare product_category_id?: string;
 
 }

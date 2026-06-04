@@ -3,9 +3,9 @@ import sequelize from 'sequelize';
 import { QueryInterface, DataTypes } from 'sequelize';
 
 const syncStatus = {
-    PENDING: "pending",
-    COMPLETED: "completed",
-    FAILED: "failed",
+  PENDING: "pending",
+  COMPLETED: "completed",
+  FAILED: "failed",
 } as const;
 
 
@@ -20,14 +20,14 @@ module.exports = {
           primaryKey: true,
         },
 
-        quantity: { type: Sequelize.DECIMAL(15,2), allowNull: false },
-        
-    
-        adjustment_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'stock_adjustment', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        product_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'product', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        
+        quantity: { type: Sequelize.BIGINT, allowNull: false },
 
-        sync_status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)]} },
+
+        adjustment_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'stock_adjustment', key: 'id' }, onDelete: 'Cascade', onUpdate: 'cascade' },
+        product_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'product', key: 'id' }, onDelete: 'Cascade', onUpdate: 'cascade' },
+
+
+        sync_status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } },
         sync_date: {
           allowNull: false,
           type: Sequelize.DATE,

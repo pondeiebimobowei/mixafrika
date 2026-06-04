@@ -58,7 +58,7 @@ export class SalesService {
 
         const sale = await Sales.create({
             ...saleData,
-            created_by: userId,
+            created_by_id: userId,
         } as any);
         return {
             success: true,

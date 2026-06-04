@@ -9,7 +9,8 @@ export type SyncEntity =
   | 'sales_items'
   | 'payments'
   | 'stock_transfers'
-  | 'stock_transfer_items';
+  | 'stock_transfer_items'
+  | 'product_category';
 
 export type SyncAction = 'upsert' | 'delete';
 

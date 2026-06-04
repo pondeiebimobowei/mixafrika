@@ -118,12 +118,12 @@ void main() {
         db.customStatement('''
           INSERT INTO product (
             id, sync_status, name, description, bulk_unit_name,
-            piece_unit_name, cost_price_per_unit, selling_price_per_piece,
+            piece_unit_name, selling_price_per_piece,
             selling_price_per_bulk, category, image_url, reviews,
             branch_id, global_product_id
           ) VALUES (
             'product_null_name', 'pending', NULL, 'desc', 'Bag',
-            'Piece', 10, 15, 100, 'Food', '', '',
+            'Piece', 15, 100, 'Food', '', '',
             'branch_missing', 'global_missing'
           )
           '''),

@@ -3,16 +3,16 @@ import sequelize from 'sequelize';
 import { QueryInterface, DataTypes } from 'sequelize';
 
 const syncStatus = {
-    PENDING: "pending",
-    COMPLETED: "completed",
-    FAILED: "failed",
+  PENDING: "pending",
+  COMPLETED: "completed",
+  FAILED: "failed",
 } as const;
 
 const transferStatus = {
-    PENDING: "pending",
-    COMPLETED: "completed",
-    CANCELLED: "cancelled",
-    FAILED: "failed",
+  PENDING: "pending",
+  COMPLETED: "completed",
+  CANCELLED: "cancelled",
+  FAILED: "failed",
 } as const;
 
 
@@ -27,14 +27,14 @@ module.exports = {
           primaryKey: true,
         },
 
-        quantity: { type: Sequelize.DECIMAL(15,2), allowNull: false },
-        
-    
-        transfer_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'stock_transfer', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        product_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'product', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' },
-        
+        quantity: { type: Sequelize.BIGINT, allowNull: false },
 
-        sync_status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)]} },
+
+        transfer_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'stock_transfer', key: 'id' }, onDelete: 'Cascade', onUpdate: 'cascade' },
+        product_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'product', key: 'id' }, onDelete: 'Cascade', onUpdate: 'cascade' },
+
+
+        sync_status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } },
         sync_date: {
           allowNull: false,
           type: Sequelize.DATE,

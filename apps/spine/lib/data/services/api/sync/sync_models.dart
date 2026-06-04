@@ -61,12 +61,14 @@ class SyncConflict {
   final Map<String, dynamic>? serverRecord;
 
   factory SyncConflict.fromJson(Map<String, dynamic> json) {
+    final record = json['serverRecord'] ?? json['server_record'];
+
     return SyncConflict(
       entity: json['entity'] ?? '',
       localId: json['localId'] ?? json['local_id'] ?? '',
       reason: json['reason'] ?? 'conflict',
-      serverRecord: json['serverRecord'] is Map<String, dynamic>
-          ? json['serverRecord']
+      serverRecord: record is Map
+          ? Map<String, dynamic>.from(record)
           : null,
     );
   }

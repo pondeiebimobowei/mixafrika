@@ -187,17 +187,6 @@ class InventoryRepository implements InventoryRepositoryAbstract {
         _db.inventory,
       }, // This tells Drift which table changed so watchers/streams update
     );
-
-    await _db.customUpdate(
-      'UPDATE product SET cost_price_per_unit = ? WHERE id = ?',
-      variables: [
-        Variable.withInt(costPerPiece), // Storing cost per piece as fallback
-        Variable.withString(productId),
-      ],
-      updates: {
-        _db.product,
-      }, // This tells Drift which table changed so watchers/streams update
-    );
   }
 
   @override

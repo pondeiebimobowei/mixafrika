@@ -41,9 +41,6 @@ export class Product
   declare units_per_bulk: number;
 
   @Column(DataType.INTEGER)
-  declare cost_price_per_unit: number;
-
-  @Column(DataType.INTEGER)
   declare selling_price_per_piece: number;
 
   @Column(DataType.INTEGER)
