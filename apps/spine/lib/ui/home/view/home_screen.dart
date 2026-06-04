@@ -9,6 +9,7 @@ import 'package:spine/ui/home/view_model/home_view_model.dart';
 import 'package:spine/ui/business/state/active_business_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/ui/sales/state/state.dart';
+import 'package:spine/ui/sync/sync_view_model.dart';
 import 'package:spine/widget/icon_widget.dart';
 import 'package:spine/widget/spinner_widget.dart';
 import 'package:spine/widget/styles/f_header_style.dart';
@@ -212,6 +213,8 @@ class HomeView extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildTopBar(context, ref),
+                  const SizedBox(height: 12),
+                  _buildSyncStrip(context, ref),
                   const SizedBox(height: 20),
                   _buildActivityCard(context, homeState),
                   const SizedBox(height: 24),
@@ -337,6 +340,138 @@ class HomeView extends ConsumerWidget {
         ),
         const SizedBox(width: 8),
       ],
+    );
+  }
+
+  Widget _buildSyncStrip(BuildContext context, WidgetRef ref) {
+    final syncState = ref.watch(syncViewModelProvider);
+    final colors = context.theme.colors;
+    final typography = context.theme.typography;
+
+    return syncState.when(
+      data: (state) {
+        final tone = state.hasIssues
+            ? colors.destructive
+            : state.pendingCount > 0
+                ? colors.secondary
+                : colors.primary;
+        final label = state.isSyncing
+            ? 'Syncing'
+            : state.pendingCount > 0
+                ? '${state.pendingCount} pending'
+                : 'Synced';
+        final details = state.failureCount > 0
+            ? '${state.failureCount} failed'
+            : state.conflictCount > 0
+                ? '${state.conflictCount} conflicts'
+                : state.pulledCount > 0
+                    ? '${state.pulledCount} updates pulled'
+                    : state.appliedCount > 0
+                        ? '${state.appliedCount} changes pushed'
+                        : 'Ready';
+
+        return GestureDetector(
+          onTap: state.isSyncing
+              ? null
+              : () => ref.read(syncViewModelProvider.notifier).runSync(),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            decoration: BoxDecoration(
+              color: tone.withValues(alpha: .08),
+              border: Border.all(color: tone.withValues(alpha: .25)),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  state.isSyncing ? Icons.sync : Icons.cloud_sync_outlined,
+                  color: tone,
+                  size: 18,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        label,
+                        style: typography.sm.copyWith(
+                          color: colors.primaryForeground,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      Text(
+                        details,
+                        style: typography.xs.copyWith(
+                          color: colors.primaryForeground.withValues(alpha: .65),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                if (state.isSyncing)
+                  SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: tone,
+                    ),
+                  )
+                else
+                  Icon(Icons.arrow_forward_ios, color: tone, size: 14),
+              ],
+            ),
+          ),
+        );
+      },
+      loading: () => Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        decoration: BoxDecoration(
+          color: colors.muted.withValues(alpha: .2),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          children: [
+            SizedBox(
+              width: 16,
+              height: 16,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: colors.primary,
+              ),
+            ),
+            const SizedBox(width: 10),
+            Text(
+              'Checking sync',
+              style: typography.sm.copyWith(fontWeight: FontWeight.w700),
+            ),
+          ],
+        ),
+      ),
+      error: (_, __) => GestureDetector(
+        onTap: () => ref.read(syncViewModelProvider.notifier).runSync(),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+          decoration: BoxDecoration(
+            color: colors.destructive.withValues(alpha: .08),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Row(
+            children: [
+              Icon(Icons.sync_problem_outlined, color: colors.destructive, size: 18),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Text(
+                  'Sync needs attention',
+                  style: typography.sm.copyWith(fontWeight: FontWeight.w800),
+                ),
+              ),
+              Icon(Icons.refresh, color: colors.destructive, size: 16),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

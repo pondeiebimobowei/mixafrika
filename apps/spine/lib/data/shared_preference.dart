@@ -22,6 +22,7 @@ class TokenManager {
 class AppPreferences {
   static const String _activeBusinessIdKey = 'active_business_id';
   static const String _activeBranchIdKey = 'active_branch_id';
+  static const String _syncCursorKey = 'sync_cursor';
 
   static Future<void> saveActiveBusinessId(String id) async {
     final prefs = await SharedPreferences.getInstance();
@@ -43,10 +44,21 @@ class AppPreferences {
     return prefs.getString(_activeBranchIdKey);
   }
 
+  static Future<void> saveSyncCursor(String cursor) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_syncCursorKey, cursor);
+  }
+
+  static Future<String?> getSyncCursor() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_syncCursorKey);
+  }
+
   static Future<void> clearAll() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_activeBusinessIdKey);
     await prefs.remove(_activeBranchIdKey);
+    await prefs.remove(_syncCursorKey);
     await TokenManager.clearToken();
   }
 }

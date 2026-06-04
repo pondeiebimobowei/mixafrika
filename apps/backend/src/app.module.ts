@@ -69,6 +69,13 @@ import { BranchUser } from './database/models/branch-user';
 import { TeamModule } from './team/team.module';
 import { BranchModule } from './branch/branch.module';
 import { AccessModule } from './access/access.module';
+import { SyncModule } from './sync/sync.module';
+import { Customer } from './database/models/customer';
+import { Payment } from './database/models/payments';
+import { StockMovement } from './database/models/stock-movement';
+import { StockTransfer } from './database/models/stock-transfer.model';
+import { StockTransferItem } from './database/models/stock-transfer-item';
+import { GlobalProduct } from './database/models/global-product';
 
 @Module({
   imports: [
@@ -88,7 +95,7 @@ import { AccessModule } from './access/access.module';
     AdminModule,
     LoanAccountHistoryModule,
     SettingsModule,
-    SequelizeModule.forFeature([User, BusinessUser, BusinessUser, BranchUser, Invites, UserVerification, Branch, BusinessVerification, Savings, FundingApplication, Goal, BankCard, Investment, Notification, Feed, Cluster, Collection, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, Business, Transaction, Wallet, LoanAccount, Product, Batch, Inventory, Sales, SalesItem]),
+    SequelizeModule.forFeature([User, BusinessUser, BusinessUser, BranchUser, Invites, UserVerification, Branch, BusinessVerification, Savings, FundingApplication, Goal, BankCard, Investment, Notification, Feed, Cluster, Collection, LoanHistory, RepaymentHistory, SavingsHistory, Setting, Update, Business, Transaction, Wallet, LoanAccount, Product, Batch, Inventory, Sales, SalesItem, Customer, Payment, StockMovement, StockTransfer, StockTransferItem, GlobalProduct]),
     ConfigModule.forRoot({ isGlobal: true }),
     SequelizeModule.forRootAsync({
       useFactory: getSequelizeConfig,
@@ -110,6 +117,7 @@ import { AccessModule } from './access/access.module';
     TeamModule,
     BranchModule,
     AccessModule,
+    SyncModule,
   ],
   controllers: [AppController],
   providers: [
