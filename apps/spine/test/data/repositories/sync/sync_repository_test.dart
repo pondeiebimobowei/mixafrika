@@ -10,6 +10,7 @@ import 'package:spine/drift/database.dart';
 
 import '../constants.dart';
 import '../inventory/inventory_test_factory.dart';
+import '../sales/sales_test_factory.dart';
 
 class FakeSyncApiService extends SyncApiService {
   FakeSyncApiService(this.handler);
@@ -89,6 +90,91 @@ void main() {
 
     expect(globalProduct.syncStatus, 'completed');
     expect(product.syncStatus, 'completed');
+  });
+
+  test('sends pending sale mutations with database column keys', () async {
+    await InventoryTestFactory.seedBusiness(database);
+    await InventoryTestFactory.seedBranch(database);
+
+    const saleId = 'sale_sync_1';
+    await SalesTestFactory.seedFullSale(
+      database,
+      sale: SalesTestFactory.buildSale(
+        id: saleId,
+        totalAmount: 750,
+        amountPaid: 750,
+      ),
+      items: [
+        SalesItemData(
+          id: 'sale_item_sync_1',
+          saleId: saleId,
+          name: 'Delivery charge',
+          quantity: 1,
+          type: 'charge',
+          unitPrice: 750,
+          costPrice: 0,
+          total: 750,
+          description: '',
+          productId: null,
+          batchId: null,
+          syncStatus: 'pending',
+          syncDate: null,
+          createdAt: Constants.fixedNow,
+          updatedAt: Constants.fixedNow,
+          deletedAt: null,
+        ),
+      ],
+      payments: [
+        SalesTestFactory.buildPayment(
+          id: 'payment_sync_1',
+          saleId: saleId,
+          amount: 750,
+        ),
+      ],
+    );
+
+    late FakeSyncApiService api;
+    api = FakeSyncApiService(({cursor, required mutations}) async {
+      return ApiResponse(
+        success: true,
+        message: 'Sync completed',
+        data: SyncPayload(
+          cursor: '2026-06-03T09:00:00.000Z',
+          serverTime: '2026-06-03T09:00:00.000Z',
+          applied: [],
+          conflicts: [],
+          failures: [],
+          changes: const {},
+        ),
+      );
+    });
+    final repository = SyncRepository(database: database, apiService: api);
+
+    await repository.runSync();
+
+    final saleMutation = api.capturedMutations.singleWhere(
+      (mutation) => mutation.entity == 'sales',
+    );
+    final saleItemMutation = api.capturedMutations.singleWhere(
+      (mutation) => mutation.entity == 'sales_items',
+    );
+    final paymentMutation = api.capturedMutations.singleWhere(
+      (mutation) => mutation.entity == 'payments',
+    );
+
+    expect(saleMutation.data['total_amount'], 750);
+    expect(saleMutation.data['amount_paid'], 750);
+    expect(saleMutation.data['payment_method'], 'cash');
+    expect(saleMutation.data['branch_id'], Constants.testBranchId);
+    expect(saleMutation.data, isNot(contains('totalAmount')));
+
+    expect(saleItemMutation.data['sale_id'], saleId);
+    expect(saleItemMutation.data['unit_price'], 750);
+    expect(saleItemMutation.data, isNot(contains('saleId')));
+
+    expect(paymentMutation.data['sale_id'], saleId);
+    expect(paymentMutation.data['payment_method'], 'cash');
+    expect(paymentMutation.data, isNot(contains('paymentMethod')));
   });
 
   test('applies pulled server changes in dependency order', () async {

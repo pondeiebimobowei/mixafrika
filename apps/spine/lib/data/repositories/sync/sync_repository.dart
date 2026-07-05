@@ -134,7 +134,7 @@ class SyncRepository {
     )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       globalProducts.map(
-        (row) => SyncMutation(
+        (row) => _buildMutation(
           entity: 'global_products',
           localId: row.id,
           data: row.toJson(),
@@ -147,7 +147,7 @@ class SyncRepository {
     )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       products.map(
-        (row) => SyncMutation(
+        (row) => _buildMutation(
           entity: 'products',
           localId: row.id,
           data: row.toJson(),
@@ -160,7 +160,7 @@ class SyncRepository {
     )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       customers.map(
-        (row) => SyncMutation(
+        (row) => _buildMutation(
           entity: 'customers',
           localId: row.id,
           data: row.toJson(),
@@ -173,7 +173,7 @@ class SyncRepository {
     )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       inventory.map(
-        (row) => SyncMutation(
+        (row) => _buildMutation(
           entity: 'inventory',
           localId: row.id,
           data: row.toJson(),
@@ -186,7 +186,7 @@ class SyncRepository {
     )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       batches.map(
-        (row) => SyncMutation(
+        (row) => _buildMutation(
           entity: 'batches',
           localId: row.id,
           data: row.toJson(),
@@ -199,7 +199,7 @@ class SyncRepository {
     )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       stockMovements.map(
-        (row) => SyncMutation(
+        (row) => _buildMutation(
           entity: 'stock_movements',
           localId: row.id,
           data: row.toJson(),
@@ -212,8 +212,11 @@ class SyncRepository {
     )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       sales.map(
-        (row) =>
-            SyncMutation(entity: 'sales', localId: row.id, data: row.toJson()),
+        (row) => _buildMutation(
+          entity: 'sales',
+          localId: row.id,
+          data: row.toJson(),
+        ),
       ),
     );
 
@@ -222,7 +225,7 @@ class SyncRepository {
     )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       salesItems.map(
-        (row) => SyncMutation(
+        (row) => _buildMutation(
           entity: 'sales_items',
           localId: row.id,
           data: row.toJson(),
@@ -235,7 +238,7 @@ class SyncRepository {
     )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       payments.map(
-        (row) => SyncMutation(
+        (row) => _buildMutation(
           entity: 'payments',
           localId: row.id,
           data: row.toJson(),
@@ -248,7 +251,7 @@ class SyncRepository {
     )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       transfers.map(
-        (row) => SyncMutation(
+        (row) => _buildMutation(
           entity: 'stock_transfers',
           localId: row.id,
           data: row.toJson(),
@@ -261,7 +264,7 @@ class SyncRepository {
     )..where((table) => table.syncStatus.isIn(statuses))).get();
     mutations.addAll(
       transferItems.map(
-        (row) => SyncMutation(
+        (row) => _buildMutation(
           entity: 'stock_transfer_items',
           localId: row.id,
           data: row.toJson(),
@@ -270,6 +273,29 @@ class SyncRepository {
     );
 
     return mutations;
+  }
+
+  SyncMutation _buildMutation({
+    required String entity,
+    required String localId,
+    required Map<String, dynamic> data,
+  }) {
+    return SyncMutation(
+      entity: entity,
+      localId: localId,
+      data: _normalizeMutationData(data),
+    );
+  }
+
+  Map<String, dynamic> _normalizeMutationData(Map<String, dynamic> data) {
+    return data.map((key, value) => MapEntry(_camelToSnake(key), value));
+  }
+
+  String _camelToSnake(String key) {
+    return key.replaceAllMapped(
+      RegExp(r'(?<!^)[A-Z]'),
+      (match) => '_${match.group(0)!.toLowerCase()}',
+    );
   }
 
   Future<void> _applyPulledChanges(
