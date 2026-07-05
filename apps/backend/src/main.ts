@@ -14,9 +14,11 @@ dayjs.extend(isoWeek);
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
-  
 
-  const cors = configService.get('CORS_ORIGINS')?.split('\n') || [];
+  const cors = (configService.get('CORS_ORIGINS') || '')
+    .split(/[\n,]/)
+    .map((origin) => origin.trim())
+    .filter(Boolean);
   app.enableCors({
     origin: cors,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -24,10 +26,10 @@ async function bootstrap() {
     credentials: true,
   });
 
-  const PORT = process.env.PORT
+  const port = Number(process.env.PORT || 3003);
   app.useGlobalFilters(new SequelizeExceptionFilter(new LoggerService()));
-  await app.listen(PORT || 3003, '0.0.0.0', ()=> {
-    console.log(`server runningS ${process.env.PORT}`)
+  await app.listen(port, '0.0.0.0', () => {
+    console.log(`Server running on port ${port}`);
   });
 }
 bootstrap();

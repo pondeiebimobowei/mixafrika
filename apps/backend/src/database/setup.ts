@@ -18,6 +18,9 @@ const requiredConfig = <T = string>(
 export const getSequelizeConfig = (
   configService: ConfigService,
 ): SequelizeModuleOptions => {
+  const databaseSsl = configService.get<string>('DB_SSL') === 'true';
+  const rejectUnauthorized = configService.get<string>('DB_SSL_REJECT_UNAUTHORIZED') !== 'false';
+
   const baseConfig: SequelizeModuleOptions = {
     database: requiredConfig(configService, 'DB_NAME'),
     username: requiredConfig(configService, 'DB_USER'),
@@ -38,11 +41,11 @@ export const getSequelizeConfig = (
 
   const sequelizeConfig: any = { ...baseConfig };
 
-  if (configService.get<string>('NODE_ENV') === 'production') {
+  if (databaseSsl) {
     sequelizeConfig.dialectOptions = {
       ssl: {
-        require: true, // Enforce SSL connection
-        rejectUnauthorized: true, // Set to false if you are using self-signed certificates in dev, but true for production
+        require: true,
+        rejectUnauthorized,
       },
     };
   }
