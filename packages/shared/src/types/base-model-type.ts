@@ -1,4 +1,4 @@
-import { SyncStatus } from "../enums";
+import type { SyncStatus } from "../enums";
 
 export interface BaseModel {
     id?: string,

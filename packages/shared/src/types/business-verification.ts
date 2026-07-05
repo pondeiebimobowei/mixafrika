@@ -1,5 +1,5 @@
 import { type VerificationStatus } from "../enums";
-import { SyncableModel, type BaseModel } from "./base-model-type";
+import type { SyncableModel, BaseModel } from "./base-model-type";
 
 export interface IBusinessVerification extends BaseModel, SyncableModel {
   
@@ -12,6 +12,6 @@ export interface IBusinessVerification extends BaseModel, SyncableModel {
   
   
   business_id: string;
-  submitted_by: string
+  submitted_by: string;
   reviewed_by: string;
 }

@@ -1,4 +1,4 @@
-import { SyncableModel, type BaseModel } from "./base-model-type";
+import type { SyncableModel, BaseModel } from "./base-model-type";
 import { type ICluster } from "./cluster";
 
 export interface ICollection extends BaseModel, SyncableModel {
@@ -7,13 +7,13 @@ export interface ICollection extends BaseModel, SyncableModel {
   total_traders: number;
   about: string;
   cover_image: string;
-  roi:number;
-  min_investment:number;
+  roi: number;
+  min_investment: number;
   city: string;
   state: string;
   country: string;
 }
 
 export interface ICollectionWithCluster extends ICollection {
-  cluster: ICluster[]
+  cluster: ICluster[];
 }

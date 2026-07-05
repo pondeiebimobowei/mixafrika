@@ -1,5 +1,5 @@
 import { type Duration } from "../enums";
-import { SyncableModel, type BaseModel } from "./base-model-type";
+import type { SyncableModel, BaseModel } from "./base-model-type";
 import { type ICollection } from "./collection";
 
 export interface ICluster extends BaseModel, SyncableModel {
@@ -8,7 +8,7 @@ export interface ICluster extends BaseModel, SyncableModel {
   about: string;
   duration: Duration;
   roi: number;
-  total_funds_raised: number
+  total_funds_raised: number;
   target_fundraising_amount: number;
   is_active: boolean;
   cover_image: string;
@@ -20,5 +20,5 @@ export interface ICluster extends BaseModel, SyncableModel {
 }
 
 export interface IClusterWithCollection extends ICluster {
-  collection: ICollection
+  collection: ICollection;
 }

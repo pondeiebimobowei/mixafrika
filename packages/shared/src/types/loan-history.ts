@@ -1,4 +1,4 @@
-import { LoanStatus } from "../enums";
+import type { LoanStatus } from "../enums";
 import type { BaseModel } from "./base-model-type";
 
 export interface ILoanHistory extends BaseModel {
@@ -6,5 +6,5 @@ export interface ILoanHistory extends BaseModel {
   loan_account_id: string;
   cluster_id: string;
   amount: number;
-  status: LoanStatus
+  status: LoanStatus;
 }

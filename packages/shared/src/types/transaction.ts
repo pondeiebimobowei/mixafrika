@@ -1,4 +1,4 @@
-import { RepaymentStatus, Status, Types } from "../enums";
+import type { RepaymentStatus, Status, Types } from "../enums";
 import { type BaseModel } from "./base-model-type";
 import { type IUser } from "./user";
 
@@ -11,6 +11,6 @@ export interface ITransaction extends BaseModel {
   category: string;
 }
 
-export interface ITransactionWithUser extends ITransaction{
-  user: Partial<IUser>
+export interface ITransactionWithUser extends ITransaction {
+  user: Partial<IUser>;
 }
