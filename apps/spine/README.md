@@ -1,10 +1,20 @@
 # spine
 
-A new Flutter project.
+Flutter app for SPINE.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+The web deployment in `deploy/web` is what Coolify serves.
+Build locally, then copy the generated `build/web` output into `deploy/web`.
+
+Example:
+
+```sh
+cd apps/spine
+sh scripts/build_web.sh https://api.mixafrika.com/v1
+```
+
+That command rebuilds the web bundle with the correct API endpoint and refreshes `deploy/web` in place.
 
 A few resources to get you started if this is your first Flutter project:
 

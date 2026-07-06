@@ -2,8 +2,8 @@ import 'package:dio/dio.dart';
 // import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:spine/data/shared_preference.dart';
 
-// final String baseUrl =  'https://api.mixafrika.com/v1';
-// final String baseUrl =  'http://localhost:3003/v1';
+// `base_url` is read at build time via `--dart-define`.
+// Update the Docker build arg or pass `--dart-define=base_url=...` when rebuilding.
 final String baseUrl = String.fromEnvironment(
   'base_url',
   defaultValue: 'https://api.mixafrika.com/v1',
