@@ -20,6 +20,9 @@ const databaseConfig = () => ({
   dialect: requiredEnv('DB_DIALECT'),
 });
 
+const sslEnabled = process.env.DB_SSL === 'true';
+const rejectUnauthorized = process.env.DB_SSL_REJECT_UNAUTHORIZED !== 'false';
+
 const development= {
   ...databaseConfig(),
 //   dialectOptions: {
@@ -41,19 +44,21 @@ const test = {
 }
 
 const production = {
-    ...databaseConfig(),
-    dialectOptions: {
-      ssl: {
-          require: true,
-          rejectUnauthorized: false,
+  ...databaseConfig(),
+  ...(sslEnabled
+    ? {
+        dialectOptions: {
+          ssl: {
+            require: true,
+            rejectUnauthorized,
+          },
+        },
       }
-  }
-}
+    : {}),
+};
 
 module.exports = {
-    
-    production,
-    test,
-    development
-  
+  production,
+  test,
+  development,
 };

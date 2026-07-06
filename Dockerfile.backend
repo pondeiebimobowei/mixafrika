@@ -27,6 +27,7 @@ COPY packages/shared/package.json packages/shared/package.json
 RUN yarn install --frozen-lockfile --production=true && yarn cache clean
 
 COPY --from=base /app/apps/backend/dist ./apps/backend/dist
+COPY --from=base /app/apps/backend/src/database ./apps/backend/src/database
 
 EXPOSE 3003
 CMD ["node", "apps/backend/dist/apps/backend/src/main.js"]
