@@ -36,7 +36,7 @@ module.exports = {
 
         sync_status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)]} },
         sync_date: {
-          allowNull: false,
+          allowNull: true,
           type: Sequelize.DATE,
         },
 

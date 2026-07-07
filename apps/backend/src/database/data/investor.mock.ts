@@ -20,6 +20,7 @@ export const mockInvestorSeed: () => Promise<IUser[]> = (async () => {
       email: 'investor@mixafrika.com',
       password: await bcrypt.hash('password123', 10),
       role: 'investor',
+      sync_status: "pending",
 
       createdAt: "2025-11-12T16:13:42.425Z",
       updatedAt: "2025-11-12T16:13:42.425Z"
@@ -37,6 +38,7 @@ export const mockInvestorSeed: () => Promise<IUser[]> = (async () => {
       email: "chidi.okafor@mixafrika.com",
       password: await bcrypt.hash("password123", 10),
       role: "investor",
+      sync_status: "pending",
       createdAt: "2025-11-19T14:10:12.425Z",
       updatedAt: "2025-11-19T14:10:12.425Z"
     },
@@ -53,6 +55,7 @@ export const mockInvestorSeed: () => Promise<IUser[]> = (async () => {
       email: "zainab.lawal@mixafrika.com",
       password: await bcrypt.hash("password123", 10),
       role: "investor",
+      sync_status: "pending",
       createdAt: "2025-11-19T14:11:00.425Z",
       updatedAt: "2025-11-19T14:11:00.425Z"
     },
@@ -69,6 +72,7 @@ export const mockInvestorSeed: () => Promise<IUser[]> = (async () => {
       email: "samuel.adeyemi@mixafrika.com",
       password: await bcrypt.hash("password123", 10),
       role: "investor",
+      sync_status: "pending",
       createdAt: "2025-11-19T14:13:26.425Z",
       updatedAt: "2025-11-19T14:13:26.425Z"
     },
@@ -85,6 +89,7 @@ export const mockInvestorSeed: () => Promise<IUser[]> = (async () => {
       email: "aisha.bello@mixafrika.com",
       password: await bcrypt.hash("password123", 10),
       role: "investor",
+      sync_status: "pending",
       createdAt: "2025-11-19T14:15:10.425Z",
       updatedAt: "2025-11-19T14:15:10.425Z"
     },
@@ -101,6 +106,7 @@ export const mockInvestorSeed: () => Promise<IUser[]> = (async () => {
       email: "tunde.balogun@mixafrika.com",
       password: await bcrypt.hash("password123", 10),
       role: "investor",
+      sync_status: "pending",
       createdAt: "2025-11-19T14:16:40.425Z",
       updatedAt: "2025-11-19T14:16:40.425Z"
     }

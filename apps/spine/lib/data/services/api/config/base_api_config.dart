@@ -9,6 +9,9 @@ final String baseUrl = String.fromEnvironment(
   defaultValue: 'https://api.mixafrika.com/v1',
 );
 
+// final String baseUrl =  'http://localhost:3003/v1';
+
+
 final Dio apiPrivate =
     Dio(
         BaseOptions(

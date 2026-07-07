@@ -28,6 +28,7 @@ export class AuthService {
     private readonly tenantAccessService: TenantAccessService,
     private readonly syncService: SyncService,
   ) { }
+  
 
     async handleSignup(create_user_dto: Create_user_dto) {
     const jwtSecret = this.configService.get('access_token_secret');
@@ -44,6 +45,8 @@ export class AuthService {
       credit_score_status: "not set",
       role: create_user_dto.role as Roles,
       is_email_verified: false,
+      sync_date: new Date().toISOString(),
+      sync_status: "completed",
 
     });
 
@@ -197,7 +200,11 @@ export class AuthService {
       collections: _syncCollections,
       branch_users: _syncBranchUsers,
       branches: _syncBranches,
+      sales: _syncSales,
+      sales_items: _syncSalesItems,
+       
       ...posChanges
+
     } = await this.syncService.pullChanges(userId);
 
     return {

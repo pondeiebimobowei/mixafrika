@@ -41,8 +41,7 @@ module.exports = {
         
         sync_date: { 
           type: Sequelize.DATE, 
-          allowNull: true, 
-          defaultValue: Sequelize.NOW 
+          allowNull: true,  
         },
 
         createdAt: {

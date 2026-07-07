@@ -157,6 +157,7 @@ export const traderDetailsData: { [key: string]: IuserWithBusinessWithTransactio
         last_name: '',
         password: '',
         role: 'trader',
+        sync_status: 'pending',
         trader: {
             experience: '',
             rating: 0,
@@ -196,6 +197,7 @@ export const traderDetailsData: { [key: string]: IuserWithBusinessWithTransactio
         last_name: '',
         password: '',
         role: 'trader',
+        sync_status: 'pending',
         trader: {
             experience: '',
             rating: 0,
@@ -238,6 +240,7 @@ traders.forEach(trader => {
             role: 'trader',
             user_name: '',
             last_name: '',
+            sync_status: 'pending',
 
             createdAt: '2023-05-10',
             business: [],

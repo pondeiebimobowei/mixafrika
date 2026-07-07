@@ -1,11 +1,11 @@
 import { type Roles } from "../enums/index";
-import { type BaseModel } from "./base-model-type";
+import { SyncableModel, type BaseModel } from "./base-model-type";
 import { type ITrader } from "./trader";
 import { type ITransaction } from "./transaction";
 import { type IBusiness } from "./business";
 import { type IUserVerification } from "./user-verification";
 
-export interface IUser extends BaseModel {
+export interface IUser extends BaseModel, SyncableModel {
   user_name?: string;
   first_name: string;
   last_name: string;

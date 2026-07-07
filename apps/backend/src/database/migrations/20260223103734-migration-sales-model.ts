@@ -35,13 +35,13 @@ module.exports = {
 
 
         branch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'business', key: 'id' }, onDelete: 'Cascade', onUpdate: 'cascade' },
-        customer_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'user', key: 'id' }, onDelete: 'Cascade', onUpdate: 'cascade' },
+        customer_id: { type: Sequelize.UUID, allowNull: true, references: { model: 'user', key: 'id' }, onDelete: 'Cascade', onUpdate: 'cascade' },
         created_by_id: { type: Sequelize.UUID, allowNull: true, references: { model: 'user', key: 'id' }, onDelete: 'Cascade', onUpdate: 'cascade' },
 
 
         sync_status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(syncStatus)] } },
         sync_date: {
-          allowNull: false,
+          allowNull: true,
           type: Sequelize.DATE,
         },
 

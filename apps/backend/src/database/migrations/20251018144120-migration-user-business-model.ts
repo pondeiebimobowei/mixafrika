@@ -23,7 +23,7 @@ module.exports = {
         is_verified: { type: Sequelize.BOOLEAN, allowNull: false },
 
         sync_status: { type: Sequelize.STRING, allowNull: false, defaultValue: 'pending'},
-        sync_date: { type: Sequelize.DATE, allowNull: true, defaultValue: Sequelize.NOW },
+        sync_date: { type: Sequelize.DATE, allowNull: true },
 
         createdAt: {
           allowNull: false,

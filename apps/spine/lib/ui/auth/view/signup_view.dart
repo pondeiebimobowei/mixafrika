@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
+import 'package:spine/data/repositories/user/user_repository.dart';
 import 'package:spine/routing/routes.dart';
 import 'package:spine/ui/auth/view_model/signup_view_model.dart';
 import 'package:spine/ui/auth/widget/auth_widgets.dart';
@@ -63,6 +64,8 @@ class _SignupViewState extends ConsumerState<SignupView> {
     );
 
     if (res.success) {
+      final userRepository = ref.read(userRepositoryProvider);
+      await userRepository.saveUser([res.data.user]);
       context.go(Routes.businessDetails);
     }
   }
