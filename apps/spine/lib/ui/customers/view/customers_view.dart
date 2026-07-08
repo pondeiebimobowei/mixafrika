@@ -151,7 +151,7 @@ class CustomersView extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: 8),
       child: FCard(
         style: FCardStyleDelta.delta(
-          decoration: BoxDecorationDelta.delta(
+          decoration:  .boxDelta(
             color: const Color(0xFF1E293B),
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
@@ -205,12 +205,12 @@ class CustomersView extends ConsumerWidget {
                 children: [
                   IconButton(
                     visualDensity: VisualDensity.compact,
-                    icon: const Icon(FIcons.pencil, size: 16, color: Colors.white54),
+                    icon: const Icon(FLucideIcons.pencil, size: 16, color: Colors.white54),
                     onPressed: () => _showAddEditSheet(context, customer: customer),
                   ),
                   IconButton(
                     visualDensity: VisualDensity.compact,
-                    icon: const Icon(FIcons.trash2, size: 16, color: Colors.redAccent),
+                    icon: const Icon(FLucideIcons.trash2, size: 16, color: Colors.redAccent),
                     onPressed: () => _showDeleteConfirmation(context, ref, customer),
                   ),
                 ],

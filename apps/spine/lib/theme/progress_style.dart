@@ -37,11 +37,11 @@ import 'package:forui/forui.dart';
 /// import 'package:my_application/theme/divider_style.dart' // Your generated style file.
 ///
 /// FThemeData(
-///  color: FThemes.neutral.light.color,
-///  style: FThemes.neutral.light.style,
+///  color: FThemes.neutral.light.touch.color,
+///  style: FThemes.neutral.light.touch.style,
 ///  dividerStyles: CustomFDividerStyles.dividerStyles( // The function in your generated style file.
-///    color: FThemes.neutral.light.color,
-///    style: FThemes.neutral.light.style,
+///    color: FThemes.neutral.light.touch.color,
+///    style: FThemes.neutral.light.touch.style,
 ///   ),
 /// );
 /// ```
@@ -52,8 +52,18 @@ import 'package:forui/forui.dart';
 /// ```
 ///
 /// See https://forui.dev/docs/guides/customizing-themes for more information.
-FCircularProgressStyle circularProgressStyle({required FColors colors}) =>
-    FCircularProgressStyle(
-      iconStyle: IconThemeData(color: colors.mutedForeground, size: 20),
-      motion: const FCircularProgressMotion(),
-    );
+FProgressStyle progressStyle({
+  required FColors colors,
+  required FStyle style,
+}) => FProgressStyle(
+  trackDecoration: ShapeDecoration(
+    shape: RoundedSuperellipseBorder(borderRadius: style.borderRadius.pill),
+    color: colors.muted,
+  ),
+  fillDecoration: ShapeDecoration(
+    shape: RoundedSuperellipseBorder(borderRadius: style.borderRadius.pill),
+    color: colors.primary,
+  ),
+  constraints: const .tightFor(height: 6.0),
+  motion: const FProgressMotion(),
+);

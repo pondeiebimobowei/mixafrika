@@ -66,7 +66,7 @@ class _SplashViewState extends State<SplashView>
             children: [
               // Use a generic icon if asset is missing, or assumed path
               Icon(
-                FIcons.package,
+                FLucideIcons.package,
                 size: 100,
                 color:
                     Colors.green, // Fixed color if context.theme is tricky here

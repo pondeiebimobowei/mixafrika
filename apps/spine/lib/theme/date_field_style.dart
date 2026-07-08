@@ -1,8 +1,4 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 import 'package:forui/forui.dart';
-import 'package:path/path.dart';
 
 // ignore_for_file: unnecessary_ignore
 // ignore_for_file: avoid_redundant_argument_values
@@ -38,11 +34,11 @@ import 'package:path/path.dart';
 /// import 'package:my_application/theme/divider_style.dart' // Your generated style file.
 ///
 /// FThemeData(
-///  color: FThemes.neutral.light.color,
-///  style: FThemes.neutral.light.style,
+///  color: FThemes.neutral.light.touch.color,
+///  style: FThemes.neutral.light.touch.style,
 ///  dividerStyles: CustomFDividerStyles.dividerStyles( // The function in your generated style file.
-///    color: FThemes.neutral.light.color,
-///    style: FThemes.neutral.light.style,
+///    color: FThemes.neutral.light.touch.color,
+///    style: FThemes.neutral.light.touch.style,
 ///   ),
 /// );
 /// ```
@@ -56,98 +52,69 @@ import 'package:path/path.dart';
 FDateFieldStyle dateFieldStyle({
   required FColors colors,
   required FTypography typography,
+  required FIcons icons,
   required FStyle style,
+  required FHapticFeedback hapticFeedback,
+  required bool touch,
 }) => FDateFieldStyle(
-  
-  // fieldStyle: .inherit(colors: colors, typography: typography, style: style),
-  fieldStyle: .new(
-    keyboardAppearance: Brightness.light,
+  fieldStyles: .inherit(
+    colors: colors,
+    typography: typography,
+    style: style,
+    touch: touch,
+  ),
+  popoverStyle: .inherit(colors: colors, style: style),
+  calendarStyle: .inherit(
+    colors: colors,
+    typography: typography,
+    icons: icons,
+    style: style,
+    hapticFeedback: hapticFeedback,
+    touch: touch,
+  ),
+).copyWith(
+  fieldStyles: FVariantsDelta<
+    FTextFieldSizeVariantConstraint,
+    FTextFieldSizeVariant,
+    FTextFieldStyle,
+    FTextFieldStyleDelta>.delta([
+      .all(FTextFieldStyleDelta.delta(
+        
+    keyboardAppearance: .light,
     // Input body color 
-    color: .all(colors.secondaryForeground.withValues(alpha: 0.3)), 
-    iconStyle: .all(.new( color: colors.primaryForeground)), 
-    clearButtonStyle:
-    
-    .new(
-      decoration: .all(BoxDecoration(
-        color: colors.primary
-      )), 
-      contentStyle: .new(
-        textStyle: .all(.new()), 
-        iconStyle: .all(.new()), 
-        circularProgressStyle: .all(.new(iconStyle: .new()))), 
-      iconContentStyle: .new(iconStyle: .all(.new())), 
-      tappableStyle: .new(), 
-      focusedOutlineStyle: .new(color: colors.background, borderRadius: .zero)
-    ), 
-    obscureButtonStyle: .new(
-      decoration: .all(.new()), 
-      contentStyle: .new(
-        textStyle: .all(.new()), 
-        iconStyle: .all(.new()), 
-        circularProgressStyle: .all(.new(iconStyle: .new()))), 
-      iconContentStyle: .new(iconStyle: .all(.new())), 
-      tappableStyle: .new(), 
-      focusedOutlineStyle: .new(color: colors.background, borderRadius: .zero)
-    ),
-    // active date style 
-    contentTextStyle: .all(.new(color: colors.primaryForeground)), 
-    // placeholder text 
-    hintTextStyle: .all(.new( color: colors.primaryForeground)), 
-    counterTextStyle: .all(.new()), 
-    border: .all(.none), 
-    labelTextStyle: .all(.new(color: colors.primaryForeground)), 
-    descriptionTextStyle: .all(.new( color: colors.primaryForeground, )), 
-    errorTextStyle: .all(.new())
-    ),
-    popoverStyle: FPopoverStyle(decoration: BoxDecoration()),
-  calendarStyle: .new(
-    yearMonthPickerStyle: .new(
-      //set
-      backgroundColor: .all(colors.secondaryForeground.withValues(alpha: .1)), 
-      borderColor: .all(colors.primaryForeground.withValues(alpha: .05)), 
-      textStyle: .all(.new()), 
-      radius: .zero
-    ),
-      headerStyle: .new(
-        focusedOutlineStyle: .new(
-          color: colors.destructive, 
-          borderRadius: .zero
-          ), 
-        buttonStyle: .new(
-          // set
-          decoration: .all(.new(color: colors.primary.withValues(alpha: .1))), 
-          contentStyle: .new(
-            textStyle: .all(.new()), 
-            iconStyle: .all(.new(color: colors.destructive)), 
-            circularProgressStyle: .all(.new(iconStyle: .new()))), 
-            // HEADER ICON STYLE
-          iconContentStyle: .new(iconStyle: .all(.new( color: colors.primaryForeground))), 
-          tappableStyle: .new(), 
-          focusedOutlineStyle: .new(color: colors.background, borderRadius: .zero)
-        ), 
-        headerTextStyle: .new()
+    color: .delta([.all(colors.secondaryForeground.withValues(alpha: 0.3))]), 
+    iconStyle: .delta([.all(.delta(color: colors.primaryForeground))]), 
+    clearButtonStyle: .delta(
+      contentStyle: .delta(
+        textStyle: .delta([.all(.delta())]),
+        iconStyle: .delta([.all(.delta())]),
+        circularProgressStyle: .delta([.all(.delta(iconStyle: .delta()))]),
       ),
-      dayPickerStyle: FCalendarDayPickerStyle(
-        headerTextStyle: .new(), 
-        current: .new(
-          // set
-          backgroundColor: .all(colors.secondaryForeground.withValues(alpha: .1)), 
-          borderColor: .all(colors.primaryForeground.withValues(alpha: .05)), 
-          // set
-          textStyle: .all(.new( color: colors.primaryForeground)), 
-          radius: .zero), 
-        enclosing: .new(
-          //set
-          backgroundColor: .all(colors.secondaryForeground.withValues(alpha: .1)), 
-          borderColor: .all(colors.primaryForeground.withValues(alpha: .05)), 
-          // set
-          textStyle: .all( .new(color: colors.primaryForeground.withValues(alpha: .5))), 
-          radius: .zero
-        )
+      iconContentStyle: .delta(iconStyle: .delta([])),
+      tappableStyle: .delta(),
+      focusedOutlineStyle: .delta(color: colors.background, borderRadius: .zero)
       ),
 
-      // POP UP
-    decoration: BoxDecoration( color: colors.secondaryForeground 
-    )
-    )
+      obscureButtonStyle: .delta(
+        decoration: .delta([]),
+        contentStyle: .delta(
+          textStyle: .delta([]),
+          iconStyle: .delta([.all(.delta())]),
+          circularProgressStyle: .delta([])
+        ),
+        iconContentStyle: .delta(iconStyle: .delta([])),
+        tappableStyle: .delta(),
+        focusedOutlineStyle: .delta(color: colors.background, borderRadius: .zero)
+      ),
+      
+      contentTextStyle: .delta([.all(.delta(color: colors.background))]),
+      hintTextStyle: .delta([.all(.delta(color: colors.background))]),
+      counterTextStyle: .delta([.all(.delta())]),
+      border: .delta([.all(.none)]),
+      labelTextStyle: .delta([.all(.delta(color: colors.primaryForeground))]),
+      descriptionTextStyle: .delta([.all(.delta(color: colors.primaryForeground))]),
+      errorTextStyle: .delta([.all(.delta())]),
+
+      ))
+    ])
 );

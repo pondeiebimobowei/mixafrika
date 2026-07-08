@@ -24,20 +24,18 @@ class AddProductView extends ConsumerWidget {
       if (next.isSuccess && (previous == null || !previous.isSuccess)) {
         ref.invalidate(inventoryViewModelProvider);
         ToastWidget.makeToast(
-          context: context, 
-          description: 'Product created successfully', 
-          icon: FIcons.circleCheck, 
-          color: Colors.green
+          context: context,
+          title: 'Product created successfully',
+          icon: FLucideIcons.circleCheck,
         );
         context.go(Routes.dashboard); // Go back to inventory
       }
       if (next.errorMessage != null &&
           (previous == null || previous.errorMessage != next.errorMessage)) {
         ToastWidget.makeToast(
-          context: context, 
-          description: next.errorMessage ?? 'Failed to create product', 
-          icon: FIcons.circleX, 
-          color: Colors.red
+          context: context,
+          title: next.errorMessage ?? 'Failed to create product',
+          icon: FLucideIcons.circleX,
         );
       }
     });
@@ -140,9 +138,7 @@ class AddProductView extends ConsumerWidget {
       decoration: BoxDecoration(
         color: colors.secondaryForeground.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(28),
-        border: Border.all(
-          color: colors.primary.withValues(alpha: 0.05),
-        ),
+        border: Border.all(color: colors.primary.withValues(alpha: 0.05)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,8 +156,8 @@ class AddProductView extends ConsumerWidget {
               ),
               const SizedBox(width: 8),
               Expanded(
-                  child: Divider(
-                      color: colors.primary.withValues(alpha: 0.05))),
+                child: Divider(color: colors.primary.withValues(alpha: 0.05)),
+              ),
             ],
           ),
           const SizedBox(height: 24),
@@ -184,9 +180,12 @@ class AddProductView extends ConsumerWidget {
           Expanded(
             child: FTextFormField(
               control: .managed(
-                onChange: (value) => viewModel.updateSellPricePerUnit(value.text),
+                onChange: (value) =>
+                    viewModel.updateSellPricePerUnit(value.text),
               ),
-              label: Text('Unit Price (${state.pieceUnit.isEmpty ? 'Item' : state.pieceUnit})'),
+              label: Text(
+                'Unit Price (${state.pieceUnit.isEmpty ? 'Item' : state.pieceUnit})',
+              ),
               hint: '₦',
             ),
           ),
@@ -194,9 +193,12 @@ class AddProductView extends ConsumerWidget {
           Expanded(
             child: FTextFormField(
               control: .managed(
-                onChange: (value) => viewModel.updateSellPricePerBulk(value.text),
+                onChange: (value) =>
+                    viewModel.updateSellPricePerBulk(value.text),
               ),
-              label: Text('Bulk Price (${state.bulkUnit.isEmpty ? 'Bulk' : state.bulkUnit})'),
+              label: Text(
+                'Bulk Price (${state.bulkUnit.isEmpty ? 'Bulk' : state.bulkUnit})',
+              ),
               hint: '₦',
             ),
           ),
@@ -205,7 +207,11 @@ class AddProductView extends ConsumerWidget {
     );
   }
 
-  Widget _buildBottomDock(BuildContext context, AddProductState state, AddProductViewModel viewModel) {
+  Widget _buildBottomDock(
+    BuildContext context,
+    AddProductState state,
+    AddProductViewModel viewModel,
+  ) {
     final colors = context.theme.colors;
     return Positioned(
       left: 16,
@@ -267,32 +273,22 @@ class AddProductView extends ConsumerWidget {
   }
 
   Widget _buildCircularButton(IconData icon, String label) {
-
     return FCard(
-      
       style: FCardStyleDelta.delta(
-
         contentStyle: FCardContentStyleDelta.delta(
-        imageSpacing: 10,
-          padding: const .all(24),
-          
-
+          imageSpacing: 10,
+          // padding: const .all(24),
         ),
-        decoration: BoxDecorationDelta.delta(
-          borderRadius: BorderRadius.all(.circular(80)),
-
-          
-          
-        )
+        // decoration: BoxDecorationDelta.delta(
+        //   borderRadius: BorderRadius.all(.circular(80)),
+        // ),
       ),
-      image: Icon(icon, size: 32, ),
+      image: Icon(icon, size: 32),
       // title: Text(label),
-      child: Text(label, style: TextStyle(
-            fontSize: 10,
-            fontWeight: FontWeight.bold,
-          ),),
-
-
+      child: Text(
+        label,
+        style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+      ),
     );
     // return Column(
     //   children: [
@@ -337,7 +333,10 @@ class AddProductView extends ConsumerWidget {
                   'Bulk Unit',
                   ['Bunch', 'Carton', 'Box', 'Pack', 'Sack'],
                   viewModel.updateBulkUnit,
-                  label: Text('Major Unit', style: TextStyle(color: colors.primaryForeground)),
+                  label: Text(
+                    'Major Unit',
+                    style: TextStyle(color: colors.primaryForeground),
+                  ),
                   value: state.bulkUnit.isEmpty ? null : state.bulkUnit,
                 ),
               ),
@@ -347,7 +346,10 @@ class AddProductView extends ConsumerWidget {
                   'Retail Unit',
                   ['Piece', 'Item', 'Finger', 'Bottle', 'Sachet'],
                   viewModel.updatePieceUnit,
-                  label: Text('Minor Unit', style: TextStyle(color: colors.primaryForeground)),
+                  label: Text(
+                    'Minor Unit',
+                    style: TextStyle(color: colors.primaryForeground),
+                  ),
                   value: state.pieceUnit.isEmpty ? null : state.pieceUnit,
                 ),
               ),
@@ -370,7 +372,9 @@ class AddProductView extends ConsumerWidget {
                     _buildBlueprintUnit(
                       context,
                       '1',
-                      state.bulkUnit.isEmpty ? 'BULK' : state.bulkUnit.toUpperCase(),
+                      state.bulkUnit.isEmpty
+                          ? 'BULK'
+                          : state.bulkUnit.toUpperCase(),
                       isHighLighted: true,
                     ),
                     const SizedBox(width: 16),
@@ -409,7 +413,9 @@ class AddProductView extends ConsumerWidget {
                                 color: colors.primary.withValues(alpha: 0.3),
                               ),
                               isDense: true,
-                              contentPadding: const EdgeInsets.symmetric(vertical: 8),
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 8,
+                              ),
                               border: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                   color: colors.primary.withValues(alpha: 0.2),
@@ -419,12 +425,16 @@ class AddProductView extends ConsumerWidget {
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            state.pieceUnit.isEmpty ? 'RETAIL UNITS' : state.pieceUnit.toUpperCase() + 'S',
+                            state.pieceUnit.isEmpty
+                                ? 'RETAIL UNITS'
+                                : state.pieceUnit.toUpperCase() + 'S',
                             style: TextStyle(
                               fontSize: 9,
                               fontWeight: FontWeight.w900,
                               letterSpacing: 1,
-                              color: colors.primaryForeground.withValues(alpha: 0.4),
+                              color: colors.primaryForeground.withValues(
+                                alpha: 0.4,
+                              ),
                             ),
                           ),
                         ],
@@ -434,14 +444,14 @@ class AddProductView extends ConsumerWidget {
                 ),
                 const SizedBox(height: 20),
                 Text(
-                                  'This tells us how many pieces make a bulk unit for inventory tracking.',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: colors.primaryForeground.withValues(alpha: 0.3),
-                                    fontStyle: FontStyle.italic,
-                                  ),
-                                ),
+                  'This tells us how many pieces make a bulk unit for inventory tracking.',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 10,
+                    color: colors.primaryForeground.withValues(alpha: 0.3),
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
               ],
             ),
           ),
@@ -450,7 +460,12 @@ class AddProductView extends ConsumerWidget {
     );
   }
 
-  Widget _buildBlueprintUnit(BuildContext context, String value, String label, {bool isHighLighted = false}) {
+  Widget _buildBlueprintUnit(
+    BuildContext context,
+    String value,
+    String label, {
+    bool isHighLighted = false,
+  }) {
     final colors = context.theme.colors;
     return Column(
       children: [
@@ -485,24 +500,19 @@ class AddProductView extends ConsumerWidget {
     String? value,
   }) {
     return FSelect<String>.rich(
-        format: (value) => value,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        validator: (v){
-          
-          return null;
-        },
-         
-        label: label,
-        control: FSelectControl.managed(
-          onChange: (val) => onChanged(val.toString()),
-        ),
-        children: [
-          for (final item in items)
-            FSelectItem(
-              value: item,
-              title: Text(item),
-            ),
-        ],
+      format: (value) => value,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      validator: (v) {
+        return null;
+      },
+
+      label: label,
+      control: FSelectControl.managed(
+        onChange: (val) => onChanged(val.toString()),
+      ),
+      children: [
+        for (final item in items) FSelectItem(value: item, title: Text(item)),
+      ],
     );
   }
 }

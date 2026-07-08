@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spine/routing/routes.dart';
+import 'package:spine/theme/text-typography.dart';
 import 'package:spine/ui/auth/view_model/login_view_model.dart';
 import 'package:spine/ui/auth/widget/auth_widgets.dart';
 import 'package:spine/widget/toast_widget.dart';
@@ -43,9 +44,9 @@ class _LoginViewState extends ConsumerState<LoginView> {
 
     ToastWidget.makeToast(
       context: context,
-      description: res.message,
-      icon: res.success ? FIcons.circleCheck : FIcons.circleX,
-      color: res.success ? Colors.green : Colors.red,
+      title: res.message,
+      icon: res.success ? FLucideIcons.circleCheck : FLucideIcons.circleX,
+      variant: res.success ? .primary : .destructive
     );
 
     if (res.success) {
@@ -79,18 +80,15 @@ class _LoginViewState extends ConsumerState<LoginView> {
                   children: [
                     Text(
                       'Access your account',
-                      style: typography.lg.copyWith(
+                      style: typography.body.lg.copyWith(
                         color: colors.primaryForeground,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    Text(
-                      'Use the same trader account you created for SPINE.',
-                      style: typography.sm.copyWith(
-                        color: colors.mutedForeground,
-                        height: 1.4,
-                      ),
+                    RegularText(
+                      title: 'Use the same trader account you created for SPINE.',
+                      color: colors.mutedForeground, 
                     ),
                     const SizedBox(height: 24),
                     AuthTextField(

@@ -37,11 +37,11 @@ import 'package:forui/forui.dart';
 /// import 'package:my_application/theme/divider_style.dart' // Your generated style file.
 ///
 /// FThemeData(
-///  color: FThemes.neutral.light.color,
-///  style: FThemes.neutral.light.style,
+///  color: FThemes.neutral.light.touch.color,
+///  style: FThemes.neutral.light.touch.style,
 ///  dividerStyles: CustomFDividerStyles.dividerStyles( // The function in your generated style file.
-///    color: FThemes.neutral.light.color,
-///    style: FThemes.neutral.light.style,
+///    color: FThemes.neutral.light.touch.color,
+///    style: FThemes.neutral.light.touch.style,
 ///   ),
 /// );
 /// ```
@@ -52,57 +52,68 @@ import 'package:forui/forui.dart';
 /// ```
 ///
 /// See https://forui.dev/docs/guides/customizing-themes for more information.
-FVariants<FBadgeVariantConstraint, FBadgeVariant, FBadgeStyle, FBadgeStyleDelta>
-badgeStyles({
+FBadgeStyles badgeStyles({
   required FColors colors,
   required FTypography typography,
   required FStyle style,
-}) => FVariants.from(
-  FBadgeStyle(
-    
-    decoration: BoxDecoration(
-      color: colors.primary,
-      borderRadius: FBadgeStyles.defaultBadgeRadius,
+  required bool touch,
+}) {
+  final destructiveTextStyle = typography.body.xs.copyWith(
+    color: colors.destructive,
+    fontWeight: .w500,
+  );
+  final destructiveDecoration = ShapeDecoration(
+    shape: RoundedSuperellipseBorder(borderRadius: style.borderRadius.pill),
+    color: colors.destructive.withValues(
+      alpha: colors.brightness == .light ? 0.1 : 0.2,
     ),
-    contentStyle: FBadgeContentStyle(
-      padding: .symmetric(horizontal: 12, vertical: 6),
-      labelTextStyle: typography.sm.copyWith(
-        color: colors.primaryForeground,
-        fontWeight: .w600,
-      ),
-    ),
-  ),
-  variants: {
-    [.secondary]: .delta(
-      decoration: .delta(color: colors.secondary),
-      contentStyle: .delta(
-        padding: .symmetric(horizontal: 12, vertical: 6),
-        labelTextStyle: .delta(color: colors.secondaryForeground),
-      ),
-    ),
-    [.destructive]: FBadgeStyle(
-      decoration: BoxDecoration(
-        borderRadius: FBadgeStyles.defaultBadgeRadius,
-        color: colors.destructive.withValues(
-          alpha: colors.brightness == .light ? 0.1 : 0.2,
+  );
+  final outlineShape = RoundedSuperellipseBorder(
+    side: BorderSide(color: colors.border, width: style.borderWidth),
+    borderRadius: style.borderRadius.pill,
+  );
+  final padding = touch
+      ? const EdgeInsets.symmetric(horizontal: 12, vertical: 6)
+      : const EdgeInsets.symmetric(horizontal: 10, vertical: 6);
+  return FBadgeStyles(
+    .from(
+      FBadgeStyle(
+        decoration: ShapeDecoration(
+          shape: RoundedSuperellipseBorder(
+            borderRadius: style.borderRadius.pill,
+          ),
+          color: colors.primary,
+        ),
+        contentStyle: FBadgeContentStyle(
+          labelTextStyle: typography.body.xs.copyWith(
+            color: colors.primaryForeground,
+            fontWeight: .w500,
+          ),
+          padding: padding,
         ),
       ),
-      contentStyle: FBadgeContentStyle(
-        padding: .symmetric(horizontal: 12, vertical: 6),
-        labelTextStyle: typography.sm.copyWith(
-          color: colors.destructive,
-          fontWeight: .w600,
+      variants: {
+        [.primary]: const .delta(),
+        [.secondary]: .delta(
+          decoration: .shapeDelta(color: colors.secondary),
+          contentStyle: .delta(
+            labelTextStyle: .delta(color: colors.secondaryForeground),
+          ),
         ),
-      ),
+        [.destructive]: FBadgeStyle(
+          decoration: destructiveDecoration,
+          contentStyle: FBadgeContentStyle(
+            labelTextStyle: destructiveTextStyle,
+            padding: padding,
+          ),
+        ),
+        [.outline]: .delta(
+          decoration: .shapeDelta(shape: outlineShape, color: colors.card),
+          contentStyle: .delta(
+            labelTextStyle: .delta(color: colors.foreground),
+          ),
+        ),
+      },
     ),
-    [.outline]: .delta(
-      decoration: .delta(
-        color: colors.card,
-        border: .all(color: colors.border, width: style.borderWidth),
-      ),
-      contentStyle: .delta(
-        padding: .symmetric(horizontal: 12, vertical: 6),
-        labelTextStyle: .delta(color: colors.foreground)),
-    ),
-  },
-);
+  );
+}

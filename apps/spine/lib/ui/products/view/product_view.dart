@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/drift/database.dart';
-import 'package:spine/theme/typography.dart';
+import 'package:spine/theme/text-typography.dart';
 import 'package:spine/ui/products/view_model/products_view_model.dart';
 import 'package:spine/widget/spinner_widget.dart';
 

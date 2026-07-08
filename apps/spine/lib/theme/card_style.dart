@@ -37,11 +37,11 @@ import 'package:forui/forui.dart';
 /// import 'package:my_application/theme/divider_style.dart' // Your generated style file.
 ///
 /// FThemeData(
-///  color: FThemes.neutral.light.color,
-///  style: FThemes.neutral.light.style,
+///  color: FThemes.neutral.light.touch.color,
+///  style: FThemes.neutral.light.touch.style,
 ///  dividerStyles: CustomFDividerStyles.dividerStyles( // The function in your generated style file.
-///    color: FThemes.neutral.light.color,
-///    style: FThemes.neutral.light.style,
+///    color: FThemes.neutral.light.touch.color,
+///    style: FThemes.neutral.light.touch.style,
 ///   ),
 /// );
 /// ```
@@ -56,18 +56,41 @@ FCardStyle cardStyle({
   required FColors colors,
   required FTypography typography,
   required FStyle style,
-}) => FCardStyle(
-  decoration: BoxDecoration(
-    border: .all(color: colors.border),
-    borderRadius: style.borderRadius,
-    color: colors.card,
-  ),
-  contentStyle: FCardContentStyle(
-    titleTextStyle: typography.xl2.copyWith(
-      fontWeight: .w600,
+  required bool touch,
+}) {
+  TextStyle titleTextStyle;
+  double titleSpacing;
+  double subtitleSpacing;
+  if (touch) {
+    titleTextStyle = typography.display.lg.copyWith(
+      fontWeight: .w500,
       color: colors.foreground,
-      height: 1.5,
+    );
+    titleSpacing = 4;
+    subtitleSpacing = 8;
+  } else {
+    titleTextStyle = typography.display.md.copyWith(
+      fontWeight: .w500,
+      color: colors.foreground,
+    );
+    titleSpacing = 2;
+    subtitleSpacing = 6;
+  }
+  return FCardStyle(
+    decoration: ShapeDecoration(
+      shape: RoundedSuperellipseBorder(
+        side: BorderSide(color: colors.border, width: style.borderWidth),
+        borderRadius: style.borderRadius.lg,
+      ),
+      color: colors.card,
     ),
-    subtitleTextStyle: typography.sm.copyWith(color: colors.mutedForeground),
-  ),
-);
+    contentStyle: FCardContentStyle(
+      titleTextStyle: titleTextStyle,
+      subtitleTextStyle: typography.body.sm.copyWith(
+        color: colors.mutedForeground,
+      ),
+      titleSpacing: titleSpacing,
+      subtitleSpacing: subtitleSpacing,
+    ),
+  );
+}

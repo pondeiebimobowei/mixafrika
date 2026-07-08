@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:forui/forui.dart';
-import 'package:spine/theme/typography.dart';
+import 'package:spine/theme/text-typography.dart';
 
 class ButtonWidget extends StatelessWidget {
   final String text;

@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/routing/routes.dart';
 import 'package:spine/theme/app-theme.dart';
-import 'package:spine/theme/typography.dart';
+import 'package:spine/theme/text-typography.dart';
 import 'package:spine/ui/home/view_model/home_view_model.dart';
 import 'package:spine/ui/business/state/active_business_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -113,16 +113,13 @@ class HomeView extends ConsumerWidget {
                           itemCount: filteredShops.length,
                           itemBuilder: (context, index) {
                             final shop = filteredShops[index];
-                            final isSelected =
-                                shop == homeState?.activeBranch;
+                            final isSelected = shop == homeState?.activeBranch;
                             return Padding(
                               padding: const EdgeInsets.only(bottom: 8.0),
                               child: ListTile(
                                 onTap: () {
                                   ref
-                                          .read(
-                                            activeBranchProvider.notifier,
-                                          )
+                                          .read(activeBranchProvider.notifier)
                                           .state =
                                       shop;
                                   Navigator.pop(context);
@@ -249,19 +246,9 @@ class HomeView extends ConsumerWidget {
             onTap: () => _showShopSelectionSheet(context, ref),
             child: FCard(
               style: FCardStyleDelta.delta(
-                decoration: BoxDecorationDelta.delta(
-                  border: Border.all(
-                    color: colors.primaryForeground.withValues(alpha: 0.5),
-                    width: 0.02,
-                  ),
-
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                
                 contentStyle: FCardContentStyleDelta.delta(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
+                  padding: EdgeInsetsGeometryDelta.add(.symmetric(horizontal: 16, vertical: 12))
                 ),
               ),
 
@@ -279,7 +266,7 @@ class HomeView extends ConsumerWidget {
                       child: Text(
                         overflow: TextOverflow.ellipsis,
                         activeBranch?.name ?? "Select Shop",
-                        style: context.theme.typography.sm.copyWith(
+                        style: context.theme.typography.body.sm.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -319,10 +306,10 @@ class HomeView extends ConsumerWidget {
               ),
               SizedBox(width: 4),
               Text(
-                homeState?.todaySummary.value?.pending != null 
-                  ? formatCurrency(homeState!.todaySummary.value!.pending)
-                  : '₦0',
-                style: context.theme.typography.sm.copyWith(
+                homeState?.todaySummary.value?.pending != null
+                    ? formatCurrency(homeState!.todaySummary.value!.pending)
+                    : '₦0',
+                style: context.theme.typography.body.sm.copyWith(
                   fontWeight: FontWeight.bold,
                   color: colors.destructive,
                   fontSize: 8,
@@ -353,22 +340,22 @@ class HomeView extends ConsumerWidget {
         final tone = state.hasIssues
             ? colors.destructive
             : state.pendingCount > 0
-                ? colors.secondary
-                : colors.primary;
+            ? colors.secondary
+            : colors.primary;
         final label = state.isSyncing
             ? 'Syncing'
             : state.pendingCount > 0
-                ? '${state.pendingCount} pending'
-                : 'Synced';
+            ? '${state.pendingCount} pending'
+            : 'Synced';
         final details = state.failureCount > 0
             ? '${state.failureCount} failed'
             : state.conflictCount > 0
-                ? '${state.conflictCount} conflicts'
-                : state.pulledCount > 0
-                    ? '${state.pulledCount} updates pulled'
-                    : state.appliedCount > 0
-                        ? '${state.appliedCount} changes pushed'
-                        : 'Ready';
+            ? '${state.conflictCount} conflicts'
+            : state.pulledCount > 0
+            ? '${state.pulledCount} updates pulled'
+            : state.appliedCount > 0
+            ? '${state.appliedCount} changes pushed'
+            : 'Ready';
 
         return GestureDetector(
           onTap: state.isSyncing
@@ -395,15 +382,17 @@ class HomeView extends ConsumerWidget {
                     children: [
                       Text(
                         label,
-                        style: typography.sm.copyWith(
+                        style: typography.body.sm.copyWith(
                           color: colors.primaryForeground,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
                       Text(
                         details,
-                        style: typography.xs.copyWith(
-                          color: colors.primaryForeground.withValues(alpha: .65),
+                        style: typography.body.xs.copyWith(
+                          color: colors.primaryForeground.withValues(
+                            alpha: .65,
+                          ),
                         ),
                       ),
                     ],
@@ -444,7 +433,7 @@ class HomeView extends ConsumerWidget {
             const SizedBox(width: 10),
             Text(
               'Checking sync',
-              style: typography.sm.copyWith(fontWeight: FontWeight.w700),
+              style: typography.body.sm.copyWith(fontWeight: FontWeight.w700),
             ),
           ],
         ),
@@ -459,12 +448,18 @@ class HomeView extends ConsumerWidget {
           ),
           child: Row(
             children: [
-              Icon(Icons.sync_problem_outlined, color: colors.destructive, size: 18),
+              Icon(
+                Icons.sync_problem_outlined,
+                color: colors.destructive,
+                size: 18,
+              ),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
                   'Sync needs attention',
-                  style: typography.sm.copyWith(fontWeight: FontWeight.w800),
+                  style: typography.body.sm.copyWith(
+                    fontWeight: FontWeight.w800,
+                  ),
                 ),
               ),
               Icon(Icons.refresh, color: colors.destructive, size: 16),
@@ -494,7 +489,7 @@ class HomeView extends ConsumerWidget {
             children: [
               Text(
                 "TODAY'S ACTIVITY (NET REVENUE)",
-                style: typography.xs.copyWith(
+                style: typography.body.xs.copyWith(
                   fontWeight: FontWeight.bold,
                   color: colors.primaryForeground.withValues(alpha: .6),
                 ),
@@ -505,17 +500,23 @@ class HomeView extends ConsumerWidget {
           const SizedBox(height: 24),
           Text(
             formatCurrency(summary.netRevenue),
-            style: typography.xl4.copyWith(fontWeight: FontWeight.w800),
+            style: typography.body.xl4.copyWith(fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 8),
           Row(
             children: [
-              _buildStatusIndicator(context, '${formatCurrency(summary.realized)} REALIZED', colors.primary),
+              _buildStatusIndicator(
+                context,
+                '${formatCurrency(summary.realized)} REALIZED',
+                colors.primary,
+              ),
               const SizedBox(width: 12),
               _buildStatusIndicator(
-                context, 
-                summary.pending == 0 ? 'NO PENDING' : '${formatCurrency(summary.pending)} PENDING', 
-                colors.destructive
+                context,
+                summary.pending == 0
+                    ? 'NO PENDING'
+                    : '${formatCurrency(summary.pending)} PENDING',
+                colors.destructive,
               ),
             ],
           ),
@@ -699,13 +700,13 @@ class HomeView extends ConsumerWidget {
         _buildSmallMenuCard(
           context,
           'INVENTORY',
-          FIcons.package,
+          FLucideIcons.package,
           onTap: () => context.push(Routes.inventory),
         ),
         _buildSmallMenuCard(
           context,
           'SALES LOG',
-          FIcons.list,
+          FLucideIcons.list,
           onTap: () => context.push(Routes.salesLog),
         ),
         _buildSmallMenuCard(
@@ -718,14 +719,14 @@ class HomeView extends ConsumerWidget {
         _buildSmallMenuCard(
           context,
           'GROWTH',
-          FIcons.trendingUp,
+          FLucideIcons.trendingUp,
           color: Colors.purpleAccent,
           onTap: () => {},
         ),
         _buildSmallMenuCard(
           context,
           'CUSTOMERS',
-          FIcons.users,
+          FLucideIcons.users,
           color: Colors.cyanAccent,
           onTap: () => context.push(Routes.customers),
         ),
@@ -929,7 +930,7 @@ class HomeView extends ConsumerWidget {
                 ),
                 FBadge(
                   style: FBadgeStyleDelta.delta(
-                    decoration: BoxDecorationDelta.delta(
+                    decoration: .boxDelta(
                       color: colors.error.withValues(alpha: .2),
                       borderRadius: BorderRadius.circular(8),
                     ),
@@ -976,7 +977,7 @@ class HomeView extends ConsumerWidget {
       ),
       child: Row(
         children: [
-          Icon(FIcons.calendar, color: Colors.white),
+          Icon(FLucideIcons.calendar, color: Colors.white),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
@@ -997,7 +998,7 @@ class HomeView extends ConsumerWidget {
               ],
             ),
           ),
-          Icon(FIcons.chevronRight, color: Colors.white),
+          Icon(FLucideIcons.chevronRight, color: Colors.white),
         ],
       ),
     );
@@ -1062,12 +1063,11 @@ class HomeView extends ConsumerWidget {
               height: 24,
               child: FBadge(
                 style: FBadgeStyleDelta.delta(
-                  decoration: BoxDecorationDelta.delta(
-                    color: context.theme.colors.destructive.withValues(
-                      alpha: .2,
-                    ),
-                    borderRadius: BorderRadius.circular(24),
+                  decoration: .boxDelta(
+                    color: context.theme.colors.destructive.withValues(alpha: .2),
+                    borderRadius: .circular(24)
                   ),
+                  
                 ),
                 child: Text(
                   actionText,

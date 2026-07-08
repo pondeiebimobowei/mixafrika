@@ -206,10 +206,10 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
     ref.listen(addStockViewModelProvider, (previous, next) {
       if (next.isSuccess) {
         ToastWidget.makeToast(
-          context: context, 
-          description: 'Stock updated successfully', 
-          icon: FIcons.circleCheck, 
-          color: Colors.green
+          context: context,
+          title: 'Stock updated successfully',
+          icon: FLucideIcons.circleCheck,
+
         );
         context.go(Routes.inventory);
         ref.invalidate(inventoryViewModelProvider);
@@ -217,13 +217,11 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
       if (next.errorMessage != null &&
           next.errorMessage != previous?.errorMessage) {
         ToastWidget.makeToast(
-          context: context, 
-          description: next.errorMessage!, 
-          icon: FIcons.circleX, 
-          color: Colors.red
+          context: context,
+          title: next.errorMessage!,
+          icon: FLucideIcons.circleX,
         );
       }
-
 
       // Update controllers if state changes from outside (e.g. conversion logic)
       if (next.bulkQuantity != _bulkController.text &&
@@ -250,15 +248,12 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
           children: [
             IconButton(
               onPressed: () => context.go(Routes.dashboard),
-              icon: const IconWidget( icon: Icons.arrow_back),
+              icon: const IconWidget(icon: Icons.arrow_back),
             ),
             const SizedBox(width: 20),
             Text(
               'Add New Stock',
-              style: TextStyle(
-                color: colors.primaryForeground,
-                fontSize: 20,
-              ),
+              style: TextStyle(color: colors.primaryForeground, fontSize: 20),
             ),
           ],
         ),
@@ -870,7 +865,10 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
                   ),
                 ),
               ),
-              prefixIconConstraints: const BoxConstraints(minWidth: 0, minHeight: 0),
+              prefixIconConstraints: const BoxConstraints(
+                minWidth: 0,
+                minHeight: 0,
+              ),
               border: InputBorder.none,
               hintText: '0',
               hintStyle: TextStyle(color: Colors.grey.withValues(alpha: 0.3)),
@@ -888,13 +886,7 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
     AddStockState state,
     AddStockViewModel viewModel,
   ) {
-
     return FDateField.calendar(
-      control: .managed(
-        initial: null,
-        validator: (date) => null,
-        onChange: (value) => viewModel.updateExpiryDate(value),
-      ),
       textAlign: .start,
       expands: false,
       mouseCursor: .defer,
@@ -905,6 +897,5 @@ class _AddStockViewState extends ConsumerState<AddStockView> {
       suffixBuilder: null,
       enabled: true,
     );
-
   }
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:forui/forui.dart';
@@ -61,7 +60,7 @@ extension CustomFFormFieldStyle on Never {
     required FTypography typography,
   }) => FFormFieldStyle(
     labelTextStyle: FVariants.from(
-      typography.xs.copyWith(color: Colors.grey[400], fontWeight: .normal),
+      typography.body.xs.copyWith(color: Colors.grey[400], fontWeight: .normal),
       variants: {
         [.error]: .delta(color: colors.error),
         [.disabled]: .delta(color: colors.disable(colors.foreground)),
@@ -69,13 +68,13 @@ extension CustomFFormFieldStyle on Never {
       },
     ),
     descriptionTextStyle: FVariants.from(
-      typography.sm.copyWith(color: colors.mutedForeground),
+      typography.body.sm.copyWith(color: colors.mutedForeground),
       variants: {
         [.disabled]: .delta(color: colors.disable(colors.mutedForeground)),
       },
     ),
     errorTextStyle: FVariants.from(
-      typography.sm.copyWith(color: colors.error, fontWeight: .w600),
+      typography.body.sm.copyWith(color: colors.error, fontWeight: .w600),
       variants: {
         [.disabled]: .delta(color: colors.disable(colors.error)),
       },

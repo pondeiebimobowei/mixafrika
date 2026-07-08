@@ -137,14 +137,6 @@ class TeamManagementView extends ConsumerWidget {
                 ),
                 const SizedBox(height: 4),
                 FBadge(
-                  // variant: FBadgeVariant.outline,
-                  style: FBadgeStyleDelta.delta(
-                    decoration: BoxDecorationDelta.delta(
-                      border: Border.all(color: colors.primary.withAlpha(20)),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    
-                  ),
                   child: Text((role as String?)?.toUpperCase() ?? 'MEMBER', style: TextStyle(fontSize: 8, color: Colors.white)),
                 ),
               ],

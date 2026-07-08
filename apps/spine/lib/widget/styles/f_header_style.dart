@@ -4,7 +4,7 @@ import 'package:forui/forui.dart';
 class FHeaderStyling {
   FHeaderStyleDelta build(BuildContext context) {
     return FHeaderStyleDelta.delta(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+      padding: EdgeInsetsGeometryDelta.value(.directional(top: 20, bottom: 20, start: 12, end: 12))
     );
   }
 }

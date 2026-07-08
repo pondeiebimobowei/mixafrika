@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
 import 'package:forui/forui.dart';
 
 // ignore_for_file: unnecessary_ignore
@@ -49,43 +52,44 @@ import 'package:forui/forui.dart';
 /// ```
 ///
 /// See https://forui.dev/docs/guides/customizing-themes for more information.
-FSwitchStyle switchStyle({required FColors colors, required FStyle style}) {
-  final labels = _labelStyles(style: style);
-  return .new(
-    focusColor: colors.primary,
-    trackColor: FVariants(
-      colors.secondary,
+FCircularProgressSizeStyles circularProgressSizeStyles({
+  required FColors colors,
+  required FTypography typography,
+}) {
+  final md = _circularProgressStyle(
+    colors: colors,
+    iconSize: typography.body.md.fontSize!,
+  );
+  return FCircularProgressSizeStyles(
+    FVariants(
+      md,
       variants: {
-        [.disabled]: colors.disable(colors.secondary),
-        [.selected]: colors.primary,
-        [.selected.and(.disabled)]: colors.disable(colors.primary),
+        [.xs]: _circularProgressStyle(
+          colors: colors,
+          iconSize: typography.body.xs.fontSize!,
+        ),
+        [.sm]: _circularProgressStyle(
+          colors: colors,
+          iconSize: typography.body.sm.fontSize!,
+        ),
+        [.md]: md,
+        [.lg]: _circularProgressStyle(
+          colors: colors,
+          iconSize: typography.body.lg.fontSize!,
+        ),
+        [.xl]: _circularProgressStyle(
+          colors: colors,
+          iconSize: typography.body.xl.fontSize!,
+        ),
       },
     ),
-    thumbColor: .all(
-      colors.brightness == .light ? colors.background : colors.foreground,
-    ),
-    leadingLabelStyle: labels.horizontalLeadingStyle,
-    trailingLabelStyle: labels.horizontalTrailingStyle,
   );
 }
 
-FLabelStyles _labelStyles({required FStyle style}) => FLabelStyles(
-  horizontalLeadingStyle: .inherit(
-    style: style,
-    descriptionPadding: const .only(top: 2),
-    errorPadding: const .only(top: 2),
-    childPadding: const .symmetric(horizontal: 12),
-  ),
-  horizontalTrailingStyle: .inherit(
-    style: style,
-    descriptionPadding: const .only(top: 2),
-    errorPadding: const .only(top: 2),
-    childPadding: const .symmetric(horizontal: 8),
-  ),
-  verticalStyle: .inherit(
-    style: style,
-    labelPadding: const .only(bottom: 6),
-    descriptionPadding: const .only(top: 6),
-    errorPadding: const .only(top: 6),
-  ),
+FCircularProgressStyle _circularProgressStyle({
+  required FColors colors,
+  double iconSize = 20,
+}) => FCircularProgressStyle(
+  iconStyle: IconThemeData(color: colors.mutedForeground, size: iconSize),
+  motion: const FCircularProgressMotion(),
 );

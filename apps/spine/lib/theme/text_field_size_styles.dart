@@ -52,7 +52,224 @@ import 'package:forui/forui.dart';
 /// ```
 ///
 /// See https://forui.dev/docs/guides/customizing-themes for more information.
-FButtonStyles buttonStyles({
+FTextFieldSizeStyles textFieldSizeStyles({
+  required FColors colors,
+  required FTypography typography,
+  required FStyle style,
+  required bool touch,
+}) {
+  final iconStyle =
+      FVariants<
+        FTextFieldVariantConstraint,
+        FTextFieldVariant,
+        IconThemeData,
+        IconThemeDataDelta
+      >.from(
+        IconThemeData(
+          color: colors.mutedForeground,
+          size: typography.body.sm.fontSize,
+        ),
+        variants: {
+          [.disabled]: .delta(color: colors.disable(colors.mutedForeground)),
+        },
+      );
+  FTextFieldStyle textField(
+    FButtonStyle buttonStyle,
+    BoxConstraints constraints,
+    EdgeInsetsGeometry contentPadding,
+  ) => _textFieldStyle(
+    colors: colors,
+    style: style,
+    labelStyle: _labelStyles(style: style).verticalStyle,
+    textStyle: typography.body.sm,
+    iconStyle: iconStyle,
+    buttonStyle: buttonStyle,
+    constraints: constraints,
+    contentPadding: contentPadding,
+  );
+  final ghost = _buttonStyles(
+    colors: colors,
+    typography: typography,
+    style: style,
+    touch: touch,
+  ).ghost;
+  final buttonStyle = ghost.sm.copyWith(
+    iconContentStyle: ghost.sm.iconContentStyle.copyWith(
+      iconStyle: iconStyle.cast(),
+    ),
+  );
+  if (touch) {
+    final md = textField(
+      buttonStyle,
+      const BoxConstraints(minHeight: 44),
+      const .symmetric(horizontal: 12, vertical: 10),
+    );
+    return FTextFieldSizeStyles(
+      FVariants(
+        md,
+        variants: {
+          [.sm]: textField(
+            buttonStyle,
+            const BoxConstraints(minHeight: 40),
+            const .symmetric(horizontal: 12, vertical: 8),
+          ),
+          [.md]: md,
+          [.lg]: textField(
+            buttonStyle,
+            const BoxConstraints(minHeight: 48),
+            const .symmetric(horizontal: 12, vertical: 12),
+          ),
+        },
+      ),
+    );
+  } else {
+    final md = textField(
+      buttonStyle,
+      const BoxConstraints(minHeight: 36),
+      const .symmetric(horizontal: 10, vertical: 9),
+    );
+    return FTextFieldSizeStyles(
+      FVariants(
+        md,
+        variants: {
+          [.sm]: textField(
+            ghost.xs.copyWith(
+              iconContentStyle: ghost.xs.iconContentStyle.copyWith(
+                iconStyle: iconStyle.cast(),
+              ),
+            ),
+            const BoxConstraints(minHeight: 32),
+            const .symmetric(horizontal: 10, vertical: 7),
+          ),
+          [.md]: md,
+          [.lg]: textField(
+            buttonStyle,
+            const BoxConstraints(minHeight: 40),
+            const .symmetric(horizontal: 10, vertical: 11),
+          ),
+        },
+      ),
+    );
+  }
+}
+
+FTextFieldStyle _textFieldStyle({
+  required FColors colors,
+  required FStyle style,
+  required FLabelStyle labelStyle,
+  required TextStyle textStyle,
+  required FVariants<
+    FTextFieldVariantConstraint,
+    FTextFieldVariant,
+    IconThemeData,
+    IconThemeDataDelta
+  >
+  iconStyle,
+  required FButtonStyle buttonStyle,
+  required BoxConstraints constraints,
+  required EdgeInsetsGeometry contentPadding,
+}) => FTextFieldStyle(
+  keyboardAppearance: colors.brightness,
+  color: FVariants(
+    colors.card,
+    variants: {
+      [.disabled]: colors.disable(colors.card),
+    },
+  ),
+  cursorColor: colors.primaryForeground,
+  constraints: constraints,
+  contentPadding: contentPadding,
+  iconStyle: iconStyle,
+  clearButtonStyle: buttonStyle,
+  obscureButtonStyle: buttonStyle.copyWith(
+    tappableStyle: const .delta(
+      motion: .delta(bounceTween: FTappableMotion.noBounceTween),
+    ),
+  ),
+  contentTextStyle: FVariants.from(
+    textStyle.copyWith(color: colors.foreground),
+    variants: {
+      [.disabled]: .delta(color: colors.disable(colors.foreground)),
+    },
+  ),
+  hintTextStyle: FVariants.from(
+    textStyle.copyWith(color: colors.mutedForeground),
+    variants: {
+      [.disabled]: .delta(color: colors.disable(colors.mutedForeground)),
+    },
+  ),
+  counterTextStyle: FVariants.from(
+    textStyle.copyWith(color: colors.foreground),
+    variants: {
+      [.disabled]: .delta(color: colors.disable(colors.foreground)),
+    },
+  ),
+  border: FVariants(
+    OutlineInputBorder(
+      borderSide: BorderSide(color: colors.border, width: style.borderWidth),
+      borderRadius: style.borderRadius.md,
+    ),
+    variants: {
+      [.focused]: OutlineInputBorder(
+        borderSide: BorderSide(color: colors.primary, width: style.borderWidth),
+        borderRadius: style.borderRadius.md,
+      ),
+      [.disabled]: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: colors.disable(colors.border),
+          width: style.borderWidth,
+        ),
+        borderRadius: style.borderRadius.md,
+      ),
+      [.error]: OutlineInputBorder(
+        borderSide: BorderSide(color: colors.error, width: style.borderWidth),
+        borderRadius: style.borderRadius.md,
+      ),
+      [.error.and(.disabled)]: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: colors.disable(colors.error),
+          width: style.borderWidth,
+        ),
+        borderRadius: style.borderRadius.md,
+      ),
+    },
+  ),
+  labelTextStyle: style.formFieldStyle.labelTextStyle,
+  descriptionTextStyle: style.formFieldStyle.descriptionTextStyle,
+  errorTextStyle: style.formFieldStyle.errorTextStyle,
+  labelPadding: labelStyle.labelPadding,
+  descriptionPadding: labelStyle.descriptionPadding,
+  errorPadding: labelStyle.errorPadding,
+  childPadding: labelStyle.childPadding,
+  cursorWidth: 2.0,
+  clearButtonPadding: const .directional(end: 4),
+  obscureButtonPadding: const .directional(end: 4),
+  scrollPadding: const .all(20),
+  labelMotion: const FLabelMotion(),
+);
+
+FLabelStyles _labelStyles({required FStyle style}) => FLabelStyles(
+  horizontalLeadingStyle: .inherit(
+    style: style,
+    descriptionPadding: const .only(top: 2),
+    errorPadding: const .only(top: 2),
+    childPadding: const .symmetric(horizontal: 12),
+  ),
+  horizontalTrailingStyle: .inherit(
+    style: style,
+    descriptionPadding: const .only(top: 2),
+    errorPadding: const .only(top: 2),
+    childPadding: const .symmetric(horizontal: 8),
+  ),
+  verticalStyle: .inherit(
+    style: style,
+    labelPadding: const .only(bottom: 6),
+    descriptionPadding: const .only(top: 6),
+    errorPadding: const .only(top: 6),
+  ),
+);
+
+FButtonStyles _buttonStyles({
   required FColors colors,
   required FTypography typography,
   required FStyle style,
@@ -91,16 +308,16 @@ FButtonStyles buttonStyles({
           decoration: (radius) => .from(
             ShapeDecoration(
               shape: RoundedSuperellipseBorder(borderRadius: radius),
-              color: colors.secondary,
+              color: colors.primaryForeground,
             ),
             variants: {
               [.hovered, .pressed]: .shapeDelta(
-                color: colors.hover(colors.secondary),
+                color: colors.hover(colors.primaryForeground),
               ),
-              [.disabled]: .shapeDelta(color: colors.disable(colors.secondary)),
-              [.selected]: .shapeDelta(color: colors.hover(colors.secondary)),
+              [.disabled]: .shapeDelta(color: colors.disable(colors.primaryForeground)),
+              [.selected]: .shapeDelta(color: colors.hover(colors.primaryForeground)),
               [.selected.and(.disabled)]: .shapeDelta(
-                color: colors.disable(colors.hover(colors.secondary)),
+                color: colors.disable(colors.hover(colors.primaryForeground)),
               ),
             },
           ),
@@ -162,11 +379,11 @@ FButtonStyles buttonStyles({
               color: colors.card,
             ),
             variants: {
-              [.hovered, .pressed]: .shapeDelta(color: colors.secondary),
+              [.hovered, .pressed]: .shapeDelta(color: colors.primaryForeground),
               [.disabled]: .shapeDelta(color: colors.disable(colors.card)),
-              [.selected]: .shapeDelta(color: colors.secondary),
+              [.selected]: .shapeDelta(color: colors.primaryForeground),
               [.selected.and(.disabled)]: .shapeDelta(
-                color: colors.disable(colors.secondary),
+                color: colors.disable(colors.primaryForeground),
               ),
             },
           ),
@@ -182,11 +399,11 @@ FButtonStyles buttonStyles({
               shape: RoundedSuperellipseBorder(borderRadius: radius),
             ),
             variants: {
-              [.hovered, .pressed]: .shapeDelta(color: colors.secondary),
+              [.hovered, .pressed]: .shapeDelta(color: colors.primaryForeground),
               [.disabled]: const .shapeDelta(),
-              [.selected]: .shapeDelta(color: colors.secondary),
+              [.selected]: .shapeDelta(color: colors.primaryForeground),
               [.selected.and(.disabled)]: .shapeDelta(
-                color: colors.disable(colors.secondary),
+                color: colors.disable(colors.primaryForeground),
               ),
             },
           ),

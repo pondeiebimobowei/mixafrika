@@ -5,7 +5,7 @@ class SpinnerWidget {
   static Widget spinner({double size = 24}) {
     return FCircularProgress(
       style: .delta(iconStyle: .delta(size: size)),
-      icon: FIcons.loaderCircle,
+      icon: FIcons.iconData(FLucideIcons.loaderCircle),
       semanticsLabel: 'Loading',
     );
   }

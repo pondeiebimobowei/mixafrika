@@ -94,10 +94,10 @@ class _AddEditCustomerSheetState extends ConsumerState<AddEditCustomerSheet> {
                       _phoneController.text,
                     );
                     ToastWidget.makeToast(
-                      context: context, 
-                      description: 'Customer updated successfully', 
-                      icon: FIcons.circleCheck, 
-                      color: Colors.green
+                      context: context,
+                      title: 'Customer updated successfully',
+                      icon: FLucideIcons.circleCheck,
+                      variant: .primary
                     );
                   } else {
                     viewModel.addCustomer(
@@ -105,10 +105,10 @@ class _AddEditCustomerSheetState extends ConsumerState<AddEditCustomerSheet> {
                       _phoneController.text,
                     );
                     ToastWidget.makeToast(
-                      context: context, 
-                      description: 'Customer added successfully', 
-                      icon: FIcons.circleCheck, 
-                      color: Colors.green
+                      context: context,
+                      title: 'Customer added successfully',
+                      icon: FLucideIcons.circleCheck,
+                      variant: .primary
                     );
                   }
                   Navigator.pop(context);

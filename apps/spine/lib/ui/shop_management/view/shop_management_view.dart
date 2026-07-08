@@ -70,8 +70,13 @@ class ShopManagementView extends ConsumerWidget {
                         FButton(
                           variant: FButtonVariant.outline,
                           // size: FButtonSize.extraSmall,
-                          child:  Icon(Icons.add, size: 14, color: context.theme.colors.primaryForeground,),
-                          onPress: () => _showEditBusinessSheet(context, viewModel),
+                          child: Icon(
+                            Icons.add,
+                            size: 14,
+                            color: context.theme.colors.primaryForeground,
+                          ),
+                          onPress: () =>
+                              _showEditBusinessSheet(context, viewModel),
                         ),
                       ],
                     ),
@@ -111,8 +116,13 @@ class ShopManagementView extends ConsumerWidget {
                         FButton(
                           variant: FButtonVariant.outline,
                           // size: FButtonSize.extraSmall,
-                          child: Icon(Icons.add, size: 14, color: context.theme.colors.primaryForeground,),
-                          onPress: () => _showEditBranchSheet(context, viewModel),
+                          child: Icon(
+                            Icons.add,
+                            size: 14,
+                            color: context.theme.colors.primaryForeground,
+                          ),
+                          onPress: () =>
+                              _showEditBranchSheet(context, viewModel),
                         ),
                       ],
                     ),
@@ -242,10 +252,9 @@ class ShopManagementView extends ConsumerWidget {
       onTap: () {
         viewModel.switchBusiness(biz.id);
         ToastWidget.makeToast(
-          context: context, 
-          description: 'Switched to ${biz.name}', 
-          icon: FIcons.circleCheck, 
-          color: Colors.green
+          context: context,
+          title: 'Switched to ${biz.name}',
+          icon: FLucideIcons.circleCheck,
         );
       },
       child: Container(
@@ -260,7 +269,7 @@ class ShopManagementView extends ConsumerWidget {
                 ? [colors.primary, colors.primary.withValues(alpha: 0.8)]
                 : [
                     colors.secondaryForeground,
-                    colors.secondaryForeground.withValues(alpha: 0.8)
+                    colors.secondaryForeground.withValues(alpha: 0.8),
                   ],
           ),
           borderRadius: BorderRadius.circular(24),
@@ -328,7 +337,8 @@ class ShopManagementView extends ConsumerWidget {
               children: [
                 _buildSmallCircleButton(
                   icon: Icons.edit_outlined,
-                  onTap: () => _showEditBusinessSheet(context, viewModel, business: biz),
+                  onTap: () =>
+                      _showEditBusinessSheet(context, viewModel, business: biz),
                   color: Colors.white.withValues(alpha: 0.15),
                   iconColor: isActive ? Colors.white : colors.primary,
                 ),
@@ -378,11 +388,16 @@ class ShopManagementView extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          Icon(Icons.business_center_outlined,
-              size: 40, color: colors.primary.withValues(alpha: 0.3)),
+          Icon(
+            Icons.business_center_outlined,
+            size: 40,
+            color: colors.primary.withValues(alpha: 0.3),
+          ),
           const SizedBox(height: 16),
-          const Text('No businesses yet',
-              style: TextStyle(fontWeight: FontWeight.w700)),
+          const Text(
+            'No businesses yet',
+            style: TextStyle(fontWeight: FontWeight.w700),
+          ),
           const SizedBox(height: 16),
           FButton(
             variant: FButtonVariant.outline,
@@ -424,18 +439,16 @@ class ShopManagementView extends ConsumerWidget {
             ),
           );
           ToastWidget.makeToast(
-            context: context, 
-            description: 'Business created successfully', 
-            icon: FIcons.circleCheck, 
-            color: Colors.green
+            context: context,
+            title: 'Business created successfully',
+            icon: FLucideIcons.circleCheck,
           );
         } else if (result is BusinessesData) {
           viewModel.updateBusiness(result);
           ToastWidget.makeToast(
-            context: context, 
-            description: 'Business updated successfully', 
-            icon: FIcons.circleCheck, 
-            color: Colors.green
+            context: context,
+            title: 'Business updated successfully',
+            icon: FLucideIcons.circleCheck,
           );
         }
       }
@@ -473,18 +486,16 @@ class ShopManagementView extends ConsumerWidget {
             ),
           );
           ToastWidget.makeToast(
-            context: context, 
-            description: 'Shop created successfully', 
-            icon: FIcons.circleCheck, 
-            color: Colors.green
+            context: context,
+            title: 'Shop created successfully',
+            icon: FLucideIcons.circleCheck,
           );
         } else if (result is BranchData) {
           viewModel.updateBranch(result);
           ToastWidget.makeToast(
-            context: context, 
-            description: 'Shop updated successfully', 
-            icon: FIcons.circleCheck, 
-            color: Colors.green
+            context: context,
+            title: 'Shop updated successfully',
+            icon: FLucideIcons.circleCheck,
           );
         }
       }
@@ -620,7 +631,8 @@ class ShopManagementView extends ConsumerWidget {
             ),
             _buildRoundActionButton(
               icon: Icons.edit_outlined,
-              onTap: () => _showEditBranchSheet(context, viewModel, branch: biz),
+              onTap: () =>
+                  _showEditBranchSheet(context, viewModel, branch: biz),
               color: colors.primary.withValues(alpha: 0.1),
               iconColor: colors.primary,
             ),
@@ -1058,7 +1070,9 @@ class ShopManagementView extends ConsumerWidget {
       builder: (context) => AlertDialog(
         backgroundColor: colors.background,
         title: const Text('Confirm Logout'),
-        content: const Text('Are you sure you want to log out? This will clear your session data.'),
+        content: const Text(
+          'Are you sure you want to log out? This will clear your session data.',
+        ),
         actions: [
           FButton(
             variant: FButtonVariant.ghost,
@@ -1071,10 +1085,9 @@ class ShopManagementView extends ConsumerWidget {
               await viewModel.logout();
               if (context.mounted) {
                 ToastWidget.makeToast(
-                  context: context, 
-                  description: 'Logged out successfully', 
-                  icon: FIcons.logOut, 
-                  color: Colors.blue
+                  context: context,
+                  title: 'Logged out successfully',
+                  icon: FLucideIcons.logOut,
                 );
                 context.go(Routes.login);
               }

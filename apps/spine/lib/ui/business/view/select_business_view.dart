@@ -18,9 +18,7 @@ class SelectBusinessView extends ConsumerWidget {
     final colors = theme.colors;
 
     return FScaffold(
-      header: FHeader(
-        title: const Text('Select Business'),
-      ),
+      header: FHeader(title: const Text('Select Business')),
       child: Material(
         color: colors.background,
         child: businessAsync.when(
@@ -36,12 +34,16 @@ class SelectBusinessView extends ConsumerWidget {
                   const SizedBox(height: 16),
                   Text(
                     'Failed to load businesses',
-                    style: theme.typography.lg.copyWith(fontWeight: FontWeight.bold),
+                    style: theme.typography.body.lg.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     error.toString(),
-                    style: theme.typography.sm.copyWith(color: colors.mutedForeground),
+                    style: theme.typography.body.sm.copyWith(
+                      color: colors.mutedForeground,
+                    ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 24),
@@ -58,7 +60,11 @@ class SelectBusinessView extends ConsumerWidget {
     );
   }
 
-  Widget _buildContent(BuildContext context, WidgetRef ref, List<BusinessesData> businesses) {
+  Widget _buildContent(
+    BuildContext context,
+    WidgetRef ref,
+    List<BusinessesData> businesses,
+  ) {
     final colors = context.theme.colors;
 
     if (businesses.isEmpty) {
@@ -73,23 +79,29 @@ class SelectBusinessView extends ConsumerWidget {
                 color: colors.primary.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
-              child: Icon(FIcons.store, size: 48, color: colors.primary),
+              child: Icon(FLucideIcons.store, size: 48, color: colors.primary),
             ),
             const SizedBox(height: 24),
             Text(
               'No Businesses Found',
-              style: context.theme.typography.xl.copyWith(fontWeight: FontWeight.bold),
+              style: context.theme.typography.body.xl.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
             ),
             const SizedBox(height: 12),
             Text(
               'You haven\'t added any businesses yet. Create one to get started.',
               textAlign: TextAlign.center,
-              style: context.theme.typography.sm.copyWith(color: colors.mutedForeground),
+              style: context.theme.typography.body.sm.copyWith(
+                color: colors.mutedForeground,
+              ),
             ),
             const SizedBox(height: 32),
             FButton(
               child: const Text('Create New Business'),
-              onPress: () => context.push(Routes.signup), // Navigate to signup/business creation
+              onPress: () => context.push(
+                Routes.signup,
+              ), // Navigate to signup/business creation
             ),
           ],
         ),
@@ -111,7 +123,7 @@ class SelectBusinessView extends ConsumerWidget {
                   color: colors.primary.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(FIcons.store, color: colors.primary),
+                child: Icon(FLucideIcons.store, color: colors.primary),
               ),
               const SizedBox(width: 16),
               Expanded(
@@ -120,11 +132,15 @@ class SelectBusinessView extends ConsumerWidget {
                   children: [
                     Text(
                       business.name,
-                      style: context.theme.typography.base.copyWith(fontWeight: FontWeight.bold),
+                      style: context.theme.typography.body.sm.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     Text(
                       business.type,
-                      style: context.theme.typography.sm.copyWith(color: colors.mutedForeground),
+                      style: context.theme.typography.body.sm.copyWith(
+                        color: colors.mutedForeground,
+                      ),
                     ),
                   ],
                 ),
@@ -132,12 +148,14 @@ class SelectBusinessView extends ConsumerWidget {
               FButton(
                 variant: FButtonVariant.ghost,
                 onPress: () async {
-                  await ref.read(selectBusinessViewModelProvider.notifier).selectBusiness(business.id);
+                  await ref
+                      .read(selectBusinessViewModelProvider.notifier)
+                      .selectBusiness(business.id);
                   if (context.mounted) {
                     context.go(Routes.dashboard);
                   }
                 },
-                child: const IconWidget( icon: Icons.chevron_right),
+                child: const IconWidget(icon: Icons.chevron_right),
               ),
             ],
           ),

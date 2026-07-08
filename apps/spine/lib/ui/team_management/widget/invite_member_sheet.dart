@@ -18,7 +18,13 @@ class _InviteMemberSheetState extends ConsumerState<InviteMemberSheet> {
   String _selectedRole = 'agent';
   String _selectedBranchId = '';
 
-  final List<String> _roles = ['admin', 'subadmin', 'trader', 'investor', 'agent'];
+  final List<String> _roles = [
+    'admin',
+    'subadmin',
+    'trader',
+    'investor',
+    'agent',
+  ];
 
   @override
   void dispose() {
@@ -92,32 +98,35 @@ class _InviteMemberSheetState extends ConsumerState<InviteMemberSheet> {
                 child: teamState.isLoading
                     ? SpinnerWidget.spinner()
                     : const Text('Send Invitation'),
-                onPress: teamState.isLoading ? null : () async {
-                  if (_emailController.text.isEmpty) return;
-                  
-                  final success = await ref.read(teamManagementViewModelProvider.notifier).inviteMember(
-                    email: _emailController.text.trim(),
-                    role: _selectedRole,
-                    branchId: _selectedBranchId,
-                  );
+                onPress: teamState.isLoading
+                    ? null
+                    : () async {
+                        if (_emailController.text.isEmpty) return;
 
-                  if (success && mounted) {
-                    ToastWidget.makeToast(
-                      context: context, 
-                      description: 'Invitation sent successfully', 
-                      icon: FIcons.circleCheck, 
-                      color: Colors.green
-                    );
-                    Navigator.pop(context);
-                  } else if (mounted) {
-                    ToastWidget.makeToast(
-                      context: context, 
-                      description: 'Failed to send invitation', 
-                      icon: FIcons.circleX, 
-                      color: Colors.red
-                    );
-                  }
-                },
+                        final success = await ref
+                            .read(teamManagementViewModelProvider.notifier)
+                            .inviteMember(
+                              email: _emailController.text.trim(),
+                              role: _selectedRole,
+                              branchId: _selectedBranchId,
+                            );
+
+                        if (success && mounted) {
+                          ToastWidget.makeToast(
+                            context: context,
+                            title: 'Invitation sent successfully',
+                            icon: FLucideIcons.circleCheck,
+                          );
+                          Navigator.pop(context);
+                        } else if (mounted) {
+                          ToastWidget.makeToast(
+                            context: context,
+                            title: 'Failed to send invitation',
+                            icon: FLucideIcons.circleX,
+                            variant: .destructive,
+                          );
+                        }
+                      },
               ),
             ),
           ],
@@ -148,7 +157,10 @@ class _InviteMemberSheetState extends ConsumerState<InviteMemberSheet> {
       decoration: BoxDecoration(
         color: context.theme.colors.secondaryForeground,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: context.theme.colors.secondaryForeground, width: .8),
+        border: Border.all(
+          color: context.theme.colors.secondaryForeground,
+          width: .8,
+        ),
       ),
       child: TextField(
         controller: controller,
@@ -160,7 +172,11 @@ class _InviteMemberSheetState extends ConsumerState<InviteMemberSheet> {
         ),
         decoration: InputDecoration(
           prefixIcon: prefixIcon != null
-              ? Icon(prefixIcon, color: context.theme.colors.primaryForeground, size: 20)
+              ? Icon(
+                  prefixIcon,
+                  color: context.theme.colors.primaryForeground,
+                  size: 20,
+                )
               : null,
           hintText: hint,
           hintStyle: TextStyle(
@@ -184,14 +200,20 @@ class _InviteMemberSheetState extends ConsumerState<InviteMemberSheet> {
       decoration: BoxDecoration(
         color: context.theme.colors.secondaryForeground,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: context.theme.colors.secondaryForeground, width: .8),
+        border: Border.all(
+          color: context.theme.colors.secondaryForeground,
+          width: .8,
+        ),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: _selectedRole,
           isExpanded: true,
           dropdownColor: context.theme.colors.background,
-          icon: Icon(Icons.keyboard_arrow_down, color: context.theme.colors.primaryForeground),
+          icon: Icon(
+            Icons.keyboard_arrow_down,
+            color: context.theme.colors.primaryForeground,
+          ),
           style: TextStyle(
             color: context.theme.colors.primaryForeground,
             fontSize: 15,
@@ -200,7 +222,7 @@ class _InviteMemberSheetState extends ConsumerState<InviteMemberSheet> {
           items: _roles.map((role) {
             return DropdownMenuItem(
               value: role,
-              child: Text(role, style: TextStyle( fontSize: 15),),
+              child: Text(role, style: TextStyle(fontSize: 15)),
             );
           }).toList(),
           onChanged: (val) {
@@ -211,32 +233,41 @@ class _InviteMemberSheetState extends ConsumerState<InviteMemberSheet> {
     );
   }
 
-  Widget _buildBranchSelector(BuildContext context, ShopManagementState shopState) {
+  Widget _buildBranchSelector(
+    BuildContext context,
+    ShopManagementState shopState,
+  ) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: context.theme.colors.secondaryForeground,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: context.theme.colors.secondaryForeground, width: .8),
+        border: Border.all(
+          color: context.theme.colors.secondaryForeground,
+          width: .8,
+        ),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: _selectedBranchId,
-          hint:  Text('None', style: TextStyle(color: context.theme.colors.primaryForeground)),
+          hint: Text(
+            'None',
+            style: TextStyle(color: context.theme.colors.primaryForeground),
+          ),
           isExpanded: true,
           dropdownColor: context.theme.colors.background,
-          icon: Icon(Icons.keyboard_arrow_down, color: context.theme.colors.primaryForeground),
-          style: TextStyle(color: context.theme.colors.primaryForeground, fontSize: 15),
+          icon: Icon(
+            Icons.keyboard_arrow_down,
+            color: context.theme.colors.primaryForeground,
+          ),
+          style: TextStyle(
+            color: context.theme.colors.primaryForeground,
+            fontSize: 15,
+          ),
           items: [
-            const DropdownMenuItem<String>(
-              value: '',
-              child: Text('None'),
-            ),
+            const DropdownMenuItem<String>(value: '', child: Text('None')),
             ...shopState.branch.map((b) {
-              return DropdownMenuItem<String>(
-                value: b.id,
-                child: Text(b.name),
-              );
+              return DropdownMenuItem<String>(value: b.id, child: Text(b.name));
             }),
           ],
           onChanged: (val) {

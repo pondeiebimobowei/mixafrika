@@ -1,6 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-
 import 'package:forui/forui.dart';
 
 // ignore_for_file: unnecessary_ignore
@@ -37,11 +34,11 @@ import 'package:forui/forui.dart';
 /// import 'package:my_application/theme/divider_style.dart' // Your generated style file.
 ///
 /// FThemeData(
-///  color: FThemes.neutral.light.color,
-///  style: FThemes.neutral.light.style,
+///  color: FThemes.neutral.light.touch.color,
+///  style: FThemes.neutral.light.touch.style,
 ///  dividerStyles: CustomFDividerStyles.dividerStyles( // The function in your generated style file.
-///    color: FThemes.neutral.light.color,
-///    style: FThemes.neutral.light.style,
+///    color: FThemes.neutral.light.touch.color,
+///    style: FThemes.neutral.light.touch.style,
 ///   ),
 /// );
 /// ```
@@ -56,8 +53,15 @@ FToasterStyle toasterStyle({
   required FColors colors,
   required FTypography typography,
   required FStyle style,
+  required bool touch,
 }) => FToasterStyle(
-  toastStyle: .inherit(colors: colors, typography: typography, style: style),
+  toastStyles: .inherit(
+    colors: colors,
+    typography: typography,
+    style: style,
+    touch: touch,
+  ),
+  toastAlignment: touch ? .topCenter : .bottomEnd,
   max: 3,
   padding: const .symmetric(horizontal: 20, vertical: 15),
   expandBehavior: .hoverOrPress,
@@ -68,5 +72,4 @@ FToasterStyle toasterStyle({
   collapsedProtrusion: 12,
   collapsedScale: 0.9,
   motion: const FToasterMotion(),
-  toastAlignment: .bottomEnd,
 );

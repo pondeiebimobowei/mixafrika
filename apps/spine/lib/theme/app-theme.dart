@@ -1,8 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:forui/forui.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:spine/theme/theme-light.dart';
-import 'package:spine/theme/theme-dark.dart';
+import 'package:spine/theme/theme.dart';
 
 class AppTheme {
   static final light = greenLight;

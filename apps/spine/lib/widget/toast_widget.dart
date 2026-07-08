@@ -4,18 +4,19 @@ import 'package:forui/forui.dart';
 class ToastWidget {
   static void makeToast({
     required BuildContext context,
-    String title = 'Alert',
-    required String description,
-    required IconData? icon,
-    required Color? color,
+    required String title,
+    String? description,
+    required IconData icon,
+     FToastVariant variant = .primary,
   }) {
     showFToast(
       context: context,
+      variant: variant,
       icon: Icon(icon),
       title: Text(title),
-      description: Text(description),
+      description: description != null ? Text(description) : null,
       suffixBuilder: (context, entry) =>
-          GestureDetector(onTap: entry.dismiss, child: const Icon(FIcons.x)),
+          GestureDetector(onTap: entry.dismiss, child: const Icon(FLucideIcons.x)),
       alignment: .bottomCenter,
       
       swipeToDismiss: const [.right],

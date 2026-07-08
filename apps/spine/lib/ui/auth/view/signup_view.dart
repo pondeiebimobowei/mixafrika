@@ -58,9 +58,9 @@ class _SignupViewState extends ConsumerState<SignupView> {
 
     ToastWidget.makeToast(
       context: context,
-      description: res.message,
-      icon: res.success ? FIcons.circleCheck : FIcons.circleX,
-      color: res.success ? Colors.green : Colors.red,
+      title: res.message,
+      icon: res.success ? FLucideIcons.circleCheck : FLucideIcons.circleX,
+      variant: res.success ? .primary : .destructive
     );
 
     if (res.success) {

@@ -50,7 +50,9 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
   bool _initialized = false;
 
   void _initializeControllers(dynamic state) {
-    if (!_initialized && !state.isLoading && state.value!.initialProduct != null) {
+    if (!_initialized &&
+        !state.isLoading &&
+        state.value!.initialProduct != null) {
       _nameController.text = state.value!.name;
       _descriptionController.text = state.value!.description;
       _bulkUnitController.text = state.value!.bulkUnit;
@@ -148,7 +150,8 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
                                   _buildTextField(
                                     controller: _pieceSellingPriceController,
                                     hint: '₦',
-                                    onChanged: viewModel.updatePieceSellingPrice,
+                                    onChanged:
+                                        viewModel.updatePieceSellingPrice,
                                     keyboardType: TextInputType.number,
                                   ),
                                 ],
@@ -164,8 +167,7 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
                                   _buildTextField(
                                     controller: _bulkSellingPriceController,
                                     hint: '₦',
-                                    onChanged:
-                                        viewModel.updateBulkSellingPrice,
+                                    onChanged: viewModel.updateBulkSellingPrice,
                                     keyboardType: TextInputType.number,
                                   ),
                                 ],
@@ -192,18 +194,17 @@ class _EditProductViewState extends ConsumerState<EditProductView> {
                                   final success = await viewModel.submit();
                                   if (success && mounted) {
                                     ToastWidget.makeToast(
-                                      context: context, 
-                                      description: 'Product updated successfully', 
-                                      icon: FIcons.circleCheck, 
-                                      color: Colors.green
+                                      context: context,
+                                      title:
+                                          'Product updated successfully',
+                                      icon: FLucideIcons.circleCheck,
                                     );
                                     router.pop();
                                   } else if (mounted) {
                                     ToastWidget.makeToast(
-                                      context: context, 
-                                      description: 'Failed to update product', 
-                                      icon: FIcons.circleX, 
-                                      color: Colors.red
+                                      context: context,
+                                      title: 'Failed to update product',
+                                      icon: FLucideIcons.circleX,
                                     );
                                   }
                                 },

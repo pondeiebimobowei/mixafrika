@@ -88,9 +88,9 @@ class CheckoutView extends ConsumerWidget {
                     color: const Color(0xFF1E293B),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: state.selectedCustomer != null 
-                          ? const Color(0xFF1DB978) 
-                          : colors.border
+                      color: state.selectedCustomer != null
+                          ? const Color(0xFF1DB978)
+                          : colors.border,
                     ),
                   ),
                   padding: const EdgeInsets.symmetric(
@@ -100,21 +100,22 @@ class CheckoutView extends ConsumerWidget {
                   child: Row(
                     children: [
                       Icon(
-                        state.selectedCustomer != null 
-                            ? Icons.person 
+                        state.selectedCustomer != null
+                            ? Icons.person
                             : Icons.person_add_outlined,
-                        color: state.selectedCustomer != null 
-                            ? const Color(0xFF1DB978) 
+                        color: state.selectedCustomer != null
+                            ? const Color(0xFF1DB978)
                             : colors.mutedForeground,
                         size: 20,
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          state.selectedCustomer?.name ?? 'Tag a Customer (Optional)',
+                          state.selectedCustomer?.name ??
+                              'Tag a Customer (Optional)',
                           style: TextStyle(
-                            color: state.selectedCustomer != null 
-                                ? Colors.white 
+                            color: state.selectedCustomer != null
+                                ? Colors.white
                                 : colors.mutedForeground,
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -125,13 +126,16 @@ class CheckoutView extends ConsumerWidget {
                         GestureDetector(
                           onTap: () => viewModel.selectCustomer(null),
                           child: const Icon(
-                            Icons.close, 
-                            color: Colors.redAccent, 
-                            size: 20
+                            Icons.close,
+                            color: Colors.redAccent,
+                            size: 20,
                           ),
                         )
                       else
-                        Icon(Icons.chevron_right, color: colors.mutedForeground),
+                        Icon(
+                          Icons.chevron_right,
+                          color: colors.mutedForeground,
+                        ),
                     ],
                   ),
                 ),
@@ -289,9 +293,13 @@ class CheckoutView extends ConsumerWidget {
                   ),
                 ],
                 const SizedBox(height: 24),
-                if (state.selectedPaymentMethod?.type == PaymentMethodType.transfer ||
-                    (state.selectedPaymentMethod?.type == PaymentMethodType.multiPay &&
-                     state.selectedPaymentMethod!.payments.any((p) => p.method == PaymentMethodType.transfer))) ...[
+                if (state.selectedPaymentMethod?.type ==
+                        PaymentMethodType.transfer ||
+                    (state.selectedPaymentMethod?.type ==
+                            PaymentMethodType.multiPay &&
+                        state.selectedPaymentMethod!.payments.any(
+                          (p) => p.method == PaymentMethodType.transfer,
+                        ))) ...[
                   Text(
                     'BUSINESS BRANCH BANK DETAILS',
                     style: TextStyle(
@@ -314,10 +322,12 @@ class CheckoutView extends ConsumerWidget {
                         child: ListView.separated(
                           scrollDirection: Axis.horizontal,
                           itemCount: state.branchBankDetails.length,
-                          separatorBuilder: (context, index) => const SizedBox(width: 12),
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(width: 12),
                           itemBuilder: (context, index) {
                             final bank = state.branchBankDetails[index];
-                            final isSelected = state.selectedBankDetail?.id == bank.id;
+                            final isSelected =
+                                state.selectedBankDetail?.id == bank.id;
                             return GestureDetector(
                               onTap: () => viewModel.selectBankDetail(bank),
                               child: BankDetailCard(
@@ -382,18 +392,16 @@ class CheckoutView extends ConsumerWidget {
                             if (context.mounted) {
                               if (res.success) {
                                 ToastWidget.makeToast(
-                                  context: context, 
-                                  description: res.message, 
-                                  icon: FIcons.circleCheck, 
-                                  color: Colors.green
+                                  context: context,
+                                  title: res.message,
+                                  icon: FLucideIcons.circleCheck,
                                 );
                                 context.go(Routes.dashboard);
                               } else {
                                 ToastWidget.makeToast(
-                                  context: context, 
-                                  description: res.message, 
-                                  icon: FIcons.circleX, 
-                                  color: Colors.red
+                                  context: context,
+                                  title: res.message,
+                                  icon: FLucideIcons.circleX,
                                 );
                               }
                             }
@@ -622,7 +630,9 @@ class BankDetailCard extends StatelessWidget {
       width: width ?? 280,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isSelected ? const Color(0xFF1DB978).withOpacity(0.1) : const Color(0xFF1E293B),
+        color: isSelected
+            ? const Color(0xFF1DB978).withOpacity(0.1)
+            : const Color(0xFF1E293B),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: isSelected ? const Color(0xFF1DB978) : colors.border,
@@ -638,7 +648,9 @@ class BankDetailCard extends StatelessWidget {
               Text(
                 bank.bankName.toUpperCase(),
                 style: TextStyle(
-                  color: isSelected ? const Color(0xFF1DB978) : colors.mutedForeground,
+                  color: isSelected
+                      ? const Color(0xFF1DB978)
+                      : colors.mutedForeground,
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.2,
@@ -666,10 +678,7 @@ class BankDetailCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             bank.accountName,
-            style: TextStyle(
-              color: colors.mutedForeground,
-              fontSize: 12,
-            ),
+            style: TextStyle(color: colors.mutedForeground, fontSize: 12),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
