@@ -1,4 +1,5 @@
-import 'package:spine/drift/database.dart';
+import 'package:spine/data/services/models/user_model.dart';
+
 
 class ApiResponse<T> {
   final bool success;
@@ -27,7 +28,7 @@ class ApiResponse<T> {
 class AuthResponse {
   final String token;
   final String refreshToken;
-  final UserData? user;
+  final User? user;
 
   AuthResponse({
     required this.token,
@@ -39,7 +40,7 @@ class AuthResponse {
     return AuthResponse(
       token: json['token'],
       refreshToken: json['refresh_token'],
-      user: json['user'] != null ? UserData.fromJson(json['user']) : null,
+      user: json['user'] != null ? User.fromJson(json['user']) : null,
     );
   }
 }

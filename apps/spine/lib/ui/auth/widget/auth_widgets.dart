@@ -107,7 +107,7 @@ class AuthHeader extends StatelessWidget {
           ),
           child: Text(
             eyebrow,
-            style: typography.body.xs.copyWith(
+            style: typography.body.xs2.copyWith(
               color: colors.primary,
               fontWeight: FontWeight.w800,
               height: 1,
@@ -117,7 +117,7 @@ class AuthHeader extends StatelessWidget {
         const SizedBox(height: 16),
         Text(
           title,
-          style: typography.body.xl4.copyWith(
+          style: typography.body.xl3.copyWith(
             color: colors.primaryForeground,
             fontWeight: FontWeight.w900,
             height: 1.05,
@@ -126,7 +126,7 @@ class AuthHeader extends StatelessWidget {
         const SizedBox(height: 12),
         Text(
           subtitle,
-          style: typography.body.sm.copyWith(
+          style: typography.body.xs.copyWith(
             color: colors.mutedForeground,
             height: 1.45,
           ),
@@ -172,7 +172,7 @@ class AuthBrandMark extends StatelessWidget {
           children: [
             Text(
               'SPINE',
-              style: typography.body.lg.copyWith(
+              style: typography.body.md.copyWith(
                 color: colors.primaryForeground,
                 fontWeight: FontWeight.w900,
                 height: 1,
@@ -181,7 +181,7 @@ class AuthBrandMark extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               'Business command center',
-              style: typography.body.xs.copyWith(
+              style: typography.body.xs2.copyWith(
                 color: colors.mutedForeground,
                 height: 1,
               ),
@@ -300,7 +300,7 @@ class AuthSectionHeader extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: typography.body.sm.copyWith(
+                style: typography.body.xs.copyWith(
                   color: colors.primaryForeground,
                   fontWeight: FontWeight.w800,
                   height: 1.15,
@@ -309,7 +309,7 @@ class AuthSectionHeader extends StatelessWidget {
               const SizedBox(height: 5),
               Text(
                 subtitle,
-                style: typography.body.sm.copyWith(
+                style: typography.body.xs.copyWith(
                   color: colors.mutedForeground,
                   height: 1.35,
                 ),
@@ -353,7 +353,7 @@ class AuthTextField extends StatelessWidget {
     if (obscureText) {
       return FTextFormField.password(
         control: FTextFieldControl.managed(controller: controller),
-        label: Text(label),
+        label: Text(label, style: TextStyle( color: context.theme.colors.primaryForeground),),
         hint: hint,
         keyboardType: keyboardType,
         textInputAction: textInputAction ?? TextInputAction.done,
@@ -368,7 +368,7 @@ class AuthTextField extends StatelessWidget {
 
     return FTextFormField(
       control: FTextFieldControl.managed(controller: controller),
-      label: Text(label),
+      label: Text(label, style: TextStyle( color: context.theme.colors.primaryForeground),),
       hint: hint,
       keyboardType: keyboardType,
       textInputAction: textInputAction ?? TextInputAction.next,
@@ -433,7 +433,7 @@ class AuthInlineLink extends StatelessWidget {
       children: [
         Text(
           prompt,
-          style: typography.body.sm.copyWith(
+          style: typography.body.xs.copyWith(
             color: colors.mutedForeground,
             height: 1.35,
           ),
@@ -444,7 +444,7 @@ class AuthInlineLink extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 4),
             child: Text(
               action,
-              style: typography.body.sm.copyWith(
+              style: typography.body.xs.copyWith(
                 color: colors.primary,
                 fontWeight: FontWeight.w800,
                 height: 1.35,
@@ -519,7 +519,7 @@ class AuthUploadTile extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: typography.body.sm.copyWith(
+                    style: typography.body.xs.copyWith(
                       color: colors.primaryForeground,
                       fontWeight: FontWeight.w800,
                     ),
@@ -529,7 +529,7 @@ class AuthUploadTile extends StatelessWidget {
                     fileName ?? subtitle,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: typography.body.xs.copyWith(
+                    style: typography.body.xs2.copyWith(
                       color: hasFile ? colors.primary : colors.mutedForeground,
                       height: 1.3,
                     ),
@@ -597,7 +597,7 @@ class _AuthStepPill extends StatelessWidget {
                     )
                   : Text(
                       '$number',
-                      style: typography.body.xs.copyWith(
+                      style: typography.body.xs2.copyWith(
                         color: isActive
                             ? colors.primary
                             : colors.mutedForeground,
@@ -613,7 +613,7 @@ class _AuthStepPill extends StatelessWidget {
               label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: typography.body.xs.copyWith(
+              style: typography.body.xs2.copyWith(
                 color: isActive ? colors.primary : colors.mutedForeground,
                 fontWeight: FontWeight.w800,
                 height: 1,

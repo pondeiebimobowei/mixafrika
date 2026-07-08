@@ -245,40 +245,30 @@ class HomeView extends ConsumerWidget {
           child: GestureDetector(
             onTap: () => _showShopSelectionSheet(context, ref),
             child: FCard(
-              style: FCardStyleDelta.delta(
-                
-                contentStyle: FCardContentStyleDelta.delta(
-                  padding: EdgeInsetsGeometryDelta.add(.symmetric(horizontal: 16, vertical: 12))
-                ),
-              ),
 
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.location_on_outlined,
-                      size: 12,
-                      color: colors.primary,
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        overflow: TextOverflow.ellipsis,
-                        activeBranch?.name ?? "Select Shop",
-                        style: context.theme.typography.body.sm.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.location_on_outlined,
+                    size: 12,
+                    color: colors.primary,
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: RegularText(
+                      title: activeBranch?.name ?? "Select Shop",
+                      style: context.theme.typography.body.xs.copyWith(
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Icon(
-                      Icons.keyboard_arrow_down,
-                      textDirection: TextDirection.rtl,
-                      color: colors.primaryForeground,
-                      size: 12,
-                    ),
-                  ],
-                ),
+                  ),
+                  Icon(
+                    Icons.keyboard_arrow_down,
+                    textDirection: TextDirection.rtl,
+                    color: colors.primaryForeground,
+                    size: 12,
+                  ),
+                ],
               ),
             ),
           ),
@@ -309,7 +299,7 @@ class HomeView extends ConsumerWidget {
                 homeState?.todaySummary.value?.pending != null
                     ? formatCurrency(homeState!.todaySummary.value!.pending)
                     : '₦0',
-                style: context.theme.typography.body.sm.copyWith(
+                style: context.theme.typography.body.xs.copyWith(
                   fontWeight: FontWeight.bold,
                   color: colors.destructive,
                   fontSize: 8,
@@ -362,7 +352,7 @@ class HomeView extends ConsumerWidget {
               ? null
               : () => ref.read(syncViewModelProvider.notifier).runSync(),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             decoration: BoxDecoration(
               color: tone.withValues(alpha: .08),
               border: Border.all(color: tone.withValues(alpha: .25)),
@@ -382,14 +372,14 @@ class HomeView extends ConsumerWidget {
                     children: [
                       Text(
                         label,
-                        style: typography.body.sm.copyWith(
+                        style: typography.body.xs.copyWith(
                           color: colors.primaryForeground,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
                       Text(
                         details,
-                        style: typography.body.xs.copyWith(
+                        style: typography.body.xs2.copyWith(
                           color: colors.primaryForeground.withValues(
                             alpha: .65,
                           ),
@@ -433,7 +423,7 @@ class HomeView extends ConsumerWidget {
             const SizedBox(width: 10),
             Text(
               'Checking sync',
-              style: typography.body.sm.copyWith(fontWeight: FontWeight.w700),
+              style: typography.body.xs.copyWith(fontWeight: FontWeight.w700),
             ),
           ],
         ),
@@ -457,7 +447,7 @@ class HomeView extends ConsumerWidget {
               Expanded(
                 child: Text(
                   'Sync needs attention',
-                  style: typography.body.sm.copyWith(
+                  style: typography.body.xs.copyWith(
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -489,7 +479,7 @@ class HomeView extends ConsumerWidget {
             children: [
               Text(
                 "TODAY'S ACTIVITY (NET REVENUE)",
-                style: typography.body.xs.copyWith(
+                style: typography.body.xs2.copyWith(
                   fontWeight: FontWeight.bold,
                   color: colors.primaryForeground.withValues(alpha: .6),
                 ),
@@ -498,9 +488,9 @@ class HomeView extends ConsumerWidget {
             ],
           ),
           const SizedBox(height: 24),
-          Text(
-            formatCurrency(summary.netRevenue),
-            style: typography.body.xl4.copyWith(fontWeight: FontWeight.w800),
+          HeadingText(
+            title: formatCurrency(summary.netRevenue),
+            style: typography.body.xl3.copyWith(fontWeight: FontWeight.w800),
           ),
           const SizedBox(height: 8),
           Row(

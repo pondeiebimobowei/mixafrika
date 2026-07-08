@@ -28,7 +28,7 @@ class RegularText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final FColors colors = context.theme.colors;
-    String? fontFamily = GoogleFonts.montserrat().fontFamily;
+    String? fontFamily = GoogleFonts.manrope().fontFamily;
     return Text(
       title,
       maxLines: maxLines,
@@ -78,7 +78,7 @@ class SmallText extends StatelessWidget {
       textAlign: textAlign,
       overflow: maxLines == null ? TextOverflow.ellipsis : null,
       
-      style: GoogleFonts.montserrat(
+      style: GoogleFonts.manrope(
         fontSize: fontSize ?? 14,
         height: 1.5,
         color: color ?? colors.primaryForeground,
@@ -118,7 +118,7 @@ class XSmallText extends StatelessWidget {
       maxLines: maxLines,
       textAlign: textAlign,
       overflow: maxLines == null ? TextOverflow.ellipsis : null,
-      style: GoogleFonts.montserrat(
+      style: GoogleFonts.manrope(
         fontSize: fontSize ?? 12,
         color: color ?? colors.primaryForeground,
         fontWeight: bold ?? false ? FontWeight.bold : FontWeight.normal,
@@ -130,11 +130,12 @@ class XSmallText extends StatelessWidget {
 
 class HeadingText extends StatelessWidget {
   final String title;
-  final double? fontSize;
   final Color? color;
+  final double? fontSize;
   final bool? bold;
   final int? maxLines;
   final TextAlign? textAlign;
+  final TextStyle? style;
 
   final double? letterSpacing;
 
@@ -147,19 +148,22 @@ class HeadingText extends StatelessWidget {
     this.maxLines,
     this.textAlign,
     this.letterSpacing,
+    this.style,
   });
 
   @override
   Widget build(BuildContext context) {
     final FColors colors = context.theme.colors;
+    String? fontFamily = GoogleFonts.manrope().fontFamily;
     return Text(
       title,
       maxLines: maxLines,
       textAlign: textAlign,
       overflow: maxLines == null ? TextOverflow.ellipsis : null,
-      style: GoogleFonts.montserrat(
+      style: style?.copyWith(
+        fontFamily: fontFamily,
         fontSize: fontSize ?? 24,
-        color: color ?? colors.primaryForeground,
+        color: colors.primaryForeground,
         fontWeight: bold ?? true ? FontWeight.bold : FontWeight.normal,
         letterSpacing: letterSpacing,
       ),

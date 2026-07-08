@@ -4,19 +4,11 @@ import { Roles } from '@shared/shared/src/enums';
 import { Login_user_dto } from '@shared/shared/src/validation/login-user-dto';
 import * as bcrypt from 'bcrypt';
 import { Setting } from 'src/database/models/setting.model';
-import { Business } from 'src/database/models/business.model';
 import { User } from 'src/database/models/user.model';
 import { Wallet } from 'src/database/models/wallet.model';
 import { JwtPayload, verify, sign, } from 'jsonwebtoken';
 import { Create_user_dto } from '@shared/shared/src/validation/create-user-dto';
-import { BusinessUser } from 'src/database/models/business-user';
-import { Branch } from 'src/database/models/branch.model';
-import { BranchUser } from 'src/database/models/branch-user';
-import { Collection } from 'src/database/models/collection.model';
-import { Op } from 'sequelize';
-import { TenantAccessService } from 'src/access/tenant-access.service';
 import { sanitizeUser } from 'src/utils/user-response.util';
-import { SyncService } from 'src/sync/sync.service';
 
 
 
@@ -25,8 +17,6 @@ export class AuthService {
 
   constructor(
     private readonly configService: ConfigService,
-    private readonly tenantAccessService: TenantAccessService,
-    private readonly syncService: SyncService,
   ) { }
   
 
@@ -137,88 +127,6 @@ export class AuthService {
       success: true,
       message: '',
       data: [],
-    };
-  }
-
-  async handleSync(userId: string) {
-    const user = await User.findOne({ where: { id: userId } });
-    if (!user) {
-      throw new UnauthorizedException('User not found');
-    }
-
-    const [accessibleBusinessIds, accessibleBranchIds] = await Promise.all([
-      this.tenantAccessService.getAccessibleBusinessIds(userId),
-      this.tenantAccessService.getAccessibleBranchIds(userId),
-    ]);
-
-    const businessUsers = await BusinessUser.findAll({
-      where: { user_id: userId },
-    });
-
-    const businesses =
-      accessibleBusinessIds.length > 0
-        ? await Business.findAll({
-            where: {
-              id: {
-                [Op.in]: accessibleBusinessIds,
-              },
-            },
-          })
-        : [];
-
-    const branchUsers = await BranchUser.findAll({
-      where: { user_id: userId },
-    });
-
-    const branches =
-      accessibleBranchIds.length > 0
-        ? await Branch.findAll({
-            where: {
-              id: {
-                [Op.in]: accessibleBranchIds,
-              },
-            },
-          })
-        : [];
-
-    const collectionIds: string[] = branches
-      .map(b => b.collection_id)
-      .filter((id): id is string => Boolean(id));
-
-    const collections = await Collection.findAll({
-          where: {
-            id: {
-              [Op.in]: collectionIds,
-        },
-      },
-    });
-
-    const {
-      user: _syncUser,
-      business_users: _syncBusinessUsers,
-      businesses: _syncBusinesses,
-      collections: _syncCollections,
-      branch_users: _syncBranchUsers,
-      branches: _syncBranches,
-      sales: _syncSales,
-      sales_items: _syncSalesItems,
-       
-      ...posChanges
-
-    } = await this.syncService.pullChanges(userId);
-
-    return {
-      success: true,
-      message: 'Sync data fetched successfully',
-      data: {
-        user: sanitizeUser(user),
-        business_users: businessUsers,
-        businesses,
-        collections,
-        branch_users: branchUsers,
-        branches,
-        ...posChanges,
-      },
     };
   }
 }

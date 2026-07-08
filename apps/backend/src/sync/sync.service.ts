@@ -102,6 +102,7 @@ const camelToSnake: Record<string, string> = {
   joinedAt: 'joined_at',
   assignedAt: 'assigned_at',
   totalTraders: 'total_traders',
+  totalAmount: 'total_amount',
   coverImage: 'cover_image',
   minInvestment: 'min_investment',
   bulkUnitName: 'bulk_unit_name',
@@ -153,6 +154,7 @@ const numericClientKeys = new Set([
   'roi',
   'sellingPricePerBulk',
   'sellingPricePerPiece',
+  'total',
   'totalAmount',
   'totalTraders',
   'unitPrice',
@@ -297,7 +299,11 @@ export class SyncService {
 
     const [user, businesses, businessUsers, branchUsers, accessibleBranches] =
       await Promise.all([
-        User.findByPk(userId, { paranoid: false }),
+        User.findOne({ 
+          where: { ...updatedSince, id: userId },
+          paranoid: false,
+        }),
+
         businessIds.length > 0
           ? Business.findAll({
               where: { ...updatedSince, id: { [Op.in]: businessIds } },
@@ -439,7 +445,7 @@ export class SyncService {
               },
               paranoid: false,
             })
-          : [],
+          : [] as SalesItem[],
         saleIds.length > 0
           ? Payment.findAll({
               where: {
@@ -448,7 +454,7 @@ export class SyncService {
               },
               paranoid: false,
             })
-          : [],
+          : [] as Payment[],
         transferIds.length > 0
           ? StockTransferItem.findAll({
               where: {
@@ -457,13 +463,13 @@ export class SyncService {
               },
               paranoid: false,
             })
-          : [],
+          : [] as StockTransferItem[],
         globalProductIds.length > 0
           ? GlobalProduct.findAll({
               where: globalProductWhere,
               paranoid: false,
             })
-          : [],
+          : [] as GlobalProduct[],
       ]);
 
     return {

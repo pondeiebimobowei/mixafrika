@@ -19,7 +19,6 @@ class AuthRepository implements AuthRepositoryAbstract {
   @override
   Future<ApiResponse<AuthResponse>> login(String email, String password) async {
     final res = await _authApiServices.login(email, password);
-
     return ApiResponse(
       data: res.data,
       message: res.message,

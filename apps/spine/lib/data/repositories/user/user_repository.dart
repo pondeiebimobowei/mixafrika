@@ -1,6 +1,8 @@
 import 'package:drift/drift.dart';
+import 'package:spine/data/services/models/user_model.dart';
 import 'package:spine/drift/database.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 
 class UserRepository {
   UserRepository({required AppDatabase database}) : _database = database;
@@ -8,7 +10,7 @@ class UserRepository {
   final AppDatabase _database;
 
 
-  Future<void> saveUser (List<UserData?> users) async {
+  Future<void> saveUser (List<User?> users) async {
     final validUsers = users.whereType<UserData>();
     await _database.batch((batch) {
 

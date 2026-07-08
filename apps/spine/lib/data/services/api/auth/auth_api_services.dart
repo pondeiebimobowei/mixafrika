@@ -13,7 +13,6 @@ class AuthApiServices implements AuthApiServicesAbstract {
         '/auth/login',
         data: {'email': email, 'password': password},
       );
-
       return ApiResponse.fromJson(
         response.data,
         (data) => AuthResponse.fromJson(data),

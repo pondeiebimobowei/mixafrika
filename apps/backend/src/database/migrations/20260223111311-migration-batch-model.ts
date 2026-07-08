@@ -19,7 +19,7 @@ module.exports = {
           primaryKey: true,
         },
 
-        expiry_date: { type: Sequelize.STRING, allowNull: false },
+        expiry_date: { type: Sequelize.STRING, allowNull: true },
         batch_number: { type: Sequelize.STRING, allowNull: false },
         cost_price_per_unit: { type: Sequelize.BIGINT, allowNull: false },
         selling_price_per_piece: { type: Sequelize.BIGINT, allowNull: false },

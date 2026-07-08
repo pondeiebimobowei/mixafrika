@@ -4,30 +4,27 @@ import 'package:spine/drift/database.dart';
 
 class User extends BaseModel{
   final String id;
-  final String image;
-  final String userName;
+  final String? avatar;
+  final String? userName;
   final String firstName;
   final String lastName;
   final String email;
   final String password;
   final String role;
   final bool isEmailVerified;
-  final String creditScore;
+  final bool isVerified;
+  final int creditScore;
   final String creditScoreStaus;
-  final String? verification;
-  final String? branchVerification;
-  final String? trader;
-  final String syncDate;
+  final String? syncDate;
   final String syncStatus;
 
-  final String? createdAt;
-  final String? updatedAt;
+  final String createdAt;
+  final String updatedAt;
   final String? deletedAt;
 
   User({
     required this.id,
-    // required this.userId,
-    required this.image,
+    required this.avatar,
     required this.userName,
     required this.firstName,
     required this.lastName,
@@ -35,11 +32,9 @@ class User extends BaseModel{
     required this.password,
     required this.role,
     required this.isEmailVerified,
+    required this.isVerified,
     required this.creditScore,
     required this.creditScoreStaus,
-    required this.verification,
-    required this.branchVerification,
-    required this.trader,
     required this.syncStatus,
     required this.syncDate,
 
@@ -51,7 +46,7 @@ class User extends BaseModel{
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       id: json['id'] ?? '',
-      image: json['image'] ?? '',
+      avatar: json['avatar'] ?? '',
       userName: json['user_name'] ?? '',
       firstName: json['first_name'] ?? '',
       lastName: json['last_name'] ?? '',
@@ -59,11 +54,9 @@ class User extends BaseModel{
       password: json['password'] ?? '',
       role: json['role'] ?? '',
       isEmailVerified: json['is_email_verified'] ?? false,
-      creditScore: json['credit_score'] ?? '',
+      isVerified: json['is_verified'] ?? false,
+      creditScore: int.tryParse(json['credit_score'] ?? '0') ?? 0,
       creditScoreStaus: json['credit_score_staus'] ?? '',
-      verification: json['verification'] ?? '',
-      branchVerification: json['branch_verification'] ?? '',
-      trader: json['trader'] ?? '',
       syncDate: json['sync_date'] ?? '',
       syncStatus: json['sync_status'] ?? '',
       
@@ -75,19 +68,17 @@ class User extends BaseModel{
 
   Map<String, dynamic> toJson() => {
     'id': id,
-    'image': image,
-    'user_name': userName,
+    'avatar': avatar,
+    'user_name': userName, 
     'first_name': firstName,
     'last_name': lastName,
     'email': email,
     'password': password,
     'role': role,
     'is_email_verified': isEmailVerified,
+    'is_verified': isVerified,
     'credit_score': creditScore,
     'credit_score_staus': creditScoreStaus,
-    'verification': verification,
-    'branch_verification': branchVerification,
-    'trader': trader,
     'sync_date': syncDate,
     'sync_status': syncStatus,
 
@@ -99,6 +90,7 @@ class User extends BaseModel{
   UserData toData() {
     return UserData(
       id: id,
+      avatar: avatar,
       userName: userName,
       firstName: firstName,
       lastName: lastName,
@@ -106,13 +98,14 @@ class User extends BaseModel{
       password: password,
       role: role,
       isEmailVerified: isEmailVerified,
-      isVerified: true, // Assuming true if synced
-      creditScore: int.tryParse(creditScore) ?? 0,
+      isVerified: isVerified,
+      creditScore: int.tryParse(creditScore as String) ?? 0,
       creditScoreStatus: creditScoreStaus,
       syncStatus: syncStatus,
-      syncDate: DateTime.tryParse(syncDate),
-      createdAt: DateTime.tryParse(createdAt ?? '') ?? DateTime.now(),
-      updatedAt: DateTime.tryParse(updatedAt ?? '') ?? DateTime.now(),
+      syncDate: syncDate == null ? null : DateTime.tryParse(syncDate!),
+      createdAt: DateTime.tryParse(createdAt) ?? DateTime.now(),
+      updatedAt: DateTime.tryParse(updatedAt) ?? DateTime.now(),
+      deletedAt: deletedAt == null ? null : DateTime.tryParse(deletedAt!),
     );
   }
 }

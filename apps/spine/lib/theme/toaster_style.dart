@@ -72,4 +72,15 @@ FToasterStyle toasterStyle({
   collapsedProtrusion: 12,
   collapsedScale: 0.9,
   motion: const FToasterMotion(),
+).copyWith(
+  toastStyles: .delta([
+    .all(.delta(
+      titleTextStyle: .delta(
+        color: colors.primaryForeground
+      ),
+      iconStyle: .delta(
+        color: colors.primaryForeground
+      )
+    ))
+  ])
 );

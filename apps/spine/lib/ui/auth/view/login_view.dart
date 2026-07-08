@@ -80,15 +80,18 @@ class _LoginViewState extends ConsumerState<LoginView> {
                   children: [
                     Text(
                       'Access your account',
-                      style: typography.body.lg.copyWith(
+                      style: typography.body.sm.copyWith(
                         color: colors.primaryForeground,
                         fontWeight: FontWeight.w900,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    RegularText(
-                      title: 'Use the same trader account you created for SPINE.',
-                      color: colors.mutedForeground, 
+                    Text(
+                      'Use the same trader account you created for SPINE.',
+                      style: typography.body.xs.copyWith(
+                        color: colors.mutedForeground,
+                        height: 1
+                      ),
                     ),
                     const SizedBox(height: 24),
                     AuthTextField(

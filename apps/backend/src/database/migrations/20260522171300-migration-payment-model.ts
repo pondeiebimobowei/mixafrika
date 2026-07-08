@@ -26,7 +26,7 @@ module.exports = {
         },
 
         amount: { type: Sequelize.BIGINT, allowNull: false },
-        reference: { type: Sequelize.STRING, allowNull: false },
+        reference: { type: Sequelize.STRING, allowNull: true },
         payment_method: { type: Sequelize.STRING, allowNull: false },
         status: { type: Sequelize.STRING, allowNull: false, validate: { isIn: [Object.values(paymentStatus)]} },
          

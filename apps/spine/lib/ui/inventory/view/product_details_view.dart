@@ -377,7 +377,7 @@ class ProductDetailsView extends ConsumerWidget {
     final bulk = (qty / unitsPerBulk).floor();
     final pieces = (qty % unitsPerBulk).toInt();
     final expiry = batch.expiryDate;
-    final formattedExpiry = toDateTime(expiry.toString());
+    final formattedExpiry = expiry != null ? toDateTime(expiry.toString()) : '';
 
     final FColors colors = context.theme.colors;
 

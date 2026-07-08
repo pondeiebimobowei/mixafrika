@@ -17,11 +17,9 @@ import { LoanHistory } from './database/models/loan-history.model';
 import { SavingsHistory } from './database/models/saving-history.model';
 import { Collection } from './database/models/collection.model';
 import { BankCard } from './database/models/bank-card.model';
-import { BusinessVerification } from './database/models/business-verification.model';
+
 import { UserVerification } from './database/models/user-verification';
-import { BusinessUser } from './database/models/business-user';
 import { Branch } from './database/models/branch.model';
-import { Inventory } from './database/models/inventory.model';
 import { Product } from './database/models/product.model';
 
 @Injectable()
@@ -54,6 +52,7 @@ export class AppService {
           },
         ]
         },
+        
         { model: FundingApplication },
         { model: Setting }
       ]

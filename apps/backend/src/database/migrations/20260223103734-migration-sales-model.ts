@@ -34,8 +34,8 @@ module.exports = {
         note: { type: Sequelize.STRING, allowNull: true },
 
 
-        branch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'business', key: 'id' }, onDelete: 'Cascade', onUpdate: 'cascade' },
-        customer_id: { type: Sequelize.UUID, allowNull: true, references: { model: 'user', key: 'id' }, onDelete: 'Cascade', onUpdate: 'cascade' },
+        branch_id: { type: Sequelize.UUID, allowNull: false, references: { model: 'branch', key: 'id' }, onDelete: 'Cascade', onUpdate: 'cascade' },
+        customer_id: { type: Sequelize.UUID, allowNull: true, references: { model: 'customer', key: 'id' }, onDelete: 'Cascade', onUpdate: 'cascade' },
         created_by_id: { type: Sequelize.UUID, allowNull: true, references: { model: 'user', key: 'id' }, onDelete: 'Cascade', onUpdate: 'cascade' },
 
 

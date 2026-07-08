@@ -85,6 +85,7 @@ FDateFieldStyle dateFieldStyle({
     color: .delta([.all(colors.secondaryForeground.withValues(alpha: 0.3))]), 
     iconStyle: .delta([.all(.delta(color: colors.primaryForeground))]), 
     clearButtonStyle: .delta(
+      decoration: .delta([.all(DecorationDelta.boxDelta(color: colors.destructive ))]),
       contentStyle: .delta(
         textStyle: .delta([.all(.delta())]),
         iconStyle: .delta([.all(.delta())]),
@@ -107,14 +108,71 @@ FDateFieldStyle dateFieldStyle({
         focusedOutlineStyle: .delta(color: colors.background, borderRadius: .zero)
       ),
       
-      contentTextStyle: .delta([.all(.delta(color: colors.background))]),
-      hintTextStyle: .delta([.all(.delta(color: colors.background))]),
+      contentTextStyle: .delta([.all(.delta(color: colors.primaryForeground))]),
+      hintTextStyle: .delta([.all(.delta(color: colors.primaryForeground))]),
       counterTextStyle: .delta([.all(.delta())]),
       border: .delta([.all(.none)]),
       labelTextStyle: .delta([.all(.delta(color: colors.primaryForeground))]),
       descriptionTextStyle: .delta([.all(.delta(color: colors.primaryForeground))]),
       errorTextStyle: .delta([.all(.delta())]),
+      )),
+      
+    ]),
+    calendarStyle: .delta(
+      yearPickerStyle: .delta(
+        yearStyles: .delta([
+          .all(
+            .delta(
+              textStyle: .delta(color: colors.primaryForeground),
+               decoration: .boxDelta( )
 
-      ))
-    ])
+            )
+          )
+        ]),
+      ),
+
+      dayPickerStyle: .delta(
+        dayStyles: .delta(
+          [.all(.delta(
+            textStyle: .delta(color: colors.primaryForeground),
+            
+            background: .boxDelta(color: colors.secondaryForeground)
+          ))]
+        ),
+      ),
+      
+      monthPickerStyle: .delta(
+        monthStyles: .delta([
+          .all(.delta(
+            textStyle: .delta(color: colors.primaryForeground),
+            
+          ))
+        ])
+      ),
+
+      headerStyle: .delta(
+        headerTextStyle: .delta([
+          .all(.delta(
+            color: colors.primaryForeground
+          ))
+        ]),
+        buttonStyle: .delta(
+          iconContentStyle: .delta(
+            iconStyle: .delta([
+              .all(
+                .delta(color: colors.primaryForeground)
+              )
+            ])
+          ),
+          contentStyle: .delta(
+            textStyle: .delta([
+              .all(
+                .delta(color: colors.primaryForeground),
+                
+              )
+            ])
+          )
+        )
+      )
+    )
 );

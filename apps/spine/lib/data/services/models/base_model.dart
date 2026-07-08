@@ -3,7 +3,7 @@ class BaseModel {
   final String id;
 
   final String syncStatus;
-  final String syncDate;
+  final String? syncDate;
 
   final String? createdAt;
   final String? updatedAt;

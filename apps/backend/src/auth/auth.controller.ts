@@ -1,11 +1,9 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, UsePipes } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, UsePipes } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { ZodPipe } from 'src/pipes/zod-pipes';
 import { Create_user_dto, create_user_dto } from '@shared/shared/src/validation/create-user-dto';
 import { Login_user_dto } from '@shared/shared/src/validation/login-user-dto';
 import { Public } from 'src/decorators/public.decorator';
-import { ParsedToken } from 'src/decorators/parsed-token.decorator';
-import { User } from 'src/database/models/user.model';
 
 @Controller('v1/auth')
 export class AuthController {
@@ -42,10 +40,5 @@ export class AuthController {
   @Public()
   resetPassord() {
     return this.authService.handleResetPassword();
-  }
-
-  @Get('sync')
-  sync(@ParsedToken() user: User) {
-    return this.authService.handleSync(user.id);
   }
 }

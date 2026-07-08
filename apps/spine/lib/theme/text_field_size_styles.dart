@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:forui/forui.dart';
@@ -187,7 +186,7 @@ FTextFieldStyle _textFieldStyle({
     ),
   ),
   contentTextStyle: FVariants.from(
-    textStyle.copyWith(color: colors.foreground),
+    textStyle.copyWith(color: colors.primaryForeground),
     variants: {
       [.disabled]: .delta(color: colors.disable(colors.foreground)),
     },
@@ -199,7 +198,7 @@ FTextFieldStyle _textFieldStyle({
     },
   ),
   counterTextStyle: FVariants.from(
-    textStyle.copyWith(color: colors.foreground),
+    textStyle.copyWith(color: colors.primaryForeground),
     variants: {
       [.disabled]: .delta(color: colors.disable(colors.foreground)),
     },
@@ -234,7 +233,11 @@ FTextFieldStyle _textFieldStyle({
       ),
     },
   ),
-  labelTextStyle: style.formFieldStyle.labelTextStyle,
+
+  labelTextStyle: FVariants(
+    TextStyle(color:  colors.primaryForeground),
+    variants: const {},
+  ),
   descriptionTextStyle: style.formFieldStyle.descriptionTextStyle,
   errorTextStyle: style.formFieldStyle.errorTextStyle,
   labelPadding: labelStyle.labelPadding,

@@ -5,8 +5,8 @@ part of 'theme.dart';
 /// Typography tokens for the generated theme.
 FTypography _typography({required FColors colors, required bool touch}) =>
     FTypography(
-      display: _display(colors: colors, touch: touch),
-      body: _body(colors: colors, touch: touch),
+      display: _display(colors: colors, touch: touch,fontFamily: GoogleFonts.manrope().fontFamily ?? "Inter",),
+      body: _body(colors: colors, touch: touch,fontFamily: GoogleFonts.manrope().fontFamily ?? "Inter"),
     );
 
 /// The typographical tokens used for prominent text such as headings.
@@ -20,7 +20,7 @@ FTypeface _display({
     fontFamily.isNotEmpty,
     'fontFamily ($fontFamily) should not be empty.',
   );
-  final color = colors.foreground;
+  final color = colors.primaryForeground;
   if (touch) {
     return FTypeface(
       fontFamily: fontFamily,
@@ -269,7 +269,7 @@ FTypeface _body({
     fontFamily.isNotEmpty,
     'fontFamily ($fontFamily) should not be empty.',
   );
-  final color = colors.foreground;
+  final color = colors.primaryForeground;
   if (touch) {
     return FTypeface(
       fontFamily: fontFamily,

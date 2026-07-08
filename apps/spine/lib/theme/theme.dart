@@ -9,6 +9,7 @@ import 'package:spine/theme/select_style.dart';
 import 'package:spine/theme/switch_style.dart';
 import 'package:spine/theme/text_field_size_styles.dart';
 import 'package:spine/theme/toaster_style.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 part 'colors.dart';
 part 'typography.dart';

@@ -20,8 +20,9 @@ export const mockUserSeed: () => Promise<IUser[]> = (async () => {
       email: 'trader@mixafrika.com',
       password: await bcrypt.hash('password123', 10),
       role: 'trader',
-      sync_status: "pending",
+      sync_status: "completed",
 
+      sync_date: "2025-11-12T16:13:42.425Z",
       createdAt: "2025-11-12T16:13:42.425Z",
       updatedAt: "2025-11-12T16:13:42.425Z"
     }

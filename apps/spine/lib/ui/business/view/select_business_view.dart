@@ -34,14 +34,14 @@ class SelectBusinessView extends ConsumerWidget {
                   const SizedBox(height: 16),
                   Text(
                     'Failed to load businesses',
-                    style: theme.typography.body.lg.copyWith(
+                    style: theme.typography.body.md.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 8),
                   Text(
                     error.toString(),
-                    style: theme.typography.body.sm.copyWith(
+                    style: theme.typography.body.xs.copyWith(
                       color: colors.mutedForeground,
                     ),
                     textAlign: TextAlign.center,
@@ -84,7 +84,7 @@ class SelectBusinessView extends ConsumerWidget {
             const SizedBox(height: 24),
             Text(
               'No Businesses Found',
-              style: context.theme.typography.body.xl.copyWith(
+              style: context.theme.typography.body.lg.copyWith(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -92,7 +92,7 @@ class SelectBusinessView extends ConsumerWidget {
             Text(
               'You haven\'t added any businesses yet. Create one to get started.',
               textAlign: TextAlign.center,
-              style: context.theme.typography.body.sm.copyWith(
+              style: context.theme.typography.body.xs.copyWith(
                 color: colors.mutedForeground,
               ),
             ),
@@ -132,13 +132,13 @@ class SelectBusinessView extends ConsumerWidget {
                   children: [
                     Text(
                       business.name,
-                      style: context.theme.typography.body.sm.copyWith(
+                      style: context.theme.typography.body.xs.copyWith(
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
                       business.type,
-                      style: context.theme.typography.body.sm.copyWith(
+                      style: context.theme.typography.body.xs.copyWith(
                         color: colors.mutedForeground,
                       ),
                     ),

@@ -14,8 +14,9 @@ import {
 import { CreationOptional, DataTypes } from 'sequelize';
 import { User } from './user.model';
 import { ISales } from '@shared/shared/src/types/sales';
-import { Business } from './business.model';
 import { SalesStatus, SyncStatus, syncStatus } from '@shared/shared/src/enums';
+import { Branch } from './branch.model';
+import { Customer } from './customer';
 
 @Table({ tableName: 'sales' })
 export class Sales
@@ -64,11 +65,11 @@ export class Sales
 
 
 
-    @ForeignKey(() => User)
+    @ForeignKey(() => Customer)
     @Column(DataType.STRING)
     declare customer_id: string;
 
-    @ForeignKey(() => Business)
+    @ForeignKey(() => Branch)
     @Column(DataType.STRING)
     declare branch_id: string;
 
@@ -76,9 +77,9 @@ export class Sales
     @Column(DataType.UUID)
     declare created_by_id: string;
 
-    @BelongsTo(() => Business, 'branch_id')
-    declare branch: Business;
+    @BelongsTo(() => Branch, 'branch_id')
+    declare branch: Branch;
 
-    @BelongsTo(() => User, 'customer_id')
-    declare customer: User;
+    @BelongsTo(() => Customer, 'customer_id')
+    declare customer: Customer;
 }

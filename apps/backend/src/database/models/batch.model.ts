@@ -26,7 +26,7 @@ export class Batch
     declare id: CreationOptional<string>;
 
     @Column(DataType.STRING)
-    declare expiry_date: string;
+    declare expiry_date?: string;
 
     @Column(DataType.STRING)
     declare batch_number: string;
