@@ -1,5 +1,5 @@
 import { type Roles } from "../enums/index";
-import { SyncableModel, type BaseModel } from "./base-model-type";
+import { type SyncableModel, type BaseModel } from "./base-model-type";
 import { type ITrader } from "./trader";
 import { type ITransaction } from "./transaction";
 import { type IBusiness } from "./business";
