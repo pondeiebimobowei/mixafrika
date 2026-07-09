@@ -8,7 +8,8 @@ const navItems = [
   { label: 'Users', href: '#users', icon: Users },
   { label: 'Businesses', href: '#businesses', icon: Building2 },
   { label: 'Verifications', href: '#verifications', icon: ShieldCheck },
-  { label: 'Operations', href: '#operations', icon: Activity },
+  { label: 'Catalog', href: '/catalog', icon: Building2 },
+  { label: 'Operations', href: '/operations', icon: Activity },
 ];
 
 export function DashboardShell({ children }: { children: ReactNode }) {
@@ -26,12 +27,20 @@ export function DashboardShell({ children }: { children: ReactNode }) {
           <nav className="space-y-2">
             {navItems.map((item) => {
               const Icon = item.icon;
+              const className =
+                'flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/10 hover:text-white';
+
+              if (item.href.startsWith('/')) {
+                return (
+                  <Link key={item.label} to={item.href} className={className}>
+                    <Icon className="h-4 w-4" />
+                    {item.label}
+                  </Link>
+                );
+              }
+
               return (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="flex items-center gap-3 rounded-2xl px-4 py-3 text-sm font-medium text-slate-200 transition hover:bg-white/10 hover:text-white"
-                >
+                <a key={item.label} href={item.href} className={className}>
                   <Icon className="h-4 w-4" />
                   {item.label}
                 </a>
