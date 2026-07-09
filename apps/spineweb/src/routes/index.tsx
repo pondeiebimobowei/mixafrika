@@ -1,4 +1,4 @@
-import { createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 import { AlertTriangle, Building2, ShieldCheck, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { DashboardShell } from '#/components/admin/dashboard-shell';
@@ -14,23 +14,33 @@ import {
 import { getSession } from '#/lib/session';
 
 export const Route = createFileRoute('/')({
-  beforeLoad: () => {
-    if (!getSession()?.token) {
-      throw redirect({ to: '/login' });
-    }
-  },
   component: AdminDashboardPage,
 });
 
 function AdminDashboardPage() {
+  const [ready, setReady] = useState(false);
   const [overview, setOverview] = useState<any>(null);
   const [users, setUsers] = useState<any[]>([]);
   const [businesses, setBusinesses] = useState<any[]>([]);
   const [userVerifications, setUserVerifications] = useState<any[]>([]);
   const [businessVerifications, setBusinessVerifications] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const session = getSession();
 
   useEffect(() => {
+    setReady(true);
+  }, []);
+
+  useEffect(() => {
+    if (!ready) {
+      return;
+    }
+
+    if (!session?.token) {
+      window.location.replace('/login');
+      return;
+    }
+
     Promise.all([
       getOverview(),
       getUsers(),
@@ -48,7 +58,15 @@ function AdminDashboardPage() {
       .catch((requestError) => {
         setError(requestError instanceof Error ? requestError.message : 'Failed to load dashboard');
       });
-  }, []);
+  }, [ready, session?.token]);
+
+  if (!ready || !session?.token) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white">
+        <div className="text-sm uppercase tracking-[0.3em] text-amber-300">Loading secure session...</div>
+      </div>
+    );
+  }
 
   return (
     <DashboardShell>
