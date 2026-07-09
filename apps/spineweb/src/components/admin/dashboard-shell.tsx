@@ -5,9 +5,9 @@ import { clearSession } from '#/lib/session';
 
 const navItems = [
   { label: 'Overview', href: '#overview', icon: LayoutDashboard },
-  { label: 'Users', href: '#users', icon: Users },
-  { label: 'Businesses', href: '#businesses', icon: Building2 },
-  { label: 'Verifications', href: '#verifications', icon: ShieldCheck },
+  { label: 'Users', href: '/users', icon: Users },
+  { label: 'Businesses', href: '/businesses', icon: Building2 },
+  { label: 'Verifications', href: '/verifications', icon: ShieldCheck },
   { label: 'Catalog', href: '/catalog', icon: Building2 },
   { label: 'Operations', href: '/operations', icon: Activity },
 ];

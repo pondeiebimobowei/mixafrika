@@ -9,12 +9,25 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VerificationsRouteImport } from './routes/verifications'
+import { Route as UsersRouteImport } from './routes/users'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as OperationsRouteImport } from './routes/operations'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as CatalogRouteImport } from './routes/catalog'
+import { Route as BusinessesRouteImport } from './routes/businesses'
 import { Route as IndexRouteImport } from './routes/index'
 
+const VerificationsRoute = VerificationsRouteImport.update({
+  id: '/verifications',
+  path: '/verifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UsersRoute = UsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
@@ -35,6 +48,11 @@ const CatalogRoute = CatalogRouteImport.update({
   path: '/catalog',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BusinessesRoute = BusinessesRouteImport.update({
+  id: '/businesses',
+  path: '/businesses',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -43,44 +61,95 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/businesses': typeof BusinessesRoute
   '/catalog': typeof CatalogRoute
   '/login': typeof LoginRoute
   '/operations': typeof OperationsRoute
   '/signup': typeof SignupRoute
+  '/users': typeof UsersRoute
+  '/verifications': typeof VerificationsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/businesses': typeof BusinessesRoute
   '/catalog': typeof CatalogRoute
   '/login': typeof LoginRoute
   '/operations': typeof OperationsRoute
   '/signup': typeof SignupRoute
+  '/users': typeof UsersRoute
+  '/verifications': typeof VerificationsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/businesses': typeof BusinessesRoute
   '/catalog': typeof CatalogRoute
   '/login': typeof LoginRoute
   '/operations': typeof OperationsRoute
   '/signup': typeof SignupRoute
+  '/users': typeof UsersRoute
+  '/verifications': typeof VerificationsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/catalog' | '/login' | '/operations' | '/signup'
+  fullPaths:
+    | '/'
+    | '/businesses'
+    | '/catalog'
+    | '/login'
+    | '/operations'
+    | '/signup'
+    | '/users'
+    | '/verifications'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/catalog' | '/login' | '/operations' | '/signup'
-  id: '__root__' | '/' | '/catalog' | '/login' | '/operations' | '/signup'
+  to:
+    | '/'
+    | '/businesses'
+    | '/catalog'
+    | '/login'
+    | '/operations'
+    | '/signup'
+    | '/users'
+    | '/verifications'
+  id:
+    | '__root__'
+    | '/'
+    | '/businesses'
+    | '/catalog'
+    | '/login'
+    | '/operations'
+    | '/signup'
+    | '/users'
+    | '/verifications'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BusinessesRoute: typeof BusinessesRoute
   CatalogRoute: typeof CatalogRoute
   LoginRoute: typeof LoginRoute
   OperationsRoute: typeof OperationsRoute
   SignupRoute: typeof SignupRoute
+  UsersRoute: typeof UsersRoute
+  VerificationsRoute: typeof VerificationsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/verifications': {
+      id: '/verifications'
+      path: '/verifications'
+      fullPath: '/verifications'
+      preLoaderRoute: typeof VerificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/users': {
+      id: '/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof UsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/signup': {
       id: '/signup'
       path: '/signup'
@@ -109,6 +178,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CatalogRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/businesses': {
+      id: '/businesses'
+      path: '/businesses'
+      fullPath: '/businesses'
+      preLoaderRoute: typeof BusinessesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -121,10 +197,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BusinessesRoute: BusinessesRoute,
   CatalogRoute: CatalogRoute,
   LoginRoute: LoginRoute,
   OperationsRoute: OperationsRoute,
   SignupRoute: SignupRoute,
+  UsersRoute: UsersRoute,
+  VerificationsRoute: VerificationsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

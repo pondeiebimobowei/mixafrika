@@ -55,6 +55,9 @@ export type AdminUser = {
   is_email_verified: boolean;
   is_verified: boolean;
   createdAt: string;
+  verification?: unknown;
+  businesses?: unknown[];
+  branches?: unknown[];
 };
 
 export type AdminBusiness = {
@@ -66,6 +69,9 @@ export type AdminBusiness = {
   country: string;
   is_verified: boolean;
   createdAt: string;
+  verification?: unknown;
+  users?: unknown[];
+  branches?: unknown[];
 };
 
 export type AdminVerification = {
@@ -86,8 +92,56 @@ export async function getUsers() {
   return request<ApiResponse<AdminUser[]>>('/v1/admin/users');
 }
 
+export async function getUser(id: string) {
+  return request<ApiResponse<AdminUser>>(`/v1/admin/users/${id}`);
+}
+
+export async function createUser(payload: Record<string, unknown>) {
+  return request<ApiResponse<AdminUser>>('/v1/admin/users', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function updateUser(id: string, payload: Record<string, unknown>) {
+  return request<ApiResponse<AdminUser>>(`/v1/admin/users/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function deleteUser(id: string) {
+  return request<ApiResponse<null>>(`/v1/admin/users/${id}`, {
+    method: 'DELETE',
+  });
+}
+
 export async function getBusinesses() {
   return request<ApiResponse<AdminBusiness[]>>('/v1/admin/businesses');
+}
+
+export async function getBusiness(id: string) {
+  return request<ApiResponse<AdminBusiness>>(`/v1/admin/businesses/${id}`);
+}
+
+export async function createBusiness(payload: Record<string, unknown>) {
+  return request<ApiResponse<AdminBusiness>>('/v1/admin/businesses', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function updateBusiness(id: string, payload: Record<string, unknown>) {
+  return request<ApiResponse<AdminBusiness>>(`/v1/admin/businesses/${id}`, {
+    method: 'PATCH',
+    body: JSON.stringify(payload),
+  });
+}
+
+export async function deleteBusiness(id: string) {
+  return request<ApiResponse<null>>(`/v1/admin/businesses/${id}`, {
+    method: 'DELETE',
+  });
 }
 
 export async function getUserVerifications() {
