@@ -15,7 +15,7 @@ export function AuthCard({
     <div className="min-h-screen bg-[radial-gradient(circle_at_top,_rgba(249,115,22,0.16),_transparent_30%),linear-gradient(180deg,#0f172a_0%,#111827_44%,#f8fafc_44%,#f8fafc_100%)] px-4 py-8">
       <div className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-6xl items-center">
         <div className="grid w-full gap-6 lg:grid-cols-[1.1fr_0.9fr]">
-          <div className="rounded-[2rem] border border-white/10 bg-slate-950/90 p-8 text-white shadow-2xl shadow-slate-950/40">
+          <div className="border border-white/10 bg-slate-950/90 p-8 text-white shadow-2xl shadow-slate-950/40">
             <p className="text-xs uppercase tracking-[0.35em] text-amber-300/80">{eyebrow}</p>
             <h1 className="mt-5 max-w-xl text-5xl font-semibold tracking-tight">{title}</h1>
             <p className="mt-5 max-w-lg text-base leading-7 text-slate-300">{description}</p>
@@ -25,7 +25,7 @@ export function AuthCard({
                 ['Audit', 'Operational accountability'],
                 ['Oversight', 'Data-driven support desk'],
               ].map(([label, hint]) => (
-                <div key={label} className="rounded-2xl border border-white/10 bg-white/5 p-4">
+                <div key={label} className="border border-white/10 bg-white/5 p-4">
                   <p className="text-sm font-medium text-amber-200">{label}</p>
                   <p className="mt-2 text-sm text-slate-300">{hint}</p>
                 </div>
@@ -33,7 +33,7 @@ export function AuthCard({
             </div>
           </div>
 
-          <div className="rounded-[2rem] border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/70">
+          <div className="border border-slate-200 bg-white p-8 shadow-xl shadow-slate-200/70">
             {children}
           </div>
         </div>

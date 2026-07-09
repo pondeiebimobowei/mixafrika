@@ -90,7 +90,7 @@ function SignupPage() {
         />
 
         {error ? (
-          <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+          <div className="border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
             {error}
           </div>
         ) : null}
@@ -98,7 +98,7 @@ function SignupPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-2xl bg-amber-500 px-4 py-3 font-medium text-slate-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full bg-amber-500 px-4 py-3 font-medium text-slate-950 transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loading ? 'Creating account…' : 'Create account'}
         </button>
@@ -134,7 +134,7 @@ function Field({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         type={type}
-        className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-amber-500"
+        className="w-full border border-slate-200 px-4 py-3 outline-none transition focus:border-amber-500"
         placeholder={placeholder}
         required
       />

@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useMemo, useState } from 'react';
 import { DashboardShell } from '#/components/admin/dashboard-shell';
+import { Drawer } from '#/components/admin/drawer';
 import { EntityTable } from '#/components/admin/entity-table';
 import { ModulePage } from '#/components/admin/module-page';
 import { createBusiness, deleteBusiness, getBusinesses, getBusiness, updateBusiness } from '#/lib/admin-api';
@@ -44,7 +45,7 @@ function BusinessesPage() {
         description="Create, edit, inspect, and delete businesses in a dedicated workflow."
         sidebar={
           <form
-            className="rounded-[1.5rem] border border-slate-200 bg-white p-4 shadow-sm space-y-3"
+            className="border border-slate-200 bg-white p-4 shadow-sm space-y-3"
             onSubmit={async (e) => {
               e.preventDefault();
               await createBusiness({ ...form, is_verified: false });
@@ -56,17 +57,17 @@ function BusinessesPage() {
             {Object.entries(form).map(([key, value]) => (
               <input
                 key={key}
-                className="w-full rounded-xl border px-3 py-2"
+                className="w-full border border-slate-200 px-3 py-2"
                 placeholder={key}
                 value={value}
                 onChange={(e) => setForm((curr) => ({ ...curr, [key]: e.target.value }))}
               />
             ))}
-            <button className="w-full rounded-xl bg-slate-950 px-4 py-2 text-white">Save business</button>
+            <button className="w-full bg-slate-950 px-4 py-2 text-white">Save business</button>
           </form>
         }
       >
-        {error ? <div className="mb-4 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">{error}</div> : null}
+        {error ? <div className="mb-4 border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">{error}</div> : null}
         <EntityTable
           title="Business list"
           description="Click a row to open the full business record."
@@ -82,23 +83,41 @@ function BusinessesPage() {
             </>
           )}
         />
-        <section className="mt-6 rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-xl font-semibold text-slate-950">Selected business</h3>
-              <p className="mt-1 text-sm text-slate-500">{selectedSummary}</p>
-            </div>
-            {selectedBusiness ? (
-              <div className="flex gap-2">
-                <button className="rounded-xl border px-3 py-2" onClick={async () => { await updateBusiness(selectedBusiness.id, { is_verified: !selectedBusiness.is_verified }); await load(); }}>Toggle verify</button>
-                <button className="rounded-xl border px-3 py-2 text-rose-600" onClick={async () => { await deleteBusiness(selectedBusiness.id); setSelectedBusiness(null); await load(); }}>Delete</button>
-              </div>
-            ) : null}
-          </div>
+        <Drawer
+          open={Boolean(selectedBusiness)}
+          title={selectedBusiness ? selectedBusiness.name : 'Business details'}
+          subtitle={selectedSummary}
+          onClose={() => setSelectedBusiness(null)}
+        >
           {selectedBusiness ? (
-            <pre className="mt-4 overflow-auto rounded-2xl bg-slate-950 p-4 text-xs text-slate-100">{JSON.stringify(selectedBusiness, null, 2)}</pre>
+            <div className="space-y-4">
+              <div className="grid gap-3 md:grid-cols-2">
+                {[
+                  ['Type', selectedBusiness.type],
+                  ['Phone', selectedBusiness.phone],
+                  ['City', selectedBusiness.city],
+                  ['State', selectedBusiness.state],
+                  ['Country', selectedBusiness.country],
+                  ['Verified', selectedBusiness.is_verified ? 'Yes' : 'No'],
+                ].map(([label, value]) => (
+                  <div key={label} className="border border-slate-200 p-3">
+                    <p className="text-[11px] uppercase tracking-[0.25em] text-slate-400">{label}</p>
+                    <p className="mt-1 text-sm font-medium text-slate-950">{String(value)}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <button className="border border-slate-200 px-3 py-2" onClick={async () => { await updateBusiness(selectedBusiness.id, { is_verified: !selectedBusiness.is_verified }); await load(); }}>
+                  Toggle verify
+                </button>
+                <button className="border border-slate-200 px-3 py-2 text-rose-600" onClick={async () => { await deleteBusiness(selectedBusiness.id); setSelectedBusiness(null); await load(); }}>
+                  Delete
+                </button>
+              </div>
+              <pre className="overflow-auto border border-slate-200 bg-slate-50 p-4 text-xs text-slate-900">{JSON.stringify(selectedBusiness, null, 2)}</pre>
+            </div>
           ) : null}
-        </section>
+        </Drawer>
       </ModulePage>
     </DashboardShell>
   );

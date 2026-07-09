@@ -52,7 +52,7 @@ function LoginPage() {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             type="email"
-            className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-amber-500"
+            className="w-full border border-slate-200 px-4 py-3 outline-none transition focus:border-amber-500"
             placeholder="admin@spine.app"
             required
           />
@@ -63,14 +63,14 @@ function LoginPage() {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             type="password"
-            className="w-full rounded-2xl border border-slate-200 px-4 py-3 outline-none transition focus:border-amber-500"
+            className="w-full border border-slate-200 px-4 py-3 outline-none transition focus:border-amber-500"
             placeholder="••••••••"
             required
           />
         </div>
 
         {error ? (
-          <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
+          <div className="border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
             {error}
           </div>
         ) : null}
@@ -78,7 +78,7 @@ function LoginPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full rounded-2xl bg-slate-950 px-4 py-3 font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full bg-slate-950 px-4 py-3 font-medium text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loading ? 'Signing in…' : 'Sign in'}
         </button>

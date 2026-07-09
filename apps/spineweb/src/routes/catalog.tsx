@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { DashboardShell } from '#/components/admin/dashboard-shell';
+import { Drawer } from '#/components/admin/drawer';
 import { ModulePage } from '#/components/admin/module-page';
 import { entityApi } from '#/lib/entity-api';
 
@@ -13,6 +14,8 @@ function CatalogRoute() {
   const [batches, setBatches] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [productForm, setProductForm] = useState({ name: '', branch_id: '', description: '' });
+  const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
+  const [selectedBatch, setSelectedBatch] = useState<any | null>(null);
 
   const load = async () => {
     try {
@@ -34,7 +37,7 @@ function CatalogRoute() {
         title="Catalog management"
         description="Manage branch products and stock batches with create, edit, and delete actions."
         sidebar={
-          <div className="rounded-[1.5rem] border border-slate-200 bg-white p-4 shadow-sm">
+          <div className="border border-slate-200 bg-white p-4 shadow-sm">
             <h3 className="text-lg font-semibold text-slate-950">Create product</h3>
             <form
               className="mt-4 space-y-3"
@@ -57,40 +60,46 @@ function CatalogRoute() {
                 await load();
               }}
             >
-              <input className="w-full rounded-xl border px-3 py-2" placeholder="Name" value={productForm.name} onChange={(e) => setProductForm((s) => ({ ...s, name: e.target.value }))} />
-              <input className="w-full rounded-xl border px-3 py-2" placeholder="Branch ID" value={productForm.branch_id} onChange={(e) => setProductForm((s) => ({ ...s, branch_id: e.target.value }))} />
-              <textarea className="w-full rounded-xl border px-3 py-2" placeholder="Description" value={productForm.description} onChange={(e) => setProductForm((s) => ({ ...s, description: e.target.value }))} />
-              <button className="w-full rounded-xl bg-slate-950 px-4 py-2 text-white">Save product</button>
+              <input className="w-full border border-slate-200 px-3 py-2" placeholder="Name" value={productForm.name} onChange={(e) => setProductForm((s) => ({ ...s, name: e.target.value }))} />
+              <input className="w-full border border-slate-200 px-3 py-2" placeholder="Branch ID" value={productForm.branch_id} onChange={(e) => setProductForm((s) => ({ ...s, branch_id: e.target.value }))} />
+              <textarea className="w-full border border-slate-200 px-3 py-2" placeholder="Description" value={productForm.description} onChange={(e) => setProductForm((s) => ({ ...s, description: e.target.value }))} />
+              <button className="w-full bg-slate-950 px-4 py-2 text-white">Save product</button>
             </form>
           </div>
         }
       >
         {error ? <div className="mb-4 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">{error}</div> : null}
-        <Section title="Products" items={products} onDelete={async (id) => { await entityApi.products.remove(id); await load(); }} />
+        <Section title="Products" items={products} onSelect={setSelectedProduct} onDelete={async (id) => { await entityApi.products.remove(id); await load(); }} />
         <div className="mt-8">
-          <Section title="Batches" items={batches} onDelete={async (id) => { await entityApi.batches.remove(id); await load(); }} />
+          <Section title="Batches" items={batches} onSelect={setSelectedBatch} onDelete={async (id) => { await entityApi.batches.remove(id); await load(); }} />
         </div>
+        <Drawer open={Boolean(selectedProduct)} title={selectedProduct?.name ?? 'Product details'} subtitle={selectedProduct?.category} onClose={() => setSelectedProduct(null)}>
+          {selectedProduct ? <pre className="overflow-auto border border-slate-200 bg-slate-50 p-4 text-xs text-slate-900">{JSON.stringify(selectedProduct, null, 2)}</pre> : null}
+        </Drawer>
+        <Drawer open={Boolean(selectedBatch)} title={selectedBatch?.batch_number ?? 'Batch details'} subtitle={selectedBatch?.product?.name} onClose={() => setSelectedBatch(null)}>
+          {selectedBatch ? <pre className="overflow-auto border border-slate-200 bg-slate-50 p-4 text-xs text-slate-900">{JSON.stringify(selectedBatch, null, 2)}</pre> : null}
+        </Drawer>
       </ModulePage>
     </DashboardShell>
   );
 }
 
-function Section({ title, items, onDelete }: { title: string; items: any[]; onDelete: (id: string) => Promise<void> }) {
+function Section({ title, items, onDelete, onSelect }: { title: string; items: any[]; onDelete: (id: string) => Promise<void>; onSelect: (item: any) => void }) {
   return (
     <div>
       <h2 className="mb-3 text-xl font-semibold text-slate-950">{title}</h2>
-      <div className="overflow-hidden rounded-2xl border border-slate-200">
+      <div className="overflow-hidden border border-slate-200">
         <table className="min-w-full text-sm">
           <thead className="bg-slate-50 text-left text-slate-500">
             <tr><th className="px-4 py-3">ID</th><th className="px-4 py-3">Name</th><th className="px-4 py-3">Actions</th></tr>
           </thead>
           <tbody>
             {items.map((item) => (
-              <tr key={item.id} className="border-t">
+              <tr key={item.id} className="border-t cursor-pointer hover:bg-[#eef7f1]" onClick={() => onSelect(item)}>
                 <td className="px-4 py-3 font-mono text-xs">{item.id}</td>
                 <td className="px-4 py-3">{item.name ?? item.batch_number}</td>
                 <td className="px-4 py-3">
-                  <button className="rounded-lg border px-3 py-1" onClick={() => onDelete(item.id)}>Delete</button>
+                  <button className="border px-3 py-1" onClick={(e) => { e.stopPropagation(); onDelete(item.id); }}>Delete</button>
                 </td>
               </tr>
             ))}
