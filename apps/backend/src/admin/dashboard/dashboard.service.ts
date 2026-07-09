@@ -1,6 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Op } from 'sequelize';
-import { AdminOverview, AdminModerationAction } from '../admin.types';
+import { AdminOverview, AdminModerationAction, AdminBusinessPayload, AdminUserPayload } from '../admin.types';
 import { User } from 'src/database/models/user.model';
 import { Business } from 'src/database/models/business.model';
 import { UserVerification } from 'src/database/models/user-verification';
@@ -8,6 +8,10 @@ import { BusinessVerification } from 'src/database/models/business-verification.
 import { Branch } from 'src/database/models/branch.model';
 import { Customer } from 'src/database/models/customer';
 import { Collection } from 'src/database/models/collection.model';
+import { BusinessUser } from 'src/database/models/business-user';
+import { Wallet } from 'src/database/models/wallet.model';
+import { Setting } from 'src/database/models/setting.model';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AdminDashboardService {
@@ -62,7 +66,7 @@ export class AdminDashboardService {
   async handleGetUsers() {
     const users = await User.findAll({
       order: [['createdAt', 'DESC']],
-      include: [UserVerification],
+      include: [UserVerification, Business, Branch],
     });
 
     return {
@@ -74,7 +78,7 @@ export class AdminDashboardService {
 
   async handleGetUserById(id: string) {
     const user = await User.findByPk(id, {
-      include: [UserVerification],
+      include: [UserVerification, Business, Branch],
     });
 
     if (!user) {
@@ -91,7 +95,7 @@ export class AdminDashboardService {
   async handleGetBusinesses() {
     const businesses = await Business.findAll({
       order: [['createdAt', 'DESC']],
-      include: [Branch, BusinessVerification],
+      include: [Branch, BusinessVerification, User],
     });
 
     return {
@@ -200,5 +204,95 @@ export class AdminDashboardService {
       message: 'Collections retrieved successfully',
       data: collections,
     };
+  }
+
+  async handleCreateUser(payload: AdminUserPayload) {
+    if (!payload.password) {
+      throw new BadRequestException('password is required');
+    }
+
+    const password = await bcrypt.hash(payload.password, 10);
+    const user = await User.create({
+      ...payload,
+      password,
+      credit_score: 0,
+      credit_score_status: 'not set',
+      is_verified: payload.is_verified ?? true,
+      is_email_verified: payload.is_email_verified ?? true,
+      sync_status: 'completed',
+      sync_date: new Date().toISOString(),
+    });
+
+    await Wallet.create({
+      user_id: user.id,
+      available_balance: 0,
+      active_investment_principal: 0,
+      total_portfolio: 0,
+    });
+
+    await Setting.create({
+      user_id: user.id,
+      enable_dark_mode: false,
+      enable_push_notification: false,
+      enable_email_notification: true,
+    });
+
+    return { success: true, message: 'User created successfully', data: user };
+  }
+
+  async handleUpdateUser(id: string, payload: Partial<AdminUserPayload>) {
+    const user = await User.findByPk(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const updatePayload = { ...payload } as Partial<User>;
+    if (payload.password) {
+      updatePayload.password = await bcrypt.hash(payload.password, 10);
+    }
+
+    await user.update(updatePayload);
+    return { success: true, message: 'User updated successfully', data: user };
+  }
+
+  async handleDeleteUser(id: string) {
+    const user = await User.findByPk(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    await user.destroy();
+    return { success: true, message: 'User deleted successfully', data: null };
+  }
+
+  async handleCreateBusiness(payload: AdminBusinessPayload) {
+    const business = await Business.create({
+      ...payload,
+      is_verified: payload.is_verified ?? false,
+      sync_status: 'completed',
+      sync_date: new Date().toISOString(),
+    });
+
+    return { success: true, message: 'Business created successfully', data: business };
+  }
+
+  async handleUpdateBusiness(id: string, payload: Partial<AdminBusinessPayload>) {
+    const business = await Business.findByPk(id);
+    if (!business) {
+      throw new NotFoundException('Business not found');
+    }
+
+    await business.update(payload);
+    return { success: true, message: 'Business updated successfully', data: business };
+  }
+
+  async handleDeleteBusiness(id: string) {
+    const business = await Business.findByPk(id);
+    if (!business) {
+      throw new NotFoundException('Business not found');
+    }
+
+    await business.destroy();
+    return { success: true, message: 'Business deleted successfully', data: null };
   }
 }

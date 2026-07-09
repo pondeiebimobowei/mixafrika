@@ -1,8 +1,8 @@
-import { Body, Controller, Get, Param, Patch } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { AdminDashboardService } from './dashboard.service';
 import { ParsedToken } from 'src/decorators/parsed-token.decorator';
 import { User } from 'src/database/models/user.model';
-import { AdminModerationAction } from '../admin.types';
+import { AdminBusinessPayload, AdminModerationAction, AdminUserPayload } from '../admin.types';
 
 @Controller('v1/admin')
 export class AdminDashboardController {
@@ -41,6 +41,36 @@ export class AdminDashboardController {
   @Get('collections')
   getCollections() {
     return this.adminDashboardService.handleGetCollections();
+  }
+
+  @Post('users')
+  createUser(@Body() body: AdminUserPayload) {
+    return this.adminDashboardService.handleCreateUser(body);
+  }
+
+  @Patch('users/:id')
+  updateUser(@Param('id') id: string, @Body() body: Partial<AdminUserPayload>) {
+    return this.adminDashboardService.handleUpdateUser(id, body);
+  }
+
+  @Delete('users/:id')
+  deleteUser(@Param('id') id: string) {
+    return this.adminDashboardService.handleDeleteUser(id);
+  }
+
+  @Post('businesses')
+  createBusiness(@Body() body: AdminBusinessPayload) {
+    return this.adminDashboardService.handleCreateBusiness(body);
+  }
+
+  @Patch('businesses/:id')
+  updateBusiness(@Param('id') id: string, @Body() body: Partial<AdminBusinessPayload>) {
+    return this.adminDashboardService.handleUpdateBusiness(id, body);
+  }
+
+  @Delete('businesses/:id')
+  deleteBusiness(@Param('id') id: string) {
+    return this.adminDashboardService.handleDeleteBusiness(id);
   }
 
   @Patch('verifications/users/:id')
