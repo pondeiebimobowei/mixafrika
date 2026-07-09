@@ -1,6 +1,7 @@
 import { Link } from '@tanstack/react-router';
 import type { ReactNode } from 'react';
 import { LayoutDashboard, ShieldCheck, Users, Building2, Activity } from 'lucide-react';
+import { clearSession } from '#/lib/session';
 
 const navItems = [
   { label: 'Overview', href: '#overview', icon: LayoutDashboard },
@@ -60,6 +61,16 @@ export function DashboardShell({ children }: { children: ReactNode }) {
                 <span className="rounded-full bg-slate-950 px-4 py-2 font-medium text-white">
                   Admin role: Super Admin
                 </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    clearSession();
+                    window.location.assign('/login');
+                  }}
+                  className="rounded-full border border-slate-200 px-4 py-2 font-medium text-slate-700 transition hover:border-slate-300 hover:bg-slate-50"
+                >
+                  Sign out
+                </button>
               </div>
             </div>
           </header>

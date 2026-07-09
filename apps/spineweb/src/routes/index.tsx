@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import { AlertTriangle, Building2, ShieldCheck, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { DashboardShell } from '#/components/admin/dashboard-shell';
@@ -11,8 +11,14 @@ import {
   getUserVerifications,
   getUsers,
 } from '#/lib/admin-api';
+import { getSession } from '#/lib/session';
 
 export const Route = createFileRoute('/')({
+  beforeLoad: () => {
+    if (!getSession()?.token) {
+      throw redirect({ to: '/login' });
+    }
+  },
   component: AdminDashboardPage,
 });
 
