@@ -117,7 +117,7 @@ export class AdminDashboardService {
   async handleGetBusinessVerifications() {
     const verifications = await BusinessVerification.findAll({
       order: [['createdAt', 'DESC']],
-      include: [Business, User],
+      include: [Business],
     });
 
     return {
