@@ -1,3 +1,5 @@
+import { getSession } from './session';
+
 type ApiResponse<T> = {
   success: boolean;
   message: string;
@@ -7,9 +9,11 @@ type ApiResponse<T> = {
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3003';
 
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
+  const session = getSession();
   const response = await fetch(`${API_BASE_URL}${path}`, {
     headers: {
       'Content-Type': 'application/json',
+      ...(session?.token ? { Authorization: `Bearer ${session.token}` } : {}),
       ...(init?.headers ?? {}),
     },
     ...init,

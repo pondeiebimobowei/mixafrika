@@ -27,8 +27,8 @@ function SignupPage() {
   return (
     <AuthCard
       eyebrow="Create admin access"
-      title="Set up a Spine account"
-      description="Create an account for operational access, then sign in to manage users, businesses, and verifications."
+      title="Set up an admin account"
+      description="Create an admin account for Spine operations, then use it to access the dashboard and moderation tools."
     >
       <form
         className="space-y-5"
