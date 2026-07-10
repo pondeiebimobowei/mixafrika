@@ -465,6 +465,26 @@ export class AdminDashboardService {
     };
   }
 
+  async handleGetProductById(id: string) {
+    const record = await Product.findByPk(id, {
+      include: [Branch, GlobalProduct],
+    });
+    if (!record) {
+      throw new NotFoundException('Product not found');
+    }
+
+    const relations = await this.getProductRelations(record.id);
+
+    return {
+      success: true,
+      message: 'Product retrieved successfully',
+      data: {
+        ...record.get({ plain: true }),
+        ...relations,
+      },
+    };
+  }
+
   async handleCreateGlobalProduct(payload: Record<string, unknown>) {
     const record = await GlobalProduct.create(
       this.withSyncDefaults({

@@ -58,6 +58,11 @@ export class AdminDashboardController {
     return this.adminDashboardService.handleGetGlobalProductById(id);
   }
 
+  @Get('spine/products/:id')
+  getProductById(@Param('id') id: string) {
+    return this.adminDashboardService.handleGetProductById(id);
+  }
+
   @Post('spine/global-products')
   createGlobalProduct(@Body() body: Record<string, unknown>) {
     return this.adminDashboardService.handleCreateGlobalProduct(body);
