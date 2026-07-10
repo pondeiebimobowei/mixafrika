@@ -54,6 +54,10 @@ export class InventoryService {
             throw new BadRequestException('branch_id is required');
         }
 
+        if (!inventoryData.product_id) {
+            throw new BadRequestException('product_id is required');
+        }
+
         await this.tenantAccessService.assertBranchAccess(userId, inventoryData.branch_id);
 
         const inventory = await Inventory.create(inventoryData as any);
