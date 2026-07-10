@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { Link, createFileRoute } from '@tanstack/react-router';
 import { useEffect, useMemo, useState } from 'react';
 import { DashboardShell } from '#/components/admin/dashboard-shell';
 import { Drawer } from '#/components/admin/drawer';
@@ -104,6 +104,8 @@ function UsersPage() {
                   ['Role', selectedUser.role],
                   ['Verified', selectedUser.is_verified ? 'Yes' : 'No'],
                   ['Email verified', selectedUser.is_email_verified ? 'Yes' : 'No'],
+                  ['Credit score', selectedUser.credit_score ?? '—'],
+                  ['Credit status', selectedUser.credit_score_status ?? '—'],
                 ].map(([label, value]) => (
                   <div key={label} className="border border-slate-200 p-3">
                     <p className="text-[11px] uppercase tracking-[0.25em] text-slate-400">{label}</p>
@@ -111,6 +113,98 @@ function UsersPage() {
                   </div>
                 ))}
               </div>
+
+              <section className="border border-slate-200 p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">Verification</h4>
+                    <p className="mt-1 text-sm text-slate-600">Identity and KYC status for this user.</p>
+                  </div>
+                  {selectedUser.verification ? (
+                    <span className="border border-slate-200 px-2 py-1 text-xs uppercase tracking-[0.2em] text-slate-500">
+                      {selectedUser.verification.status}
+                    </span>
+                  ) : null}
+                </div>
+                {selectedUser.verification ? (
+                  <div className="mt-4 grid gap-3 md:grid-cols-2">
+                    {[
+                      ['Type', selectedUser.verification.type],
+                      ['ID number', selectedUser.verification.id_number],
+                      ['Submitted', selectedUser.verification.submitted_at],
+                      ['Reviewed', selectedUser.verification.reviewed_at],
+                    ].map(([label, value]) => (
+                      <div key={label} className="border border-slate-200 p-3">
+                        <p className="text-[11px] uppercase tracking-[0.25em] text-slate-400">{label}</p>
+                        <p className="mt-1 text-sm font-medium text-slate-950">{String(value ?? '—')}</p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="mt-3 text-sm text-slate-500">No verification record available.</p>
+                )}
+              </section>
+
+              <section className="border border-slate-200 p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">Businesses</h4>
+                    <p className="mt-1 text-sm text-slate-600">Linked businesses for this user.</p>
+                  </div>
+                  <span className="border border-slate-200 px-2 py-1 text-xs uppercase tracking-[0.2em] text-slate-500">
+                    {selectedUser.businesses?.length ?? 0}
+                  </span>
+                </div>
+                <div className="mt-4 space-y-3">
+                  {(selectedUser.businesses ?? []).map((business: any) => (
+                    <div key={business.id} className="border border-slate-200 p-3">
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <p className="text-sm font-semibold text-slate-950">{business.name}</p>
+                          <p className="mt-1 text-sm text-slate-500">
+                            {business.type} · {business.city}, {business.state}
+                          </p>
+                        </div>
+                        <Link
+                          to="/businesses"
+                          search={{ selected: business.id }}
+                          className="border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-[#1f6f4a] hover:text-[#1f6f4a]"
+                        >
+                          Open details
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                  {(selectedUser.businesses ?? []).length === 0 ? (
+                    <p className="text-sm text-slate-500">No linked businesses.</p>
+                  ) : null}
+                </div>
+              </section>
+
+              <section className="border border-slate-200 p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">Branches</h4>
+                    <p className="mt-1 text-sm text-slate-600">Branch access and assignments.</p>
+                  </div>
+                  <span className="border border-slate-200 px-2 py-1 text-xs uppercase tracking-[0.2em] text-slate-500">
+                    {selectedUser.branches?.length ?? 0}
+                  </span>
+                </div>
+                <div className="mt-4 space-y-3">
+                  {(selectedUser.branches ?? []).map((branch: any) => (
+                    <div key={branch.id} className="border border-slate-200 p-3">
+                      <p className="text-sm font-semibold text-slate-950">{branch.name}</p>
+                      <p className="mt-1 text-sm text-slate-500">
+                        {branch.city}, {branch.state}
+                      </p>
+                    </div>
+                  ))}
+                  {(selectedUser.branches ?? []).length === 0 ? (
+                    <p className="text-sm text-slate-500">No linked branches.</p>
+                  ) : null}
+                </div>
+              </section>
               <div className="flex gap-2">
                 <button className="border border-slate-200 px-3 py-2" onClick={async () => { await updateUser(selectedUser.id, { is_verified: !selectedUser.is_verified }); await load(); }}>
                   Toggle verify
@@ -119,7 +213,6 @@ function UsersPage() {
                   Delete
                 </button>
               </div>
-              <pre className="overflow-auto border border-slate-200 bg-slate-50 p-4 text-xs text-slate-900">{JSON.stringify(selectedUser, null, 2)}</pre>
             </div>
           ) : null}
         </Drawer>

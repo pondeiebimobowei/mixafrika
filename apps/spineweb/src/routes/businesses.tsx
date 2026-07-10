@@ -7,10 +7,14 @@ import { ModulePage } from '#/components/admin/module-page';
 import { createBusiness, deleteBusiness, getBusinesses, getBusiness, updateBusiness } from '#/lib/admin-api';
 
 export const Route = createFileRoute('/businesses')({
+  validateSearch: (search: Record<string, unknown>) => ({
+    selected: typeof search.selected === 'string' ? search.selected : undefined,
+  }),
   component: BusinessesPage,
 });
 
 function BusinessesPage() {
+  const search = Route.useSearch();
   const [businesses, setBusinesses] = useState<any[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [selectedBusiness, setSelectedBusiness] = useState<any | null>(null);
@@ -25,6 +29,12 @@ function BusinessesPage() {
   useEffect(() => {
     load().catch((err) => setError(err instanceof Error ? err.message : 'Failed to load businesses'));
   }, []);
+
+  useEffect(() => {
+    if (search.selected) {
+      setSelectedId(search.selected);
+    }
+  }, [search.selected]);
 
   useEffect(() => {
     if (!selectedId) return;
@@ -106,6 +116,86 @@ function BusinessesPage() {
                   </div>
                 ))}
               </div>
+
+              <section className="border border-slate-200 p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">Branches</h4>
+                    <p className="mt-1 text-sm text-slate-600">Business branch locations and head office details.</p>
+                  </div>
+                  <span className="border border-slate-200 px-2 py-1 text-xs uppercase tracking-[0.2em] text-slate-500">
+                    {selectedBusiness.branches?.length ?? 0}
+                  </span>
+                </div>
+                <div className="mt-4 space-y-3">
+                  {(selectedBusiness.branches ?? []).map((branch: any) => (
+                    <div key={branch.id} className="border border-slate-200 p-3">
+                      <p className="text-sm font-semibold text-slate-950">{branch.name}</p>
+                      <p className="mt-1 text-sm text-slate-500">
+                        {branch.city}, {branch.state} {branch.is_head_office ? '• Head office' : ''}
+                      </p>
+                    </div>
+                  ))}
+                  {(selectedBusiness.branches ?? []).length === 0 ? (
+                    <p className="text-sm text-slate-500">No linked branches.</p>
+                  ) : null}
+                </div>
+              </section>
+
+              <section className="border border-slate-200 p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">Users</h4>
+                    <p className="mt-1 text-sm text-slate-600">Business users with access to this business.</p>
+                  </div>
+                  <span className="border border-slate-200 px-2 py-1 text-xs uppercase tracking-[0.2em] text-slate-500">
+                    {selectedBusiness.users?.length ?? 0}
+                  </span>
+                </div>
+                <div className="mt-4 space-y-3">
+                  {(selectedBusiness.users ?? []).map((user: any) => (
+                    <div key={user.id} className="border border-slate-200 p-3">
+                      <p className="text-sm font-semibold text-slate-950">{user.first_name} {user.last_name}</p>
+                      <p className="mt-1 text-sm text-slate-500">{user.email}</p>
+                    </div>
+                  ))}
+                  {(selectedBusiness.users ?? []).length === 0 ? (
+                    <p className="text-sm text-slate-500">No linked users.</p>
+                  ) : null}
+                </div>
+              </section>
+
+              <section className="border border-slate-200 p-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">Verification</h4>
+                    <p className="mt-1 text-sm text-slate-600">KYB documents and review status.</p>
+                  </div>
+                  {selectedBusiness.verification ? (
+                    <span className="border border-slate-200 px-2 py-1 text-xs uppercase tracking-[0.2em] text-slate-500">
+                      {selectedBusiness.verification.status}
+                    </span>
+                  ) : null}
+                </div>
+                {selectedBusiness.verification ? (
+                  <div className="mt-4 grid gap-3 md:grid-cols-2">
+                    {[
+                      ['Type', selectedBusiness.verification.type],
+                      ['Doc number', selectedBusiness.verification.doc_number],
+                      ['Reviewed', selectedBusiness.verification.reviewed_at],
+                      ['Submitted by', selectedBusiness.verification.submitted_by],
+                    ].map(([label, value]) => (
+                      <div key={label} className="border border-slate-200 p-3">
+                        <p className="text-[11px] uppercase tracking-[0.25em] text-slate-400">{label}</p>
+                        <p className="mt-1 text-sm font-medium text-slate-950">{String(value ?? '—')}</p>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="mt-3 text-sm text-slate-500">No verification record available.</p>
+                )}
+              </section>
+
               <div className="flex gap-2">
                 <button className="border border-slate-200 px-3 py-2" onClick={async () => { await updateBusiness(selectedBusiness.id, { is_verified: !selectedBusiness.is_verified }); await load(); }}>
                   Toggle verify
@@ -114,7 +204,6 @@ function BusinessesPage() {
                   Delete
                 </button>
               </div>
-              <pre className="overflow-auto border border-slate-200 bg-slate-50 p-4 text-xs text-slate-900">{JSON.stringify(selectedBusiness, null, 2)}</pre>
             </div>
           ) : null}
         </Drawer>
