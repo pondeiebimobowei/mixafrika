@@ -8,6 +8,8 @@ import { Op } from 'sequelize';
 import { Branch } from 'src/database/models/branch.model';
 import { BranchUser } from 'src/database/models/branch-user';
 import { BusinessUser } from 'src/database/models/business-user';
+import { Business } from 'src/database/models/business.model';
+import { User } from 'src/database/models/user.model';
 
 type BusinessMembership = Pick<BusinessUser, 'business_id' | 'role' | 'has_full_access'>;
 
@@ -17,7 +19,23 @@ export class TenantAccessService {
     return role === roles.ADMIN || role === roles.SUBADMIN;
   }
 
+  private async isGlobalAdmin(userId: string) {
+    const user = await User.findByPk(userId, {
+      attributes: ['role'],
+    });
+
+    return this.isManagerRole(user?.role as Roles | undefined);
+  }
+
   async getAccessibleBusinessIds(userId: string): Promise<string[]> {
+    if (await this.isGlobalAdmin(userId)) {
+      const businesses = await Business.findAll({
+        attributes: ['id'],
+      });
+
+      return businesses.map((business) => business.id).filter(Boolean);
+    }
+
     const [businessMemberships, branchMemberships] = await Promise.all([
       BusinessUser.findAll({
         where: { user_id: userId },
@@ -50,6 +68,14 @@ export class TenantAccessService {
   }
 
   async getAccessibleBranchIds(userId: string): Promise<string[]> {
+    if (await this.isGlobalAdmin(userId)) {
+      const branches = await Branch.findAll({
+        attributes: ['id'],
+      });
+
+      return branches.map((branch) => branch.id).filter(Boolean);
+    }
+
     const [businessMemberships, branchMemberships] = await Promise.all([
       BusinessUser.findAll({
         where: { user_id: userId },
@@ -92,6 +118,10 @@ export class TenantAccessService {
   }
 
   async assertBusinessAccess(userId: string, businessId: string) {
+    if (await this.isGlobalAdmin(userId)) {
+      return;
+    }
+
     const businessIds = await this.getAccessibleBusinessIds(userId);
 
     if (!businessIds.includes(businessId)) {
@@ -102,6 +132,14 @@ export class TenantAccessService {
   }
 
   async assertBusinessManagement(userId: string, businessId: string) {
+    if (await this.isGlobalAdmin(userId)) {
+      return {
+        business_id: businessId,
+        role: roles.ADMIN,
+        has_full_access: true,
+      };
+    }
+
     const membership = await this.getBusinessMembership(userId, businessId);
 
     if (!membership) {
@@ -145,6 +183,10 @@ export class TenantAccessService {
   }
 
   async assertBranchAccess(userId: string, branchId: string) {
+    if (await this.isGlobalAdmin(userId)) {
+      return this.getBranchOrFail(branchId);
+    }
+
     const branch = await this.getBranchOrFail(branchId);
     const directBusinessMembership = await this.getBusinessMembership(
       userId,

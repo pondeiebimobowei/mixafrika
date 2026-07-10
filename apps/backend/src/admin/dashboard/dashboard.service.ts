@@ -11,6 +11,18 @@ import { Collection } from 'src/database/models/collection.model';
 import { BusinessUser } from 'src/database/models/business-user';
 import { Wallet } from 'src/database/models/wallet.model';
 import { Setting } from 'src/database/models/setting.model';
+import { GlobalProduct } from 'src/database/models/global-product';
+import { ProductCategory } from 'src/database/models/product-category';
+import { Product } from 'src/database/models/product.model';
+import { Batch } from 'src/database/models/batch.model';
+import { Inventory } from 'src/database/models/inventory.model';
+import { Sales } from 'src/database/models/sales.model';
+import { SalesItem } from 'src/database/models/sales-item.model';
+import { StockMovement } from 'src/database/models/stock-movement';
+import { StockTransfer } from 'src/database/models/stock-transfer.model';
+import { StockTransferItem } from 'src/database/models/stock-transfer-item';
+import { Payment } from 'src/database/models/payments';
+import { BranchUser } from 'src/database/models/branch-user';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -102,6 +114,22 @@ export class AdminDashboardService {
       success: true,
       message: 'Businesses retrieved successfully',
       data: businesses,
+    };
+  }
+
+  async handleGetBusinessById(id: string) {
+    const business = await Business.findByPk(id, {
+      include: [Branch, BusinessVerification, User],
+    });
+
+    if (!business) {
+      throw new NotFoundException('Business not found');
+    }
+
+    return {
+      success: true,
+      message: 'Business retrieved successfully',
+      data: business,
     };
   }
 
@@ -294,5 +322,626 @@ export class AdminDashboardService {
 
     await business.destroy();
     return { success: true, message: 'Business deleted successfully', data: null };
+  }
+
+  private toPlain<T>(model: { get: (options: { plain: true }) => T } | null): T | null {
+    return model ? model.get({ plain: true }) : null;
+  }
+
+  private withSyncDefaults(payload: Record<string, unknown>) {
+    return {
+      ...payload,
+      sync_status: (payload.sync_status as string) ?? 'completed',
+      sync_date: (payload.sync_date as string) ?? new Date().toISOString(),
+    };
+  }
+
+  private async getBranchRelations(branchId: string) {
+    const [business, products, customers, branchUsers, inventories, sales, batches] = await Promise.all([
+      Branch.findByPk(branchId, { include: [Business] }),
+      Product.findAll({ where: { branch_id: branchId }, order: [['createdAt', 'DESC']] }),
+      Customer.findAll({ where: { branch_id: branchId }, order: [['createdAt', 'DESC']] }),
+      BranchUser.findAll({ where: { branch_id: branchId }, include: [User], order: [['createdAt', 'DESC']] }),
+      Inventory.findAll({ where: { branch_id: branchId }, include: [Product, Batch], order: [['createdAt', 'DESC']] }),
+      Sales.findAll({ where: { branch_id: branchId }, include: [Customer], order: [['createdAt', 'DESC']] }),
+      Batch.findAll({ where: { branch_id: branchId }, include: [Product], order: [['createdAt', 'DESC']] }),
+    ]);
+
+    return {
+      business: this.toPlain(business),
+      products: products.map((item) => item.get({ plain: true })),
+      customers: customers.map((item) => item.get({ plain: true })),
+      users: branchUsers.map((item) => item.get({ plain: true })),
+      inventory: inventories.map((item) => item.get({ plain: true })),
+      sales: sales.map((item) => item.get({ plain: true })),
+      batches: batches.map((item) => item.get({ plain: true })),
+    };
+  }
+
+  private async getBusinessRelations(businessId: string) {
+    const [branches, users, verification] = await Promise.all([
+      Branch.findAll({ where: { business_id: businessId }, order: [['createdAt', 'DESC']] }),
+      BusinessUser.findAll({ where: { business_id: businessId }, include: [User], order: [['createdAt', 'DESC']] }),
+      BusinessVerification.findOne({ where: { business_id: businessId } }),
+    ]);
+
+    const submittedByUser = verification?.submitted_by ? await User.findByPk(verification.submitted_by) : null;
+    const reviewedByUser = verification?.reviewed_by ? await User.findByPk(verification.reviewed_by) : null;
+
+    return {
+      branches: branches.map((item) => item.get({ plain: true })),
+      users: users.map((item) => item.get({ plain: true })),
+      verification: verification
+        ? {
+            ...verification.get({ plain: true }),
+            submitted_by_user: this.toPlain(submittedByUser),
+            reviewed_by_user: this.toPlain(reviewedByUser),
+          }
+        : null,
+    };
+  }
+
+  private async getProductRelations(productId: string) {
+    const [batches, inventory, salesItems, movements, productImages] = await Promise.all([
+      Batch.findAll({ where: { product_id: productId }, order: [['createdAt', 'DESC']] }),
+      Inventory.findAll({ where: { product_id: productId }, include: [Branch, Batch], order: [['createdAt', 'DESC']] }),
+      SalesItem.findAll({ where: { product_id: productId }, include: [Sales, Batch], order: [['createdAt', 'DESC']] }),
+      StockMovement.findAll({ where: { product_id: productId }, include: [Branch, Batch, User], order: [['createdAt', 'DESC']] }),
+      [],
+    ]);
+
+    return {
+      batches: batches.map((item) => item.get({ plain: true })),
+      inventory: inventory.map((item) => item.get({ plain: true })),
+      sales_items: salesItems.map((item) => item.get({ plain: true })),
+      stock_movements: movements.map((item) => item.get({ plain: true })),
+      product_images: productImages,
+    };
+  }
+
+  private async getGlobalProductRelations(globalProductId: string) {
+    const products = await Product.findAll({
+      where: { global_product_id: globalProductId },
+      include: [Branch],
+      order: [['createdAt', 'DESC']],
+    });
+
+    return {
+      products: products.map((item) => item.get({ plain: true })),
+      product_count: products.length,
+    };
+  }
+
+  private async getSalesRelations(saleId: string) {
+    const [items, payments] = await Promise.all([
+      SalesItem.findAll({ where: { sale_id: saleId }, include: [Product, Batch], order: [['createdAt', 'DESC']] }),
+      Payment.findAll({ where: { sale_id: saleId }, order: [['createdAt', 'DESC']] }),
+    ]);
+
+    return {
+      items: items.map((item) => item.get({ plain: true })),
+      payments: payments.map((item) => item.get({ plain: true })),
+    };
+  }
+
+  async handleGetGlobalProducts() {
+    const records = await GlobalProduct.findAll({ order: [['createdAt', 'DESC']] });
+
+    const data = await Promise.all(records.map(async (record) => {
+      const [category, relations] = await Promise.all([
+        record.product_category_id ? ProductCategory.findByPk(record.product_category_id) : Promise.resolve(null),
+        this.getGlobalProductRelations(record.id),
+      ]);
+
+      return {
+        ...record.get({ plain: true }),
+        product_category: this.toPlain(category),
+        ...relations,
+      };
+    }));
+
+    return { success: true, message: 'Global products retrieved successfully', data };
+  }
+
+  async handleGetGlobalProductById(id: string) {
+    const record = await GlobalProduct.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Global product not found');
+    }
+
+    const [category, relations] = await Promise.all([
+      record.product_category_id ? ProductCategory.findByPk(record.product_category_id) : Promise.resolve(null),
+      this.getGlobalProductRelations(record.id),
+    ]);
+
+    return {
+      success: true,
+      message: 'Global product retrieved successfully',
+      data: {
+        ...record.get({ plain: true }),
+        product_category: this.toPlain(category),
+        ...relations,
+      },
+    };
+  }
+
+  async handleCreateGlobalProduct(payload: Record<string, unknown>) {
+    const record = await GlobalProduct.create(
+      this.withSyncDefaults({
+        ...payload,
+        normalized_name: (payload.normalized_name as string) ?? String(payload.name ?? '').toLowerCase().trim().replace(/\s+/g, ' '),
+      }) as any,
+    );
+
+    return { success: true, message: 'Global product created successfully', data: record };
+  }
+
+  async handleUpdateGlobalProduct(id: string, payload: Record<string, unknown>) {
+    const record = await GlobalProduct.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Global product not found');
+    }
+
+    await record.update({
+      ...payload,
+      normalized_name: (payload.normalized_name as string) ?? (payload.name ? String(payload.name).toLowerCase().trim().replace(/\s+/g, ' ') : record.normalized_name),
+    } as any);
+
+    return { success: true, message: 'Global product updated successfully', data: record };
+  }
+
+  async handleDeleteGlobalProduct(id: string) {
+    const record = await GlobalProduct.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Global product not found');
+    }
+
+    const linkedProducts = await Product.count({ where: { global_product_id: id } });
+    if (linkedProducts > 0) {
+      throw new BadRequestException('Delete linked products first');
+    }
+
+    await record.destroy();
+    return { success: true, message: 'Global product deleted successfully', data: null };
+  }
+
+  async handleGetProductCategories() {
+    const records = await ProductCategory.findAll({ order: [['createdAt', 'DESC']] });
+    const data = await Promise.all(records.map(async (record) => ({
+      ...record.get({ plain: true }),
+      global_products: await GlobalProduct.count({ where: { product_category_id: record.id } } as any),
+    })));
+
+    return { success: true, message: 'Product categories retrieved successfully', data };
+  }
+
+  async handleGetProductCategoryById(id: string) {
+    const record = await ProductCategory.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Product category not found');
+    }
+
+    return {
+      success: true,
+      message: 'Product category retrieved successfully',
+      data: {
+        ...record.get({ plain: true }),
+        global_products: await GlobalProduct.findAll({ where: { product_category_id: id }, order: [['createdAt', 'DESC']] } as any),
+      },
+    };
+  }
+
+  async handleCreateProductCategory(payload: Record<string, unknown>) {
+    const record = await ProductCategory.create(this.withSyncDefaults(payload) as any);
+    return { success: true, message: 'Product category created successfully', data: record };
+  }
+
+  async handleUpdateProductCategory(id: string, payload: Record<string, unknown>) {
+    const record = await ProductCategory.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Product category not found');
+    }
+
+    await record.update(payload as any);
+    return { success: true, message: 'Product category updated successfully', data: record };
+  }
+
+  async handleDeleteProductCategory(id: string) {
+    const record = await ProductCategory.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Product category not found');
+    }
+
+    const linked = Number(await GlobalProduct.count({ where: { product_category_id: id } } as any));
+    if (linked > 0) {
+      throw new BadRequestException('Delete linked global products first');
+    }
+
+    await record.destroy();
+    return { success: true, message: 'Product category deleted successfully', data: null };
+  }
+
+  async handleGetBranches() {
+    const records = await Branch.findAll({ order: [['createdAt', 'DESC']] });
+    const data = await Promise.all(records.map(async (record) => ({
+      ...record.get({ plain: true }),
+      ...await this.getBranchRelations(record.id),
+    })));
+
+    return { success: true, message: 'Branches retrieved successfully', data };
+  }
+
+  async handleGetBranchById(id: string) {
+    const record = await Branch.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Branch not found');
+    }
+
+    return {
+      success: true,
+      message: 'Branch retrieved successfully',
+      data: {
+        ...record.get({ plain: true }),
+        ...await this.getBranchRelations(record.id),
+      },
+    };
+  }
+
+  async handleCreateBranch(payload: Record<string, unknown>) {
+    const record = await Branch.create(this.withSyncDefaults(payload) as any);
+    return { success: true, message: 'Branch created successfully', data: record };
+  }
+
+  async handleUpdateBranch(id: string, payload: Record<string, unknown>) {
+    const record = await Branch.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Branch not found');
+    }
+
+    await record.update(payload as any);
+    return { success: true, message: 'Branch updated successfully', data: record };
+  }
+
+  async handleDeleteBranch(id: string) {
+    const record = await Branch.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Branch not found');
+    }
+
+    const [products, customers, inventories, sales, batches, branchUsers] = await Promise.all([
+      Product.count({ where: { branch_id: id } }),
+      Customer.count({ where: { branch_id: id } }),
+      Inventory.count({ where: { branch_id: id } }),
+      Sales.count({ where: { branch_id: id } }),
+      Batch.count({ where: { branch_id: id } }),
+      BranchUser.count({ where: { branch_id: id } }),
+    ]);
+
+    if (products + customers + inventories + sales + batches + branchUsers > 0) {
+      throw new BadRequestException('Delete linked records first');
+    }
+
+    await record.destroy();
+    return { success: true, message: 'Branch deleted successfully', data: null };
+  }
+
+  async handleGetCustomers() {
+    const records = await Customer.findAll({ order: [['createdAt', 'DESC']] });
+    const data = await Promise.all(records.map(async (record) => ({
+      ...record.get({ plain: true }),
+      branch: await Branch.findByPk(record.branch_id),
+    })));
+
+    return { success: true, message: 'Customers retrieved successfully', data };
+  }
+
+  async handleGetCustomerById(id: string) {
+    const record = await Customer.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Customer not found');
+    }
+
+    return {
+      success: true,
+      message: 'Customer retrieved successfully',
+      data: {
+        ...record.get({ plain: true }),
+        branch: await Branch.findByPk(record.branch_id),
+      },
+    };
+  }
+
+  async handleCreateCustomer(payload: Record<string, unknown>) {
+    const record = await Customer.create(this.withSyncDefaults(payload) as any);
+    return { success: true, message: 'Customer created successfully', data: record };
+  }
+
+  async handleUpdateCustomer(id: string, payload: Record<string, unknown>) {
+    const record = await Customer.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Customer not found');
+    }
+
+    await record.update(payload as any);
+    return { success: true, message: 'Customer updated successfully', data: record };
+  }
+
+  async handleDeleteCustomer(id: string) {
+    const record = await Customer.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Customer not found');
+    }
+
+    const linked = await Sales.count({ where: { customer_id: id } });
+    if (linked > 0) {
+      throw new BadRequestException('Delete linked sales first');
+    }
+
+    await record.destroy();
+    return { success: true, message: 'Customer deleted successfully', data: null };
+  }
+
+  async handleGetBusinessUsers() {
+    const records = await BusinessUser.findAll({ include: [User, Business], order: [['createdAt', 'DESC']] });
+    return { success: true, message: 'Business users retrieved successfully', data: records.map((record) => record.get({ plain: true })) };
+  }
+
+  async handleCreateBusinessUser(payload: Record<string, unknown>) {
+    const record = await BusinessUser.create(this.withSyncDefaults(payload) as any);
+    return { success: true, message: 'Business user created successfully', data: record };
+  }
+
+  async handleUpdateBusinessUser(id: string, payload: Record<string, unknown>) {
+    const record = await BusinessUser.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Business user not found');
+    }
+
+    await record.update(payload as any);
+    return { success: true, message: 'Business user updated successfully', data: record };
+  }
+
+  async handleDeleteBusinessUser(id: string) {
+    const record = await BusinessUser.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Business user not found');
+    }
+
+    await record.destroy();
+    return { success: true, message: 'Business user deleted successfully', data: null };
+  }
+
+  async handleGetBranchUsers() {
+    const records = await BranchUser.findAll({ include: [User, Branch], order: [['createdAt', 'DESC']] });
+    return { success: true, message: 'Branch users retrieved successfully', data: records.map((record) => record.get({ plain: true })) };
+  }
+
+  async handleCreateBranchUser(payload: Record<string, unknown>) {
+    const record = await BranchUser.create(this.withSyncDefaults(payload) as any);
+    return { success: true, message: 'Branch user created successfully', data: record };
+  }
+
+  async handleUpdateBranchUser(id: string, payload: Record<string, unknown>) {
+    const record = await BranchUser.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Branch user not found');
+    }
+
+    await record.update(payload as any);
+    return { success: true, message: 'Branch user updated successfully', data: record };
+  }
+
+  async handleDeleteBranchUser(id: string) {
+    const record = await BranchUser.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Branch user not found');
+    }
+
+    await record.destroy();
+    return { success: true, message: 'Branch user deleted successfully', data: null };
+  }
+
+  async handleGetSalesItems() {
+    const records = await SalesItem.findAll({ include: [Sales, Product, Batch], order: [['createdAt', 'DESC']] });
+    return { success: true, message: 'Sales items retrieved successfully', data: records.map((record) => record.get({ plain: true })) };
+  }
+
+  async handleGetSalesItemById(id: string) {
+    const record = await SalesItem.findByPk(id, { include: [Sales, Product, Batch] });
+    if (!record) {
+      throw new NotFoundException('Sales item not found');
+    }
+
+    return { success: true, message: 'Sales item retrieved successfully', data: record.get({ plain: true }) };
+  }
+
+  async handleCreateSalesItem(payload: Record<string, unknown>) {
+    const record = await SalesItem.create(this.withSyncDefaults(payload) as any);
+    return { success: true, message: 'Sales item created successfully', data: record };
+  }
+
+  async handleUpdateSalesItem(id: string, payload: Record<string, unknown>) {
+    const record = await SalesItem.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Sales item not found');
+    }
+
+    await record.update(payload as any);
+    return { success: true, message: 'Sales item updated successfully', data: record };
+  }
+
+  async handleDeleteSalesItem(id: string) {
+    const record = await SalesItem.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Sales item not found');
+    }
+
+    await record.destroy();
+    return { success: true, message: 'Sales item deleted successfully', data: null };
+  }
+
+  async handleGetStockMovements() {
+    const records = await StockMovement.findAll({ include: [Product, Branch, Batch, User], order: [['createdAt', 'DESC']] });
+    return { success: true, message: 'Stock movements retrieved successfully', data: records.map((record) => record.get({ plain: true })) };
+  }
+
+  async handleGetStockMovementById(id: string) {
+    const record = await StockMovement.findByPk(id, { include: [Product, Branch, Batch, User] });
+    if (!record) {
+      throw new NotFoundException('Stock movement not found');
+    }
+
+    return { success: true, message: 'Stock movement retrieved successfully', data: record.get({ plain: true }) };
+  }
+
+  async handleCreateStockMovement(payload: Record<string, unknown>) {
+    const record = await StockMovement.create(this.withSyncDefaults(payload) as any);
+    return { success: true, message: 'Stock movement created successfully', data: record };
+  }
+
+  async handleUpdateStockMovement(id: string, payload: Record<string, unknown>) {
+    const record = await StockMovement.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Stock movement not found');
+    }
+
+    await record.update(payload as any);
+    return { success: true, message: 'Stock movement updated successfully', data: record };
+  }
+
+  async handleDeleteStockMovement(id: string) {
+    const record = await StockMovement.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Stock movement not found');
+    }
+
+    await record.destroy();
+    return { success: true, message: 'Stock movement deleted successfully', data: null };
+  }
+
+  async handleGetStockTransfers() {
+    const records = await StockTransfer.findAll({ order: [['createdAt', 'DESC']] });
+    const data = await Promise.all(records.map(async (record) => {
+      const [createdBy, fromBranch, toBranch, items] = await Promise.all([
+        record.created_by_id ? User.findByPk(record.created_by_id) : Promise.resolve(null),
+        record.from_branch_id ? Branch.findByPk(record.from_branch_id) : Promise.resolve(null),
+        record.to_branch_id ? Branch.findByPk(record.to_branch_id) : Promise.resolve(null),
+        StockTransferItem.findAll({ where: { transfer_id: record.id }, include: [Product], order: [['createdAt', 'DESC']] }),
+      ]);
+
+      return {
+        ...record.get({ plain: true }),
+        created_by: this.toPlain(createdBy),
+        from_branch: this.toPlain(fromBranch),
+        to_branch: this.toPlain(toBranch),
+        items: items.map((item) => item.get({ plain: true })),
+      };
+    }));
+
+    return { success: true, message: 'Stock transfers retrieved successfully', data };
+  }
+
+  async handleGetStockTransferById(id: string) {
+    const record = await StockTransfer.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Stock transfer not found');
+    }
+
+    const [createdBy, fromBranch, toBranch, items] = await Promise.all([
+      record.created_by_id ? User.findByPk(record.created_by_id) : Promise.resolve(null),
+      record.from_branch_id ? Branch.findByPk(record.from_branch_id) : Promise.resolve(null),
+      record.to_branch_id ? Branch.findByPk(record.to_branch_id) : Promise.resolve(null),
+      StockTransferItem.findAll({ where: { transfer_id: record.id }, include: [Product], order: [['createdAt', 'DESC']] }),
+    ]);
+    return {
+      success: true,
+      message: 'Stock transfer retrieved successfully',
+      data: {
+        ...record.get({ plain: true }),
+        created_by: this.toPlain(createdBy),
+        from_branch: this.toPlain(fromBranch),
+        to_branch: this.toPlain(toBranch),
+        items: items.map((item) => item.get({ plain: true })),
+      },
+    };
+  }
+
+  async handleCreateStockTransfer(payload: Record<string, unknown>) {
+    const record = await StockTransfer.create(this.withSyncDefaults(payload) as any);
+    return { success: true, message: 'Stock transfer created successfully', data: record };
+  }
+
+  async handleUpdateStockTransfer(id: string, payload: Record<string, unknown>) {
+    const record = await StockTransfer.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Stock transfer not found');
+    }
+
+    await record.update(payload as any);
+    return { success: true, message: 'Stock transfer updated successfully', data: record };
+  }
+
+  async handleDeleteStockTransfer(id: string) {
+    const record = await StockTransfer.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Stock transfer not found');
+    }
+
+    const linked = await StockTransferItem.count({ where: { transfer_id: id } });
+    if (linked > 0) {
+      throw new BadRequestException('Delete linked transfer items first');
+    }
+
+    await record.destroy();
+    return { success: true, message: 'Stock transfer deleted successfully', data: null };
+  }
+
+  async handleGetPayments() {
+    const records = await Payment.findAll({ order: [['createdAt', 'DESC']] });
+    const data = await Promise.all(records.map(async (record) => {
+      const sale = record.sale_id ? await Sales.findByPk(record.sale_id, { include: [Customer, Branch] }) : null;
+      return { ...record.get({ plain: true }), sale: this.toPlain(sale) };
+    }));
+
+    return { success: true, message: 'Payments retrieved successfully', data };
+  }
+
+  async handleGetPaymentById(id: string) {
+    const record = await Payment.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Payment not found');
+    }
+
+    const sale = record.sale_id ? await Sales.findByPk(record.sale_id, { include: [Customer, Branch] }) : null;
+    return {
+      success: true,
+      message: 'Payment retrieved successfully',
+      data: { ...record.get({ plain: true }), sale: this.toPlain(sale) },
+    };
+  }
+
+  async handleCreatePayment(payload: Record<string, unknown>) {
+    const record = await Payment.create(this.withSyncDefaults(payload) as any);
+    return { success: true, message: 'Payment created successfully', data: record };
+  }
+
+  async handleUpdatePayment(id: string, payload: Record<string, unknown>) {
+    const record = await Payment.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Payment not found');
+    }
+
+    await record.update(payload as any);
+    return { success: true, message: 'Payment updated successfully', data: record };
+  }
+
+  async handleDeletePayment(id: string) {
+    const record = await Payment.findByPk(id);
+    if (!record) {
+      throw new NotFoundException('Payment not found');
+    }
+
+    await record.destroy();
+    return { success: true, message: 'Payment deleted successfully', data: null };
   }
 }

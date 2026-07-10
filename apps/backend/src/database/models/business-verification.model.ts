@@ -81,4 +81,10 @@ export class BusinessVerification extends Model<IBusinessVerification> implement
   @BelongsTo(() => Business)
   declare business: Business;
 
+  @BelongsTo(() => User, 'submitted_by')
+  declare submittedByUser?: User;
+
+  @BelongsTo(() => User, 'reviewed_by')
+  declare reviewedByUser?: User;
+
 }

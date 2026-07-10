@@ -9,6 +9,7 @@ import {
   PrimaryKey,
   Default,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { SyncStatus, syncStatus } from '@shared/shared/src/enums';
@@ -54,5 +55,8 @@ export class Customer
   @ForeignKey(() => Branch)
   @Column({ type: DataType.UUID, allowNull: false, references: { model: 'product_category', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' })
   declare branch_id: string;
+
+  @BelongsTo(() => Branch)
+  declare branch?: Branch;
 
 }

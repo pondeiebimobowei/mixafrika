@@ -10,6 +10,7 @@ import {
   Default,
   ForeignKey,
   Validate,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { paymentStatus, PaymentStatus, SyncStatus, syncStatus } from '@shared/shared/src/enums';
@@ -61,4 +62,7 @@ export class Payment
   @ForeignKey(() => Sales)
   @Column(DataType.STRING)
   declare sale_id: string;
+
+  @BelongsTo(() => Sales)
+  declare sale?: Sales;
 }

@@ -9,6 +9,7 @@ import {
   PrimaryKey,
   Default,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { IProduct } from '@shared/shared/src/types/product';
@@ -83,5 +84,11 @@ export class Product
   @ForeignKey(() => GlobalProduct)
   @Column(DataType.STRING)
   declare global_product_id: string;
+
+  @BelongsTo(() => Branch)
+  declare branch?: Branch;
+
+  @BelongsTo(() => GlobalProduct)
+  declare global_product?: GlobalProduct;
 
 }
