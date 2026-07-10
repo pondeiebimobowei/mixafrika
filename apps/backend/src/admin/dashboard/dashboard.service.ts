@@ -25,8 +25,53 @@ import { Payment } from 'src/database/models/payments';
 import { BranchUser } from 'src/database/models/branch-user';
 import * as bcrypt from 'bcrypt';
 
+type AdminListQuery = {
+  page?: string | number;
+  limit?: string | number;
+  q?: string;
+  business_id?: string;
+  branch_id?: string;
+  product_id?: string;
+  sale_id?: string;
+  status?: string;
+  role?: string;
+  type?: string;
+};
+
 @Injectable()
 export class AdminDashboardService {
+  private normalizePagination(query?: AdminListQuery) {
+    const page = Math.max(1, Number(query?.page ?? 1) || 1);
+    const limit = Math.min(100, Math.max(1, Number(query?.limit ?? 20) || 20));
+    const offset = (page - 1) * limit;
+
+    return { page, limit, offset };
+  }
+
+  private buildSearchWhere(fields: string[], query?: string) {
+    if (!query) {
+      return {};
+    }
+
+    return {
+      [Op.or]: fields.map((field) => ({
+        [field]: { [Op.like]: `%${query}%` },
+      })),
+    };
+  }
+
+  private buildPagedResponse<T>(rows: T[], total: number, page: number, limit: number) {
+    return {
+      rows,
+      meta: {
+        page,
+        limit,
+        total,
+        totalPages: Math.max(1, Math.ceil(total / limit)),
+      },
+    };
+  }
+
   async handleGetOverview(): Promise<{ success: boolean; message: string; data: AdminOverview }> {
     const [
       totalUsers,
@@ -75,16 +120,27 @@ export class AdminDashboardService {
     };
   }
 
-  async handleGetUsers() {
-    const users = await User.findAll({
+  async handleGetUsers(query?: AdminListQuery) {
+    const { page, limit, offset } = this.normalizePagination(query);
+    const where = this.buildSearchWhere(['first_name', 'last_name', 'email', 'role'], query?.q);
+    const result = await User.findAndCountAll({
+      where,
       order: [['createdAt', 'DESC']],
       include: [UserVerification, Business, Branch],
+      limit,
+      offset,
+      distinct: true,
     });
 
     return {
       success: true,
       message: 'Users retrieved successfully',
-      data: users,
+      data: this.buildPagedResponse(
+        result.rows.map((user) => user.get({ plain: true })),
+        result.count,
+        page,
+        limit,
+      ),
     };
   }
 
@@ -104,16 +160,27 @@ export class AdminDashboardService {
     };
   }
 
-  async handleGetBusinesses() {
-    const businesses = await Business.findAll({
+  async handleGetBusinesses(query?: AdminListQuery) {
+    const { page, limit, offset } = this.normalizePagination(query);
+    const where = this.buildSearchWhere(['name', 'type', 'city', 'state', 'country', 'phone'], query?.q);
+    const result = await Business.findAndCountAll({
+      where,
       order: [['createdAt', 'DESC']],
       include: [Branch, BusinessVerification, User],
+      limit,
+      offset,
+      distinct: true,
     });
 
     return {
       success: true,
       message: 'Businesses retrieved successfully',
-      data: businesses,
+      data: this.buildPagedResponse(
+        result.rows.map((business) => business.get({ plain: true })),
+        result.count,
+        page,
+        limit,
+      ),
     };
   }
 
@@ -133,29 +200,51 @@ export class AdminDashboardService {
     };
   }
 
-  async handleGetUserVerifications() {
-    const verifications = await UserVerification.findAll({
+  async handleGetUserVerifications(query?: AdminListQuery) {
+    const { page, limit, offset } = this.normalizePagination(query);
+    const where = this.buildSearchWhere(['status', 'id_number', 'rejection_reason', 'submitted_by', 'reviewed_by'], query?.q);
+    const result = await UserVerification.findAndCountAll({
+      where,
       order: [['createdAt', 'DESC']],
       include: [User],
+      limit,
+      offset,
+      distinct: true,
     });
 
     return {
       success: true,
       message: 'User verifications retrieved successfully',
-      data: verifications,
+      data: this.buildPagedResponse(
+        result.rows.map((verification) => verification.get({ plain: true })),
+        result.count,
+        page,
+        limit,
+      ),
     };
   }
 
-  async handleGetBusinessVerifications() {
-    const verifications = await BusinessVerification.findAll({
+  async handleGetBusinessVerifications(query?: AdminListQuery) {
+    const { page, limit, offset } = this.normalizePagination(query);
+    const where = this.buildSearchWhere(['status', 'doc_number', 'rejection_reason', 'submitted_by', 'reviewed_by'], query?.q);
+    const result = await BusinessVerification.findAndCountAll({
+      where,
       order: [['createdAt', 'DESC']],
       include: [Business],
+      limit,
+      offset,
+      distinct: true,
     });
 
     return {
       success: true,
       message: 'Business verifications retrieved successfully',
-      data: verifications,
+      data: this.buildPagedResponse(
+        result.rows.map((verification) => verification.get({ plain: true })),
+        result.count,
+        page,
+        limit,
+      ),
     };
   }
 
@@ -424,10 +513,12 @@ export class AdminDashboardService {
     };
   }
 
-  async handleGetGlobalProducts() {
-    const records = await GlobalProduct.findAll({ order: [['createdAt', 'DESC']] });
+  async handleGetGlobalProducts(query?: AdminListQuery) {
+    const { page, limit, offset } = this.normalizePagination(query);
+    const where = this.buildSearchWhere(['name', 'barcode', 'normalized_name'], query?.q);
+    const records = await GlobalProduct.findAndCountAll({ where, order: [['createdAt', 'DESC']], limit, offset });
 
-    const data = await Promise.all(records.map(async (record) => {
+    const data = await Promise.all(records.rows.map(async (record) => {
       const [category, relations] = await Promise.all([
         record.product_category_id ? ProductCategory.findByPk(record.product_category_id) : Promise.resolve(null),
         this.getGlobalProductRelations(record.id),
@@ -440,7 +531,11 @@ export class AdminDashboardService {
       };
     }));
 
-    return { success: true, message: 'Global products retrieved successfully', data };
+    return {
+      success: true,
+      message: 'Global products retrieved successfully',
+      data: this.buildPagedResponse(data, records.count, page, limit),
+    };
   }
 
   async handleGetGlobalProductById(id: string) {
@@ -525,14 +620,20 @@ export class AdminDashboardService {
     return { success: true, message: 'Global product deleted successfully', data: null };
   }
 
-  async handleGetProductCategories() {
-    const records = await ProductCategory.findAll({ order: [['createdAt', 'DESC']] });
-    const data = await Promise.all(records.map(async (record) => ({
+  async handleGetProductCategories(query?: AdminListQuery) {
+    const { page, limit, offset } = this.normalizePagination(query);
+    const where = this.buildSearchWhere(['name'], query?.q);
+    const records = await ProductCategory.findAndCountAll({ where, order: [['createdAt', 'DESC']], limit, offset });
+    const data = await Promise.all(records.rows.map(async (record) => ({
       ...record.get({ plain: true }),
       global_products: await GlobalProduct.count({ where: { product_category_id: record.id } } as any),
     })));
 
-    return { success: true, message: 'Product categories retrieved successfully', data };
+    return {
+      success: true,
+      message: 'Product categories retrieved successfully',
+      data: this.buildPagedResponse(data, records.count, page, limit),
+    };
   }
 
   async handleGetProductCategoryById(id: string) {
@@ -581,14 +682,20 @@ export class AdminDashboardService {
     return { success: true, message: 'Product category deleted successfully', data: null };
   }
 
-  async handleGetBranches() {
-    const records = await Branch.findAll({ order: [['createdAt', 'DESC']] });
-    const data = await Promise.all(records.map(async (record) => ({
+  async handleGetBranches(query?: AdminListQuery) {
+    const { page, limit, offset } = this.normalizePagination(query);
+    const where = this.buildSearchWhere(['name', 'city', 'state', 'country', 'phone'], query?.q);
+    const records = await Branch.findAndCountAll({ where, order: [['createdAt', 'DESC']], limit, offset });
+    const data = await Promise.all(records.rows.map(async (record) => ({
       ...record.get({ plain: true }),
       ...await this.getBranchRelations(record.id),
     })));
 
-    return { success: true, message: 'Branches retrieved successfully', data };
+    return {
+      success: true,
+      message: 'Branches retrieved successfully',
+      data: this.buildPagedResponse(data, records.count, page, limit),
+    };
   }
 
   async handleGetBranchById(id: string) {
@@ -645,14 +752,23 @@ export class AdminDashboardService {
     return { success: true, message: 'Branch deleted successfully', data: null };
   }
 
-  async handleGetCustomers() {
-    const records = await Customer.findAll({ order: [['createdAt', 'DESC']] });
-    const data = await Promise.all(records.map(async (record) => ({
+  async handleGetCustomers(query?: AdminListQuery) {
+    const { page, limit, offset } = this.normalizePagination(query);
+    const where = {
+      ...this.buildSearchWhere(['name', 'phone'], query?.q),
+      ...(query?.branch_id ? { branch_id: query.branch_id } : {}),
+    };
+    const records = await Customer.findAndCountAll({ where, order: [['createdAt', 'DESC']], limit, offset });
+    const data = await Promise.all(records.rows.map(async (record) => ({
       ...record.get({ plain: true }),
       branch: await Branch.findByPk(record.branch_id),
     })));
 
-    return { success: true, message: 'Customers retrieved successfully', data };
+    return {
+      success: true,
+      message: 'Customers retrieved successfully',
+      data: this.buildPagedResponse(data, records.count, page, limit),
+    };
   }
 
   async handleGetCustomerById(id: string) {
@@ -701,9 +817,18 @@ export class AdminDashboardService {
     return { success: true, message: 'Customer deleted successfully', data: null };
   }
 
-  async handleGetBusinessUsers() {
-    const records = await BusinessUser.findAll({ include: [User, Business], order: [['createdAt', 'DESC']] });
-    return { success: true, message: 'Business users retrieved successfully', data: records.map((record) => record.get({ plain: true })) };
+  async handleGetBusinessUsers(query?: AdminListQuery) {
+    const { page, limit, offset } = this.normalizePagination(query);
+    const where = {
+      ...this.buildSearchWhere(['role'], query?.q),
+      ...(query?.business_id ? { business_id: query.business_id } : {}),
+    };
+    const records = await BusinessUser.findAndCountAll({ where, include: [User, Business], order: [['createdAt', 'DESC']], limit, offset, distinct: true });
+    return {
+      success: true,
+      message: 'Business users retrieved successfully',
+      data: this.buildPagedResponse(records.rows.map((record) => record.get({ plain: true })), records.count, page, limit),
+    };
   }
 
   async handleCreateBusinessUser(payload: Record<string, unknown>) {
@@ -731,9 +856,18 @@ export class AdminDashboardService {
     return { success: true, message: 'Business user deleted successfully', data: null };
   }
 
-  async handleGetBranchUsers() {
-    const records = await BranchUser.findAll({ include: [User, Branch], order: [['createdAt', 'DESC']] });
-    return { success: true, message: 'Branch users retrieved successfully', data: records.map((record) => record.get({ plain: true })) };
+  async handleGetBranchUsers(query?: AdminListQuery) {
+    const { page, limit, offset } = this.normalizePagination(query);
+    const where = {
+      ...this.buildSearchWhere(['role'], query?.q),
+      ...(query?.branch_id ? { branch_id: query.branch_id } : {}),
+    };
+    const records = await BranchUser.findAndCountAll({ where, include: [User, Branch], order: [['createdAt', 'DESC']], limit, offset, distinct: true });
+    return {
+      success: true,
+      message: 'Branch users retrieved successfully',
+      data: this.buildPagedResponse(records.rows.map((record) => record.get({ plain: true })), records.count, page, limit),
+    };
   }
 
   async handleCreateBranchUser(payload: Record<string, unknown>) {
@@ -761,9 +895,20 @@ export class AdminDashboardService {
     return { success: true, message: 'Branch user deleted successfully', data: null };
   }
 
-  async handleGetSalesItems() {
-    const records = await SalesItem.findAll({ include: [Sales, Product, Batch], order: [['createdAt', 'DESC']] });
-    return { success: true, message: 'Sales items retrieved successfully', data: records.map((record) => record.get({ plain: true })) };
+  async handleGetSalesItems(query?: AdminListQuery) {
+    const { page, limit, offset } = this.normalizePagination(query);
+    const where = {
+      ...this.buildSearchWhere(['name', 'type', 'description', 'sale_id'], query?.q),
+      ...(query?.sale_id ? { sale_id: query.sale_id } : {}),
+      ...(query?.product_id ? { product_id: query.product_id } : {}),
+      ...(query?.batch_id ? { batch_id: query.batch_id } : {}),
+    };
+    const records = await SalesItem.findAndCountAll({ where, include: [Sales, Product, Batch], order: [['createdAt', 'DESC']], limit, offset, distinct: true });
+    return {
+      success: true,
+      message: 'Sales items retrieved successfully',
+      data: this.buildPagedResponse(records.rows.map((record) => record.get({ plain: true })), records.count, page, limit),
+    };
   }
 
   async handleGetSalesItemById(id: string) {
@@ -800,9 +945,20 @@ export class AdminDashboardService {
     return { success: true, message: 'Sales item deleted successfully', data: null };
   }
 
-  async handleGetStockMovements() {
-    const records = await StockMovement.findAll({ include: [Product, Branch, Batch, User], order: [['createdAt', 'DESC']] });
-    return { success: true, message: 'Stock movements retrieved successfully', data: records.map((record) => record.get({ plain: true })) };
+  async handleGetStockMovements(query?: AdminListQuery) {
+    const { page, limit, offset } = this.normalizePagination(query);
+    const where = {
+      ...this.buildSearchWhere(['type', 'note', 'reference_id'], query?.q),
+      ...(query?.product_id ? { product_id: query.product_id } : {}),
+      ...(query?.branch_id ? { branch_id: query.branch_id } : {}),
+      ...(query?.batch_id ? { batch_id: query.batch_id } : {}),
+    };
+    const records = await StockMovement.findAndCountAll({ where, include: [Product, Branch, Batch, User], order: [['createdAt', 'DESC']], limit, offset, distinct: true });
+    return {
+      success: true,
+      message: 'Stock movements retrieved successfully',
+      data: this.buildPagedResponse(records.rows.map((record) => record.get({ plain: true })), records.count, page, limit),
+    };
   }
 
   async handleGetStockMovementById(id: string) {
@@ -839,9 +995,19 @@ export class AdminDashboardService {
     return { success: true, message: 'Stock movement deleted successfully', data: null };
   }
 
-  async handleGetStockTransfers() {
-    const records = await StockTransfer.findAll({ order: [['createdAt', 'DESC']] });
-    const data = await Promise.all(records.map(async (record) => {
+  async handleGetStockTransfers(query?: AdminListQuery) {
+    const { page, limit, offset } = this.normalizePagination(query);
+    const where = {
+      ...this.buildSearchWhere(['reason', 'status', 'reference_id'], query?.q),
+      ...(query?.branch_id ? {
+        [Op.or]: [
+          { from_branch_id: query.branch_id },
+          { to_branch_id: query.branch_id },
+        ],
+      } : {}),
+    };
+    const records = await StockTransfer.findAndCountAll({ where, order: [['createdAt', 'DESC']], limit, offset, distinct: true });
+    const data = await Promise.all(records.rows.map(async (record) => {
       const [createdBy, fromBranch, toBranch, items] = await Promise.all([
         record.created_by_id ? User.findByPk(record.created_by_id) : Promise.resolve(null),
         record.from_branch_id ? Branch.findByPk(record.from_branch_id) : Promise.resolve(null),
@@ -858,7 +1024,11 @@ export class AdminDashboardService {
       };
     }));
 
-    return { success: true, message: 'Stock transfers retrieved successfully', data };
+    return {
+      success: true,
+      message: 'Stock transfers retrieved successfully',
+      data: this.buildPagedResponse(data, records.count, page, limit),
+    };
   }
 
   async handleGetStockTransferById(id: string) {
@@ -916,14 +1086,23 @@ export class AdminDashboardService {
     return { success: true, message: 'Stock transfer deleted successfully', data: null };
   }
 
-  async handleGetPayments() {
-    const records = await Payment.findAll({ order: [['createdAt', 'DESC']] });
-    const data = await Promise.all(records.map(async (record) => {
+  async handleGetPayments(query?: AdminListQuery) {
+    const { page, limit, offset } = this.normalizePagination(query);
+    const where = {
+      ...this.buildSearchWhere(['reference', 'payment_method', 'status', 'note'], query?.q),
+      ...(query?.sale_id ? { sale_id: query.sale_id } : {}),
+    };
+    const records = await Payment.findAndCountAll({ where, order: [['createdAt', 'DESC']], limit, offset, distinct: true });
+    const data = await Promise.all(records.rows.map(async (record) => {
       const sale = record.sale_id ? await Sales.findByPk(record.sale_id, { include: [Customer, Branch] }) : null;
       return { ...record.get({ plain: true }), sale: this.toPlain(sale) };
     }));
 
-    return { success: true, message: 'Payments retrieved successfully', data };
+    return {
+      success: true,
+      message: 'Payments retrieved successfully',
+      data: this.buildPagedResponse(data, records.count, page, limit),
+    };
   }
 
   async handleGetPaymentById(id: string) {

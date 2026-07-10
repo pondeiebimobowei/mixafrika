@@ -1,31 +1,8 @@
-import { getSession } from './session';
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3003';
-
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const session = getSession();
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(session?.token ? { Authorization: `Bearer ${session.token}` } : {}),
-      ...(init?.headers ?? {}),
-    },
-    ...init,
-  });
-
-  const data = await response.json();
-  if (!response.ok) {
-    throw new Error(data?.message ?? `Request failed (${response.status})`);
-  }
-
-  return data as T;
-}
-
-type ApiResponse<T> = { success: boolean; message: string; data: T };
+import { request, type ApiResponse, type QueryValue } from './api-request';
 
 export const entityApi = {
   products: {
-    list: () => request<ApiResponse<any[]>>('/product'),
+    list: (query?: Record<string, QueryValue>) => request<ApiResponse<any>>('/product', undefined, query),
     create: (payload: Record<string, unknown>) =>
       request<ApiResponse<any>>('/product', { method: 'POST', body: JSON.stringify(payload) }),
     update: (id: string, payload: Record<string, unknown>) =>
@@ -33,7 +10,7 @@ export const entityApi = {
     remove: (id: string) => request<ApiResponse<void>>(`/product/${id}`, { method: 'DELETE' }),
   },
   batches: {
-    list: () => request<ApiResponse<any[]>>('/batch'),
+    list: (query?: Record<string, QueryValue>) => request<ApiResponse<any>>('/batch', undefined, query),
     create: (payload: Record<string, unknown>) =>
       request<ApiResponse<any>>('/batch', { method: 'POST', body: JSON.stringify(payload) }),
     update: (id: string, payload: Record<string, unknown>) =>
@@ -41,7 +18,7 @@ export const entityApi = {
     remove: (id: string) => request<ApiResponse<void>>(`/batch/${id}`, { method: 'DELETE' }),
   },
   inventory: {
-    list: () => request<ApiResponse<any[]>>('/inventory'),
+    list: (query?: Record<string, QueryValue>) => request<ApiResponse<any>>('/inventory', undefined, query),
     create: (payload: Record<string, unknown>) =>
       request<ApiResponse<any>>('/inventory', { method: 'POST', body: JSON.stringify(payload) }),
     update: (id: string, payload: Record<string, unknown>) =>
@@ -49,7 +26,7 @@ export const entityApi = {
     remove: (id: string) => request<ApiResponse<void>>(`/inventory/${id}`, { method: 'DELETE' }),
   },
   sales: {
-    list: () => request<ApiResponse<any[]>>('/sales'),
+    list: (query?: Record<string, QueryValue>) => request<ApiResponse<any>>('/sales', undefined, query),
     create: (payload: Record<string, unknown>) =>
       request<ApiResponse<any>>('/sales', { method: 'POST', body: JSON.stringify(payload) }),
     update: (id: string, payload: Record<string, unknown>) =>

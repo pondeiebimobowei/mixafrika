@@ -1,30 +1,4 @@
-import { getSession } from './session';
-
-type ApiResponse<T> = {
-  success: boolean;
-  message: string;
-  data: T;
-};
-
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3003';
-
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const session = getSession();
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(session?.token ? { Authorization: `Bearer ${session.token}` } : {}),
-      ...(init?.headers ?? {}),
-    },
-    ...init,
-  });
-
-  if (!response.ok) {
-    throw new Error(`Request failed with status ${response.status}`);
-  }
-
-  return response.json() as Promise<T>;
-}
+import { request, type ApiResponse, type QueryValue } from './api-request';
 
 export type AdminOverview = {
   users: {
@@ -88,8 +62,8 @@ export async function getOverview() {
   return request<ApiResponse<AdminOverview>>('/v1/admin/dashboard/overview');
 }
 
-export async function getUsers() {
-  return request<ApiResponse<AdminUser[]>>('/v1/admin/users');
+export async function getUsers(query?: Record<string, QueryValue>) {
+  return request<ApiResponse<any>>('/v1/admin/users', undefined, query);
 }
 
 export async function getUser(id: string) {
@@ -116,8 +90,8 @@ export async function deleteUser(id: string) {
   });
 }
 
-export async function getBusinesses() {
-  return request<ApiResponse<AdminBusiness[]>>('/v1/admin/businesses');
+export async function getBusinesses(query?: Record<string, QueryValue>) {
+  return request<ApiResponse<any>>('/v1/admin/businesses', undefined, query);
 }
 
 export async function getBusiness(id: string) {
@@ -144,12 +118,12 @@ export async function deleteBusiness(id: string) {
   });
 }
 
-export async function getUserVerifications() {
-  return request<ApiResponse<AdminVerification[]>>('/v1/admin/verifications/users');
+export async function getUserVerifications(query?: Record<string, QueryValue>) {
+  return request<ApiResponse<any>>('/v1/admin/verifications/users', undefined, query);
 }
 
-export async function getBusinessVerifications() {
-  return request<ApiResponse<AdminVerification[]>>('/v1/admin/verifications/businesses');
+export async function getBusinessVerifications(query?: Record<string, QueryValue>) {
+  return request<ApiResponse<any>>('/v1/admin/verifications/businesses', undefined, query);
 }
 
 export async function reviewUserVerification(

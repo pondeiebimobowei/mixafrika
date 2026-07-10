@@ -8,6 +8,8 @@ export function EntityTable({
   onSelect,
   selectedId,
   getRowLabel,
+  loading,
+  emptyMessage = 'No rows found.',
 }: {
   title: string;
   description: string;
@@ -16,6 +18,8 @@ export function EntityTable({
   onSelect: (id: string) => void;
   selectedId?: string;
   getRowLabel: (row: any) => ReactNode;
+  loading?: boolean;
+  emptyMessage?: string;
 }) {
   return (
     <section className="border border-slate-200 bg-white p-5 shadow-sm">
@@ -34,15 +38,29 @@ export function EntityTable({
             <tr>{columns.map((col) => <th key={col} className="border-b border-slate-200 px-4 py-3 font-medium">{col}</th>)}</tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
-              <tr
-                key={row.id}
-                className={`cursor-pointer border-b border-slate-100 transition hover:bg-[#eef7f1] ${selectedId === row.id ? 'bg-[#e9f4ee]' : ''}`}
-                onClick={() => onSelect(row.id)}
-              >
-                {getRowLabel(row)}
+            {loading ? (
+              <tr>
+                <td className="px-4 py-6 text-sm text-slate-500" colSpan={columns.length}>
+                  Loading rows...
+                </td>
               </tr>
-            ))}
+            ) : rows.length === 0 ? (
+              <tr>
+                <td className="px-4 py-6 text-sm text-slate-500" colSpan={columns.length}>
+                  {emptyMessage}
+                </td>
+              </tr>
+            ) : (
+              rows.map((row) => (
+                <tr
+                  key={row.id}
+                  className={`cursor-pointer border-b border-slate-100 transition hover:bg-[#eef7f1] ${selectedId === row.id ? 'bg-[#e9f4ee]' : ''}`}
+                  onClick={() => onSelect(row.id)}
+                >
+                  {getRowLabel(row)}
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>

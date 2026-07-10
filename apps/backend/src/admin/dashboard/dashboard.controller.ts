@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { AdminDashboardService } from './dashboard.service';
 import { ParsedToken } from 'src/decorators/parsed-token.decorator';
 import { User } from 'src/database/models/user.model';
@@ -14,8 +14,8 @@ export class AdminDashboardController {
   }
 
   @Get('users')
-  getUsers() {
-    return this.adminDashboardService.handleGetUsers();
+  getUsers(@Query() query: Record<string, string>) {
+    return this.adminDashboardService.handleGetUsers(query);
   }
 
   @Get('users/:id')
@@ -24,8 +24,8 @@ export class AdminDashboardController {
   }
 
   @Get('businesses')
-  getBusinesses() {
-    return this.adminDashboardService.handleGetBusinesses();
+  getBusinesses(@Query() query: Record<string, string>) {
+    return this.adminDashboardService.handleGetBusinesses(query);
   }
 
   @Get('businesses/:id')
@@ -34,13 +34,13 @@ export class AdminDashboardController {
   }
 
   @Get('verifications/users')
-  getUserVerifications() {
-    return this.adminDashboardService.handleGetUserVerifications();
+  getUserVerifications(@Query() query: Record<string, string>) {
+    return this.adminDashboardService.handleGetUserVerifications(query);
   }
 
   @Get('verifications/businesses')
-  getBusinessVerifications() {
-    return this.adminDashboardService.handleGetBusinessVerifications();
+  getBusinessVerifications(@Query() query: Record<string, string>) {
+    return this.adminDashboardService.handleGetBusinessVerifications(query);
   }
 
   @Get('collections')
@@ -49,8 +49,8 @@ export class AdminDashboardController {
   }
 
   @Get('spine/global-products')
-  getGlobalProducts() {
-    return this.adminDashboardService.handleGetGlobalProducts();
+  getGlobalProducts(@Query() query: Record<string, string>) {
+    return this.adminDashboardService.handleGetGlobalProducts(query);
   }
 
   @Get('spine/global-products/:id')
@@ -79,8 +79,8 @@ export class AdminDashboardController {
   }
 
   @Get('spine/product-categories')
-  getProductCategories() {
-    return this.adminDashboardService.handleGetProductCategories();
+  getProductCategories(@Query() query: Record<string, string>) {
+    return this.adminDashboardService.handleGetProductCategories(query);
   }
 
   @Get('spine/product-categories/:id')
@@ -104,8 +104,8 @@ export class AdminDashboardController {
   }
 
   @Get('spine/branches')
-  getBranches() {
-    return this.adminDashboardService.handleGetBranches();
+  getBranches(@Query() query: Record<string, string>) {
+    return this.adminDashboardService.handleGetBranches(query);
   }
 
   @Get('spine/branches/:id')
@@ -129,8 +129,8 @@ export class AdminDashboardController {
   }
 
   @Get('spine/customers')
-  getCustomers() {
-    return this.adminDashboardService.handleGetCustomers();
+  getCustomers(@Query() query: Record<string, string>) {
+    return this.adminDashboardService.handleGetCustomers(query);
   }
 
   @Get('spine/customers/:id')
@@ -154,8 +154,8 @@ export class AdminDashboardController {
   }
 
   @Get('spine/business-users')
-  getBusinessUsers() {
-    return this.adminDashboardService.handleGetBusinessUsers();
+  getBusinessUsers(@Query() query: Record<string, string>) {
+    return this.adminDashboardService.handleGetBusinessUsers(query);
   }
 
   @Post('spine/business-users')
@@ -174,8 +174,8 @@ export class AdminDashboardController {
   }
 
   @Get('spine/branch-users')
-  getBranchUsers() {
-    return this.adminDashboardService.handleGetBranchUsers();
+  getBranchUsers(@Query() query: Record<string, string>) {
+    return this.adminDashboardService.handleGetBranchUsers(query);
   }
 
   @Post('spine/branch-users')
@@ -194,8 +194,8 @@ export class AdminDashboardController {
   }
 
   @Get('spine/sales-items')
-  getSalesItems() {
-    return this.adminDashboardService.handleGetSalesItems();
+  getSalesItems(@Query() query: Record<string, string>) {
+    return this.adminDashboardService.handleGetSalesItems(query);
   }
 
   @Get('spine/sales-items/:id')
@@ -219,8 +219,8 @@ export class AdminDashboardController {
   }
 
   @Get('spine/stock-movements')
-  getStockMovements() {
-    return this.adminDashboardService.handleGetStockMovements();
+  getStockMovements(@Query() query: Record<string, string>) {
+    return this.adminDashboardService.handleGetStockMovements(query);
   }
 
   @Get('spine/stock-movements/:id')
@@ -244,8 +244,8 @@ export class AdminDashboardController {
   }
 
   @Get('spine/stock-transfers')
-  getStockTransfers() {
-    return this.adminDashboardService.handleGetStockTransfers();
+  getStockTransfers(@Query() query: Record<string, string>) {
+    return this.adminDashboardService.handleGetStockTransfers(query);
   }
 
   @Get('spine/stock-transfers/:id')
@@ -269,8 +269,8 @@ export class AdminDashboardController {
   }
 
   @Get('spine/payments')
-  getPayments() {
-    return this.adminDashboardService.handleGetPayments();
+  getPayments(@Query() query: Record<string, string>) {
+    return this.adminDashboardService.handleGetPayments(query);
   }
 
   @Get('spine/payments/:id')
