@@ -27,6 +27,7 @@ import { Route as BusinessUsersRouteImport } from './routes/business-users'
 import { Route as BranchesRouteImport } from './routes/branches'
 import { Route as BranchUsersRouteImport } from './routes/branch-users'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CatalogIndexRouteImport } from './routes/catalog.index'
 import { Route as CatalogProductIdRouteImport } from './routes/catalog.$productId'
 
 const VerificationsRoute = VerificationsRouteImport.update({
@@ -119,6 +120,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CatalogIndexRoute = CatalogIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => CatalogRoute,
+} as any)
 const CatalogProductIdRoute = CatalogProductIdRouteImport.update({
   id: '/$productId',
   path: '/$productId',
@@ -145,6 +151,7 @@ export interface FileRoutesByFullPath {
   '/users': typeof UsersRoute
   '/verifications': typeof VerificationsRoute
   '/catalog/$productId': typeof CatalogProductIdRoute
+  '/catalog/': typeof CatalogIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -152,7 +159,6 @@ export interface FileRoutesByTo {
   '/branches': typeof BranchesRoute
   '/business-users': typeof BusinessUsersRoute
   '/businesses': typeof BusinessesRoute
-  '/catalog': typeof CatalogRouteWithChildren
   '/customers': typeof CustomersRoute
   '/global-products': typeof GlobalProductsRoute
   '/login': typeof LoginRoute
@@ -166,6 +172,7 @@ export interface FileRoutesByTo {
   '/users': typeof UsersRoute
   '/verifications': typeof VerificationsRoute
   '/catalog/$productId': typeof CatalogProductIdRoute
+  '/catalog': typeof CatalogIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -188,6 +195,7 @@ export interface FileRoutesById {
   '/users': typeof UsersRoute
   '/verifications': typeof VerificationsRoute
   '/catalog/$productId': typeof CatalogProductIdRoute
+  '/catalog/': typeof CatalogIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -211,6 +219,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/verifications'
     | '/catalog/$productId'
+    | '/catalog/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -218,7 +227,6 @@ export interface FileRouteTypes {
     | '/branches'
     | '/business-users'
     | '/businesses'
-    | '/catalog'
     | '/customers'
     | '/global-products'
     | '/login'
@@ -232,6 +240,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/verifications'
     | '/catalog/$productId'
+    | '/catalog'
   id:
     | '__root__'
     | '/'
@@ -253,6 +262,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/verifications'
     | '/catalog/$productId'
+    | '/catalog/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -404,6 +414,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/catalog/': {
+      id: '/catalog/'
+      path: '/'
+      fullPath: '/catalog/'
+      preLoaderRoute: typeof CatalogIndexRouteImport
+      parentRoute: typeof CatalogRoute
+    }
     '/catalog/$productId': {
       id: '/catalog/$productId'
       path: '/$productId'
@@ -416,10 +433,12 @@ declare module '@tanstack/react-router' {
 
 interface CatalogRouteChildren {
   CatalogProductIdRoute: typeof CatalogProductIdRoute
+  CatalogIndexRoute: typeof CatalogIndexRoute
 }
 
 const CatalogRouteChildren: CatalogRouteChildren = {
   CatalogProductIdRoute: CatalogProductIdRoute,
+  CatalogIndexRoute: CatalogIndexRoute,
 }
 
 const CatalogRouteWithChildren =

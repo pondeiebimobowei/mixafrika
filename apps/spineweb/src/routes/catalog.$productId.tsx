@@ -130,7 +130,7 @@ function ProductDetailRoute() {
               {product?.name ?? 'Product details'}
             </h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-500">
-              This route is a single product view. It should differ from the catalogue list by showing the selected record and its related batches.
+              This route is a single product view. It differs from the catalogue list by showing only the selected record and its related batches, inventory, and movements.
             </p>
           </div>
           <Link
@@ -145,9 +145,9 @@ function ProductDetailRoute() {
       {error ? <div className="border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">{error}</div> : null}
 
       {product ? (
-        <div className="grid gap-6 xl:grid-cols-[1fr_360px]">
-          <div className="space-y-6">
-            <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_340px]">
+          <div className="min-w-0 space-y-6">
+            <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
               {[
                 ['Branch', product.branch?.name ?? product.branch_id ?? '—'],
                 ['Global barcode', product.global_product?.barcode ?? '—'],
@@ -166,7 +166,7 @@ function ProductDetailRoute() {
             </section>
 
             <section className="border border-slate-200 bg-white p-5 shadow-sm">
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <h3 className="text-xl font-semibold tracking-tight text-slate-950">Batches</h3>
                   <p className="mt-1 text-sm text-slate-500">Click a batch row to inspect and edit expiry, quantity, and price details.</p>
@@ -176,8 +176,8 @@ function ProductDetailRoute() {
                 </span>
               </div>
 
-              <div className="mt-5 overflow-hidden border border-slate-200">
-                <table className="min-w-full border-collapse text-left text-sm">
+              <div className="mt-5 overflow-x-auto border border-slate-200">
+                <table className="min-w-[760px] border-collapse text-left text-sm">
                   <thead className="bg-slate-50 text-[11px] uppercase tracking-[0.2em] text-slate-500">
                     <tr>
                       <th className="border-b border-slate-200 px-4 py-3 font-medium">Batch</th>
@@ -219,7 +219,7 @@ function ProductDetailRoute() {
               </div>
             </section>
 
-            <section className="grid gap-4 xl:grid-cols-2">
+            <section className="grid gap-6 lg:grid-cols-2">
               <SimpleTable
                 title="Inventory snapshot"
                 description="Branch-level inventory records linked to this product."
@@ -265,90 +265,139 @@ function ProductDetailRoute() {
                 ],
               }))}
             />
-          </div>
-          <aside className="space-y-4">
-            <form
-              className="border border-slate-200 bg-white p-4 shadow-sm space-y-3"
-              onSubmit={async (e) => {
-                e.preventDefault();
-                setError(null);
 
-                try {
-                  await spineAdminApi.products.get(productId);
-                  await load();
-                } catch (submitError) {
-                  setError(submitError instanceof Error ? submitError.message : 'Failed to refresh product');
-                }
-              }}
-            >
-              <h3 className="text-lg font-semibold text-slate-950">Selected product</h3>
-              {[
-                ['name', product?.name ?? ''],
-                ['barcode', product?.global_product?.barcode ?? ''],
-                ['branch_id', product?.branch_id ?? ''],
-                ['description', product?.description ?? ''],
-                ['bulk_unit_name', product?.bulk_unit_name ?? ''],
-                ['piece_unit_name', product?.piece_unit_name ?? ''],
-                ['units_per_bulk', String(product?.units_per_bulk ?? '')],
-                ['selling_price_per_piece', String(product?.selling_price_per_piece ?? '')],
-                ['selling_price_per_bulk', String(product?.selling_price_per_bulk ?? '')],
-                ['category', product?.category ?? ''],
-                ['image_url', product?.image_url ?? ''],
-              ].map(([key, value]) => (
-                <div key={key} className="border border-slate-200 px-3 py-2">
-                  <p className="text-[11px] uppercase tracking-[0.2em] text-slate-400">{key}</p>
-                  <p className="mt-1 text-sm text-slate-950">{String(value || '—')}</p>
+            <section className="border border-slate-200 bg-white p-5 shadow-sm">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <h3 className="text-xl font-semibold tracking-tight text-slate-950">Create batch</h3>
+                  <p className="mt-1 text-sm text-slate-500">
+                    Add a new batch for this product. The detail drawer below can then be used to inspect or adjust it.
+                  </p>
                 </div>
-              ))}
-            </form>
+                <span className="border border-slate-200 px-3 py-2 text-xs uppercase tracking-[0.25em] text-slate-500">
+                  Product-bound
+                </span>
+              </div>
 
-            <form
-              className="border border-slate-200 bg-white p-4 shadow-sm space-y-3"
-              onSubmit={async (e) => {
-                e.preventDefault();
-                setError(null);
+              <form
+                className="mt-5 grid gap-3 sm:grid-cols-2"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  setError(null);
 
-                try {
-                  await entityApi.batches.create({
-                    ...batchForm,
-                    product_id: productId,
-                    branch_id: batchForm.branch_id || product?.branch_id || '',
-                    batch_number: batchForm.batch_number || `BATCH-${Date.now()}`,
-                    cost_price_per_unit: Number(batchForm.cost_price_per_unit || 0),
-                    selling_price_per_piece: Number(batchForm.selling_price_per_piece || 0),
-                    selling_price_per_bulk: Number(batchForm.selling_price_per_bulk || 0),
-                    initial_quantity: Number(batchForm.initial_quantity || 0),
-                    remaining_quantity: Number(batchForm.remaining_quantity || batchForm.initial_quantity || 0),
-                    sync_status: 'completed',
-                    sync_date: new Date().toISOString(),
-                  });
-                  setBatchForm({
-                    batch_number: '',
-                    branch_id: product?.branch_id ?? '',
-                    expiry_date: '',
-                    cost_price_per_unit: '',
-                    selling_price_per_piece: '',
-                    selling_price_per_bulk: '',
-                    initial_quantity: '',
-                    remaining_quantity: '',
-                  });
-                  await load();
-                } catch (submitError) {
-                  setError(submitError instanceof Error ? submitError.message : 'Failed to create batch');
-                }
-              }}
-            >
-              <h3 className="text-lg font-semibold text-slate-950">Create batch</h3>
-              <input className="w-full border border-slate-200 px-3 py-2" placeholder="Batch Number" value={batchForm.batch_number} onChange={(e) => setBatchForm((curr) => ({ ...curr, batch_number: e.target.value }))} />
-              <input className="w-full border border-slate-200 px-3 py-2" placeholder="Branch ID" value={batchForm.branch_id} onChange={(e) => setBatchForm((curr) => ({ ...curr, branch_id: e.target.value }))} />
-              <input className="w-full border border-slate-200 px-3 py-2" placeholder="Expiry Date" value={batchForm.expiry_date} onChange={(e) => setBatchForm((curr) => ({ ...curr, expiry_date: e.target.value }))} />
-              <input className="w-full border border-slate-200 px-3 py-2" placeholder="Cost Price Per Unit" value={batchForm.cost_price_per_unit} onChange={(e) => setBatchForm((curr) => ({ ...curr, cost_price_per_unit: e.target.value }))} />
-              <input className="w-full border border-slate-200 px-3 py-2" placeholder="Selling Price Per Piece" value={batchForm.selling_price_per_piece} onChange={(e) => setBatchForm((curr) => ({ ...curr, selling_price_per_piece: e.target.value }))} />
-              <input className="w-full border border-slate-200 px-3 py-2" placeholder="Selling Price Per Bulk" value={batchForm.selling_price_per_bulk} onChange={(e) => setBatchForm((curr) => ({ ...curr, selling_price_per_bulk: e.target.value }))} />
-              <input className="w-full border border-slate-200 px-3 py-2" placeholder="Initial Quantity" value={batchForm.initial_quantity} onChange={(e) => setBatchForm((curr) => ({ ...curr, initial_quantity: e.target.value }))} />
-              <input className="w-full border border-slate-200 px-3 py-2" placeholder="Remaining Quantity" value={batchForm.remaining_quantity} onChange={(e) => setBatchForm((curr) => ({ ...curr, remaining_quantity: e.target.value }))} />
-              <button className="w-full border border-slate-900 bg-slate-950 px-4 py-2 text-white">Save batch</button>
-            </form>
+                  try {
+                    await entityApi.batches.create({
+                      ...batchForm,
+                      product_id: productId,
+                      branch_id: batchForm.branch_id || product?.branch_id || '',
+                      batch_number: batchForm.batch_number || `BATCH-${Date.now()}`,
+                      cost_price_per_unit: Number(batchForm.cost_price_per_unit || 0),
+                      selling_price_per_piece: Number(batchForm.selling_price_per_piece || 0),
+                      selling_price_per_bulk: Number(batchForm.selling_price_per_bulk || 0),
+                      initial_quantity: Number(batchForm.initial_quantity || 0),
+                      remaining_quantity: Number(batchForm.remaining_quantity || batchForm.initial_quantity || 0),
+                      sync_status: 'completed',
+                      sync_date: new Date().toISOString(),
+                    });
+                    setBatchForm({
+                      batch_number: '',
+                      branch_id: product?.branch_id ?? '',
+                      expiry_date: '',
+                      cost_price_per_unit: '',
+                      selling_price_per_piece: '',
+                      selling_price_per_bulk: '',
+                      initial_quantity: '',
+                      remaining_quantity: '',
+                    });
+                    await load();
+                  } catch (submitError) {
+                    setError(submitError instanceof Error ? submitError.message : 'Failed to create batch');
+                  }
+                }}
+              >
+                <input
+                  className="w-full border border-slate-200 px-3 py-2"
+                  placeholder="Batch Number"
+                  value={batchForm.batch_number}
+                  onChange={(e) => setBatchForm((curr) => ({ ...curr, batch_number: e.target.value }))}
+                />
+                <input
+                  className="w-full border border-slate-200 px-3 py-2"
+                  placeholder="Branch ID"
+                  value={batchForm.branch_id}
+                  onChange={(e) => setBatchForm((curr) => ({ ...curr, branch_id: e.target.value }))}
+                />
+                <input
+                  className="w-full border border-slate-200 px-3 py-2"
+                  placeholder="Expiry Date"
+                  value={batchForm.expiry_date}
+                  onChange={(e) => setBatchForm((curr) => ({ ...curr, expiry_date: e.target.value }))}
+                />
+                <input
+                  className="w-full border border-slate-200 px-3 py-2"
+                  placeholder="Cost Price Per Unit"
+                  value={batchForm.cost_price_per_unit}
+                  onChange={(e) => setBatchForm((curr) => ({ ...curr, cost_price_per_unit: e.target.value }))}
+                />
+                <input
+                  className="w-full border border-slate-200 px-3 py-2"
+                  placeholder="Selling Price Per Piece"
+                  value={batchForm.selling_price_per_piece}
+                  onChange={(e) => setBatchForm((curr) => ({ ...curr, selling_price_per_piece: e.target.value }))}
+                />
+                <input
+                  className="w-full border border-slate-200 px-3 py-2"
+                  placeholder="Selling Price Per Bulk"
+                  value={batchForm.selling_price_per_bulk}
+                  onChange={(e) => setBatchForm((curr) => ({ ...curr, selling_price_per_bulk: e.target.value }))}
+                />
+                <input
+                  className="w-full border border-slate-200 px-3 py-2"
+                  placeholder="Initial Quantity"
+                  value={batchForm.initial_quantity}
+                  onChange={(e) => setBatchForm((curr) => ({ ...curr, initial_quantity: e.target.value }))}
+                />
+                <input
+                  className="w-full border border-slate-200 px-3 py-2"
+                  placeholder="Remaining Quantity"
+                  value={batchForm.remaining_quantity}
+                  onChange={(e) => setBatchForm((curr) => ({ ...curr, remaining_quantity: e.target.value }))}
+                />
+                <button className="sm:col-span-2 border border-slate-900 bg-slate-950 px-4 py-2 text-white">
+                  Save batch
+                </button>
+              </form>
+            </section>
+          </div>
+
+          <aside className="space-y-6 xl:sticky xl:top-6 xl:self-start">
+            <section className="border border-slate-200 bg-white p-5 shadow-sm">
+              <h3 className="text-lg font-semibold text-slate-950">Selected product</h3>
+              <p className="mt-1 text-sm text-slate-500">
+                Structured product data for the singular record currently in view.
+              </p>
+
+              <dl className="mt-5 grid gap-3">
+                {[
+                  ['Name', product?.name ?? '—'],
+                  ['Barcode', product?.global_product?.barcode ?? '—'],
+                  ['Branch', product?.branch?.name ?? product?.branch_id ?? '—'],
+                  ['Description', product?.description ?? '—'],
+                  ['Bulk unit', product?.bulk_unit_name ?? '—'],
+                  ['Piece unit', product?.piece_unit_name ?? '—'],
+                  ['Units per bulk', product?.units_per_bulk ?? '—'],
+                  ['Piece price', product?.selling_price_per_piece ?? '—'],
+                  ['Bulk price', product?.selling_price_per_bulk ?? '—'],
+                  ['Category', product?.category ?? '—'],
+                  ['Image URL', product?.image_url ?? '—'],
+                ].map(([label, value]) => (
+                  <div key={label as string} className="border border-slate-200 px-3 py-2">
+                    <dt className="text-[11px] uppercase tracking-[0.2em] text-slate-400">{label}</dt>
+                    <dd className="mt-1 break-words text-sm font-medium text-slate-950">{String(value)}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
           </aside>
         </div>
       ) : (
@@ -451,8 +500,8 @@ function SimpleTable({
         <h3 className="text-xl font-semibold tracking-tight text-slate-950">{title}</h3>
         <p className="mt-1 text-sm text-slate-500">{description}</p>
       </div>
-      <div className="mt-5 overflow-hidden border border-slate-200">
-        <table className="min-w-full border-collapse text-left text-sm">
+      <div className="mt-5 overflow-x-auto border border-slate-200">
+        <table className="min-w-[640px] border-collapse text-left text-sm">
           <thead className="bg-slate-50 text-[11px] uppercase tracking-[0.2em] text-slate-500">
             <tr>
               {columns.map((column) => (
