@@ -7,7 +7,7 @@ import { Batch } from 'src/database/models/batch.model';
 export class BatchService {
     async findAll(): Promise<Response<IBatch[]>> {
         const batches = await Batch.findAll({
-            include: ['product']
+            include: ['product', 'branch']
         });
         return {
             success: true,
@@ -18,7 +18,7 @@ export class BatchService {
 
     async findOne(id: string): Promise<Response<IBatch | null>> {
         const batch = await Batch.findByPk(id, {
-            include: ['product']
+            include: ['product', 'branch']
         });
         if (!batch) {
             return {
