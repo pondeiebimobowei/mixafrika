@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { Outlet, createFileRoute } from '@tanstack/react-router';
 import { useEffect, useMemo, useState } from 'react';
 import { DashboardShell } from '#/components/admin/dashboard-shell';
 import { ModulePage } from '#/components/admin/module-page';
@@ -187,6 +187,8 @@ function CatalogRoute() {
             </table>
           </div>
         </section>
+
+        <Outlet />
       </ModulePage>
     </DashboardShell>
   );
