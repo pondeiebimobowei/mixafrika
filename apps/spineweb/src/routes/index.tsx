@@ -11,7 +11,7 @@ function OverviewPage() {
   return (
     <DashboardShell>
       <div className="space-y-6">
-        <section className="rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-sm">
+        <section className="border border-slate-200 bg-white p-5 shadow-sm">
           <h1 className="text-3xl font-semibold tracking-tight text-slate-950">Overview</h1>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-500">
             Analytics only. Operational work lives in dedicated entity pages so the dashboard stays readable.
@@ -36,7 +36,7 @@ function OverviewPage() {
 
 function Card({ title, text }: { title: string; text: string }) {
   return (
-    <article className="rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-sm">
+    <article className="border border-slate-200 bg-white p-5 shadow-sm">
       <h2 className="text-xl font-semibold tracking-tight text-slate-950">{title}</h2>
       <p className="mt-2 text-sm leading-6 text-slate-500">{text}</p>
     </article>

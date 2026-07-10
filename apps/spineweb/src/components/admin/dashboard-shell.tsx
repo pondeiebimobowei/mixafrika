@@ -1,6 +1,6 @@
 import { Link } from '@tanstack/react-router';
 import { useState, type ReactNode } from 'react';
-import { LayoutDashboard, ShieldCheck, Users, Building2, Activity, ChevronLeft, Sparkles, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
+import { LayoutDashboard, ShieldCheck, Users, Building2, Activity, ChevronLeft, Sparkles, PanelLeftClose, PanelLeftOpen, Boxes, GitBranch, UserCircle2, ArrowLeftRight, ReceiptText, CircleDollarSign, Tags } from 'lucide-react';
 import { clearSession } from '#/lib/session';
 
 const navItems = [
@@ -10,6 +10,16 @@ const navItems = [
   { label: 'Verifications', href: '/verifications', icon: ShieldCheck },
   { label: 'Catalog', href: '/catalog', icon: Building2 },
   { label: 'Operations', href: '/operations', icon: Activity },
+  { label: 'Global Products', href: '/global-products', icon: Boxes },
+  { label: 'Product Categories', href: '/product-categories', icon: Tags },
+  { label: 'Branches', href: '/branches', icon: GitBranch },
+  { label: 'Customers', href: '/customers', icon: UserCircle2 },
+  { label: 'Business Users', href: '/business-users', icon: Users },
+  { label: 'Branch Users', href: '/branch-users', icon: Users },
+  { label: 'Sales Items', href: '/sales-items', icon: ReceiptText },
+  { label: 'Stock Movements', href: '/stock-movements', icon: Activity },
+  { label: 'Stock Transfers', href: '/stock-transfers', icon: ArrowLeftRight },
+  { label: 'Payments', href: '/payments', icon: CircleDollarSign },
 ];
 
 export function DashboardShell({ children }: { children: ReactNode }) {

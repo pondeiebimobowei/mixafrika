@@ -19,7 +19,7 @@ export function MetricCard({
           <p className="mt-3 text-4xl font-semibold tracking-tight text-slate-950">{value}</p>
           <p className="mt-2 text-sm text-slate-500">{hint}</p>
         </div>
-        <div className="bg-amber-100 p-3 text-amber-700">{icon}</div>
+        <div className="border border-slate-200 bg-[#f7faf7] p-3 text-[#1f6f4a]">{icon}</div>
       </div>
     </article>
   );

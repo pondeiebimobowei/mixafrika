@@ -11,11 +11,21 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VerificationsRouteImport } from './routes/verifications'
 import { Route as UsersRouteImport } from './routes/users'
+import { Route as StockTransfersRouteImport } from './routes/stock-transfers'
+import { Route as StockMovementsRouteImport } from './routes/stock-movements'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SalesItemsRouteImport } from './routes/sales-items'
+import { Route as ProductCategoriesRouteImport } from './routes/product-categories'
+import { Route as PaymentsRouteImport } from './routes/payments'
 import { Route as OperationsRouteImport } from './routes/operations'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as GlobalProductsRouteImport } from './routes/global-products'
+import { Route as CustomersRouteImport } from './routes/customers'
 import { Route as CatalogRouteImport } from './routes/catalog'
 import { Route as BusinessesRouteImport } from './routes/businesses'
+import { Route as BusinessUsersRouteImport } from './routes/business-users'
+import { Route as BranchesRouteImport } from './routes/branches'
+import { Route as BranchUsersRouteImport } from './routes/branch-users'
 import { Route as IndexRouteImport } from './routes/index'
 
 const VerificationsRoute = VerificationsRouteImport.update({
@@ -28,9 +38,34 @@ const UsersRoute = UsersRouteImport.update({
   path: '/users',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StockTransfersRoute = StockTransfersRouteImport.update({
+  id: '/stock-transfers',
+  path: '/stock-transfers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StockMovementsRoute = StockMovementsRouteImport.update({
+  id: '/stock-movements',
+  path: '/stock-movements',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SalesItemsRoute = SalesItemsRouteImport.update({
+  id: '/sales-items',
+  path: '/sales-items',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductCategoriesRoute = ProductCategoriesRouteImport.update({
+  id: '/product-categories',
+  path: '/product-categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaymentsRoute = PaymentsRouteImport.update({
+  id: '/payments',
+  path: '/payments',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OperationsRoute = OperationsRouteImport.update({
@@ -43,6 +78,16 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GlobalProductsRoute = GlobalProductsRouteImport.update({
+  id: '/global-products',
+  path: '/global-products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CustomersRoute = CustomersRouteImport.update({
+  id: '/customers',
+  path: '/customers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CatalogRoute = CatalogRouteImport.update({
   id: '/catalog',
   path: '/catalog',
@@ -53,6 +98,21 @@ const BusinessesRoute = BusinessesRouteImport.update({
   path: '/businesses',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BusinessUsersRoute = BusinessUsersRouteImport.update({
+  id: '/business-users',
+  path: '/business-users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BranchesRoute = BranchesRouteImport.update({
+  id: '/branches',
+  path: '/branches',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BranchUsersRoute = BranchUsersRouteImport.update({
+  id: '/branch-users',
+  path: '/branch-users',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -61,32 +121,62 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/branch-users': typeof BranchUsersRoute
+  '/branches': typeof BranchesRoute
+  '/business-users': typeof BusinessUsersRoute
   '/businesses': typeof BusinessesRoute
   '/catalog': typeof CatalogRoute
+  '/customers': typeof CustomersRoute
+  '/global-products': typeof GlobalProductsRoute
   '/login': typeof LoginRoute
   '/operations': typeof OperationsRoute
+  '/payments': typeof PaymentsRoute
+  '/product-categories': typeof ProductCategoriesRoute
+  '/sales-items': typeof SalesItemsRoute
   '/signup': typeof SignupRoute
+  '/stock-movements': typeof StockMovementsRoute
+  '/stock-transfers': typeof StockTransfersRoute
   '/users': typeof UsersRoute
   '/verifications': typeof VerificationsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/branch-users': typeof BranchUsersRoute
+  '/branches': typeof BranchesRoute
+  '/business-users': typeof BusinessUsersRoute
   '/businesses': typeof BusinessesRoute
   '/catalog': typeof CatalogRoute
+  '/customers': typeof CustomersRoute
+  '/global-products': typeof GlobalProductsRoute
   '/login': typeof LoginRoute
   '/operations': typeof OperationsRoute
+  '/payments': typeof PaymentsRoute
+  '/product-categories': typeof ProductCategoriesRoute
+  '/sales-items': typeof SalesItemsRoute
   '/signup': typeof SignupRoute
+  '/stock-movements': typeof StockMovementsRoute
+  '/stock-transfers': typeof StockTransfersRoute
   '/users': typeof UsersRoute
   '/verifications': typeof VerificationsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/branch-users': typeof BranchUsersRoute
+  '/branches': typeof BranchesRoute
+  '/business-users': typeof BusinessUsersRoute
   '/businesses': typeof BusinessesRoute
   '/catalog': typeof CatalogRoute
+  '/customers': typeof CustomersRoute
+  '/global-products': typeof GlobalProductsRoute
   '/login': typeof LoginRoute
   '/operations': typeof OperationsRoute
+  '/payments': typeof PaymentsRoute
+  '/product-categories': typeof ProductCategoriesRoute
+  '/sales-items': typeof SalesItemsRoute
   '/signup': typeof SignupRoute
+  '/stock-movements': typeof StockMovementsRoute
+  '/stock-transfers': typeof StockTransfersRoute
   '/users': typeof UsersRoute
   '/verifications': typeof VerificationsRoute
 }
@@ -94,42 +184,82 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/branch-users'
+    | '/branches'
+    | '/business-users'
     | '/businesses'
     | '/catalog'
+    | '/customers'
+    | '/global-products'
     | '/login'
     | '/operations'
+    | '/payments'
+    | '/product-categories'
+    | '/sales-items'
     | '/signup'
+    | '/stock-movements'
+    | '/stock-transfers'
     | '/users'
     | '/verifications'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/branch-users'
+    | '/branches'
+    | '/business-users'
     | '/businesses'
     | '/catalog'
+    | '/customers'
+    | '/global-products'
     | '/login'
     | '/operations'
+    | '/payments'
+    | '/product-categories'
+    | '/sales-items'
     | '/signup'
+    | '/stock-movements'
+    | '/stock-transfers'
     | '/users'
     | '/verifications'
   id:
     | '__root__'
     | '/'
+    | '/branch-users'
+    | '/branches'
+    | '/business-users'
     | '/businesses'
     | '/catalog'
+    | '/customers'
+    | '/global-products'
     | '/login'
     | '/operations'
+    | '/payments'
+    | '/product-categories'
+    | '/sales-items'
     | '/signup'
+    | '/stock-movements'
+    | '/stock-transfers'
     | '/users'
     | '/verifications'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BranchUsersRoute: typeof BranchUsersRoute
+  BranchesRoute: typeof BranchesRoute
+  BusinessUsersRoute: typeof BusinessUsersRoute
   BusinessesRoute: typeof BusinessesRoute
   CatalogRoute: typeof CatalogRoute
+  CustomersRoute: typeof CustomersRoute
+  GlobalProductsRoute: typeof GlobalProductsRoute
   LoginRoute: typeof LoginRoute
   OperationsRoute: typeof OperationsRoute
+  PaymentsRoute: typeof PaymentsRoute
+  ProductCategoriesRoute: typeof ProductCategoriesRoute
+  SalesItemsRoute: typeof SalesItemsRoute
   SignupRoute: typeof SignupRoute
+  StockMovementsRoute: typeof StockMovementsRoute
+  StockTransfersRoute: typeof StockTransfersRoute
   UsersRoute: typeof UsersRoute
   VerificationsRoute: typeof VerificationsRoute
 }
@@ -150,11 +280,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/stock-transfers': {
+      id: '/stock-transfers'
+      path: '/stock-transfers'
+      fullPath: '/stock-transfers'
+      preLoaderRoute: typeof StockTransfersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stock-movements': {
+      id: '/stock-movements'
+      path: '/stock-movements'
+      fullPath: '/stock-movements'
+      preLoaderRoute: typeof StockMovementsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/signup': {
       id: '/signup'
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sales-items': {
+      id: '/sales-items'
+      path: '/sales-items'
+      fullPath: '/sales-items'
+      preLoaderRoute: typeof SalesItemsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/product-categories': {
+      id: '/product-categories'
+      path: '/product-categories'
+      fullPath: '/product-categories'
+      preLoaderRoute: typeof ProductCategoriesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/payments': {
+      id: '/payments'
+      path: '/payments'
+      fullPath: '/payments'
+      preLoaderRoute: typeof PaymentsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/operations': {
@@ -171,6 +336,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/global-products': {
+      id: '/global-products'
+      path: '/global-products'
+      fullPath: '/global-products'
+      preLoaderRoute: typeof GlobalProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/customers': {
+      id: '/customers'
+      path: '/customers'
+      fullPath: '/customers'
+      preLoaderRoute: typeof CustomersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/catalog': {
       id: '/catalog'
       path: '/catalog'
@@ -185,6 +364,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BusinessesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/business-users': {
+      id: '/business-users'
+      path: '/business-users'
+      fullPath: '/business-users'
+      preLoaderRoute: typeof BusinessUsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/branches': {
+      id: '/branches'
+      path: '/branches'
+      fullPath: '/branches'
+      preLoaderRoute: typeof BranchesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/branch-users': {
+      id: '/branch-users'
+      path: '/branch-users'
+      fullPath: '/branch-users'
+      preLoaderRoute: typeof BranchUsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -197,11 +397,21 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BranchUsersRoute: BranchUsersRoute,
+  BranchesRoute: BranchesRoute,
+  BusinessUsersRoute: BusinessUsersRoute,
   BusinessesRoute: BusinessesRoute,
   CatalogRoute: CatalogRoute,
+  CustomersRoute: CustomersRoute,
+  GlobalProductsRoute: GlobalProductsRoute,
   LoginRoute: LoginRoute,
   OperationsRoute: OperationsRoute,
+  PaymentsRoute: PaymentsRoute,
+  ProductCategoriesRoute: ProductCategoriesRoute,
+  SalesItemsRoute: SalesItemsRoute,
   SignupRoute: SignupRoute,
+  StockMovementsRoute: StockMovementsRoute,
+  StockTransfersRoute: StockTransfersRoute,
   UsersRoute: UsersRoute,
   VerificationsRoute: VerificationsRoute,
 }

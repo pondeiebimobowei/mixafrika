@@ -89,7 +89,22 @@ function VerificationsPage() {
                   Reject
                 </button>
               </div>
-              <pre className="overflow-auto border border-slate-200 bg-slate-50 p-4 text-xs text-slate-900">{JSON.stringify(selected, null, 2)}</pre>
+              <section className="border border-slate-200 p-4">
+                <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">Linked record</h4>
+                <div className="mt-4 grid gap-3 md:grid-cols-2">
+                  {[
+                    ['User', selected.user?.first_name ? `${selected.user.first_name} ${selected.user.last_name}` : selected.user_id ?? '—'],
+                    ['Business', selected.business?.name ?? selected.business_id ?? '—'],
+                    ['Submitted by', selected.submitted_by ?? '—'],
+                    ['Reviewed by', selected.reviewed_by ?? '—'],
+                  ].map(([label, value]) => (
+                    <div key={label} className="border border-slate-200 p-3">
+                      <p className="text-[11px] uppercase tracking-[0.25em] text-slate-400">{label}</p>
+                      <p className="mt-1 text-sm font-medium text-slate-950">{String(value)}</p>
+                    </div>
+                  ))}
+                </div>
+              </section>
             </div>
           ) : null}
         </Drawer>

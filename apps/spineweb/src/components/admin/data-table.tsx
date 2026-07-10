@@ -16,12 +16,12 @@ export function DataTable<T>({
   renderRow: (row: T) => ReactNode;
 }) {
   return (
-    <section className="rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-sm">
+    <section className="border border-slate-200 bg-white p-5 shadow-sm">
       <div className="mb-5">
         <h3 className="text-xl font-semibold tracking-tight text-slate-950">{title}</h3>
         <p className="mt-1 text-sm text-slate-500">{description}</p>
       </div>
-      <div className="overflow-hidden rounded-2xl border border-slate-200">
+      <div className="overflow-hidden border border-slate-200">
         <table className="min-w-full divide-y divide-slate-200 text-left">
           <thead className="bg-slate-50 text-xs uppercase tracking-[0.2em] text-slate-500">
             <tr>

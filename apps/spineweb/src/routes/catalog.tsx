@@ -14,6 +14,8 @@ function CatalogRoute() {
   const [batches, setBatches] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [productForm, setProductForm] = useState({ name: '', branch_id: '', description: '' });
+  const [productEditForm, setProductEditForm] = useState({ name: '', branch_id: '', description: '' });
+  const [batchEditForm, setBatchEditForm] = useState({ batch_number: '', product_id: '', branch_id: '', expiry_date: '', cost_price_per_unit: '', selling_price_per_piece: '', selling_price_per_bulk: '', initial_quantity: '', remaining_quantity: '' });
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
   const [selectedBatch, setSelectedBatch] = useState<any | null>(null);
 
@@ -30,6 +32,32 @@ function CatalogRoute() {
   useEffect(() => {
     load();
   }, []);
+
+  useEffect(() => {
+    if (selectedProduct) {
+      setProductEditForm({
+        name: selectedProduct.name ?? '',
+        branch_id: selectedProduct.branch_id ?? '',
+        description: selectedProduct.description ?? '',
+      });
+    }
+  }, [selectedProduct]);
+
+  useEffect(() => {
+    if (selectedBatch) {
+      setBatchEditForm({
+        batch_number: selectedBatch.batch_number ?? '',
+        product_id: selectedBatch.product_id ?? '',
+        branch_id: selectedBatch.branch_id ?? '',
+        expiry_date: selectedBatch.expiry_date ?? '',
+        cost_price_per_unit: String(selectedBatch.cost_price_per_unit ?? ''),
+        selling_price_per_piece: String(selectedBatch.selling_price_per_piece ?? ''),
+        selling_price_per_bulk: String(selectedBatch.selling_price_per_bulk ?? ''),
+        initial_quantity: String(selectedBatch.initial_quantity ?? ''),
+        remaining_quantity: String(selectedBatch.remaining_quantity ?? ''),
+      });
+    }
+  }, [selectedBatch]);
 
   return (
     <DashboardShell>
@@ -74,10 +102,103 @@ function CatalogRoute() {
           <Section title="Batches" items={batches} onSelect={setSelectedBatch} onDelete={async (id) => { await entityApi.batches.remove(id); await load(); }} />
         </div>
         <Drawer open={Boolean(selectedProduct)} title={selectedProduct?.name ?? 'Product details'} subtitle={selectedProduct?.category} onClose={() => setSelectedProduct(null)}>
-          {selectedProduct ? <pre className="overflow-auto border border-slate-200 bg-slate-50 p-4 text-xs text-slate-900">{JSON.stringify(selectedProduct, null, 2)}</pre> : null}
+          {selectedProduct ? (
+            <div className="space-y-4">
+              <div className="grid gap-3 md:grid-cols-2">
+                {[
+                  ['Branch', selectedProduct.branch_id],
+                  ['Bulk unit', selectedProduct.bulk_unit_name],
+                  ['Piece unit', selectedProduct.piece_unit_name],
+                  ['Units per bulk', selectedProduct.units_per_bulk],
+                  ['Selling price / piece', selectedProduct.selling_price_per_piece],
+                  ['Selling price / bulk', selectedProduct.selling_price_per_bulk],
+                ].map(([label, value]) => (
+                  <div key={label} className="border border-slate-200 p-3">
+                    <p className="text-[11px] uppercase tracking-[0.25em] text-slate-400">{label}</p>
+                    <p className="mt-1 text-sm font-medium text-slate-950">{String(value ?? '—')}</p>
+                  </div>
+                ))}
+              </div>
+              <section className="border border-slate-200 p-4">
+                <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">Description</h4>
+                <p className="mt-3 text-sm text-slate-600">{selectedProduct.description ?? 'No description available.'}</p>
+              </section>
+              <form
+                className="border border-slate-200 p-4 space-y-3"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  await entityApi.products.update(selectedProduct.id, productEditForm);
+                  await load();
+                }}
+              >
+                <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">Edit product</h4>
+                {Object.entries(productEditForm).map(([key, value]) => (
+                  <input
+                    key={key}
+                    className="w-full border border-slate-200 px-3 py-2"
+                    placeholder={key}
+                    value={value}
+                    onChange={(e) => setProductEditForm((curr) => ({ ...curr, [key]: e.target.value }))}
+                  />
+                ))}
+                <div className="flex gap-2">
+                  <button className="border border-slate-900 bg-slate-950 px-3 py-2 text-white">Save changes</button>
+                  <button type="button" className="border border-slate-200 px-3 py-2 text-rose-600" onClick={async () => { await entityApi.products.remove(selectedProduct.id); setSelectedProduct(null); await load(); }}>Delete</button>
+                </div>
+              </form>
+            </div>
+          ) : null}
         </Drawer>
         <Drawer open={Boolean(selectedBatch)} title={selectedBatch?.batch_number ?? 'Batch details'} subtitle={selectedBatch?.product?.name} onClose={() => setSelectedBatch(null)}>
-          {selectedBatch ? <pre className="overflow-auto border border-slate-200 bg-slate-50 p-4 text-xs text-slate-900">{JSON.stringify(selectedBatch, null, 2)}</pre> : null}
+          {selectedBatch ? (
+            <div className="space-y-4">
+              <div className="grid gap-3 md:grid-cols-2">
+                {[
+                  ['Product', selectedBatch.product?.name ?? selectedBatch.product_id],
+                  ['Branch', selectedBatch.branch?.name ?? selectedBatch.branch_id],
+                  ['Expiry', selectedBatch.expiry_date],
+                  ['Initial quantity', selectedBatch.initial_quantity],
+                  ['Remaining quantity', selectedBatch.remaining_quantity],
+                  ['Cost per unit', selectedBatch.cost_price_per_unit],
+                ].map(([label, value]) => (
+                  <div key={label} className="border border-slate-200 p-3">
+                    <p className="text-[11px] uppercase tracking-[0.25em] text-slate-400">{label}</p>
+                    <p className="mt-1 text-sm font-medium text-slate-950">{String(value ?? '—')}</p>
+                  </div>
+                ))}
+              </div>
+              <form
+                className="border border-slate-200 p-4 space-y-3"
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  await entityApi.batches.update(selectedBatch.id, {
+                    ...batchEditForm,
+                    cost_price_per_unit: Number(batchEditForm.cost_price_per_unit || 0),
+                    selling_price_per_piece: Number(batchEditForm.selling_price_per_piece || 0),
+                    selling_price_per_bulk: Number(batchEditForm.selling_price_per_bulk || 0),
+                    initial_quantity: Number(batchEditForm.initial_quantity || 0),
+                    remaining_quantity: Number(batchEditForm.remaining_quantity || 0),
+                  });
+                  await load();
+                }}
+              >
+                <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-slate-500">Edit batch</h4>
+                {Object.entries(batchEditForm).map(([key, value]) => (
+                  <input
+                    key={key}
+                    className="w-full border border-slate-200 px-3 py-2"
+                    placeholder={key}
+                    value={value}
+                    onChange={(e) => setBatchEditForm((curr) => ({ ...curr, [key]: e.target.value }))}
+                  />
+                ))}
+                <div className="flex gap-2">
+                  <button className="border border-slate-900 bg-slate-950 px-3 py-2 text-white">Save changes</button>
+                  <button type="button" className="border border-slate-200 px-3 py-2 text-rose-600" onClick={async () => { await entityApi.batches.remove(selectedBatch.id); setSelectedBatch(null); await load(); }}>Delete</button>
+                </div>
+              </form>
+            </div>
+          ) : null}
         </Drawer>
       </ModulePage>
     </DashboardShell>
