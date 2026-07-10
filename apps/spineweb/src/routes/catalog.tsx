@@ -13,8 +13,32 @@ function CatalogRoute() {
   const [products, setProducts] = useState<any[]>([]);
   const [batches, setBatches] = useState<any[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [productForm, setProductForm] = useState({ name: '', branch_id: '', description: '' });
-  const [productEditForm, setProductEditForm] = useState({ name: '', branch_id: '', description: '' });
+  const [productForm, setProductForm] = useState({
+    name: '',
+    barcode: '',
+    branch_id: '',
+    description: '',
+    bulk_unit_name: '',
+    piece_unit_name: '',
+    units_per_bulk: '',
+    selling_price_per_piece: '',
+    selling_price_per_bulk: '',
+    category: '',
+    image_url: '',
+  });
+  const [productEditForm, setProductEditForm] = useState({
+    name: '',
+    barcode: '',
+    branch_id: '',
+    description: '',
+    bulk_unit_name: '',
+    piece_unit_name: '',
+    units_per_bulk: '',
+    selling_price_per_piece: '',
+    selling_price_per_bulk: '',
+    category: '',
+    image_url: '',
+  });
   const [batchEditForm, setBatchEditForm] = useState({ batch_number: '', product_id: '', branch_id: '', expiry_date: '', cost_price_per_unit: '', selling_price_per_piece: '', selling_price_per_bulk: '', initial_quantity: '', remaining_quantity: '' });
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null);
   const [selectedBatch, setSelectedBatch] = useState<any | null>(null);
@@ -37,8 +61,16 @@ function CatalogRoute() {
     if (selectedProduct) {
       setProductEditForm({
         name: selectedProduct.name ?? '',
+        barcode: selectedProduct.global_product?.barcode ?? selectedProduct.barcode ?? '',
         branch_id: selectedProduct.branch_id ?? '',
         description: selectedProduct.description ?? '',
+        bulk_unit_name: selectedProduct.bulk_unit_name ?? '',
+        piece_unit_name: selectedProduct.piece_unit_name ?? '',
+        units_per_bulk: String(selectedProduct.units_per_bulk ?? ''),
+        selling_price_per_piece: String(selectedProduct.selling_price_per_piece ?? ''),
+        selling_price_per_bulk: String(selectedProduct.selling_price_per_bulk ?? ''),
+        category: selectedProduct.category ?? '',
+        image_url: selectedProduct.image_url ?? '',
       });
     }
   }, [selectedProduct]);
@@ -71,26 +103,71 @@ function CatalogRoute() {
               className="mt-4 space-y-3"
               onSubmit={async (e) => {
                 e.preventDefault();
-                await entityApi.products.create({
-                  ...productForm,
-                  bulk_unit_name: 'box',
-                  piece_unit_name: 'piece',
-                  units_per_bulk: 1,
-                  selling_price_per_piece: 0,
-                  selling_price_per_bulk: 0,
-                  category: 'general',
-                  image_url: '',
-                  reviews: '',
-                  sync_status: 'completed',
-                  sync_date: new Date().toISOString(),
-                });
-                setProductForm({ name: '', branch_id: '', description: '' });
-                await load();
+                setError(null);
+
+                try {
+                  const createdProduct = await entityApi.products.create({
+                    ...productForm,
+                    units_per_bulk: Number(productForm.units_per_bulk || 1),
+                    selling_price_per_piece: Number(productForm.selling_price_per_piece || 0),
+                    selling_price_per_bulk: Number(productForm.selling_price_per_bulk || 0),
+                    reviews: '',
+                    sync_status: 'completed',
+                    sync_date: new Date().toISOString(),
+                  });
+
+                  if (!createdProduct.data?.id) {
+                    throw new Error('Product was created but no product ID was returned');
+                  }
+
+                  await entityApi.inventory.create({
+                    product_id: createdProduct.data.id,
+                    branch_id: productForm.branch_id,
+                    quantity: 0,
+                    sync_status: 'completed',
+                    sync_date: new Date().toISOString(),
+                  });
+
+                  setProductForm({
+                    name: '',
+                    barcode: '',
+                    branch_id: '',
+                    description: '',
+                    bulk_unit_name: '',
+                    piece_unit_name: '',
+                    units_per_bulk: '',
+                    selling_price_per_piece: '',
+                    selling_price_per_bulk: '',
+                    category: '',
+                    image_url: '',
+                  });
+                  await load();
+                } catch (submitError) {
+                  setError(submitError instanceof Error ? submitError.message : 'Failed to create product');
+                }
               }}
             >
-              <input className="w-full border border-slate-200 px-3 py-2" placeholder="Name" value={productForm.name} onChange={(e) => setProductForm((s) => ({ ...s, name: e.target.value }))} />
-              <input className="w-full border border-slate-200 px-3 py-2" placeholder="Branch ID" value={productForm.branch_id} onChange={(e) => setProductForm((s) => ({ ...s, branch_id: e.target.value }))} />
-              <textarea className="w-full border border-slate-200 px-3 py-2" placeholder="Description" value={productForm.description} onChange={(e) => setProductForm((s) => ({ ...s, description: e.target.value }))} />
+              {[
+                ['name', 'Name'],
+                ['barcode', 'Barcode'],
+                ['branch_id', 'Branch ID'],
+                ['description', 'Description'],
+                ['bulk_unit_name', 'Bulk Unit'],
+                ['piece_unit_name', 'Piece Unit'],
+                ['units_per_bulk', 'Units Per Bulk'],
+                ['selling_price_per_piece', 'Selling Price Per Piece'],
+                ['selling_price_per_bulk', 'Selling Price Per Bulk'],
+                ['category', 'Category'],
+                ['image_url', 'Image URL'],
+              ].map(([key, label]) => (
+                <input
+                  key={key}
+                  className="w-full border border-slate-200 px-3 py-2"
+                  placeholder={label}
+                  value={(productForm as any)[key]}
+                  onChange={(e) => setProductForm((s) => ({ ...s, [key]: e.target.value }))}
+                />
+              ))}
               <button className="w-full bg-slate-950 px-4 py-2 text-white">Save product</button>
             </form>
           </div>
@@ -127,7 +204,12 @@ function CatalogRoute() {
                 className="border border-slate-200 p-4 space-y-3"
                 onSubmit={async (e) => {
                   e.preventDefault();
-                  await entityApi.products.update(selectedProduct.id, productEditForm);
+                  await entityApi.products.update(selectedProduct.id, {
+                    ...productEditForm,
+                    units_per_bulk: Number(productEditForm.units_per_bulk || 1),
+                    selling_price_per_piece: Number(productEditForm.selling_price_per_piece || 0),
+                    selling_price_per_bulk: Number(productEditForm.selling_price_per_bulk || 0),
+                  });
                   await load();
                 }}
               >
