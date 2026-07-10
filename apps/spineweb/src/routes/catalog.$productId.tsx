@@ -269,13 +269,13 @@ function ProductDetailRoute() {
             <section className="border border-slate-200 bg-white p-5 shadow-sm">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <h3 className="text-xl font-semibold tracking-tight text-slate-950">Create batch</h3>
+                  <h3 className="text-xl font-semibold tracking-tight text-slate-950">Add stock</h3>
                   <p className="mt-1 text-sm text-slate-500">
-                    Add a new batch for this product. The detail drawer below can then be used to inspect or adjust it.
+                    Confirm a stock receipt for this product. The backend will create the batch, record the stock movement, and update inventory together.
                   </p>
                 </div>
                 <span className="border border-slate-200 px-3 py-2 text-xs uppercase tracking-[0.25em] text-slate-500">
-                  Product-bound
+                  Stock receipt
                 </span>
               </div>
 
@@ -363,8 +363,8 @@ function ProductDetailRoute() {
                   value={batchForm.remaining_quantity}
                   onChange={(e) => setBatchForm((curr) => ({ ...curr, remaining_quantity: e.target.value }))}
                 />
-                <button className="sm:col-span-2 border border-slate-900 bg-slate-950 px-4 py-2 text-white">
-                  Save batch
+                  <button className="sm:col-span-2 border border-slate-900 bg-slate-950 px-4 py-2 text-white">
+                  Confirm stock
                 </button>
               </form>
             </section>
