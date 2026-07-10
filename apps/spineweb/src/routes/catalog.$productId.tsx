@@ -3,7 +3,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { DashboardShell } from '#/components/admin/dashboard-shell';
 import { Drawer } from '#/components/admin/drawer';
 import { ModulePage } from '#/components/admin/module-page';
-import { entityApi } from '#/lib/entity-api';
 import { spineAdminApi } from '#/lib/spine-admin-api';
 
 export const Route = createFileRoute('/catalog/$productId')({
@@ -55,25 +54,14 @@ function ProductDetailRoute() {
   });
 
   const load = async () => {
-    const [productRes, batchRes, inventoryRes, salesItemRes, movementRes] = await Promise.all([
-      entityApi.products.get(productId),
-      entityApi.batches.list(),
-      entityApi.inventory.list(),
-      spineAdminApi.salesItems.list(),
-      spineAdminApi.stockMovements.list(),
-    ]);
-
+    const productRes = await spineAdminApi.products.get(productId);
     const currentProduct = productRes.data;
-    const productBatches = batchRes.data.filter((item) => item.product_id === productId);
-    const productInventory = inventoryRes.data.filter((item) => item.product_id === productId);
-    const productSalesItems = salesItemRes.data.filter((item) => item.product_id === productId);
-    const productMovements = movementRes.data.filter((item) => item.product_id === productId);
 
     setProduct(currentProduct);
-    setBatches(productBatches);
-    setInventory(productInventory);
-    setSalesItems(productSalesItems);
-    setMovements(productMovements);
+    setBatches(currentProduct.batches ?? []);
+    setInventory(currentProduct.inventory ?? []);
+    setSalesItems(currentProduct.sales_items ?? []);
+    setMovements(currentProduct.stock_movements ?? []);
   };
 
   useEffect(() => {

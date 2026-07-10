@@ -30,6 +30,9 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
 const toBody = (payload: Record<string, unknown>) => JSON.stringify(payload);
 
 export const spineAdminApi = {
+  products: {
+    get: (id: string) => request<ApiResponse<any>>(`/v1/admin/spine/products/${id}`),
+  },
   globalProducts: {
     list: () => request<ApiResponse<any[]>>('/v1/admin/spine/global-products'),
     get: (id: string) => request<ApiResponse<any>>(`/v1/admin/spine/global-products/${id}`),
