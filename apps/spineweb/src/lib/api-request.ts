@@ -20,7 +20,7 @@ export type PagedResponse<T> = {
 
 export type QueryValue = string | number | boolean | null | undefined;
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:3003';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export function buildSearchParams(params?: Record<string, QueryValue>) {
   const searchParams = new URLSearchParams();
