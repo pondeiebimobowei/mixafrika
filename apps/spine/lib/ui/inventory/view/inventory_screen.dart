@@ -59,7 +59,7 @@ class InventoryView extends ConsumerWidget {
           data: (state) => Stack(
             children: [
               _buildContent(context, ref, state),
-              _buildFloatingDock(context, state),
+              _buildFloatingDock(context),
             ],
           ),
           loading: () => Center(child: SpinnerWidget.spinner()),
@@ -80,106 +80,112 @@ class InventoryView extends ConsumerWidget {
     InventoryState state,
   ) {
     return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 16),
-          _buildStats(context, state),
-          const SizedBox(height: 28),
-          _buildFilters(context, ref, state),
-          const SizedBox(height: 28),
-          _buildSearchBar(context, ref),
-          const SizedBox(height: 32),
-          _buildListHeader(context, state),
-          // const SizedBox(height: 16),
-          _buildInventoryList(context, ref, state),
-          const SizedBox(height: 120), // Spacing for Dock
-        ],
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 16),
+            _buildStats(context, state),
+            const SizedBox(height: 16),
+            _buildFilters(context, ref, state),
+            const SizedBox(height: 20),
+            _buildSearchBar(context, ref),
+            const SizedBox(height: 28),
+            _buildListHeader(context, state),
+            const SizedBox(height: 16),
+            _buildInventoryList(context, ref, state),
+          ],
       ),
     );
   }
 
   Widget _buildStats(BuildContext context, InventoryState state) {
     final colors = context.theme.colors;
-
-    return Row(
+    return Column(
       children: [
-        Expanded(
-          child: _buildStatCard(
-            context,
-            'STOCK WORTH',
-            formatCurrency(state.stockWorth),
-            'Cost value of inventory',
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: _buildStatCard(
-            context,
-            'EST. PROFIT',
-            formatCurrency(state.estProfit),
-            'Potential earnings',
-            valueColor: colors.primary,
-          ),
+        Row(
+          children: [
+            Expanded(
+              child: _buildStatCard(
+                context,
+                title: 'STOCK WORTH',
+                value: formatCurrency(state.stockWorth),
+                subtitle: 'Cost value of inventory',
+                accent: colors.primary,
+                icon: FLucideIcons.package,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: _buildStatCard(
+                context,
+                title: 'EST. PROFIT',
+                value: formatCurrency(state.estProfit),
+                subtitle: 'Potential earnings',
+                accent: colors.secondary,
+                icon: Icons.trending_up_rounded,
+              ),
+            ),
+          ],
         ),
       ],
     );
   }
 
   Widget _buildStatCard(
-    BuildContext context,
-    String title,
-    String value,
-    String sub, {
-    Color? valueColor,
+    BuildContext context, {
+    required String title,
+    required String value,
+    required String subtitle,
+    required Color accent,
+    required IconData icon,
   }) {
     final colors = context.theme.colors;
 
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            colors.secondaryForeground.withValues(alpha: 0.8),
-            colors.secondaryForeground.withValues(alpha: 0.4),
-          ],
-        ),
-        borderRadius: BorderRadius.circular(28),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: colors.primary.withValues(alpha: 0.08),
+          color: colors.border.withValues(alpha: 0.6),
         ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Icon(
+            icon,
+            color: accent,
+            size: 20,
+          ),
+
+          const SizedBox(height: 20),
+
           Text(
             title,
             style: TextStyle(
-              fontSize: 9,
+              fontSize: 11,
               fontWeight: FontWeight.w900,
-              letterSpacing: 1.5,
-              color: colors.primary.withValues(alpha: 0.7),
+              letterSpacing: 1.35,
+              color: accent,
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
           Text(
             value,
             style: TextStyle(
-              fontSize: 20,
+              fontSize: 23,
               fontWeight: FontWeight.w900,
-              color: valueColor ?? colors.primaryForeground,
-              letterSpacing: -0.5,
+              color: colors.primaryForeground,
+              letterSpacing: -1.1,
             ),
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 8),
           Text(
-            sub,
+            subtitle,
             style: TextStyle(
-              fontSize: 10,
-              fontWeight: FontWeight.w600,
-              color: colors.primaryForeground.withValues(alpha: 0.4),
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: colors.primaryForeground.withValues(alpha: 0.48),
             ),
           ),
         ],
@@ -206,6 +212,7 @@ class InventoryView extends ConsumerWidget {
             () => ref
                 .read(inventoryViewModelProvider.notifier)
                 .setFilter(InventoryFilter.all),
+            iconColor: context.theme.colors.primary,
           ),
           const SizedBox(width: 12),
           _buildFilterItem(
@@ -217,7 +224,7 @@ class InventoryView extends ConsumerWidget {
             () => ref
                 .read(inventoryViewModelProvider.notifier)
                 .setFilter(InventoryFilter.lowStock),
-            iconColor: Colors.redAccent,
+            iconColor: context.theme.colors.destructive,
           ),
           const SizedBox(width: 12),
           _buildFilterItem(
@@ -229,7 +236,7 @@ class InventoryView extends ConsumerWidget {
             () => ref
                 .read(inventoryViewModelProvider.notifier)
                 .setFilter(InventoryFilter.expiring),
-            iconColor: Colors.orangeAccent,
+            iconColor: context.theme.colors.secondary,
           ),
         ],
       ),
@@ -243,7 +250,7 @@ class InventoryView extends ConsumerWidget {
     IconData icon,
     bool isSelected,
     VoidCallback onTap, {
-    Color? iconColor,
+    required Color iconColor,
   }) {
     final colors = context.theme.colors;
     return GestureDetector(
@@ -252,14 +259,12 @@ class InventoryView extends ConsumerWidget {
         height: 64,
         padding: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
-          color: isSelected
-              ? colors.primary
-              : colors.secondaryForeground.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(20),
+          color: colors.card,
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: isSelected
-                ? colors.primary
-                : colors.primary.withValues(alpha: 0.05),
+                ? iconColor
+                : colors.border.withValues(alpha: 0.9),
           ),
         ),
         child: Row(
@@ -269,13 +274,13 @@ class InventoryView extends ConsumerWidget {
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? Colors.black.withValues(alpha: 0.1)
-                    : colors.primary.withValues(alpha: 0.05),
+                    ? iconColor.withValues(alpha: 0.2)
+                    : iconColor.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(
                 icon,
-                color: isSelected ? Colors.black : (iconColor ?? colors.primary),
+                color: iconColor,
                 size: 18,
               ),
             ),
@@ -289,7 +294,7 @@ class InventoryView extends ConsumerWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w900,
-                    color: isSelected ? Colors.black : colors.primaryForeground,
+                    color: colors.primaryForeground,
                   ),
                 ),
                 Text(
@@ -299,8 +304,8 @@ class InventoryView extends ConsumerWidget {
                     fontWeight: FontWeight.w900,
                     letterSpacing: 0.5,
                     color: isSelected
-                        ? Colors.black.withValues(alpha: 0.6)
-                        : colors.primaryForeground.withValues(alpha: 0.4),
+                        ? iconColor
+                        : colors.primaryForeground.withValues(alpha: 0.8),
                   ),
                 ),
               ],
@@ -333,8 +338,9 @@ class InventoryView extends ConsumerWidget {
           const SizedBox(width: 12),
           Expanded(
             child: TextField(
-              onChanged: (v) =>
-                  ref.read(inventoryViewModelProvider.notifier).setSearchQuery(v),
+              onChanged: (v) => ref
+                  .read(inventoryViewModelProvider.notifier)
+                  .setSearchQuery(v),
               style: TextStyle(
                 color: colors.primaryForeground,
                 fontSize: 14,
@@ -497,14 +503,15 @@ class InventoryView extends ConsumerWidget {
 
     return GestureDetector(
       onTap: () => context.go(
-          '${Routes.inventory}/${Routes.productDetails}/${item.product.id}'),
+        '${Routes.inventory}/${Routes.productDetails}/${item.product.id}',
+      ),
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: colors.secondaryForeground.withValues(alpha: 0.3),
-          borderRadius: BorderRadius.circular(28),
+          color: colors.card.withValues(alpha: 0.3),
+          borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: colors.primary.withValues(alpha: 0.05),
+            color: colors.border.withValues(alpha: 0.6),
           ),
         ),
         child: Column(
@@ -635,7 +642,7 @@ class InventoryView extends ConsumerWidget {
     );
   }
 
-  Widget _buildFloatingDock(BuildContext context, InventoryState state) {
+  Widget _buildFloatingDock(BuildContext context) {
     final colors = context.theme.colors;
     return Positioned(
       left: 16,
@@ -663,8 +670,7 @@ class InventoryView extends ConsumerWidget {
             Expanded(
               child: FButton(
                 variant: .outline,
-                onPress: () =>
-                    context.go('${Routes.inventory}/${Routes.addStock}'),
+                onPress: () => context.go('${Routes.inventory}/${Routes.addStock}'),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -687,8 +693,7 @@ class InventoryView extends ConsumerWidget {
             const SizedBox(width: 12),
             Expanded(
               child: FButton(
-                onPress: () =>
-                    context.go('${Routes.inventory}/${Routes.addProduct}'),
+                onPress: () => context.go('${Routes.inventory}/${Routes.addProduct}'),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

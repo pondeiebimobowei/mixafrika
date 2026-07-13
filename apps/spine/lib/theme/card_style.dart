@@ -81,6 +81,7 @@ FCardStyle cardStyle({
       shape: RoundedSuperellipseBorder(
         side: BorderSide(color: colors.border, width: style.borderWidth),
         borderRadius: style.borderRadius.lg,
+        
       ),
       color: colors.card,
     ),

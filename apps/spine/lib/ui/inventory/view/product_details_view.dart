@@ -121,7 +121,7 @@ class ProductDetailsView extends ConsumerWidget {
       width: double.infinity,
       padding: const EdgeInsets.symmetric(vertical: 24),
       decoration: BoxDecoration(
-        color: colors.foreground,
+        color: colors.card,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(

@@ -10,12 +10,14 @@ import {
   Default,
   ForeignKey,
   BelongsTo,
+  HasMany,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { IProduct } from '@shared/shared/src/types/product';
 import { SyncStatus, syncStatus } from '@shared/shared/src/enums';
 import { Branch } from './branch.model';
 import { GlobalProduct } from './global-product';
+import { Inventory } from './inventory.model';
 
 @Table({ tableName: 'product' })
 export class Product
@@ -90,5 +92,8 @@ export class Product
 
   @BelongsTo(() => GlobalProduct)
   declare global_product?: GlobalProduct;
+
+  @HasMany(() => Inventory)
+    declare inventory: Inventory[];
 
 }

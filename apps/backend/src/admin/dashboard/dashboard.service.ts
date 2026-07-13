@@ -31,6 +31,7 @@ type AdminListQuery = {
   q?: string;
   business_id?: string;
   branch_id?: string;
+  batch_id?: string;
   product_id?: string;
   sale_id?: string;
   status?: string;

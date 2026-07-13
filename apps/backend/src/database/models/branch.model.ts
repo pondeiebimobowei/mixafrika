@@ -20,6 +20,7 @@ import { User } from './user.model';
 import { BranchUser } from './branch-user';
 import { Collection } from './collection.model';
 import { Product } from './product.model';
+import { Inventory } from './inventory.model';
 
 @Table({ tableName: 'branch' })
 export class Branch
@@ -85,5 +86,8 @@ export class Branch
 
   @HasMany(() => Product)
   declare products: Product[];
+
+  @HasMany(() => Inventory)
+  declare inventory: Inventory[];
 
 }

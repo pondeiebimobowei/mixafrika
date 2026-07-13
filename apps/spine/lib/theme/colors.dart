@@ -7,7 +7,7 @@ final FColors lightColors = FColors(
   brightness: .light,
     systemOverlayStyle: .dark,
     barrier: Color.fromARGB(255, 109, 40, 217),
-    background: Color.fromARGB(255, 240, 240, 240),
+    background: Color.fromARGB(255, 250, 250, 250),
     foreground: Color.fromARGB(255, 23, 26, 33),
     primary: Color.fromARGB(255, 16, 185, 129),
     primaryForeground: Color.fromARGB(255, 0, 0, 0),
@@ -21,7 +21,12 @@ final FColors lightColors = FColors(
     errorForeground: Color(0xFFFAFAFA),
     border: Color(0xFFE4E4E7),
     card: Color.fromARGB(255, 250, 250, 250),
-    extensions: const [AppColors()],
+    extensions: const [AppColors(
+      success: Color.fromARGB(255, 16, 185, 129),
+      accent: Color.fromARGB(255, 0, 0, 0),
+      white: Colors.white
+
+    )],
 );
 
 final FColors darkColors = FColors(
@@ -39,11 +44,17 @@ final FColors darkColors = FColors(
     destructive: Color.fromARGB(255, 242, 92 , 77),
     destructiveForeground: Color(0xFFFAFAFA),
     error: Color(0xFF7F1D1D),
+    
     errorForeground: Color(0xFFFAFAFA),
     border: Color(0xFF27272A),
-    card: Color.fromARGB(255, 24, 32, 46),
-    extensions: const [AppColors()],
-);
+    card: Color.fromARGB(255, 0, 0, 0),
+    extensions: const [AppColors(
+      success: Color.fromARGB(255, 16, 185, 129),
+      accent: Color.fromARGB(255, 0, 0, 0),
+      white: Colors.white
+
+    )],
+).copyWith();
 
 /// Provides convenient access to theme extensions on [FColors].
 ///
@@ -66,18 +77,33 @@ extension FColorsExtensions on FColors {
 class AppColors extends ThemeExtension<AppColors> {
   // TODO: add your color fields here:
   // final Color accent;
+  final Color accent;
+  final Color success;
+  final Color white;
 
-  const AppColors();
+  const AppColors({
+    required this.accent,
+    required this.success,
+    required this.white,
+  });
 
   @override
-  AppColors copyWith() => const AppColors();
+  AppColors copyWith({Color? accent, Color? success}) {
+    return AppColors(
+      white: white ?? this.white,
+      accent: accent ?? this.accent,
+      success: success ?? this.success,
+    );
+  }
 
   @override
   AppColors lerp(covariant AppColors? other, double t) {
-    if (other == null) {
-      return this;
-    }
-    return const AppColors();
+    if (other == null) return this;
+    return AppColors(
+      white: Color.lerp(white, other.white, t)!,
+      accent: Color.lerp(accent, other.accent, t)!,
+      success: Color.lerp(success, other.success, t)!,
+    );
   }
 
   @override
