@@ -1,5 +1,6 @@
 import 'package:drift/drift.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:spine/data/repositories/customer/customer_repository.dart';
 import 'package:spine/data/repositories/product/product_repository.dart';
 import 'package:spine/data/repositories/sales/sales_repository.dart';
@@ -38,8 +39,9 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
       final products = await _productRepository.getProductsByBranchId(
         _activeBranch?.id ?? '',
       );
-      final bankDetails = await _branchRepository
-          .getBankDetailsByBranchId(_activeBranch?.id ?? '');
+      final bankDetails = await _branchRepository.getBankDetailsByBranchId(
+        _activeBranch?.id ?? '',
+      );
       final customers = await _customerRepository.getCustomers(
         _activeBranch?.id ?? '',
       );
@@ -129,24 +131,13 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
       initialPayments = [Payments(method: method, amount: state.grandTotal)];
     }
 
-    BankDetail? selectedBank = state.selectedBankDetail;
-    final hasTransfer =
-        method == PaymentMethodType.transfer ||
-        initialPayments.any((p) => p.method == PaymentMethodType.transfer);
-
-    if (hasTransfer &&
-        selectedBank == null &&
-        state.branchBankDetails.isNotEmpty) {
-      selectedBank = state.branchBankDetails.first;
-    }
-
     state = state.copyWith(
       selectedPaymentMethod: PaymentMethod(
         type: method,
         payments: initialPayments,
       ),
-      selectedBankDetail: selectedBank,
     );
+    _ensureTransferBankSelected();
   }
 
   void selectBankDetail(BankDetail bankDetail) {
@@ -179,13 +170,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
         ),
       );
 
-      if (method == PaymentMethodType.transfer &&
-          state.selectedBankDetail == null &&
-          state.branchBankDetails.isNotEmpty) {
-        state = state.copyWith(
-          selectedBankDetail: state.branchBankDetails.first,
-        );
-      }
+      _ensureTransferBankSelected();
     }
   }
 
@@ -214,15 +199,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
         payments: payments,
       ),
     );
-
-    if (availableMethods.isNotEmpty &&
-        availableMethods.first == PaymentMethodType.transfer &&
-        state.selectedBankDetail == null &&
-        state.branchBankDetails.isNotEmpty) {
-      state = state.copyWith(
-        selectedBankDetail: state.branchBankDetails.first,
-      );
-    }
+    _ensureTransferBankSelected();
   }
 
   void removeMultiPaymentMethod(int index) {
@@ -247,7 +224,6 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
   }
 
   void selectCustomer(CustomerData? customer) {
-    print('Selecting customer: ${customer?.name}');
     state = state.copyWith(selectedCustomer: customer);
   }
 
@@ -277,12 +253,13 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
   }
 
   Future<ApiResponse<void>> checkout() async {
-    if (state.cartItems.isEmpty) {
-      return ApiResponse(success: false, message: 'Cart is empty', data: null);
-    }
-
-    if (state.selectedPaymentMethod == null) {
-      return ApiResponse(success: false, message: 'No payment method selected', data: null);
+    final validationMessage = state.checkoutValidationMessage;
+    if (validationMessage != null) {
+      return ApiResponse(
+        success: false,
+        message: validationMessage,
+        data: null,
+      );
     }
 
     state = state.copyWith(isLoading: true);
@@ -310,7 +287,9 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
           costPrice: item.product?.sellingPricePerPiece ?? 0,
           name: item.product?.name ?? item.manualName ?? 'none',
           productId: item.product?.id,
-          quantity: item.unit == SaleUnit.piece ? item.quantity : item.quantity * (item.product?.unitsPerBulk ?? 1),
+          quantity: item.unit == SaleUnit.piece
+              ? item.quantity
+              : item.quantity * (item.product?.unitsPerBulk ?? 1),
           type: item.type,
           description: '',
           unitPrice: item.unitPrice,
@@ -335,12 +314,28 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
         );
       }).toList();
       final res = await _salesRepository.createSale(sale, items, paymentsList);
-      state = CreateSaleState(quickPicks: state.quickPicks); // Reset cart
+      state = CreateSaleState(quickPicks: state.quickPicks);
       return res;
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
       return ApiResponse(success: false, message: e.toString(), data: null);
     }
+  }
+
+  void _ensureTransferBankSelected() {
+    if (!state.requiresBankSelection) return;
+    if (state.selectedBankDetail != null) return;
+    if (state.branchBankDetails.isEmpty) return;
+
+    state = state.copyWith(selectedBankDetail: state.branchBankDetails.first);
+  }
+
+  String formatCurrency(int amount) {
+    return NumberFormat.currency(
+      locale: 'en_NG',
+      symbol: '₦',
+      decimalDigits: 0,
+    ).format(amount);
   }
 }
 

@@ -87,7 +87,9 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
                         vertical: 14,
                       ),
                       decoration: BoxDecoration(
-                        color: colors.secondaryForeground.withValues(alpha: 0.3),
+                        color: colors.secondaryForeground.withValues(
+                          alpha: 0.3,
+                        ),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: colors.primary.withValues(alpha: 0.05),
@@ -133,7 +135,11 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        Expanded(child: Divider(color: colors.primary.withValues(alpha: 0.1))),
+                        Expanded(
+                          child: Divider(
+                            color: colors.primary.withValues(alpha: 0.1),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -157,8 +163,12 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
                                 begin: Alignment.topLeft,
                                 end: Alignment.bottomRight,
                                 colors: [
-                                  colors.secondaryForeground.withValues(alpha: 0.8),
-                                  colors.secondaryForeground.withValues(alpha: 0.4),
+                                  colors.secondaryForeground.withValues(
+                                    alpha: 0.8,
+                                  ),
+                                  colors.secondaryForeground.withValues(
+                                    alpha: 0.4,
+                                  ),
                                 ],
                               ),
                               borderRadius: BorderRadius.circular(24),
@@ -197,273 +207,293 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
                   const SizedBox(height: 32),
                 ],
 
-                  // Translucent Cart Header
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Row(
-                      children: [
-                        Text(
-                          'CART',
+                // Translucent Cart Header
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: Row(
+                    children: [
+                      Text(
+                        'CART',
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w900,
+                          letterSpacing: 1.5,
+                          color: colors.primary.withValues(alpha: 0.7),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: colors.primary.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: Text(
+                          state.cartItems.length.toString(),
                           style: TextStyle(
+                            color: colors.primary,
                             fontSize: 10,
                             fontWeight: FontWeight.w900,
-                            letterSpacing: 1.5,
-                            color: colors.primary.withValues(alpha: 0.7),
                           ),
                         ),
-                        const SizedBox(width: 8),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-                          decoration: BoxDecoration(
-                            color: colors.primary.withValues(alpha: 0.1),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            state.cartItems.length.toString(),
-                            style: TextStyle(
-                              color: colors.primary,
-                              fontSize: 10,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                        ),
-                        const Spacer(),
-                        if (state.cartItems.isNotEmpty)
-                          GestureDetector(
-                            // onTap: () => viewModel.clearCart(),
-                            child: Text(
-                              'Clear All',
-                              style: TextStyle(
-                                color: colors.destructive.withValues(alpha: 0.6),
-                                fontSize: 10,
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Cart Items
-                  Expanded(
-                    child: state.cartItems.isEmpty
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Opacity(
-                                  opacity: 0.2,
-                                  child: Icon(
-                                    Icons.shopping_bag_rounded,
-                                    size: 80,
-                                    color: colors.primary,
-                                  ),
-                                ),
-                                const SizedBox(height: 16),
-                                Text(
-                                  'Your basket is empty',
-                                  style: TextStyle(
-                                    color: colors.mutedForeground,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        : ListView.builder(
-                            itemCount: state.cartItems.length,
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            itemBuilder: (context, index) {
-                              final item = state.cartItems[index];
-                              return Dismissible(
-                                key: UniqueKey(),
-                                direction: DismissDirection.endToStart,
-                                background: Container(
-                                  alignment: Alignment.centerRight,
-                                  padding: const EdgeInsets.only(right: 24),
-                                  margin: const EdgeInsets.only(bottom: 12),
-                                  decoration: BoxDecoration(
-                                    color: colors.destructive.withValues(alpha: 0.1),
-                                    borderRadius: BorderRadius.circular(24),
-                                  ),
-                                  child: Icon(Icons.delete_sweep_rounded, color: colors.destructive),
-                                ),
-                                onDismissed: (_) => viewModel.removeFromCart(item.id),
-                                child: _buildCartItem(item, viewModel, colors),
-                              );
-                            },
-                          ),
-                  ),
-
-                  const SizedBox(height: 120), // Spacing for Dock
-                ],
-              ),
-
-              // --- FLOATING ACTION DOCK ---
-              Positioned(
-                left: 16,
-                right: 16,
-                bottom: 30,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: colors.secondaryForeground,
-                    borderRadius: BorderRadius.circular(32),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.3),
-                        blurRadius: 30,
-                        offset: const Offset(0, 10),
                       ),
-                    ],
-                    border: Border.all(
-                      color: colors.primary.withValues(alpha: 0.1),
-                      width: 1,
-                    ),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      // Customer Selection Row
-                      GestureDetector(
-                        onTap: () => _showCustomerSelection(context),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: colors.primary.withValues(alpha: 0.05),
-                              ),
+                      const Spacer(),
+                      if (state.cartItems.isNotEmpty)
+                        GestureDetector(
+                          // onTap: () => viewModel.clearCart(),
+                          child: Text(
+                            'Clear All',
+                            style: TextStyle(
+                              color: colors.destructive.withValues(alpha: 0.6),
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
                             ),
                           ),
-                          child: Row(
+                        ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // Cart Items
+                Expanded(
+                  child: state.cartItems.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Icon(
-                                state.selectedCustomer != null 
-                                  ? Icons.person_rounded 
-                                  : Icons.person_add_rounded,
-                                size: 18,
-                                color: state.selectedCustomer != null 
-                                  ? colors.primary 
-                                  : colors.mutedForeground,
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Text(
-                                  state.selectedCustomer?.name ?? 'Select Customer (Optional)',
-                                  style: TextStyle(
-                                    color: state.selectedCustomer != null 
-                                      ? colors.primaryForeground 
-                                      : colors.mutedForeground,
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w600,
-                                  ),
+                              Opacity(
+                                opacity: 0.2,
+                                child: Icon(
+                                  Icons.shopping_bag_rounded,
+                                  size: 80,
+                                  color: colors.primary,
                                 ),
                               ),
-                              Icon(
-                                Icons.chevron_right_rounded,
-                                size: 18,
-                                color: colors.mutedForeground.withValues(alpha: 0.5),
+                              const SizedBox(height: 16),
+                              Text(
+                                'Your basket is empty',
+                                style: TextStyle(
+                                  color: colors.mutedForeground,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14,
+                                ),
                               ),
                             ],
                           ),
+                        )
+                      : ListView.builder(
+                          itemCount: state.cartItems.length,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          itemBuilder: (context, index) {
+                            final item = state.cartItems[index];
+                            return Dismissible(
+                              key: ValueKey(item.id),
+                              direction: DismissDirection.endToStart,
+                              background: Container(
+                                alignment: Alignment.centerRight,
+                                padding: const EdgeInsets.only(right: 24),
+                                margin: const EdgeInsets.only(bottom: 12),
+                                decoration: BoxDecoration(
+                                  color: colors.destructive.withValues(
+                                    alpha: 0.1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                child: Icon(
+                                  Icons.delete_sweep_rounded,
+                                  color: colors.destructive,
+                                ),
+                              ),
+                              onDismissed: (_) =>
+                                  viewModel.removeFromCart(item.id),
+                              child: _buildCartItem(item, viewModel, colors),
+                            );
+                          },
                         ),
-                      ),
-                      
-                      // Totals and Checkout Row
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(20, 16, 12, 16),
+                ),
+
+                const SizedBox(height: 120), // Spacing for Dock
+              ],
+            ),
+
+            // --- FLOATING ACTION DOCK ---
+            Positioned(
+              left: 16,
+              right: 16,
+              bottom: 30,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: colors.secondaryForeground,
+                  borderRadius: BorderRadius.circular(32),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.3),
+                      blurRadius: 30,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
+                  border: Border.all(
+                    color: colors.primary.withValues(alpha: 0.1),
+                    width: 1,
+                  ),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // Customer Selection Row
+                    GestureDetector(
+                      onTap: () => _showCustomerSelection(context),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 12,
+                        ),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                              color: colors.primary.withValues(alpha: 0.05),
+                            ),
+                          ),
+                        ),
                         child: Row(
                           children: [
+                            Icon(
+                              state.selectedCustomer != null
+                                  ? Icons.person_rounded
+                                  : Icons.person_add_rounded,
+                              size: 18,
+                              color: state.selectedCustomer != null
+                                  ? colors.primary
+                                  : colors.mutedForeground,
+                            ),
+                            const SizedBox(width: 12),
                             Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'TOTAL',
-                                    style: TextStyle(
-                                      color: colors.primary.withValues(alpha: 0.7),
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.w900,
-                                      letterSpacing: 1.5,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    '₦${state.grandTotal}',
-                                    style: TextStyle(
-                                      color: colors.primaryForeground,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w900,
-                                      letterSpacing: -1,
-                                    ),
-                                  ),
-                                ],
+                              child: Text(
+                                state.selectedCustomer?.name ??
+                                    'Select Customer (Optional)',
+                                style: TextStyle(
+                                  color: state.selectedCustomer != null
+                                      ? colors.primaryForeground
+                                      : colors.mutedForeground,
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
-                            FButton(
-                              // size: FButtonSize.large,
-                              onPress: state.cartItems.isEmpty
-                                  ? null
-                                  : () => _showCheckoutSheet(context, ref),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Text('Checkout'),
-                                  const SizedBox(width: 12),
-                                  Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.black26,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Icon(
-                                      Icons.arrow_forward_ios_rounded,
-                                      size: 12,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
+                            Icon(
+                              Icons.chevron_right_rounded,
+                              size: 18,
+                              color: colors.mutedForeground.withValues(
+                                alpha: 0.5,
                               ),
                             ),
                           ],
                         ),
                       ),
+                    ),
+
+                    // Totals and Checkout Row
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 16, 12, 16),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'TOTAL',
+                                  style: TextStyle(
+                                    color: colors.primary.withValues(
+                                      alpha: 0.7,
+                                    ),
+                                    fontSize: 9,
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: 1.5,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  viewModel.formatCurrency(state.grandTotal),
+                                  style: TextStyle(
+                                    color: colors.primaryForeground,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.w900,
+                                    letterSpacing: -1,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          FButton(
+                            // size: FButtonSize.large,
+                            onPress: state.cartItems.isEmpty
+                                ? null
+                                : () => _showCheckoutSheet(context, ref),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                const Text('Checkout'),
+                                const SizedBox(width: 12),
+                                Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.black26,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    size: 12,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // Calculator FAB (Minimized/Repositioned)
+            Positioned(
+              bottom: 150,
+              right: 24,
+              child: GestureDetector(
+                onTap: () => _showCalculatorSheet(context, viewModel),
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  decoration: BoxDecoration(
+                    color: colors.secondaryForeground,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: colors.primary.withValues(alpha: 0.15),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.2),
+                        blurRadius: 15,
+                        offset: const Offset(0, 5),
+                      ),
                     ],
+                  ),
+                  child: Icon(
+                    Icons.calculate_rounded,
+                    color: colors.primary,
+                    size: 22,
                   ),
                 ),
               ),
-
-              // Calculator FAB (Minimized/Repositioned)
-              Positioned(
-                bottom: 150,
-                right: 24,
-                child: GestureDetector(
-                  onTap: () => _showCalculatorSheet(context, viewModel),
-                  child: Container(
-                    height: 50,
-                    width: 50,
-                    decoration: BoxDecoration(
-                      color: colors.secondaryForeground,
-                      shape: BoxShape.circle,
-                      border: Border.all(color: colors.primary.withValues(alpha: 0.15)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.2),
-                          blurRadius: 15,
-                          offset: const Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: Icon(
-                      Icons.calculate_rounded,
-                      color: colors.primary,
-                      size: 22,
-                    ),
-                  ),
-                ),
-              )          ],
+            ),
+          ],
         ),
       ),
     );
@@ -490,9 +520,7 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
       decoration: BoxDecoration(
         color: colors.secondaryForeground.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(28),
-        border: Border.all(
-          color: colors.primary.withValues(alpha: 0.05),
-        ),
+        border: Border.all(color: colors.primary.withValues(alpha: 0.05)),
       ),
       child: Column(
         children: [
@@ -506,7 +534,9 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Icon(
-                  isManual ? Icons.calculate_rounded : Icons.inventory_2_rounded,
+                  isManual
+                      ? Icons.calculate_rounded
+                      : Icons.inventory_2_rounded,
                   color: colors.primary,
                   size: 24,
                 ),
@@ -529,7 +559,7 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
                     Text(
                       isManual
                           ? 'Manual Entry'
-                          : '${item.unit == SaleUnit.piece ? item.product!.pieceUnitName : item.product!.bulkUnitName} • ₦${item.unitPrice}',
+                          : '${item.unit == SaleUnit.piece ? item.product!.pieceUnitName : item.product!.bulkUnitName} • ${viewModel.formatCurrency(item.unitPrice)}',
                       style: TextStyle(
                         color: colors.primaryForeground.withValues(alpha: 0.4),
                         fontSize: 12,
@@ -540,7 +570,7 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
                 ),
               ),
               Text(
-                '₦${item.total}',
+                viewModel.formatCurrency(item.total),
                 style: TextStyle(
                   color: colors.primary,
                   fontWeight: FontWeight.w900,
@@ -587,7 +617,10 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
                         icon: Icons.remove_rounded,
                         onTap: () {
                           if (item.quantity > 1) {
-                            viewModel.updateQuantity(item.product!.id, item.quantity - 1);
+                            viewModel.updateQuantity(
+                              item.product!.id,
+                              item.quantity - 1,
+                            );
                           }
                         },
                         colors: colors,
@@ -604,7 +637,10 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
                       const SizedBox(width: 16),
                       _buildQuantityButton(
                         icon: Icons.add_rounded,
-                        onTap: () => viewModel.updateQuantity(item.product!.id, item.quantity + 1),
+                        onTap: () => viewModel.updateQuantity(
+                          item.product!.id,
+                          item.quantity + 1,
+                        ),
                         colors: colors,
                       ),
                     ],
@@ -648,10 +684,14 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? colors.primary : colors.secondaryForeground.withValues(alpha: 0.5),
+          color: isSelected
+              ? colors.primary
+              : colors.secondaryForeground.withValues(alpha: 0.5),
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
-            color: isSelected ? colors.primary : colors.primary.withValues(alpha: 0.1),
+            color: isSelected
+                ? colors.primary
+                : colors.primary.withValues(alpha: 0.1),
           ),
         ),
         child: Text(
@@ -663,63 +703,6 @@ class _CreateSaleViewState extends ConsumerState<CreateSaleView> {
             letterSpacing: 0.5,
           ),
         ),
-      ),
-    );
-  }
-
-  void _showManualQuantityInput(
-    BuildContext context,
-    CartItem item,
-    CreateSaleViewModel viewModel,
-  ) {
-    final colors = context.theme.colors;
-    final controller = TextEditingController(text: item.quantity.toString());
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        backgroundColor: colors.secondaryForeground,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-        title: Text(
-          'Update Quantity',
-          style: TextStyle(
-            color: colors.primaryForeground,
-            fontWeight: FontWeight.w900,
-            letterSpacing: -0.5,
-          ),
-        ),
-        content: TextField(
-          controller: controller,
-          keyboardType: TextInputType.number,
-          style: TextStyle(color: colors.primaryForeground, fontWeight: FontWeight.w700),
-          autofocus: true,
-          decoration: InputDecoration(
-            hintText: 'Enter quantity',
-            hintStyle: TextStyle(color: colors.mutedForeground),
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: colors.primary.withValues(alpha: 0.2)),
-            ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: colors.primary, width: 2),
-            ),
-          ),
-        ),
-        actions: [
-          FButton(
-            variant: FButtonVariant.ghost,
-            onPress: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          FButton(
-            onPress: () {
-              final val = double.tryParse(controller.text);
-              if (val != null && val > 0 && item.product != null) {
-                viewModel.updateQuantity(item.product!.id, val.toInt());
-              }
-              Navigator.pop(context);
-            },
-            child: const Text('Save'),
-          ),
-        ],
       ),
     );
   }
@@ -851,7 +834,10 @@ class _SearchSheetState extends ConsumerState<_SearchSheet> {
           TextField(
             controller: _searchController,
             onChanged: _onSearchChanged,
-            style: TextStyle(color: colors.primaryForeground, fontWeight: FontWeight.w700),
+            style: TextStyle(
+              color: colors.primaryForeground,
+              fontWeight: FontWeight.w700,
+            ),
             decoration: InputDecoration(
               hintText: 'Type product name...',
               hintStyle: TextStyle(color: colors.mutedForeground),
@@ -879,11 +865,18 @@ class _SearchSheetState extends ConsumerState<_SearchSheet> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.search_off_rounded, size: 48, color: colors.primary.withValues(alpha: 0.2)),
+                        Icon(
+                          Icons.search_off_rounded,
+                          size: 48,
+                          color: colors.primary.withValues(alpha: 0.2),
+                        ),
                         const SizedBox(height: 16),
                         Text(
                           'No products found',
-                          style: TextStyle(color: colors.mutedForeground, fontWeight: FontWeight.w500),
+                          style: TextStyle(
+                            color: colors.mutedForeground,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ],
                     ),
@@ -895,18 +888,27 @@ class _SearchSheetState extends ConsumerState<_SearchSheet> {
                       return Container(
                         margin: const EdgeInsets.only(bottom: 12),
                         decoration: BoxDecoration(
-                          color: colors.secondaryForeground.withValues(alpha: 0.2),
+                          color: colors.secondaryForeground.withValues(
+                            alpha: 0.2,
+                          ),
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: ListTile(
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
                           leading: Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color: colors.primary.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(14),
                             ),
-                            child: Icon(Icons.inventory_2_rounded, color: colors.primary, size: 22),
+                            child: Icon(
+                              Icons.inventory_2_rounded,
+                              color: colors.primary,
+                              size: 22,
+                            ),
                           ),
                           title: Text(
                             product.name,
@@ -916,10 +918,18 @@ class _SearchSheetState extends ConsumerState<_SearchSheet> {
                             ),
                           ),
                           subtitle: Text(
-                            '₦${product.sellingPricePerPiece}',
-                            style: TextStyle(color: colors.primary, fontWeight: FontWeight.w900),
+                            widget.ref
+                                .read(createSaleViewModelProvider.notifier)
+                                .formatCurrency(product.sellingPricePerPiece),
+                            style: TextStyle(
+                              color: colors.primary,
+                              fontWeight: FontWeight.w900,
+                            ),
                           ),
-                          trailing: Icon(Icons.add_circle_outline_rounded, color: colors.primary),
+                          trailing: Icon(
+                            Icons.add_circle_outline_rounded,
+                            color: colors.primary,
+                          ),
                           onTap: () {
                             widget.ref
                                 .read(createSaleViewModelProvider.notifier)

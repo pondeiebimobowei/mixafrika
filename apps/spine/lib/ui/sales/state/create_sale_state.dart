@@ -9,11 +9,7 @@ class Payments {
   final int amount;
   final String? reference;
 
-  Payments({
-    required this.method,
-    required this.amount,
-    this.reference,
-  });
+  Payments({required this.method, required this.amount, this.reference});
 
   Payments copyWith({
     PaymentMethodType? method,
@@ -32,15 +28,9 @@ class PaymentMethod {
   final PaymentMethodType type;
   final List<Payments> payments;
 
-  PaymentMethod({
-    required this.type, 
-    required this.payments
-  });
+  PaymentMethod({required this.type, required this.payments});
 
-  PaymentMethod copyWith({
-    PaymentMethodType? type,
-    List<Payments>? payments,
-  }) {
+  PaymentMethod copyWith({PaymentMethodType? type, List<Payments>? payments}) {
     return PaymentMethod(
       type: type ?? this.type,
       payments: payments ?? this.payments,
@@ -101,7 +91,7 @@ class CreateSaleState {
   final List<ProductData> quickPicks;
   final bool isLoading;
   final String? errorMessage;
-   final PaymentMethod? selectedPaymentMethod;
+  final PaymentMethod? selectedPaymentMethod;
   final List<BankDetail> branchBankDetails;
   final BankDetail? selectedBankDetail;
   final CustomerData? selectedCustomer;
@@ -123,11 +113,56 @@ class CreateSaleState {
   int get totalPaid {
     if (selectedPaymentMethod == null) return 0;
 
-    return selectedPaymentMethod!.payments
-        .fold(0, (sum, payment) => sum + payment.amount);
+    return selectedPaymentMethod!.payments.fold(
+      0,
+      (sum, payment) => sum + payment.amount,
+    );
   }
 
   int get balance => grandTotal - totalPaid;
+
+  bool get hasTransferPayment =>
+      selectedPaymentMethod?.type == PaymentMethodType.transfer ||
+      (selectedPaymentMethod?.type == PaymentMethodType.multiPay &&
+          selectedPaymentMethod!.payments.any(
+            (payment) => payment.method == PaymentMethodType.transfer,
+          ));
+
+  bool get requiresBankSelection =>
+      hasTransferPayment && branchBankDetails.isNotEmpty;
+
+  bool get canCheckout => checkoutValidationMessage == null;
+
+  String? get checkoutValidationMessage {
+    if (cartItems.isEmpty) {
+      return 'Cart is empty';
+    }
+    if (selectedPaymentMethod == null) {
+      return 'No payment method selected';
+    }
+    if (requiresBankSelection && selectedBankDetail == null) {
+      return 'Select a bank account for transfer payments';
+    }
+    if (selectedPaymentMethod!.payments.any((payment) => payment.amount < 0)) {
+      return 'Payment amounts cannot be negative';
+    }
+    if (selectedPaymentMethod!.payments.any((payment) => payment.amount == 0)) {
+      return 'Payment amount cannot be zero';
+    }
+    if (totalPaid > grandTotal) {
+      return 'Payment total cannot exceed the sale total';
+    }
+    if (selectedPaymentMethod!.type != PaymentMethodType.payLater &&
+        balance > 0) {
+      return 'Payment total must cover the sale total';
+    }
+    if (selectedPaymentMethod!.type == PaymentMethodType.payLater &&
+        totalPaid > 0) {
+      return 'Pay later sales should not collect payment now';
+    }
+
+    return null;
+  }
 
   CreateSaleState copyWith({
     List<CartItem>? cartItems,

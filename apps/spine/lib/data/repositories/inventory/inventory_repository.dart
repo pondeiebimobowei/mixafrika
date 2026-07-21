@@ -177,9 +177,11 @@ class InventoryRepository implements InventoryRepositoryAbstract {
     await _db.into(_db.stockMovement).insert(stockMovement);
 
     await _db.customUpdate(
-      'UPDATE inventory SET quantity = quantity + ? WHERE product_id = ? AND branch_id = ? AND deleted_at IS NULL',
+      'UPDATE inventory SET quantity = quantity + ?, sync_status = ?, sync_date = ? WHERE product_id = ? AND branch_id = ? AND deleted_at IS NULL',
       variables: [
         Variable.withInt(pieceQuantity),
+        Variable.withString('pending'),
+        Variable.withDateTime(now),
         Variable.withString(productId),
         Variable.withString(branchId),
       ],

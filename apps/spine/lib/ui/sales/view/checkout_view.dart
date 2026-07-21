@@ -4,6 +4,7 @@ import 'package:forui/forui.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/routing/routes.dart';
+import 'package:spine/theme/theme.dart';
 import 'package:spine/ui/sales/state/create_sale_state.dart';
 import 'package:spine/ui/sales/view/customer_selection_sheet.dart';
 import 'package:spine/ui/sales/view_model/create_sale_view_model.dart';
@@ -53,7 +54,7 @@ class CheckoutView extends ConsumerWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      '₦${state.grandTotal}',
+                      viewModel.formatCurrency(state.grandTotal),
                       style: const TextStyle(
                         fontSize: 48,
                         fontWeight: FontWeight.w900,
@@ -293,13 +294,7 @@ class CheckoutView extends ConsumerWidget {
                   ),
                 ],
                 const SizedBox(height: 24),
-                if (state.selectedPaymentMethod?.type ==
-                        PaymentMethodType.transfer ||
-                    (state.selectedPaymentMethod?.type ==
-                            PaymentMethodType.multiPay &&
-                        state.selectedPaymentMethod!.payments.any(
-                          (p) => p.method == PaymentMethodType.transfer,
-                        ))) ...[
+                if (state.requiresBankSelection) ...[
                   Text(
                     'BUSINESS BRANCH BANK DETAILS',
                     style: TextStyle(
@@ -360,7 +355,7 @@ class CheckoutView extends ConsumerWidget {
                       ),
                     ),
                     Text(
-                      '₦${state.balance}',
+                      viewModel.formatCurrency(state.balance),
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -378,14 +373,12 @@ class CheckoutView extends ConsumerWidget {
               SizedBox(
                 width: double.infinity,
                 child: Material(
-                  color: state.selectedPaymentMethod == null || state.isLoading
+                  color: !state.canCheckout || state.isLoading
                       ? const Color(0xFF334155)
                       : const Color(0xFF475569),
                   borderRadius: BorderRadius.circular(12),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(12),
-                    onTap:
-                        state.selectedPaymentMethod == null || state.isLoading
+                  child: FButton(
+                    onPress: !state.canCheckout || state.isLoading
                         ? null
                         : () async {
                             final res = await viewModel.checkout();
@@ -407,14 +400,14 @@ class CheckoutView extends ConsumerWidget {
                             }
                           },
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      padding: const EdgeInsets.symmetric(vertical: 4),
                       child: Center(
                         child: state.isLoading
                             ? SpinnerWidget.spinner()
-                            : const Text(
+                            : Text(
                                 'Finish & Record Sale',
                                 style: TextStyle(
-                                  color: Colors.white54,
+                                  color: colors.app.white,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),
@@ -631,7 +624,7 @@ class BankDetailCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: isSelected
-            ? const Color(0xFF1DB978).withOpacity(0.1)
+            ? const Color(0xFF1DB978).withValues(alpha: 0.1)
             : const Color(0xFF1E293B),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
