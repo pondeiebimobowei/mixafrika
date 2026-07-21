@@ -5,6 +5,7 @@ import 'package:spine/drift/database.dart';
 import 'package:spine/routing/routes.dart';
 import 'package:spine/theme/app-theme.dart';
 import 'package:spine/theme/text-typography.dart';
+import 'package:spine/theme/theme.dart';
 import 'package:spine/ui/home/view_model/home_view_model.dart';
 import 'package:spine/ui/business/state/active_business_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -216,7 +217,7 @@ class HomeView extends ConsumerWidget {
                   _buildActivityCard(context, homeState),
                   const SizedBox(height: 24),
                   _buildQuickActions(context),
-                  const SizedBox(height: 24),
+                  const SizedBox(height: 20),
                   _buildMenuGrid(context),
                   const SizedBox(height: 32),
                   _buildStockAlertsSection(context, homeState),
@@ -250,15 +251,16 @@ class HomeView extends ConsumerWidget {
                 children: [
                   Icon(
                     Icons.location_on_outlined,
-                    size: 12,
+                    size: 18,
                     color: colors.primary,
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: RegularText(
                       title: activeBranch?.name ?? "Select Shop",
-                      style: context.theme.typography.body.xs.copyWith(
-                        fontWeight: FontWeight.bold,
+                      style: context.theme.typography.body.xs2.copyWith(
+                        // fontSize: 8,
+                        fontWeight: FontWeight.w900,
                       ),
                     ),
                   ),
@@ -266,7 +268,7 @@ class HomeView extends ConsumerWidget {
                     Icons.keyboard_arrow_down,
                     textDirection: TextDirection.rtl,
                     color: colors.primaryForeground,
-                    size: 12,
+                    size: 18,
                   ),
                 ],
               ),
@@ -275,15 +277,15 @@ class HomeView extends ConsumerWidget {
         ),
         const SizedBox(width: 8),
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-          width: 80,
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+          width: 60,
           // color: colors.destructive,
           decoration: BoxDecoration(
             border: BoxBorder.all(
               color: colors.destructive.withValues(alpha: .6),
             ),
             // color: colors.destructive,
-            borderRadius: BorderRadius.circular(24),
+            borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center, // horizontal center
@@ -292,26 +294,27 @@ class HomeView extends ConsumerWidget {
               Icon(
                 Icons.receipt_long_outlined,
                 color: colors.destructive,
-                size: 14,
+                size: 18,
               ),
               SizedBox(width: 4),
-              Text(
-                homeState?.todaySummary.value?.pending != null
+              RegularText(
+                title: homeState?.todaySummary.value?.pending != null
                     ? formatCurrency(homeState!.todaySummary.value!.pending)
                     : '₦0',
-                style: context.theme.typography.body.xs.copyWith(
+                style: context.theme.typography.body.xs2.copyWith(
                   fontWeight: FontWeight.bold,
                   color: colors.destructive,
-                  fontSize: 8,
                 ),
               ),
             ],
           ),
         ),
         const SizedBox(width: 8),
-        IconWidget(icon: Icons.videocam_outlined),
+        IconWidget(
+          icon: Icons.videocam_outlined, size: 20, color: colors.secondary,),
         const SizedBox(width: 4),
         IconWidget(
+          size: 20,
           icon: Icons.settings_outlined,
           onTap: () => context.push(Routes.shopManagement),
         ),
@@ -352,11 +355,11 @@ class HomeView extends ConsumerWidget {
               ? null
               : () => ref.read(syncViewModelProvider.notifier).runSync(),
           child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
             decoration: BoxDecoration(
               color: tone.withValues(alpha: .08),
               border: Border.all(color: tone.withValues(alpha: .25)),
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: Row(
               children: [
@@ -468,8 +471,9 @@ class HomeView extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: colors.secondaryForeground,
-        borderRadius: BorderRadius.circular(24),
+        color: colors.app.accent,
+        border: Border.all(color: colors.border),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -478,26 +482,29 @@ class HomeView extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                "TODAY'S ACTIVITY (NET REVENUE)",
+                "Today's Activity (Net Revenue)",
                 style: typography.body.xs2.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: colors.primaryForeground.withValues(alpha: .6),
+                  color: colors.app.white,
                 ),
               ),
-              Icon(Icons.refresh, size: 16, color: colors.primaryForeground),
+              Icon(Icons.refresh, size: 16, color: colors.app.white),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 8),
           HeadingText(
             title: formatCurrency(summary.netRevenue),
-            style: typography.body.xl3.copyWith(fontWeight: FontWeight.w800),
+            style: typography.body.xl3.copyWith(
+              fontWeight: FontWeight.w800,
+               color: colors.app.white
+            ),
           ),
-          const SizedBox(height: 8),
+          // const SizedBox(height: 8),
           Row(
             children: [
               _buildStatusIndicator(
                 context,
-                '${formatCurrency(summary.realized)} REALIZED',
+                '${formatCurrency(summary.realized)} Realised',
                 colors.primary,
               ),
               const SizedBox(width: 12),
@@ -505,7 +512,7 @@ class HomeView extends ConsumerWidget {
                 context,
                 summary.pending == 0
                     ? 'NO PENDING'
-                    : '${formatCurrency(summary.pending)} PENDING',
+                    : '${formatCurrency(summary.pending)} Pending',
                 colors.destructive,
               ),
             ],
@@ -515,14 +522,14 @@ class HomeView extends ConsumerWidget {
             children: [
               _buildSubMetricCard(
                 context,
-                'EST. PROFIT',
+                'Est. Profit',
                 formatCurrency(summary.estProfit),
                 colors.primary,
               ),
               const SizedBox(width: 12),
               _buildSubMetricCard(
                 context,
-                'PHYSICAL INFLOW',
+                'Physical inflow',
                 formatCurrency(summary.physicalInflow),
                 colors.secondary,
               ),
@@ -537,8 +544,8 @@ class HomeView extends ConsumerWidget {
     return Row(
       children: [
         Container(
-          width: 6,
-          height: 6,
+          width: 8,
+          height: 8,
           decoration: BoxDecoration(color: color, shape: BoxShape.circle),
         ),
         const SizedBox(width: 4),
@@ -567,7 +574,8 @@ class HomeView extends ConsumerWidget {
         style: FCardStyle(
           decoration: BoxDecoration(
             color: colors.primaryForeground.withValues(alpha: 0.05),
-            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: colors.foreground),
+            borderRadius: BorderRadius.circular(12),
           ),
           contentStyle: FCardContentStyle(
             titleTextStyle: TextStyle(),
@@ -581,7 +589,7 @@ class HomeView extends ConsumerWidget {
             Text(
               title,
               style: TextStyle(
-                color: colors.primaryForeground.withValues(alpha: .7),
+                color: colors.app.white,
                 fontSize: 9,
                 fontWeight: FontWeight.bold,
               ),
@@ -608,6 +616,7 @@ class HomeView extends ConsumerWidget {
         _buildActionCard(
           context,
           'Sell Item',
+          'Record a new sale',
           Icons.shopping_basket_outlined,
           colors.primary,
           onTap: () => context.push(Routes.createSale),
@@ -616,7 +625,8 @@ class HomeView extends ConsumerWidget {
         _buildActionCard(
           context,
           'Add Stock',
-          Icons.add_shopping_cart_outlined,
+          'Add new Inventory',
+          FLucideIcons.package,
           colors.secondary,
           onTap: () => context.push('${Routes.inventory}/${Routes.addStock}'),
         ),
@@ -627,6 +637,7 @@ class HomeView extends ConsumerWidget {
   Widget _buildActionCard(
     BuildContext context,
     String title,
+    String description,
     IconData icon,
     Color color, {
     VoidCallback? onTap,
@@ -635,14 +646,16 @@ class HomeView extends ConsumerWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          height: 140,
+          // height: 140,
+          padding: .symmetric(horizontal: 16, vertical: 24),
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [color.withValues(alpha: .8), color],
             ),
-            borderRadius: BorderRadius.circular(24),
+            
+            borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
                 color: color.withValues(alpha: .3),
@@ -652,15 +665,17 @@ class HomeView extends ConsumerWidget {
             ],
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: .start,
             children: [
               Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
                   color: Colors.white.withValues(alpha: .2),
-                  shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(8),
+                  shape: BoxShape.rectangle,
                 ),
-                child: Icon(icon, color: Colors.white, size: 28),
+                child: Icon(icon, color: Colors.white, size: 20),
               ),
               const SizedBox(height: 12),
               Text(
@@ -668,9 +683,40 @@ class HomeView extends ConsumerWidget {
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 18,
+                  fontSize: 14,
                 ),
               ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Text(
+                description,
+                style: const TextStyle(
+                  color: Colors.white,
+                  // fontWeight: FontWeight.bold,
+                  fontSize: 10,
+                ),
+              ),
+
+              const Spacer(),
+
+              Container(
+                  width: 20,
+                  height: 20,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    Icons.chevron_right,
+                    // color: colors.app.white,
+                    size: 16,
+                  ),
+              )
+
+
+                ],
+              )
             ],
           ),
         ),
@@ -689,33 +735,33 @@ class HomeView extends ConsumerWidget {
       children: [
         _buildSmallMenuCard(
           context,
-          'INVENTORY',
+          'Inventory',
           FLucideIcons.package,
           onTap: () => context.push(Routes.inventory),
         ),
         _buildSmallMenuCard(
           context,
-          'SALES LOG',
+          'Sales Log',
           FLucideIcons.list,
           onTap: () => context.push(Routes.salesLog),
         ),
         _buildSmallMenuCard(
           context,
-          'CALC',
+          'Calculator',
           Icons.calculate_outlined,
           color: Colors.orangeAccent,
           onTap: () => context.push(Routes.calculator),
         ),
         _buildSmallMenuCard(
           context,
-          'GROWTH',
+          'Growth',
           FLucideIcons.trendingUp,
           color: Colors.purpleAccent,
           onTap: () => {},
         ),
         _buildSmallMenuCard(
           context,
-          'CUSTOMERS',
+          'Customers',
           FLucideIcons.users,
           color: Colors.cyanAccent,
           onTap: () => context.push(Routes.customers),
@@ -737,7 +783,9 @@ class HomeView extends ConsumerWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: colors.secondaryForeground, // Navy blue
+          color: colors.card,
+          border: .all(color: colors.border.withValues(alpha: .6)),
+
           borderRadius: BorderRadius.circular(16),
         ),
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -818,13 +866,13 @@ class HomeView extends ConsumerWidget {
             .toList();
 
         final allAlerts = [
-          ...soldOut.map((e) => (e, 'SOLD OUT', colors.destructive, 'Restock')),
+          ...soldOut.map((e) => (e, 'Sold Out', colors.destructive, 'Restock')),
           ...criticalExpiry.map(
-            (e) => (e, 'CRITICAL EXPIRY', colors.destructive, 'Review'),
+            (e) => (e, 'Critical Expiry', colors.destructive, 'Review'),
           ),
-          ...lowStock.map((e) => (e, 'LOW STOCK', Colors.amber, 'Restock')),
+          ...lowStock.map((e) => (e, 'Low Stock', Colors.amber, 'Restock')),
           ...expiringSoon.map(
-            (e) => (e, 'BATCH EXPIRING SOON', Colors.amber, 'Review'),
+            (e) => (e, 'Batch Expiring Soon', Colors.amber, 'Review'),
           ),
         ];
 
@@ -841,7 +889,7 @@ class HomeView extends ConsumerWidget {
                   ),
                   const SizedBox(width: 8),
                   const Text(
-                    'STOCK ALERTS',
+                    'Stock Alerts',
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                   ),
                 ],
@@ -910,7 +958,7 @@ class HomeView extends ConsumerWidget {
                     ),
                     const SizedBox(width: 8),
                     const Text(
-                      'STOCK ALERTS',
+                      'Stock Alerts',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 12,
@@ -974,7 +1022,7 @@ class HomeView extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  'CRITICAL EXPIRATION ALERT',
+                  'Critical Expiry Alert',
                   style: TextStyle(color: Colors.white, fontSize: 12),
                 ),
                 Text(
@@ -1004,8 +1052,9 @@ class HomeView extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: context.theme.colors.secondaryForeground,
-        borderRadius: BorderRadius.circular(16),
+        color: context.theme.colors.card,
+        border: .all(color: context.theme.colors.border.withValues(alpha: .9)),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         children: [
@@ -1055,7 +1104,7 @@ class HomeView extends ConsumerWidget {
                 style: FBadgeStyleDelta.delta(
                   decoration: .boxDelta(
                     color: context.theme.colors.destructive.withValues(alpha: .2),
-                    borderRadius: .circular(24)
+                    borderRadius: .circular(8)
                   ),
                   
                 ),

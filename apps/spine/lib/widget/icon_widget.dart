@@ -20,16 +20,17 @@ class IconWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         decoration: BoxDecoration(
-          color: colors.secondaryForeground.withValues(alpha: 0.7),
-          shape: BoxShape.circle,
-          border: Border.all(color: colors.background.withValues(alpha: 0.05)),
+          color: colors.background,
+          shape: BoxShape.rectangle,
+          border: Border.all(color: colors.primaryForeground.withValues(alpha: 0.1), ),
+          borderRadius: BorderRadius.circular(8),
         ),
         child: Icon(
           icon,
           color: color ?? colors.primaryForeground,
-          size: size ?? 20,
+          size: size ?? 18,
         ),
       ),
     );

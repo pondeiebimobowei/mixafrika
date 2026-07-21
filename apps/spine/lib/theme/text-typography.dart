@@ -6,19 +6,18 @@ class RegularText extends StatelessWidget {
   final String title;
   final Color? color;
   final double? fontSize;
-  final bool? bold;
+  final bool bold;
   final int? maxLines;
   final TextAlign? textAlign;
   final TextStyle? style;
-
   final double? letterSpacing;
 
   const RegularText({
     super.key,
     required this.title,
-    this.fontSize,
     this.color,
-    this.bold,
+    this.fontSize,
+    this.bold = false,
     this.maxLines,
     this.textAlign,
     this.letterSpacing,
@@ -27,18 +26,18 @@ class RegularText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FColors colors = context.theme.colors;
-    String? fontFamily = GoogleFonts.manrope().fontFamily;
+    final colors = context.theme.colors;
+
     return Text(
       title,
       maxLines: maxLines,
       textAlign: textAlign,
-      overflow: maxLines == null ? TextOverflow.ellipsis : null,
-      style: style?.copyWith(
-        fontFamily: fontFamily,
-        fontSize: fontSize ?? 16,
-        color: colors.primaryForeground,
-        fontWeight: bold ?? false ? FontWeight.bold : FontWeight.normal,
+      overflow: maxLines != null ? TextOverflow.ellipsis : null,
+      style: GoogleFonts.manrope(
+        textStyle: style,
+        fontSize: fontSize,
+        color: color ?? style?.color ?? colors.primaryForeground,
+        fontWeight: bold == true ? FontWeight.bold : style?.fontWeight,
         letterSpacing: letterSpacing,
       ),
     );
@@ -136,7 +135,6 @@ class HeadingText extends StatelessWidget {
   final int? maxLines;
   final TextAlign? textAlign;
   final TextStyle? style;
-
   final double? letterSpacing;
 
   const HeadingText({
@@ -144,7 +142,7 @@ class HeadingText extends StatelessWidget {
     required this.title,
     this.fontSize,
     this.color,
-    this.bold,
+    this.bold = false,
     this.maxLines,
     this.textAlign,
     this.letterSpacing,
@@ -154,18 +152,18 @@ class HeadingText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final FColors colors = context.theme.colors;
-    String? fontFamily = GoogleFonts.manrope().fontFamily;
     return Text(
       title,
       maxLines: maxLines,
       textAlign: textAlign,
-      overflow: maxLines == null ? TextOverflow.ellipsis : null,
-      style: style?.copyWith(
-        fontFamily: fontFamily,
-        fontSize: fontSize ?? 24,
-        color: colors.primaryForeground,
-        fontWeight: bold ?? true ? FontWeight.bold : FontWeight.normal,
+      overflow: maxLines != null ? TextOverflow.ellipsis : null,
+      style: GoogleFonts.manrope(
+        textStyle: style,
+        fontSize: fontSize,
+        color: color ?? style?.color ?? colors.primaryForeground,
+        fontWeight: bold == true ? FontWeight.bold : style?.fontWeight,
         letterSpacing: letterSpacing,
+        height: 2
       ),
     );
   }

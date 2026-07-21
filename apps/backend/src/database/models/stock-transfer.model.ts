@@ -9,6 +9,7 @@ import {
   PrimaryKey,
   Default,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { SyncStatus, TransferStatus } from '@shared/shared/src/enums';
@@ -63,4 +64,13 @@ export class StockTransfer
   @ForeignKey(() => Branch)
   @Column(DataTypes.UUID)
   declare to_branch_id: string;
+
+  @BelongsTo(() => User)
+  declare created_by?: User;
+
+  @BelongsTo(() => Branch, 'from_branch_id')
+  declare from_branch?: Branch;
+
+  @BelongsTo(() => Branch, 'to_branch_id')
+  declare to_branch?: Branch;
 }

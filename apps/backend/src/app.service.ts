@@ -21,6 +21,7 @@ import { BankCard } from './database/models/bank-card.model';
 import { UserVerification } from './database/models/user-verification';
 import { Branch } from './database/models/branch.model';
 import { Product } from './database/models/product.model';
+import { Inventory } from './database/models/inventory.model';
 
 @Injectable()
 export class AppService {
@@ -46,7 +47,7 @@ export class AppService {
           }, {
             model: Branch,
             include: [
-              { model: Product }
+              { model: Product, include: [{ model: Inventory }] }
 
             ]
           },

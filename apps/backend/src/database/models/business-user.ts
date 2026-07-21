@@ -10,6 +10,7 @@ import {
   PrimaryKey,
   Default,
   ForeignKey,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { roles, SyncStatus, type Roles } from '@shared/shared/src/enums';
 import { CreationOptional } from 'sequelize';
@@ -71,4 +72,10 @@ export class BusinessUser extends Model<IBusinessUser> implements IBusinessUser 
   @ForeignKey(() => Business)
   @Column(DataType.UUID)
   declare business_id: string;
+
+  @BelongsTo(() => User)
+  declare user?: User;
+
+  @BelongsTo(() => Business)
+  declare business?: Business;
 }

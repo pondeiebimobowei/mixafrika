@@ -10,6 +10,7 @@ import {
   Default,
   ForeignKey,
   Unique,
+  BelongsTo,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { SyncStatus, syncStatus } from '@shared/shared/src/enums';
@@ -65,5 +66,8 @@ export class GlobalProduct
   @ForeignKey(() => ProductCategory)
   @Column({ type: DataType.UUID, allowNull: true, references: { model: 'product_category', key: 'id'}, onDelete:'Cascade', onUpdate: 'cascade' })
   declare product_category_id?: string;
+
+  @BelongsTo(() => ProductCategory)
+  declare product_category?: ProductCategory;
 
 }

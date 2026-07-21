@@ -154771,10 +154771,17 @@ s($,"cay","bMM",()=>A.hY(new A.brA(),t.yR))
 s($,"c93","bMh",()=>A.hY(new A.bpn(),t.cz))
 s($,"c97","bMk",()=>A.hY(new A.bps(),t.OH))
 s($,"c9d","bMn",()=>A.hY(new A.bpu(),t.QB))
+<<<<<<< HEAD
 s($,"c91","Lr",()=>{var q=A.bAr(A.bzo("http://localhost:3003/v1",A.R(["Content-Type","application/json"],t.N,t.z))),p=q.KB$
 p.G(p,new A.a8F(new A.bpm(),null,null,null))
 return q})
 s($,"c90","byx",()=>A.bAr(A.bzo("http://localhost:3003/v1",A.R(["Content-Type","application/json"],t.N,t.z))))
+=======
+s($,"c91","Lr",()=>{var q=A.bAr(A.bzo("https://api.mixafrika.com/v1",A.R(["Content-Type","application/json"],t.N,t.z))),p=q.KB$
+p.G(p,new A.a8F(new A.bpm(),null,null,null))
+return q})
+s($,"c90","byx",()=>A.bAr(A.bzo("https://api.mixafrika.com/v1",A.R(["Content-Type","application/json"],t.N,t.z))))
+>>>>>>> spine-admin-dashboard
 s($,"cak","bMH",()=>A.hY(new A.brn(),t.ZM))
 s($,"cap","bMI",()=>A.hY(new A.brq(),t.bX))
 s($,"caq","bMJ",()=>A.hY(new A.brr(),t.An))

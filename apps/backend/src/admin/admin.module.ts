@@ -7,6 +7,7 @@ import { AutditLogsModule } from './autdit_logs/autdit_logs.module';
 import { FundingModule } from './funding/funding.module';
 import { AdminCollectionModule } from './collection/collection.module';
 import { CollectionModule } from 'src/collection/collection.module';
+import { AdminDashboardModule } from './dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CollectionModule } from 'src/collection/collection.module';
     AutditLogsModule,
     FundingModule,
     AdminCollectionModule,
+    AdminDashboardModule,
   ],
 })
 export class AdminModule {}
