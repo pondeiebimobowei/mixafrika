@@ -2,6 +2,8 @@ import 'package:spine/drift/database.dart';
 
 enum SaleUnit { piece, bulk }
 
+enum CartItemType { product, manual }
+
 enum PaymentMethodType { cash, transfer, mixWallet, payLater, multiPay }
 
 class Payments {
@@ -44,18 +46,21 @@ class CartItem {
   final String? manualName;
   final int? manualPrice;
   final int quantity;
-  final String type;
+  final CartItemType type;
   final SaleUnit unit;
 
   CartItem({
     required this.id,
     this.product,
     this.manualName,
-    this.type = 'product',
+    this.type = CartItemType.product,
     this.manualPrice,
     this.quantity = 1,
     this.unit = SaleUnit.piece,
-  }) : assert(product != null || (manualName != null && manualPrice != null));
+  }) : assert(
+         (product != null) != (manualName != null && manualPrice != null),
+         'CartItem must be either a product item or a manual charge.',
+       );
 
   int get unitPrice {
     if (product != null) {
@@ -65,6 +70,10 @@ class CartItem {
     }
     return manualPrice ?? 0;
   }
+
+  bool get isManual => type == CartItemType.manual;
+
+  bool get isProduct => type == CartItemType.product;
 
   int get total => quantity * unitPrice;
 

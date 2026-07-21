@@ -5,7 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
 import 'package:spine/drift/database.dart';
 import 'package:spine/data/repositories/sales/sales_repository_abstract.dart';
+import 'package:spine/data/repositories/sales/sales_exceptions.dart';
 import 'package:spine/ui/sales/state/state.dart';
+import 'package:spine/ui/sales/state/create_sale_state.dart';
 import 'package:uuid/uuid.dart';
 
 class SalesRepository implements SalesRepositoryAbstract {
@@ -26,13 +28,13 @@ class SalesRepository implements SalesRepositoryAbstract {
         await _db.into(_db.sales).insert(sale);
 
         for (final item in items) {
-          if (item.type != 'product') {
+          if (item.type == CartItemType.manual.name) {
             await _db.into(_db.salesItem).insert(item);
             continue;
           }
 
           if (item.productId == null) {
-            throw Exception('Product item must have productId');
+            throw const ProductItemMissingProductIdException();
           }
 
           final batchQuery = _db.select(_db.spineBatch)
@@ -63,7 +65,7 @@ class SalesRepository implements SalesRepositoryAbstract {
           );
 
           if (totalAvailable < item.quantity) {
-            throw Exception('Insufficient stock for ${item.name}');
+            throw InsufficientStockException(item.name);
           }
 
           int remaining = item.quantity;
@@ -109,7 +111,7 @@ class SalesRepository implements SalesRepositoryAbstract {
           }
 
           if (remaining > 0) {
-            throw Exception('Insufficient stock for ${item.name}');
+            throw InsufficientStockException(item.name);
           }
         }
 
@@ -123,7 +125,6 @@ class SalesRepository implements SalesRepositoryAbstract {
         data: null,
       );
     } catch (e) {
-      print(e);
       rethrow;
     }
   }

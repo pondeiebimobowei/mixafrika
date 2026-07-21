@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 import 'package:spine/data/repositories/customer/customer_repository.dart';
 import 'package:spine/data/repositories/product/product_repository.dart';
+import 'package:spine/data/repositories/sales/sales_exceptions.dart';
 import 'package:spine/data/repositories/sales/sales_repository.dart';
 import 'package:spine/data/repositories/branch/branch_repository.dart';
 import 'package:spine/data/services/api/config/api_response.dart';
@@ -53,6 +54,8 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
         customers: customers,
         isLoading: false,
       );
+    } on SalesException catch (e) {
+      state = state.copyWith(isLoading: false, errorMessage: e.message);
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
     }
@@ -82,7 +85,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
         CartItem(
           id: Uuid().v4(),
           manualName: name,
-          type: 'manual',
+          type: CartItemType.manual,
           manualPrice: amount,
           quantity: 1,
         ),
@@ -290,7 +293,7 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
           quantity: item.unit == SaleUnit.piece
               ? item.quantity
               : item.quantity * (item.product?.unitsPerBulk ?? 1),
-          type: item.type,
+          type: item.type.name,
           description: '',
           unitPrice: item.unitPrice,
           total: item.total,
@@ -314,8 +317,18 @@ class CreateSaleViewModel extends StateNotifier<CreateSaleState> {
         );
       }).toList();
       final res = await _salesRepository.createSale(sale, items, paymentsList);
-      state = CreateSaleState(quickPicks: state.quickPicks);
+      state = state.copyWith(
+        cartItems: const [],
+        selectedPaymentMethod: null,
+        selectedBankDetail: null,
+        selectedCustomer: null,
+        isLoading: false,
+        clearError: true,
+      );
       return res;
+    } on SalesException catch (e) {
+      state = state.copyWith(isLoading: false, errorMessage: e.message);
+      return ApiResponse(success: false, message: e.message, data: null);
     } catch (e) {
       state = state.copyWith(isLoading: false, errorMessage: e.toString());
       return ApiResponse(success: false, message: e.toString(), data: null);
