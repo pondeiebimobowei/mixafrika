@@ -12,8 +12,8 @@ import {
   DeletedAt,
 } from 'sequelize-typescript';
 import { LoanAccount } from './loan-account.model';
-import { IRepaymentHistory } from '@shared/shared/src/types/repayment-history';
-import { RepaymentStatus } from '@shared/shared/src/enums';
+import { IRepaymentHistory } from '@mixafrica/shared';
+import { RepaymentStatus } from '@mixafrica/shared';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { Transaction } from './transaction.model';
 

@@ -13,7 +13,7 @@ import {
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { User } from './user.model';
-import { IFundingApplication } from '@shared/shared/src/types/funding-application';
+import { IFundingApplication } from '@mixafrica/shared';
 import { Cluster } from './cluster.model';
 import { Business } from './business.model';
 

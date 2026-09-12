@@ -13,9 +13,9 @@ import {
   Validate,
 } from 'sequelize-typescript';
 import { User } from './user.model';
-import { INotification } from '@shared/shared/src/types/notification';
+import { INotification } from '@mixafrica/shared';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { NotificationType, notificationType } from '@shared/shared/src/enums';
+import { NotificationType, notificationType } from '@mixafrica/shared';
 
 @Table({ tableName: 'notification' })
 export class Notification

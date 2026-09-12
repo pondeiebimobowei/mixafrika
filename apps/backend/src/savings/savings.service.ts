@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Create_savings_plan } from '@shared/shared/src/validation/create-savings-plan-dto';
+import { Create_savings_plan } from '@mixafrica/shared';
 import { SavingsHistory } from 'src/database/models/saving-history.model';
 import { Savings } from 'src/database/models/saving.model';
 import { WalletService } from '../wallet/wallet.service';

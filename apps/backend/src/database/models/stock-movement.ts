@@ -12,8 +12,8 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { SyncStatus } from '@shared/shared/src/enums';
-import { IStockMovement } from '@shared/shared/src/types/stock-movement';
+import { SyncStatus } from '@mixafrica/shared';
+import { IStockMovement } from '@mixafrica/shared';
 import { Product } from './product.model';
 import { Branch } from './branch.model';
 import { Batch } from './batch.model';

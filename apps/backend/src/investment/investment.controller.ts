@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { CreateInvestmentDto, create_investment_dto } from '@shared/shared/src/dto/investment/create-investment.dto';
+import { CreateInvestmentDto, create_investment_dto } from '@mixafrica/shared';
 import { InvestmentService } from './investment.service';
 import { ParsedToken } from 'src/decorators/parsed-token.decorator';
-import { IJwtToken } from '@shared/shared/src/types/jwt';
+import { IJwtToken } from '@mixafrica/shared';
 
 @Controller('v1/investment')
 export class InvestmentController {

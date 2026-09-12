@@ -10,8 +10,8 @@ import {
   Default,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { SyncStatus, syncStatus } from '@shared/shared/src/enums';
-import { IProductCategory } from '@shared/shared/src/types/product-category';
+import { SyncStatus, syncStatus } from '@mixafrica/shared';
+import { IProductCategory } from '@mixafrica/shared';
 
 @Table({ tableName: 'product_category' })
 export class ProductCategory

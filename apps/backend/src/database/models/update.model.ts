@@ -10,7 +10,7 @@ import {
   CreatedAt,
 } from 'sequelize-typescript';
 import { User } from './user.model';
-import { IUpdate } from '@shared/shared/src/types/update';
+import { IUpdate } from '@mixafrica/shared';
 import { CreationOptional, DataTypes } from 'sequelize';
 
 @Table({ tableName: 'update' })

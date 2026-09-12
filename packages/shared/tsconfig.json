@@ -1,14 +1,14 @@
-// shared/tsconfig.json
 {
   "compilerOptions": {
     "composite": true,
+    "module": "commonjs",
+    "target": "ES2023",
     "declaration": true,
-    "emitDeclarationOnly": true,
-    "baseUrl": ".",
-    "paths": {
-      "@shared/*": [
-        "./src/*"
-      ]
-    }
-  }
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true
+  },
+  "include": ["src/**/*"]
 }

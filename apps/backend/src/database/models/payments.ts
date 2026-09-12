@@ -13,8 +13,8 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { paymentStatus, PaymentStatus, SyncStatus, syncStatus } from '@shared/shared/src/enums';
-import { IPayment } from '@shared/shared/src/types/payments';
+import { paymentStatus, PaymentStatus, SyncStatus, syncStatus } from '@mixafrica/shared';
+import { IPayment } from '@mixafrica/shared';
 import { Sales } from './sales.model';
 
 @Table({ tableName: 'payment' })

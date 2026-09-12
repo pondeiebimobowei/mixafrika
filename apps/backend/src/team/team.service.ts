@@ -12,7 +12,7 @@ import { User } from 'src/database/models/user.model';
 import { Business } from 'src/database/models/business.model';
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
-import { syncStatus } from '@shared/shared/src/enums';
+import { syncStatus } from '@mixafrica/shared';
 import { TenantAccessService } from 'src/access/tenant-access.service';
 import { Op } from 'sequelize';
 

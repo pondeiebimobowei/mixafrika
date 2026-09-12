@@ -1,7 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
 import { ParsedToken } from 'src/decorators/parsed-token.decorator';
-import { IJwtToken } from '@shared/shared/src/types/jwt';
+import { IJwtToken } from '@mixafrica/shared';
 
 @Controller('v1/transactions')
 export class TransactionController {

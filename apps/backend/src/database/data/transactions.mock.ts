@@ -1,5 +1,5 @@
-import { ITransaction } from "@shared/shared/src/types/transaction";
-import { IUser } from "@shared/shared/src/types/user";
+import { ITransaction } from '@mixafrica/shared';
+import { IUser } from '@mixafrica/shared';
 import { v4 as uuidv4 } from 'uuid';
 
 export const mockTransactionsSeed: (response: IUser[]) => Promise<ITransaction[]> =( async (response: IUser[]) => {

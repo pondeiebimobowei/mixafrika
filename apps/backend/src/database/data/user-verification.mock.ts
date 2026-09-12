@@ -1,4 +1,4 @@
-import { IUserVerification } from '@shared/shared/src/types/user-verification';
+import { IUserVerification } from '@mixafrica/shared';
 import { v4 as uuidv4 } from 'uuid';
 
 export const mockUserVerificationSeed: (user) => Promise<IUserVerification[]> =( async (user: { id: string }[]) => {

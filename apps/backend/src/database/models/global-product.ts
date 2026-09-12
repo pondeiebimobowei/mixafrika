@@ -13,8 +13,8 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { SyncStatus, syncStatus } from '@shared/shared/src/enums';
-import { IGlobalProduct } from '@shared/shared/src/types/global-product';
+import { SyncStatus, syncStatus } from '@mixafrica/shared';
+import { IGlobalProduct } from '@mixafrica/shared';
 import { ProductCategory } from './product-category';
 
 @Table({ tableName: 'global_product' })

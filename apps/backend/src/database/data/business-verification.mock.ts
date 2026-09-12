@@ -1,4 +1,4 @@
-import { IBusinessVerification } from "@shared/shared/src/types/business-verification";
+import { IBusinessVerification } from '@mixafrica/shared';
 import { v4 as uuidv4 } from 'uuid';
 
 export const mockBusinessVerificationSeed: (business, user) => Promise<IBusinessVerification[]> =( async (business: { id: string }[], user: { id: string }[]) => {

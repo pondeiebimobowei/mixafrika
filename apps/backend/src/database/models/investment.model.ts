@@ -11,10 +11,10 @@ import {
   PrimaryKey,
   Default,
 } from 'sequelize-typescript';
-import { IInvestment } from '@shared/shared/src/types/investment';
+import { IInvestment } from '@mixafrica/shared';
 import { User } from './user.model';
 import { Cluster } from './cluster.model';
-import { Status } from '@shared/shared/src/enums';
+import { Status } from '@mixafrica/shared';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { Transaction } from './transaction.model';
 

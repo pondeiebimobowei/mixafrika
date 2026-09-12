@@ -13,8 +13,8 @@ import {
   HasMany,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { IProduct } from '@shared/shared/src/types/product';
-import { SyncStatus, syncStatus } from '@shared/shared/src/enums';
+import { IProduct } from '@mixafrica/shared';
+import { SyncStatus, syncStatus } from '@mixafrica/shared';
 import { Branch } from './branch.model';
 import { GlobalProduct } from './global-product';
 import { Inventory } from './inventory.model';

@@ -15,8 +15,8 @@ import { LoanAccount } from '../models/loan-account.model';
 import { mockBusinessUserSeed } from '../data/business_user.mock';
 import { mockBranchUserSeed } from '../data/branch_user.mock';
 import { mockBranchSeed } from '../data/branch.mock';
-import { IUser } from '@shared/shared/src/types/user';
-import { IBusiness } from '@shared/shared/src/types/business';
+import { IUser } from '@mixafrica/shared';
+import { IBusiness } from '@mixafrica/shared';
   
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {

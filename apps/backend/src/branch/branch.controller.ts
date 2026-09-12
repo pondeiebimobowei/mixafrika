@@ -1,7 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { BranchService } from './branch.service';
-import { Response } from '@shared/shared/src/types/api/responses';
-import { IBranch } from '@shared/shared/src/types/branch';
+import { Response } from '@mixafrica/shared';
+import { IBranch } from '@mixafrica/shared';
 import { ParsedToken } from 'src/decorators/parsed-token.decorator';
 import { User } from 'src/database/models/user.model';
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { Response } from '@shared/shared/src/types/api/responses';
-import { IBusiness, IBusinessWithBranch } from '@shared/shared/src/types/business';
-import { Submit_business } from '@shared/shared/src/validation/submit-business-dto';
+import { Response } from '@mixafrica/shared';
+import { IBusiness, IBusinessWithBranch } from '@mixafrica/shared';
+import { Submit_business } from '@mixafrica/shared';
 import { Op } from 'sequelize';
 import { TenantAccessService } from 'src/access/tenant-access.service';
 import { Branch } from 'src/database/models/branch.model';

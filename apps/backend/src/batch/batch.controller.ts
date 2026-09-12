@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { BatchService } from './batch.service';
-import { IBatch } from '@shared/shared/src/types/batch';
+import { IBatch } from '@mixafrica/shared';
 
 @Controller('batch')
 export class BatchController {

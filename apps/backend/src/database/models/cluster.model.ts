@@ -13,10 +13,10 @@ import {
   HasMany,
   BelongsTo,
 } from 'sequelize-typescript';
-import { ICluster } from '@shared/shared/src/types/cluster';
+import { ICluster } from '@mixafrica/shared';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { FundingApplication } from './funding_application';
-import { Duration, SyncStatus } from '@shared/shared/src/enums';
+import { Duration, SyncStatus } from '@mixafrica/shared';
 import { Collection } from './collection.model';
 
 @Table({ tableName: 'cluster' })

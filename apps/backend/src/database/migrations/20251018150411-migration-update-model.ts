@@ -1,5 +1,5 @@
 'use strict';
-import { Roles } from '@shared/shared/src/enums';
+import { Roles } from '@mixafrica/shared';
 import sequelize from 'sequelize';
 import { QueryInterface, DataTypes } from 'sequelize';
 

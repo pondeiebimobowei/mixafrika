@@ -1,4 +1,4 @@
-import { INotification } from "@shared/shared/src/types/notification";
+import { INotification } from '@mixafrica/shared';
 import { v4 as uuidv4 } from 'uuid';
 
 export const mockNotificationSeed: (response) => Promise<INotification[]> =( async (response: { id: string }[]) => {

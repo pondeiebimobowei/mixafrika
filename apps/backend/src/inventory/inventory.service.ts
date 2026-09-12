@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Response } from '@shared/shared/src/types/api/responses';
-import { IInventory } from '@shared/shared/src/types/inventory';
+import { Response } from '@mixafrica/shared';
+import { IInventory } from '@mixafrica/shared';
 import { Op } from 'sequelize';
 import { TenantAccessService } from 'src/access/tenant-access.service';
 import { Inventory } from 'src/database/models/inventory.model';

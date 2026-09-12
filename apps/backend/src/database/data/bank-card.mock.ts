@@ -1,4 +1,4 @@
-import { IBankCard } from "@shared/shared/src/types/bank-cards";
+import { IBankCard } from '@mixafrica/shared';
 import { v4 as uuidv4 } from 'uuid';
 
 export const mockBankCardSeed: (response) => Promise<IBankCard[]> =( async (response: { id: string }[]) => {

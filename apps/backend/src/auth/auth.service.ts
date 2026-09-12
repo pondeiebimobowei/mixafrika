@@ -1,13 +1,13 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Roles } from '@shared/shared/src/enums';
-import { Login_user_dto } from '@shared/shared/src/validation/login-user-dto';
+import { Roles } from '@mixafrica/shared';
+import { Login_user_dto } from '@mixafrica/shared';
 import * as bcrypt from 'bcrypt';
 import { Setting } from 'src/database/models/setting.model';
 import { User } from 'src/database/models/user.model';
 import { Wallet } from 'src/database/models/wallet.model';
 import { JwtPayload, verify, sign, } from 'jsonwebtoken';
-import { Create_user_dto } from '@shared/shared/src/validation/create-user-dto';
+import { Create_user_dto } from '@mixafrica/shared';
 import { sanitizeUser } from 'src/utils/user-response.util';
 
 

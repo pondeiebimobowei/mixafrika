@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Query } from '@nestjs/common';
 import { LoanRepaymentHistoryService } from './loan_repayment_history.service';
 import { ParsedToken } from 'src/decorators/parsed-token.decorator';
-import { IJwtToken } from '@shared/shared/src/types/jwt';
+import { IJwtToken } from '@mixafrica/shared';
 
 @Controller('v1/loan-repayment-history')
 export class LoanRepaymentHistoryController {

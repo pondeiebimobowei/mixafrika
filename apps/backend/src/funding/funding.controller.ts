@@ -3,10 +3,10 @@ import { Body, Controller, Post, UploadedFiles, UseGuards, UseInterceptors, UseP
 import { FundingService } from './funding.service';
 import { JwtAuthGuard } from '../guards/jwt-auth.guard';
 import { ParsedToken } from '../decorators/parsed-token.decorator';
-import { IJwtToken } from '@shared/shared/src/types/jwt';
+import { IJwtToken } from '@mixafrica/shared';
 import { ZodPipe } from 'src/pipes/zod-pipes';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { Create_funding_application_dto, create_funding_application_dto } from '@shared/shared/src/validation/funding-application.dto';
+import { Create_funding_application_dto, create_funding_application_dto } from '@mixafrica/shared';
 
 @Controller('v1/funding')
 export class FundingController {

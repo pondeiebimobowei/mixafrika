@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Wallet } from 'src/database/models/wallet.model';
 import { Transaction } from 'src/database/models/transaction.model';
-import { status, types } from '@shared/shared/src/enums';
+import { status, types } from '@mixafrica/shared';
 
 @Injectable()
 export class WalletService {

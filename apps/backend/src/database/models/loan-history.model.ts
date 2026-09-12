@@ -12,10 +12,10 @@ import {
   HasMany,
   BelongsTo,
 } from 'sequelize-typescript';
-import { LoanStatus } from '@shared/shared/src/enums';
+import { LoanStatus } from '@mixafrica/shared';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { User } from './user.model';
-import { ILoanHistory } from '@shared/shared/src/types/loan-history';
+import { ILoanHistory } from '@mixafrica/shared';
 import { LoanAccount } from './loan-account.model';
 
 @Table({ tableName: 'loan_history' })

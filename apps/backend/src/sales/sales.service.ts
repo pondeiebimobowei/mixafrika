@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Response } from '@shared/shared/src/types/api/responses';
-import { ISales } from '@shared/shared/src/types/sales';
+import { Response } from '@mixafrica/shared';
+import { ISales } from '@mixafrica/shared';
 import { Op } from 'sequelize';
 import { TenantAccessService } from 'src/access/tenant-access.service';
 import { Sales } from 'src/database/models/sales.model';

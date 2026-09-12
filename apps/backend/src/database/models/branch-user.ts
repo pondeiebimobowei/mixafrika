@@ -11,10 +11,10 @@ import {
   BelongsTo,
   ForeignKey,
 } from 'sequelize-typescript';
-import { roles, SyncStatus, type Roles } from '@shared/shared/src/enums';
+import { roles, SyncStatus, type Roles } from '@mixafrica/shared';
 import { CreationOptional } from 'sequelize';
 import { User } from './user.model';
-import { IBranchUser } from '@shared/shared/src/types/branch-user';
+import { IBranchUser } from '@mixafrica/shared';
 import { Branch } from './branch.model';
 
 @Table({

@@ -3,7 +3,7 @@ import { WalletService } from './wallet.service';
 import { TransactionService } from 'src/transaction/transaction.service';
 import { ParsedToken } from 'src/decorators/parsed-token.decorator';
 import { User } from 'src/database/models/user.model';
-import { IJwtToken } from '@shared/shared/src/types/jwt';
+import { IJwtToken } from '@mixafrica/shared';
 
 @Controller('v1/wallet')
 export class WalletController {

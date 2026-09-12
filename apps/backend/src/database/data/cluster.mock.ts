@@ -1,5 +1,5 @@
-import { ICluster } from '@shared/shared/src/types/cluster';
-import { ICollection } from '@shared/shared/src/types/collection';
+import { ICluster } from '@mixafrica/shared';
+import { ICollection } from '@mixafrica/shared';
 import { v4 as uuidv4 } from 'uuid';
 
 export const mockClusterSeed: (collection: ICollection[]) => Promise<ICluster[]> = ( async (collection) => {

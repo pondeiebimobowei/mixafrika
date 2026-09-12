@@ -11,8 +11,8 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { IProductImage } from '@shared/shared/src/types/product-image';
-import { SyncStatus, syncStatus } from '@shared/shared/src/enums';
+import { IProductImage } from '@mixafrica/shared';
+import { SyncStatus, syncStatus } from '@mixafrica/shared';
 import { Product } from './product.model';
 
 @Table({ tableName: 'product_image' })

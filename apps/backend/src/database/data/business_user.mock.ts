@@ -2,7 +2,7 @@
 import * as bcrypt from 'bcrypt';
 
 
-import { IBusinessUser } from "@shared/shared/src/types/business-user";
+import { IBusinessUser } from '@mixafrica/shared';
 
 import { v4 as uuidv4 } from 'uuid';
 export const mockBusinessUserSeed: (user, business) => Promise<IBusinessUser[]> = (async ( user: { id: string }[], business: { id: string}[]) => {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Response } from '@shared/shared/src/types/api/responses';
-import { IBranch } from '@shared/shared/src/types/branch';
+import { Response } from '@mixafrica/shared';
+import { IBranch } from '@mixafrica/shared';
 import { Op } from 'sequelize';
 import { TenantAccessService } from 'src/access/tenant-access.service';
 import { Branch } from 'src/database/models/branch.model';

@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
-import { IBranch } from '@shared/shared/src/types/branch';
-import { IBusiness } from '@shared/shared/src/types/business';
-import { ICollection } from '@shared/shared/src/types/collection';
+import { IBranch } from '@mixafrica/shared';
+import { IBusiness } from '@mixafrica/shared';
+import { ICollection } from '@mixafrica/shared';
 export const mockBranchSeed: ( business: IBusiness[], collection: ICollection[]) => Promise<IBranch[]> = (async (business: IBusiness[], collection: ICollection[]) => {
   const business_id = business.map((u) => u.id) as string[];
   const collection_id = collection.map((u)=> u.id) as string[];

@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { roles, type Roles } from '@shared/shared/src/enums';
+import { roles, type Roles } from '@mixafrica/shared';
 import { Op } from 'sequelize';
 import { Branch } from 'src/database/models/branch.model';
 import { BranchUser } from 'src/database/models/branch-user';

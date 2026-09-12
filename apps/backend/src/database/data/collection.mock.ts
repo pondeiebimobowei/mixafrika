@@ -1,4 +1,4 @@
-import { ICollection } from '@shared/shared/src/types/collection';
+import { ICollection } from '@mixafrica/shared';
 import { v4 as uuidv4 } from 'uuid';
 
 export const mockColectionSeed: () => Promise<ICollection[]> = ( async () => {

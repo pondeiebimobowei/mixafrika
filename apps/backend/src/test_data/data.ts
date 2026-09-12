@@ -1,4 +1,4 @@
-import { IUser } from "@shared/shared/src/types/user";
+import { IUser } from '@mixafrica/shared';
 
 export const test_user:IUser = {
     id: '123e4567-e89b-12d3-a456-426614174000',

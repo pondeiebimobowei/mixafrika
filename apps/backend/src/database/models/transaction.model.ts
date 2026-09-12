@@ -12,8 +12,8 @@ import {
   Default,
   Validate,
 } from 'sequelize-typescript';
-import { ITransaction } from '@shared/shared/src/types/transaction';
-import { repaymentStatus, Status, RepaymentStatus, status, Types } from '@shared/shared/src/enums';
+import { ITransaction } from '@mixafrica/shared';
+import { repaymentStatus, Status, RepaymentStatus, status, Types } from '@mixafrica/shared';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { User } from './user.model';
 

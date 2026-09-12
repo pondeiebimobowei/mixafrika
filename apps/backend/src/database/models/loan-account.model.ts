@@ -14,9 +14,9 @@ import {
 } from 'sequelize-typescript';
 import { User } from './user.model';
 import { RepaymentHistory } from './repayment-history.model';
-import { ILoanAccount } from '@shared/shared/src/types/loan-account';
+import { ILoanAccount } from '@mixafrica/shared';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { LoanStatus } from '@shared/shared/src/enums';
+import { LoanStatus } from '@mixafrica/shared';
 import { FundingApplication } from './funding_application';
 import { Cluster } from './cluster.model';
 import { Transaction } from './transaction.model';

@@ -1,4 +1,4 @@
-import { IUser } from '@shared/shared/src/types/user';
+import { IUser } from '@mixafrica/shared';
 import {
   Table,
   Column,
@@ -20,7 +20,7 @@ import { Goal } from './goal.model';
 import { Investment } from './investment.model';
 import { Notification } from './notification.model';
 import { Feed } from './feed.model';
-import { roles, SyncStatus, type Roles } from '@shared/shared/src/enums';
+import { roles, SyncStatus, type Roles } from '@mixafrica/shared';
 import { CreationOptional } from 'sequelize';
 import { LoanAccount } from './loan-account.model';
 import { Business } from './business.model';

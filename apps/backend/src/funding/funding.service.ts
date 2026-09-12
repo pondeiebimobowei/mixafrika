@@ -1,7 +1,7 @@
 import { HttpException, Injectable } from '@nestjs/common';
 import { FundingApplication } from '../database/models/funding_application';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import { Create_funding_application_dto } from '@shared/shared/src/validation/funding-application.dto';
+import { Create_funding_application_dto } from '@mixafrica/shared';
 import { Cluster } from 'src/database/models/cluster.model';
 import { LoanAccountService } from 'src/loan_account/loan_account.service';
 

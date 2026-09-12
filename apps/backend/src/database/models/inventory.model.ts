@@ -12,10 +12,10 @@ import {
     BelongsTo,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { IInventory } from '@shared/shared/src/types/inventory';
+import { IInventory } from '@mixafrica/shared';
 import { Product } from './product.model';
 import { Batch } from './batch.model';
-import { syncStatus, SyncStatus } from '@shared/shared/src/enums';
+import { syncStatus, SyncStatus } from '@mixafrica/shared';
 import { Branch } from './branch.model';
 
 @Table({ tableName: 'inventory' })

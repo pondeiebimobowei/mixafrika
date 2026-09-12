@@ -1,4 +1,4 @@
-import { IUser } from '@shared/shared/src/types/user';
+import { IUser } from '@mixafrica/shared';
 import {
   Table,
   Column,
@@ -12,9 +12,9 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { roles, SyncStatus, type Roles } from '@shared/shared/src/enums';
+import { roles, SyncStatus, type Roles } from '@mixafrica/shared';
 import { CreationOptional } from 'sequelize';
-import { IBusinessUser } from '@shared/shared/src/types/business-user';
+import { IBusinessUser } from '@mixafrica/shared';
 import { User } from './user.model';
 import { Business } from './business.model';
 

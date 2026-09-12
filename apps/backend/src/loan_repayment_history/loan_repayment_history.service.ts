@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { loanStatus } from '@shared/shared/src/enums';
+import { loanStatus } from '@mixafrica/shared';
 import { LoanAccount } from 'src/database/models/loan-account.model';
 import { RepaymentHistory } from 'src/database/models/repayment-history.model';
 

@@ -4,7 +4,7 @@ import { User } from 'src/database/models/user.model';
 import { ParsedToken } from 'src/decorators/parsed-token.decorator';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ZodPipe } from 'src/pipes/zod-pipes';
-import { Verify_identity, verify_identity } from '@shared/shared/src/validation/verify-identity-dto';
+import { Verify_identity, verify_identity } from '@mixafrica/shared';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Controller('v1/user')

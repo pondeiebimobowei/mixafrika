@@ -14,9 +14,9 @@ import {
 } from 'sequelize-typescript';
 import { SavingsHistory } from './saving-history.model';
 import { User } from './user.model';
-import { ISaving } from '@shared/shared/src/types/saving';
+import { ISaving } from '@mixafrica/shared';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { type SourceType, type SavingsFrequency, type SavingsType, savingsFrequency, sourceType } from '@shared/shared/src/enums';
+import { type SourceType, type SavingsFrequency, type SavingsType, savingsFrequency, sourceType } from '@mixafrica/shared';
 
 @Table({ tableName: 'saving' })
 export class Savings extends Model<ISaving> implements ISaving {

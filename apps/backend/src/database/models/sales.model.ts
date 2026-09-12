@@ -13,8 +13,8 @@ import {
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { User } from './user.model';
-import { ISales } from '@shared/shared/src/types/sales';
-import { SalesStatus, SyncStatus, syncStatus } from '@shared/shared/src/enums';
+import { ISales } from '@mixafrica/shared';
+import { SalesStatus, SyncStatus, syncStatus } from '@mixafrica/shared';
 import { Branch } from './branch.model';
 import { Customer } from './customer';
 

@@ -12,7 +12,7 @@ import {
   CreatedAt,
 } from 'sequelize-typescript';
 import { User } from './user.model';
-import { IFeed } from '@shared/shared/src/types/feed';
+import { IFeed } from '@mixafrica/shared';
 import { CreationOptional, DataTypes } from 'sequelize';
 
 @Table({ tableName: 'feed' })

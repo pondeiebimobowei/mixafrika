@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { CreateInvestmentDto } from '@shared/shared/src/dto/investment/create-investment.dto';
-import { status, types } from '@shared/shared/src/enums';
+import { CreateInvestmentDto } from '@mixafrica/shared';
+import { status, types } from '@mixafrica/shared';
 import { Cluster } from 'src/database/models/cluster.model';
 import { Collection } from 'src/database/models/collection.model';
 import { Investment } from 'src/database/models/investment.model';

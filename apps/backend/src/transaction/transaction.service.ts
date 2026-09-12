@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { types } from '@shared/shared/src/enums';
+import { types } from '@mixafrica/shared';
 import { Transaction } from 'src/database/models/transaction.model';
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Response } from '@shared/shared/src/types/api/responses';
-import { IBatch } from '@shared/shared/src/types/batch';
+import { Response } from '@mixafrica/shared';
+import { IBatch } from '@mixafrica/shared';
 import { Transaction } from 'sequelize';
 import { Inventory } from 'src/database/models/inventory.model';
 import { Batch } from 'src/database/models/batch.model';

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Response } from '@shared/shared/src/types/api/responses';
-import { ISalesItem } from '@shared/shared/src/types/sales-item';
+import { Response } from '@mixafrica/shared';
+import { ISalesItem } from '@mixafrica/shared';
 import { SalesItem } from 'src/database/models/sales-item.model';
 
 @Injectable()

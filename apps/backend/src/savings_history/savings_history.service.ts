@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Types } from '@shared/shared/src/enums';
+import { Types } from '@mixafrica/shared';
 import { SavingsHistory } from 'src/database/models/saving-history.model';
 import { Transaction } from 'src/database/models/transaction.model';
 

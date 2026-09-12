@@ -1,5 +1,5 @@
-import type { VerificationStatus } from '@shared/shared/src/enums';
-import type { Roles } from '@shared/shared/src/enums';
+import type { VerificationStatus } from '@mixafrica/shared';
+import type { Roles } from '@mixafrica/shared';
 
 export type AdminOverview = {
   users: {

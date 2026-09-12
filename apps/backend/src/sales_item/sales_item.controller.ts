@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { SalesItemService } from './sales_item.service';
-import { ISalesItem } from '@shared/shared/src/types/sales-item';
+import { ISalesItem } from '@mixafrica/shared';
 
 @Controller('sales-item')
 export class SalesItemController {

@@ -11,8 +11,8 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { SyncStatus } from '@shared/shared/src/enums';
-import { IStockAdjustmentItem } from '@shared/shared/src/types/stock-adjustment-item';
+import { SyncStatus } from '@mixafrica/shared';
+import { IStockAdjustmentItem } from '@mixafrica/shared';
 import { Product } from './product.model';
 import { StockAdjustment } from './stock-adjustment';
 

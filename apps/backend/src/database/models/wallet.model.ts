@@ -11,7 +11,7 @@ import {
   UpdatedAt,
   DeletedAt,
 } from 'sequelize-typescript';
-import { IWallet } from '@shared/shared/src/types/wallet';
+import { IWallet } from '@mixafrica/shared';
 import { User } from './user.model';
 import { CreationOptional, DataTypes } from 'sequelize';
 

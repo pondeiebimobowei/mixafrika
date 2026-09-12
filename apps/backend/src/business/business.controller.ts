@@ -4,7 +4,7 @@ import { User } from 'src/database/models/user.model';
 import { ParsedToken } from 'src/decorators/parsed-token.decorator';
 import { BusinessService } from './business.service';
 import { ZodPipe } from 'src/pipes/zod-pipes';
-import { Submit_business, submit_business } from '@shared/shared/src/validation/submit-business-dto';
+import { Submit_business, submit_business } from '@mixafrica/shared';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 
 @Controller('v1/business')

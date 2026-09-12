@@ -12,9 +12,9 @@ import {
   BelongsToMany,
   HasOne,
 } from 'sequelize-typescript';
-import { IBusiness } from '@shared/shared/src/types/business';
+import { IBusiness } from '@mixafrica/shared';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { SyncStatus } from '@shared/shared/src/enums';
+import { SyncStatus } from '@mixafrica/shared';
 import { User } from './user.model';
 import { Branch } from './branch.model';
 import { BusinessUser } from './business-user';

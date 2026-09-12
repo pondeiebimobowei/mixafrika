@@ -12,8 +12,8 @@ import {
   Default,
 } from 'sequelize-typescript';
 import { Savings } from './saving.model';
-import { ISavingsHistory } from '@shared/shared/src/types/savings-history';
-import type { Types } from '@shared/shared/src/enums';
+import { ISavingsHistory } from '@mixafrica/shared';
+import type { Types } from '@mixafrica/shared';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { Transaction } from './transaction.model';
 

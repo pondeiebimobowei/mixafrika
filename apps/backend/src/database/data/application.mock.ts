@@ -1,4 +1,4 @@
-import { IFundingApplication } from "@shared/shared/src/types/funding-application";
+import { IFundingApplication } from '@mixafrica/shared';
 import { v4 as uuidv4 } from 'uuid';
 
 export const mockApplicationSeed: (response, cluster, business) => Promise<IFundingApplication[]> =( async (response: { id: string }[], cluster: { id: string }[], business: { id: string }[]) => {

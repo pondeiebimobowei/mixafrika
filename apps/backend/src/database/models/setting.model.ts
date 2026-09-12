@@ -13,7 +13,7 @@ import {
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
 import { User } from './user.model';
-import { ISetting } from '@shared/shared/src/types/setting';
+import { ISetting } from '@mixafrica/shared';
 
 @Table({ tableName: 'setting' })
 export class Setting extends Model<ISetting> implements ISetting {

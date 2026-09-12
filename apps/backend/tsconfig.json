@@ -7,6 +7,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "target": "ES2023",
     "sourceMap": true,
     "outDir": "./dist",
@@ -20,13 +21,12 @@
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@shared/*": [
-        "../../packages/*"
-      ], /* Map module names to relative paths. */
-    },
+      "@mixafrica/shared": [
+        "../../packages/shared/dist/index.d.ts"
+      ]
+    }
   },
   "include": [
-    "./**/*",
-    "../../packages/shared/**/*"
-  ],
+    "./**/*"
+  ]
 }

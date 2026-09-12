@@ -12,8 +12,8 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { SyncStatus, syncStatus } from '@shared/shared/src/enums';
-import { ICustomer } from '@shared/shared/src/types/customer';
+import { SyncStatus, syncStatus } from '@mixafrica/shared';
+import { ICustomer } from '@mixafrica/shared';
 import { Branch } from './branch.model';
 
 @Table({ tableName: 'customer' })

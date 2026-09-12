@@ -11,9 +11,9 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
-import { IInvites } from '@shared/shared/src/types/invites';
+import { IInvites } from '@mixafrica/shared';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { SyncStatus } from '@shared/shared/src/enums';
+import { SyncStatus } from '@mixafrica/shared';
 import { Business } from './business.model';
 import { Branch } from './branch.model';
 import { User } from './user.model';

@@ -1,7 +1,7 @@
-import { IRepaymentHistory } from "@shared/shared/src/types/repayment-history";
+import { IRepaymentHistory } from '@mixafrica/shared';
 import { v4 as uuidv4 } from 'uuid';
-import { ITransaction } from "@shared/shared/src/types/transaction";
-import { ILoanAccount } from "@shared/shared/src/types/loan-account";
+import { ITransaction } from '@mixafrica/shared';
+import { ILoanAccount } from '@mixafrica/shared';
 
 export const mockLoanRepaySeed: (response: ILoanAccount[], tx: ITransaction[]) => Promise<IRepaymentHistory[]> =( async (response: ILoanAccount[], tx: ITransaction[]) => {
     const loan_account_id = response.map((u) => u.id) as string[]

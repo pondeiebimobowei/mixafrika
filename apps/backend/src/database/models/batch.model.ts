@@ -12,9 +12,9 @@ import {
     BelongsTo,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { IBatch } from '@shared/shared/src/types/batch';
+import { IBatch } from '@mixafrica/shared';
 import { Product } from './product.model';
-import { SyncStatus, syncStatus } from '@shared/shared/src/enums';
+import { SyncStatus, syncStatus } from '@mixafrica/shared';
 import { Branch } from './branch.model';
 
 @Table({ tableName: 'batch' })

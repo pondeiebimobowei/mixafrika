@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { SalesService } from './sales.service';
-import { ISales } from '@shared/shared/src/types/sales';
+import { ISales } from '@mixafrica/shared';
 import { ParsedToken } from 'src/decorators/parsed-token.decorator';
 import { User } from 'src/database/models/user.model';
 

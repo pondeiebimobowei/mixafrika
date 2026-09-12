@@ -2,7 +2,7 @@
 import * as bcrypt from 'bcrypt';
 
 
-import { IUser } from "@shared/shared/src/types/user";
+import { IUser } from '@mixafrica/shared';
 
 import { v4 as uuidv4 } from 'uuid';
 export const mockUserSeed: () => Promise<IUser[]> = (async () => {

@@ -11,9 +11,9 @@ import {
   HasMany,
 } from 'sequelize-typescript';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { ICollection } from '@shared/shared/src/types/collection';
+import { ICollection } from '@mixafrica/shared';
 import { Cluster } from './cluster.model';
-import { syncStatus, SyncStatus } from '@shared/shared/src/enums';
+import { syncStatus, SyncStatus } from '@mixafrica/shared';
 
 @Table({ tableName: 'collection' })
 export class Collection extends Model<ICollection> implements ICollection {

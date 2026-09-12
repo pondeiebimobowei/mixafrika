@@ -13,7 +13,7 @@ import {
 } from 'sequelize-typescript';
 import { User } from './user.model';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { IGoal } from '@shared/shared/src/types/goal';
+import { IGoal } from '@mixafrica/shared';
 
 @Table({ tableName: 'goal' })
 export class Goal extends Model<IGoal> {

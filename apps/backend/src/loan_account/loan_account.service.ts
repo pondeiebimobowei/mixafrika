@@ -3,7 +3,7 @@ import { LoanAccount } from 'src/database/models/loan-account.model';
 import { Wallet } from 'src/database/models/wallet.model';
 import { Transaction } from 'src/database/models/transaction.model';
 import { RepaymentHistory } from 'src/database/models/repayment-history.model';
-import { loanStatus, repaymentStatus, types, status } from '@shared/shared/src/enums';
+import { loanStatus, repaymentStatus, types, status } from '@mixafrica/shared';
 import Decimal from 'decimal.js';
 import { FundingApplication } from 'src/database/models/funding_application';
 import { Cluster } from 'src/database/models/cluster.model';

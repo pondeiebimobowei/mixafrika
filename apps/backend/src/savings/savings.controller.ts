@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { SavingsService } from './savings.service';
 import { ParsedToken } from 'src/decorators/parsed-token.decorator';
-import { IJwtToken } from '@shared/shared/src/types/jwt';
-import { Create_savings_plan } from '@shared/shared/src/validation/create-savings-plan-dto';
+import { IJwtToken } from '@mixafrica/shared';
+import { Create_savings_plan } from '@mixafrica/shared';
 
 @Controller('v1/savings')
 export class SavingsController {

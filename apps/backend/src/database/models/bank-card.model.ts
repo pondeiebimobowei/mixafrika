@@ -12,10 +12,10 @@ import {
   DeletedAt,
   Validate,
 } from 'sequelize-typescript';
-import { IBankCard } from '@shared/shared/src/types/bank-cards';
+import { IBankCard } from '@mixafrica/shared';
 import { User } from './user.model';
 import { CreationOptional, DataTypes } from 'sequelize';
-import { cardType, CardType } from '@shared/shared/src/enums';
+import { cardType, CardType } from '@mixafrica/shared';
 
 @Table({ tableName: 'bank_card' })
 export class BankCard extends Model<IBankCard> implements IBankCard {

@@ -11,9 +11,9 @@ import {
   BelongsTo,
   ForeignKey,
 } from 'sequelize-typescript';
-import { SyncStatus, VerificationStatus, verificationStatus } from '@shared/shared/src/enums';
+import { SyncStatus, VerificationStatus, verificationStatus } from '@mixafrica/shared';
 import { CreationOptional } from 'sequelize';
-import { IBusinessVerification } from '@shared/shared/src/types/business-verification';
+import { IBusinessVerification } from '@mixafrica/shared';
 import { Business } from './business.model';
 import { User } from './user.model';
 
