@@ -19,12 +19,14 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "noFallthroughCasesInSwitch": false,
-
     "paths": {
-      "@shared/*": ["../../packages/*"],                   /* Map module names to relative paths. */
+      "@shared/*": [
+        "../../packages/*"
+      ], /* Map module names to relative paths. */
     },
   },
-
-  "include": ["./**/*", "../../packages/shared/**/*"],
-
+  "include": [
+    "./**/*",
+    "../../packages/shared/**/*"
+  ],
 }

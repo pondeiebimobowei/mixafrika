@@ -6,7 +6,9 @@
     "emitDeclarationOnly": true,
     "baseUrl": ".",
     "paths": {
-      "@shared/*": ["./src/*"]
+      "@shared/*": [
+        "./src/*"
+      ]
     }
   }
 }
