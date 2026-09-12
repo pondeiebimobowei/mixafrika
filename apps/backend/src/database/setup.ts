@@ -1,6 +1,8 @@
 import { SequelizeModuleOptions } from '@nestjs/sequelize';
 import { ConfigService } from '@nestjs/config';
 import { Dialect } from 'sequelize';
+import pg from 'pg';
+import 'pg-hstore';
 
 const requiredConfig = <T = string>(
   configService: ConfigService,
@@ -28,6 +30,7 @@ export const getSequelizeConfig = (
     host: requiredConfig(configService, 'DB_HOST'),
     port: Number(requiredConfig(configService, 'DB_PORT')),
     dialect: requiredConfig<Dialect>(configService, 'DB_DIALECT'),
+    dialectModule: pg,
     autoLoadModels: true,
     synchronize: false,
     logging: false,
