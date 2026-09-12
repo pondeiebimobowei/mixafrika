@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import * as dayjs from 'dayjs';
+import dayjs from 'dayjs';
 import { Notification } from 'src/database/models/notification.model';
 
 @Injectable()
