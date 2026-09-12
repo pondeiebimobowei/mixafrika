@@ -2,9 +2,9 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Response } from '@mixafrica/shared';
 import { IProduct } from '@mixafrica/shared';
 import { Op } from 'sequelize';
-import { TenantAccessService } from 'src/access/tenant-access.service';
-import { GlobalProduct } from 'src/database/models/global-product';
-import { Product } from 'src/database/models/product.model';
+import { TenantAccessService } from '../access/tenant-access.service';
+import { GlobalProduct } from '../database/models/global-product';
+import { Product } from '../database/models/product.model';
 
 @Injectable()
 export class ProductService {

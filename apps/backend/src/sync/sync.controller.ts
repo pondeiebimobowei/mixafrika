@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
-import { ParsedToken } from 'src/decorators/parsed-token.decorator';
-import { User } from 'src/database/models/user.model';
+import { ParsedToken } from '../decorators/parsed-token.decorator';
+import { User } from '../database/models/user.model';
 import { SyncRequest } from './sync.types';
 import { SyncService } from './sync.service';
 

@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { Response } from '@mixafrica/shared';
 import { IBatch } from '@mixafrica/shared';
 import { Transaction } from 'sequelize';
-import { Inventory } from 'src/database/models/inventory.model';
-import { Batch } from 'src/database/models/batch.model';
-import { StockMovement } from 'src/database/models/stock-movement';
+import { Inventory } from '../database/models/inventory.model';
+import { Batch } from '../database/models/batch.model';
+import { StockMovement } from '../database/models/stock-movement';
 
 @Injectable()
 export class BatchService {

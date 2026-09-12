@@ -1,6 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
-import { TenantAccessService } from 'src/access/tenant-access.service';
+import { TenantAccessService } from '../access/tenant-access.service';
 
 describe('InventoryService', () => {
   afterEach(() => {

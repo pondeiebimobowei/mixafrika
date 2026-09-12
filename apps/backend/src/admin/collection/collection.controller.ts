@@ -1,5 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
-import { CollectionService } from 'src/collection/collection.service';
+import { CollectionService } from '../../collection/collection.service';
 
 @Controller('v1/admin/collection')
 export class CollectionController {

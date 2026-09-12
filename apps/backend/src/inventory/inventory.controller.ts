@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
 import { IInventory } from '@mixafrica/shared';
-import { ParsedToken } from 'src/decorators/parsed-token.decorator';
-import { User } from 'src/database/models/user.model';
+import { ParsedToken } from '../decorators/parsed-token.decorator';
+import { User } from '../database/models/user.model';
 
 @Controller('inventory')
 export class InventoryController {

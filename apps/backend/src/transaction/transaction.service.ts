@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { types } from '@mixafrica/shared';
-import { Transaction } from 'src/database/models/transaction.model';
+import { Transaction } from '../database/models/transaction.model';
 
 @Injectable()
 export class TransactionService {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import dayjs from 'dayjs';
-import { Notification } from 'src/database/models/notification.model';
+import { Notification } from '../database/models/notification.model';
 
 @Injectable()
 export class NotificationService {

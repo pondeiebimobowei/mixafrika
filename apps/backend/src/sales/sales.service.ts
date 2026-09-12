@@ -2,8 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { Response } from '@mixafrica/shared';
 import { ISales } from '@mixafrica/shared';
 import { Op } from 'sequelize';
-import { TenantAccessService } from 'src/access/tenant-access.service';
-import { Sales } from 'src/database/models/sales.model';
+import { TenantAccessService } from '../access/tenant-access.service';
+import { Sales } from '../database/models/sales.model';
 
 @Injectable()
 export class SalesService {

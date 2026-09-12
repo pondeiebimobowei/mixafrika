@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/database/models/user.model';
-import { UserVerification } from 'src/database/models/user-verification';
+import { User } from '../database/models/user.model';
+import { UserVerification } from '../database/models/user-verification';
 import { Verify_identity } from '@mixafrica/shared';
-import { sanitizeUser } from 'src/utils/user-response.util';
+import { sanitizeUser } from '../utils/user-response.util';
 
 @Injectable()
 export class UserService {

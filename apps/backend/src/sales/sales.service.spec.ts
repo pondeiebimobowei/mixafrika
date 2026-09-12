@@ -1,7 +1,7 @@
 import { BadRequestException } from '@nestjs/common';
 import { SalesService } from './sales.service';
-import { Sales } from 'src/database/models/sales.model';
-import { TenantAccessService } from 'src/access/tenant-access.service';
+import { Sales } from '../database/models/sales.model';
+import { TenantAccessService } from '../access/tenant-access.service';
 
 describe('SalesService', () => {
   afterEach(() => {

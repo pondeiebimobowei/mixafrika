@@ -3,12 +3,12 @@ import { ConfigService } from '@nestjs/config';
 import { Roles } from '@mixafrica/shared';
 import { Login_user_dto } from '@mixafrica/shared';
 import * as bcrypt from 'bcrypt';
-import { Setting } from 'src/database/models/setting.model';
-import { User } from 'src/database/models/user.model';
-import { Wallet } from 'src/database/models/wallet.model';
+import { Setting } from '../database/models/setting.model';
+import { User } from '../database/models/user.model';
+import { Wallet } from '../database/models/wallet.model';
 import { JwtPayload, verify, sign, } from 'jsonwebtoken';
 import { Create_user_dto } from '@mixafrica/shared';
-import { sanitizeUser } from 'src/utils/user-response.util';
+import { sanitizeUser } from '../utils/user-response.util';
 
 
 

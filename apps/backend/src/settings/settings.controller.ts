@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Patch } from '@nestjs/common';
 import { SettingsService } from './settings.service';
-import { ParsedToken } from 'src/decorators/parsed-token.decorator';
+import { ParsedToken } from '../decorators/parsed-token.decorator';
 import { IJwtToken } from '@mixafrica/shared';
 
 @Controller('v1/settings')

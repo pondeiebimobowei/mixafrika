@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { LoanAccountService } from './loan_account.service';
-import { ParsedToken } from 'src/decorators/parsed-token.decorator';
+import { ParsedToken } from '../decorators/parsed-token.decorator';
 import { IJwtToken } from '@mixafrica/shared';
-import { LoanHistoryService } from 'src/loan_history/loan_history.service';
+import { LoanHistoryService } from '../loan_history/loan_history.service';
 
 @Controller('v1/loan-account')
 export class LoanAccountController {

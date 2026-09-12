@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CollectionService } from 'src/collection/collection.service';
-import { Cluster } from 'src/database/models/cluster.model';
+import { CollectionService } from '../collection/collection.service';
+import { Cluster } from '../database/models/cluster.model';
 
 @Injectable()
 export class ClusterService {

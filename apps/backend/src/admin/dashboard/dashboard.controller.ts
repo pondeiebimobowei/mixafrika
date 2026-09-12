@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { AdminDashboardService } from './dashboard.service';
-import { ParsedToken } from 'src/decorators/parsed-token.decorator';
-import { User } from 'src/database/models/user.model';
+import { ParsedToken } from '../../decorators/parsed-token.decorator';
+import { User } from '../../database/models/user.model';
 import { AdminBusinessPayload, AdminModerationAction, AdminUserPayload } from '../admin.types';
 
 @Controller('v1/admin')

@@ -3,11 +3,11 @@ import { Response } from '@mixafrica/shared';
 import { IBusiness, IBusinessWithBranch } from '@mixafrica/shared';
 import { Submit_business } from '@mixafrica/shared';
 import { Op } from 'sequelize';
-import { TenantAccessService } from 'src/access/tenant-access.service';
-import { Branch } from 'src/database/models/branch.model';
-import { BusinessUser } from 'src/database/models/business-user';
-import { BusinessVerification } from 'src/database/models/business-verification.model';
-import { Business } from 'src/database/models/business.model';
+import { TenantAccessService } from '../access/tenant-access.service';
+import { Branch } from '../database/models/branch.model';
+import { BusinessUser } from '../database/models/business-user';
+import { BusinessVerification } from '../database/models/business-verification.model';
+import { Business } from '../database/models/business.model';
 
 @Injectable()
 export class BusinessService {

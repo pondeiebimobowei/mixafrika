@@ -1,8 +1,8 @@
 import { ForbiddenException } from '@nestjs/common';
 import { TeamService } from './team.service';
-import { Invites } from 'src/database/models/invites.model';
-import { User } from 'src/database/models/user.model';
-import { TenantAccessService } from 'src/access/tenant-access.service';
+import { Invites } from '../database/models/invites.model';
+import { User } from '../database/models/user.model';
+import { TenantAccessService } from '../access/tenant-access.service';
 
 describe('TeamService', () => {
   let tenantAccessService: jest.Mocked<TenantAccessService>;

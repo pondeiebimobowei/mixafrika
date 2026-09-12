@@ -1,7 +1,7 @@
 import { ExceptionFilter, Catch, ArgumentsHost, Next } from "@nestjs/common";
 import { Response } from 'express'
 import { DatabaseError, BaseError, UniqueConstraintError, ValidationError, ForeignKeyConstraintError, TimeoutError, ConnectionError, HostNotFoundError, HostNotReachableError, AssociationError, InstanceError } from 'sequelize'
-import { LoggerService } from "src/logger/logger.service";
+import { LoggerService } from "../logger/logger.service";
 
 @Catch(
   UniqueConstraintError,

@@ -1,11 +1,11 @@
 import { Body, Controller, Get, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { User } from 'src/database/models/user.model';
-import { ParsedToken } from 'src/decorators/parsed-token.decorator';
+import { User } from '../database/models/user.model';
+import { ParsedToken } from '../decorators/parsed-token.decorator';
 import { BusinessService } from './business.service';
-import { ZodPipe } from 'src/pipes/zod-pipes';
+import { ZodPipe } from '../pipes/zod-pipes';
 import { Submit_business, submit_business } from '@mixafrica/shared';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 
 @Controller('v1/business')
 export class BusinessController {

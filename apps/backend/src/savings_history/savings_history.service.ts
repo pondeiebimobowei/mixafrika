@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Types } from '@mixafrica/shared';
-import { SavingsHistory } from 'src/database/models/saving-history.model';
-import { Transaction } from 'src/database/models/transaction.model';
+import { SavingsHistory } from '../database/models/saving-history.model';
+import { Transaction } from '../database/models/transaction.model';
 
 @Injectable()
 export class SavingsHistoryService {

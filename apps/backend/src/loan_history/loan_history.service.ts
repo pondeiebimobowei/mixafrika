@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { LoanHistory } from 'src/database/models/loan-history.model';
-import { RepaymentHistory } from 'src/database/models/repayment-history.model';
+import { LoanHistory } from '../database/models/loan-history.model';
+import { RepaymentHistory } from '../database/models/repayment-history.model';
 
 @Injectable()
 export class LoanHistoryService {

@@ -1,23 +1,23 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { Op } from 'sequelize';
-import { TenantAccessService } from 'src/access/tenant-access.service';
-import { Batch } from 'src/database/models/batch.model';
-import { Branch } from 'src/database/models/branch.model';
-import { BranchUser } from 'src/database/models/branch-user';
-import { BusinessUser } from 'src/database/models/business-user';
-import { Business } from 'src/database/models/business.model';
-import { Collection } from 'src/database/models/collection.model';
-import { Customer } from 'src/database/models/customer';
-import { GlobalProduct } from 'src/database/models/global-product';
-import { Inventory } from 'src/database/models/inventory.model';
-import { Payment } from 'src/database/models/payments';
-import { Product } from 'src/database/models/product.model';
-import { SalesItem } from 'src/database/models/sales-item.model';
-import { Sales } from 'src/database/models/sales.model';
-import { StockMovement } from 'src/database/models/stock-movement';
-import { StockTransferItem } from 'src/database/models/stock-transfer-item';
-import { StockTransfer } from 'src/database/models/stock-transfer.model';
-import { User } from 'src/database/models/user.model';
+import { TenantAccessService } from '../access/tenant-access.service';
+import { Batch } from '../database/models/batch.model';
+import { Branch } from '../database/models/branch.model';
+import { BranchUser } from '../database/models/branch-user';
+import { BusinessUser } from '../database/models/business-user';
+import { Business } from '../database/models/business.model';
+import { Collection } from '../database/models/collection.model';
+import { Customer } from '../database/models/customer';
+import { GlobalProduct } from '../database/models/global-product';
+import { Inventory } from '../database/models/inventory.model';
+import { Payment } from '../database/models/payments';
+import { Product } from '../database/models/product.model';
+import { SalesItem } from '../database/models/sales-item.model';
+import { Sales } from '../database/models/sales.model';
+import { StockMovement } from '../database/models/stock-movement';
+import { StockTransferItem } from '../database/models/stock-transfer-item';
+import { StockTransfer } from '../database/models/stock-transfer.model';
+import { User } from '../database/models/user.model';
 import {
   SyncAck,
   SyncChanges,
@@ -27,7 +27,7 @@ import {
   SyncMutation,
   SyncRequest,
 } from './sync.types';
-import { ProductCategory } from 'src/database/models/product-category';
+import { ProductCategory } from '../database/models/product-category';
 
 type SyncModel = typeof Product;
 

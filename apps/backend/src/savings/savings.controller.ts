@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { SavingsService } from './savings.service';
-import { ParsedToken } from 'src/decorators/parsed-token.decorator';
+import { ParsedToken } from '../decorators/parsed-token.decorator';
 import { IJwtToken } from '@mixafrica/shared';
 import { Create_savings_plan } from '@mixafrica/shared';
 

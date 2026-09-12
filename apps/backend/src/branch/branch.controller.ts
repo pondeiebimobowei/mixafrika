@@ -2,8 +2,8 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { BranchService } from './branch.service';
 import { Response } from '@mixafrica/shared';
 import { IBranch } from '@mixafrica/shared';
-import { ParsedToken } from 'src/decorators/parsed-token.decorator';
-import { User } from 'src/database/models/user.model';
+import { ParsedToken } from '../decorators/parsed-token.decorator';
+import { User } from '../database/models/user.model';
 
 @Controller('v1/branch')
 export class BranchController {

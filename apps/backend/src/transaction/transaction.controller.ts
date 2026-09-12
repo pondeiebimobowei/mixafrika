@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { TransactionService } from './transaction.service';
-import { ParsedToken } from 'src/decorators/parsed-token.decorator';
+import { ParsedToken } from '../decorators/parsed-token.decorator';
 import { IJwtToken } from '@mixafrica/shared';
 
 @Controller('v1/transactions')

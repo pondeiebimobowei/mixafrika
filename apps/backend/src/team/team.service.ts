@@ -4,16 +4,16 @@ import {
   BadRequestException,
   ForbiddenException,
 } from '@nestjs/common';
-import { Invites } from 'src/database/models/invites.model';
-import { BusinessUser } from 'src/database/models/business-user';
-import { BranchUser } from 'src/database/models/branch-user';
-import { Branch } from 'src/database/models/branch.model';
-import { User } from 'src/database/models/user.model';
-import { Business } from 'src/database/models/business.model';
+import { Invites } from '../database/models/invites.model';
+import { BusinessUser } from '../database/models/business-user';
+import { BranchUser } from '../database/models/branch-user';
+import { Branch } from '../database/models/branch.model';
+import { User } from '../database/models/user.model';
+import { Business } from '../database/models/business.model';
 import { v4 as uuidv4 } from 'uuid';
 import dayjs from 'dayjs';
 import { syncStatus } from '@mixafrica/shared';
-import { TenantAccessService } from 'src/access/tenant-access.service';
+import { TenantAccessService } from '../access/tenant-access.service';
 import { Op } from 'sequelize';
 
 @Injectable()

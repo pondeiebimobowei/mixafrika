@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BankCard } from 'src/database/models/bank-card.model';
+import { BankCard } from '../database/models/bank-card.model';
 
 @Injectable()
 export class BankCardService {

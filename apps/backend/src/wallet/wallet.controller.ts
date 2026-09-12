@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { WalletService } from './wallet.service';
-import { TransactionService } from 'src/transaction/transaction.service';
-import { ParsedToken } from 'src/decorators/parsed-token.decorator';
-import { User } from 'src/database/models/user.model';
+import { TransactionService } from '../transaction/transaction.service';
+import { ParsedToken } from '../decorators/parsed-token.decorator';
+import { User } from '../database/models/user.model';
 import { IJwtToken } from '@mixafrica/shared';
 
 @Controller('v1/wallet')

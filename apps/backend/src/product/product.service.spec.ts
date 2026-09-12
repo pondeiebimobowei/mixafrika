@@ -1,7 +1,7 @@
 import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { Product } from 'src/database/models/product.model';
-import { TenantAccessService } from 'src/access/tenant-access.service';
+import { Product } from '../database/models/product.model';
+import { TenantAccessService } from '../access/tenant-access.service';
 
 describe('ProductService', () => {
   let tenantAccessService: jest.Mocked<TenantAccessService>;

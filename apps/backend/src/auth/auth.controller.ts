@@ -1,9 +1,9 @@
 import { Body, Controller, HttpCode, HttpStatus, Post, UsePipes } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { ZodPipe } from 'src/pipes/zod-pipes';
+import { ZodPipe } from '../pipes/zod-pipes';
 import { Create_user_dto, create_user_dto } from '@mixafrica/shared';
 import { Login_user_dto } from '@mixafrica/shared';
-import { Public } from 'src/decorators/public.decorator';
+import { Public } from '../decorators/public.decorator';
 
 @Controller('v1/auth')
 export class AuthController {

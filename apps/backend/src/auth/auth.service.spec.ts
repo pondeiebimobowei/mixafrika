@@ -1,15 +1,15 @@
 import { ConfigService } from '@nestjs/config';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from './auth.service';
-import { Setting } from 'src/database/models/setting.model';
-import { Business } from 'src/database/models/business.model';
-import { User } from 'src/database/models/user.model';
-import { Wallet } from 'src/database/models/wallet.model';
-import { BusinessUser } from 'src/database/models/business-user';
-import { Branch } from 'src/database/models/branch.model';
-import { BranchUser } from 'src/database/models/branch-user';
-import { Collection } from 'src/database/models/collection.model';
-import { TenantAccessService } from 'src/access/tenant-access.service';
+import { Setting } from '../database/models/setting.model';
+import { Business } from '../database/models/business.model';
+import { User } from '../database/models/user.model';
+import { Wallet } from '../database/models/wallet.model';
+import { BusinessUser } from '../database/models/business-user';
+import { Branch } from '../database/models/branch.model';
+import { BranchUser } from '../database/models/branch-user';
+import { Collection } from '../database/models/collection.model';
+import { TenantAccessService } from '../access/tenant-access.service';
 import { Op } from 'sequelize';
 
 describe('AuthService', () => {

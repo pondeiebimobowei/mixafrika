@@ -1,5 +1,5 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { Setting } from 'src/database/models/setting.model';
+import { Setting } from '../database/models/setting.model';
 
 @Injectable()
 export class SettingsService {

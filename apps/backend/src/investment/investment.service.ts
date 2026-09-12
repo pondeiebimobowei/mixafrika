@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateInvestmentDto } from '@mixafrica/shared';
 import { status, types } from '@mixafrica/shared';
-import { Cluster } from 'src/database/models/cluster.model';
-import { Collection } from 'src/database/models/collection.model';
-import { Investment } from 'src/database/models/investment.model';
-import { Transaction } from 'src/database/models/transaction.model';
-import { Wallet } from 'src/database/models/wallet.model';
+import { Cluster } from '../database/models/cluster.model';
+import { Collection } from '../database/models/collection.model';
+import { Investment } from '../database/models/investment.model';
+import { Transaction } from '../database/models/transaction.model';
+import { Wallet } from '../database/models/wallet.model';
 
 @Injectable()
 export class InvestmentService {

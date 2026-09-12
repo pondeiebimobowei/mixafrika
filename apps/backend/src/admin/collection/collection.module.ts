@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CollectionController } from './collection.controller';
 import { CollectionService } from './collection.service';
-import { CollectionModule } from 'src/collection/collection.module';
+import { CollectionModule } from '../../collection/collection.module';
 
 @Module({
   controllers: [CollectionController],

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Wallet } from 'src/database/models/wallet.model';
-import { Transaction } from 'src/database/models/transaction.model';
+import { Wallet } from '../database/models/wallet.model';
+import { Transaction } from '../database/models/transaction.model';
 import { status, types } from '@mixafrica/shared';
 
 @Injectable()

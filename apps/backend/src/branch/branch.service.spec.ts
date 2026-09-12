@@ -1,6 +1,6 @@
 import { BranchService } from './branch.service';
-import { Branch } from 'src/database/models/branch.model';
-import { TenantAccessService } from 'src/access/tenant-access.service';
+import { Branch } from '../database/models/branch.model';
+import { TenantAccessService } from '../access/tenant-access.service';
 
 describe('BranchService', () => {
   afterEach(() => {

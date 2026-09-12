@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Patch } from '@nestjs/common';
 import { NotificationService } from './notification.service';
-import { ParsedToken } from 'src/decorators/parsed-token.decorator';
+import { ParsedToken } from '../decorators/parsed-token.decorator';
 import { IJwtToken } from '@mixafrica/shared';
 
 @Controller('v1/notification')

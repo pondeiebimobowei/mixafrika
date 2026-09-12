@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { TeamService } from './team.service';
-import { User } from 'src/database/models/user.model';
-import { ParsedToken } from 'src/decorators/parsed-token.decorator';
+import { User } from '../database/models/user.model';
+import { ParsedToken } from '../decorators/parsed-token.decorator';
 
 @Controller('v1/team')
 export class TeamController {

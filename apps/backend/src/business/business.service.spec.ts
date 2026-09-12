@@ -1,6 +1,6 @@
 import { BusinessService } from './business.service';
-import { Business } from 'src/database/models/business.model';
-import { TenantAccessService } from 'src/access/tenant-access.service';
+import { Business } from '../database/models/business.model';
+import { TenantAccessService } from '../access/tenant-access.service';
 
 describe('BusinessService', () => {
   afterEach(() => {

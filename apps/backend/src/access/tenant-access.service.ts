@@ -5,11 +5,11 @@ import {
 } from '@nestjs/common';
 import { roles, type Roles } from '@mixafrica/shared';
 import { Op } from 'sequelize';
-import { Branch } from 'src/database/models/branch.model';
-import { BranchUser } from 'src/database/models/branch-user';
-import { BusinessUser } from 'src/database/models/business-user';
-import { Business } from 'src/database/models/business.model';
-import { User } from 'src/database/models/user.model';
+import { Branch } from '../database/models/branch.model';
+import { BranchUser } from '../database/models/branch-user';
+import { BusinessUser } from '../database/models/business-user';
+import { Business } from '../database/models/business.model';
+import { User } from '../database/models/user.model';
 
 type BusinessMembership = Pick<BusinessUser, 'business_id' | 'role' | 'has_full_access'>;
 

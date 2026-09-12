@@ -1,7 +1,7 @@
 import { ForbiddenException } from '@nestjs/common';
-import { Branch } from 'src/database/models/branch.model';
-import { BranchUser } from 'src/database/models/branch-user';
-import { BusinessUser } from 'src/database/models/business-user';
+import { Branch } from '../database/models/branch.model';
+import { BranchUser } from '../database/models/branch-user';
+import { BusinessUser } from '../database/models/business-user';
 import { TenantAccessService } from './tenant-access.service';
 
 describe('TenantAccessService', () => {
