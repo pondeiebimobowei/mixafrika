@@ -3809,52 +3809,51 @@
     "@tanstack/router-core" "1.171.14"
     isbot "^5.1.22"
 
-"@tanstack/react-start-client@1.168.15":
-  version "1.168.15"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-start-client/-/react-start-client-1.168.15.tgz#5b86e6c6c314ade928c2018aaeaff700575b2b62"
-  integrity sha512-pW50PHvadgi50iNCw6deUOvqc9rzs30SstyFZY2tcS9z1XlqTlELSvGowjxdu2m0ymtqm1emj1jau1iP7+3+PQ==
+"@tanstack/react-start-client@1.168.15", "@tanstack/react-start-client@1.168.39":
+  version "1.168.39"
+  resolved "https://registry.npmjs.org/@tanstack/react-start-client/-/react-start-client-1.168.39.tgz#6dbd69c27f6cfb33d022b72449a31a9805d7ea76"
+  integrity sha512-Uby0uo37JlQgUKHU0snDwH9nYiEeAjm9+7pUOFgycU/UszEILC2SO2DSCoNnCMuHKj9z+4URKzBYIP2exT9+wg==
   dependencies:
-    "@tanstack/react-router" "1.170.17"
-    "@tanstack/router-core" "1.171.14"
-    "@tanstack/start-client-core" "1.170.13"
+    "@tanstack/react-router" "1.170.41"
+    "@tanstack/router-core" "1.171.34"
+    "@tanstack/start-client-core" "1.170.34"
 
-"@tanstack/react-start-rsc@0.1.26":
-  version "0.1.26"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-start-rsc/-/react-start-rsc-0.1.26.tgz#7074640b38e89c80f38627d390c5c845afd75c55"
-  integrity sha512-+FMm3qtT1gWsl0i5sG/Q70mh1k7tzZUsPBaqbg4v34zVJZ+XGn1mJb34x2w7z1M0/e7co6GkZfV8BRpczrs8UA==
+"@tanstack/react-start-rsc@0.1.26", "@tanstack/react-start-rsc@0.1.59":
+  version "0.1.59"
+  resolved "https://registry.npmjs.org/@tanstack/react-start-rsc/-/react-start-rsc-0.1.59.tgz#e30773fb629e47fe26815efc9dd0ae6526eb063b"
+  integrity sha512-M2Lqxkk5C1zQncQs5paqX+/OLdOht51pg6D84YfLMrNsjhU/nzb6wd92MIja0mi5i23+L+fxLLjQYR2DObjBlw==
   dependencies:
-    "@tanstack/react-router" "1.170.17"
-    "@tanstack/router-core" "1.171.14"
-    "@tanstack/router-utils" "1.162.2"
-    "@tanstack/start-client-core" "1.170.13"
+    "@tanstack/react-router" "1.170.41"
+    "@tanstack/router-core" "1.171.34"
+    "@tanstack/router-utils" "1.162.3"
+    "@tanstack/start-client-core" "1.170.34"
     "@tanstack/start-fn-stubs" "1.162.0"
-    "@tanstack/start-plugin-core" "1.171.19"
-    "@tanstack/start-server-core" "1.169.16"
-    "@tanstack/start-storage-context" "1.167.16"
+    "@tanstack/start-plugin-core" "1.171.49"
+    "@tanstack/start-storage-context" "1.167.36"
     pathe "^2.0.3"
 
-"@tanstack/react-start-server@1.167.21":
-  version "1.167.21"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-start-server/-/react-start-server-1.167.21.tgz#4ca2741dced2f30501fd59ee4cfab8d3ccef2505"
-  integrity sha512-puJ7eFxaLuDzeM/tiLDJaXCA4uK+PZnEOoIC73zipsFqx865MGzrRS/GSZxeVxjavC5iHU+ZwC+rgI0qYSol1A==
+"@tanstack/react-start-server@1.167.21", "@tanstack/react-start-server@1.167.46":
+  version "1.167.46"
+  resolved "https://registry.npmjs.org/@tanstack/react-start-server/-/react-start-server-1.167.46.tgz#eb422778ebca9e0839e1ea47b961c02ff4e71ea0"
+  integrity sha512-K7z8xBOEdp8u5CZCxWrbS0tFtk5XZGMdhssLeZlRZKlLDbX7BKLdMtJ7th5sR6QVt9MTUAg3LcoqvJMPSFF+lg==
   dependencies:
-    "@tanstack/react-router" "1.170.17"
-    "@tanstack/router-core" "1.171.14"
-    "@tanstack/start-server-core" "1.169.16"
+    "@tanstack/react-router" "1.170.41"
+    "@tanstack/router-core" "1.171.34"
+    "@tanstack/start-server-core" "1.169.39"
 
-"@tanstack/react-start@latest":
-  version "1.168.27"
-  resolved "https://registry.yarnpkg.com/@tanstack/react-start/-/react-start-1.168.27.tgz#6acbea42ae7d5f6e9d1f2e10a12164856224fffa"
-  integrity sha512-rdGFDqfCW71gyofyAxaYxhelNKmeVjpmbpm0uFYbNHORCa///4aBxi7B7ecShibKv9O4GfJ66MPX5F0ozbm+ig==
+"@tanstack/react-start@>=1.168.60", "@tanstack/react-start@latest":
+  version "1.168.60"
+  resolved "https://registry.npmjs.org/@tanstack/react-start/-/react-start-1.168.60.tgz#ecfa47bc64c3c3a9f0feae7e54f15d2a2106a726"
+  integrity sha512-WMOM0Xlh2lPbVlbjYM6uOxOpiaWRPvODm/dwkLsGKq5tjyHOHZmKckJgwlrZl7OQUqFlOZHYj8bKUTgoeg8cUQ==
   dependencies:
-    "@tanstack/react-router" "1.170.17"
-    "@tanstack/react-start-client" "1.168.15"
-    "@tanstack/react-start-rsc" "0.1.26"
-    "@tanstack/react-start-server" "1.167.21"
-    "@tanstack/router-utils" "1.162.2"
-    "@tanstack/start-client-core" "1.170.13"
-    "@tanstack/start-plugin-core" "1.171.19"
-    "@tanstack/start-server-core" "1.169.16"
+    "@tanstack/react-router" "1.170.41"
+    "@tanstack/react-start-client" "1.168.39"
+    "@tanstack/react-start-rsc" "0.1.59"
+    "@tanstack/react-start-server" "1.167.46"
+    "@tanstack/router-utils" "1.162.3"
+    "@tanstack/start-client-core" "1.170.34"
+    "@tanstack/start-plugin-core" "1.171.49"
+    "@tanstack/start-server-core" "1.169.39"
     pathe "^2.0.3"
 
 "@tanstack/react-store@^0.9.3":
