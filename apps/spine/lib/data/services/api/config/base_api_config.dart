@@ -6,7 +6,7 @@ import 'package:spine/data/shared_preference.dart';
 // Update the Docker build arg or pass `--dart-define=base_url=...` when rebuilding.
 const String baseUrl = String.fromEnvironment(
   'base_url',
-  defaultValue: 'https://api.app-spine.vercel.app/v1',
+  defaultValue: 'https://api-spine-mixafrika.vercel.app/v1',
 );
 // const String baseUrl = String.fromEnvironment(
 //   'base_url',
