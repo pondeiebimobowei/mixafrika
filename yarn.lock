@@ -3811,7 +3811,7 @@
 
 "@tanstack/react-start-client@1.168.15", "@tanstack/react-start-client@1.168.39":
   version "1.168.39"
-  resolved "https://registry.npmjs.org/@tanstack/react-start-client/-/react-start-client-1.168.39.tgz#6dbd69c27f6cfb33d022b72449a31a9805d7ea76"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-start-client/-/react-start-client-1.168.39.tgz#52cbd21ad63f19f22708de113ca967a935dd82d0"
   integrity sha512-Uby0uo37JlQgUKHU0snDwH9nYiEeAjm9+7pUOFgycU/UszEILC2SO2DSCoNnCMuHKj9z+4URKzBYIP2exT9+wg==
   dependencies:
     "@tanstack/react-router" "1.170.41"
@@ -3820,7 +3820,7 @@
 
 "@tanstack/react-start-rsc@0.1.26", "@tanstack/react-start-rsc@0.1.59":
   version "0.1.59"
-  resolved "https://registry.npmjs.org/@tanstack/react-start-rsc/-/react-start-rsc-0.1.59.tgz#e30773fb629e47fe26815efc9dd0ae6526eb063b"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-start-rsc/-/react-start-rsc-0.1.59.tgz#d915e88703cd2712c04d3c0078bc66af9a9cf20a"
   integrity sha512-M2Lqxkk5C1zQncQs5paqX+/OLdOht51pg6D84YfLMrNsjhU/nzb6wd92MIja0mi5i23+L+fxLLjQYR2DObjBlw==
   dependencies:
     "@tanstack/react-router" "1.170.41"
@@ -3834,7 +3834,7 @@
 
 "@tanstack/react-start-server@1.167.21", "@tanstack/react-start-server@1.167.46":
   version "1.167.46"
-  resolved "https://registry.npmjs.org/@tanstack/react-start-server/-/react-start-server-1.167.46.tgz#eb422778ebca9e0839e1ea47b961c02ff4e71ea0"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-start-server/-/react-start-server-1.167.46.tgz#bfb3298581783d5ec0c638051e975b103697b045"
   integrity sha512-K7z8xBOEdp8u5CZCxWrbS0tFtk5XZGMdhssLeZlRZKlLDbX7BKLdMtJ7th5sR6QVt9MTUAg3LcoqvJMPSFF+lg==
   dependencies:
     "@tanstack/react-router" "1.170.41"
@@ -3843,7 +3843,7 @@
 
 "@tanstack/react-start@>=1.168.60", "@tanstack/react-start@latest":
   version "1.168.60"
-  resolved "https://registry.npmjs.org/@tanstack/react-start/-/react-start-1.168.60.tgz#ecfa47bc64c3c3a9f0feae7e54f15d2a2106a726"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-start/-/react-start-1.168.60.tgz#03f16298e18e5c704d23ed4798efad1c31b20f5c"
   integrity sha512-WMOM0Xlh2lPbVlbjYM6uOxOpiaWRPvODm/dwkLsGKq5tjyHOHZmKckJgwlrZl7OQUqFlOZHYj8bKUTgoeg8cUQ==
   dependencies:
     "@tanstack/react-router" "1.170.41"

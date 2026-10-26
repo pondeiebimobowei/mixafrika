@@ -154824,10 +154824,10 @@ s($,"caE","bMT",()=>A.hY(new A.brG(),t.yR))
 s($,"c99","bMo",()=>A.hY(new A.bpt(),t.cz))
 s($,"c9d","bMr",()=>A.hY(new A.bpy(),t.OH))
 s($,"c9j","bMu",()=>A.hY(new A.bpA(),t.QB))
-s($,"c97","Lt",()=>{var q=A.bAx(A.bzu("https://api.app-spine.vercel.app/v1",A.R(["Content-Type","application/json"],t.N,t.z))),p=q.KB$
+s($,"c97","Lt",()=>{var q=A.bAx(A.bzu("https://api-app-spine.vercel.app/v1",A.R(["Content-Type","application/json"],t.N,t.z))),p=q.KB$
 p.G(p,new A.a8K(new A.bps(),null,null,null))
 return q})
-s($,"c96","byD",()=>A.bAx(A.bzu("https://api.app-spine.vercel.app/v1",A.R(["Content-Type","application/json"],t.N,t.z))))
+s($,"c96","byD",()=>A.bAx(A.bzu("https://api-app-spine.vercel.app/v1",A.R(["Content-Type","application/json"],t.N,t.z))))
 s($,"caq","bMO",()=>A.hY(new A.brt(),t.ZM))
 s($,"cav","bMP",()=>A.hY(new A.brw(),t.bX))
 s($,"caw","bMQ",()=>A.hY(new A.brx(),t.An))
